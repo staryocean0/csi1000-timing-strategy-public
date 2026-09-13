@@ -54,7 +54,109 @@
       "command_timeout_seconds": 600,
       "verification_timeout_seconds": 180,
       "new_training": false,
-      "production_authority": false
+      "production_authority": false,
+      "asset_parts": [
+        {
+          "name": "csi1000-handoff.tar.gz.part-000",
+          "bytes": 33554432,
+          "sha256": "f42060300e8c6183b5ddeeb11cdcbad22e22de717caa2f46d749a008cfbfaaff"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-001",
+          "bytes": 33554432,
+          "sha256": "58d062562e1f8d86ddeacccf27013ca3fb649377fe3410dd944850aba7e6e048"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-002",
+          "bytes": 33554432,
+          "sha256": "b44a6df0624123c9a8636a8d60a154ced7d0130bff402ac932ecb77252cd824e"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-003",
+          "bytes": 33554432,
+          "sha256": "af7f068406bfb199435982914e86bcc002b87fb5ccfa8047170edd85f399c05c"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-004",
+          "bytes": 33554432,
+          "sha256": "9ed396dd20715befbec040883101aaf49cb8c3ccba43b2f2ab8c2a9685f8c2c2"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-005",
+          "bytes": 33554432,
+          "sha256": "1ee956caded562572db48d1223d46169297f61ecb458f8d314b7d7f623b3bcba"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-006",
+          "bytes": 33554432,
+          "sha256": "30a3797d25cd5c471611e3e6a61deb700dd1eef85de5e8f77f285420e872dc89"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-007",
+          "bytes": 33554432,
+          "sha256": "d81944c11ede37eaced7ad2374688ba04d8af895ea115a310b0ce7058b96cc09"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-008",
+          "bytes": 33554432,
+          "sha256": "03c97b5dafe56739644d5e7ee08279a16dbe031bf351338158cfb55134827de6"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-009",
+          "bytes": 33554432,
+          "sha256": "0e93383c6b68e3bc44c30b1277cdc1e721de4a91307b70d978215651d99ac616"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-010",
+          "bytes": 33554432,
+          "sha256": "17ea719da1695950d031df5126827f0cc5a74a097dc785b7857fb80777b72d46"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-011",
+          "bytes": 33554432,
+          "sha256": "7eb2c3283bae49cc3b64c877362cc60c5162154cb55347f6604c214584697e60"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-012",
+          "bytes": 33554432,
+          "sha256": "77caaa237184ee8888b891145172c312ab743840d759d6968d00be0994cb7783"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-013",
+          "bytes": 33554432,
+          "sha256": "20060155093af1c0ff788674427514b94ff65c3834544dc649904027d9041196"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-014",
+          "bytes": 33554432,
+          "sha256": "46712bc47d2ed592b991992d240d179ff201c844f08477c03076371d0d27ae3a"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-015",
+          "bytes": 33554432,
+          "sha256": "ba2205bdd44e5bd7f29d5289dbc09f98255696a56b47e65ade9e2b3a89b9673d"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-016",
+          "bytes": 33554432,
+          "sha256": "1f9040fca2113a2606aeeeffb00139c12d5a16b658ae8a8c59149b7232eeae40"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-017",
+          "bytes": 33554432,
+          "sha256": "eed3a1177b5e2df34318d761cbb4ef93fff58259b2a5e6580e12c37ebe6ff618"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-018",
+          "bytes": 33554432,
+          "sha256": "4aeece98dfc6ec2d208b9b5b09790eb7eed43ff25f6aec69aa293ce71673c141"
+        },
+        {
+          "name": "csi1000-handoff.tar.gz.part-019",
+          "bytes": 13200281,
+          "sha256": "da4a38d9ce77130684970215a78b05fae4a046d8258ad0ce1eec1bc2524b287f"
+        }
+      ]
     }
   }
 }

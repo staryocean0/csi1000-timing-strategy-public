@@ -102,7 +102,7 @@ def _digest_pair(value, min_bytes=1, max_bytes=SOURCE_BYTES_MAX):
 
 
 def validate_profile(value):
-    if not isinstance(value, dict) or set(value) != PROFILE_KEYS:
+    if not isinstance(value, dict) or set(value) not in (PROFILE_KEYS, PROFILE_KEYS | {"asset_parts"}):
         raise GateError("unknown_profile_field")
     if not re.fullmatch(r"[0-9a-f]{40}", value.get("private_ref", "")) or not re.fullmatch(
         r"[0-9a-f]{64}", value.get("manifest_sha256", "")
@@ -125,6 +125,18 @@ def validate_profile(value):
         raise GateError("profile_file_size_invalid")
     if not re.fullmatch(r"[0-9a-f]{64}", value.get("data_asset_sha256", "")):
         raise GateError("profile_not_immutable")
+    if "asset_parts" in value:
+        parts = value["asset_parts"]
+        if not isinstance(parts, list) or not 1 <= len(parts) <= 64:
+            raise GateError("invalid_transport_parts")
+        for index, part in enumerate(parts):
+            if not isinstance(part, dict) or set(part) != {"name", "bytes", "sha256"}:
+                raise GateError("invalid_transport_parts")
+            if part["name"] != DATA_ASSET_NAME + f".part-{index:03d}":
+                raise GateError("unapproved_part_identity")
+            _digest_pair({"bytes": part["bytes"], "sha256": part["sha256"]}, max_bytes=32 * 1024**2)
+        if sum(part["bytes"] for part in parts) != value["data_asset_bytes"]:
+            raise GateError("transport_parts_size_mismatch")
     source_files = value.get("source_files")
     if not isinstance(source_files, dict):
         raise GateError("unknown_profile_field")
@@ -267,20 +279,23 @@ def prepare_inputs(api, root, profile):
     if release.get("draft") is not False:
         raise GateError("private_data_release_not_published")
     assets = {item["name"]: item for item in release.get("assets") or []}
-    asset = assets.get(profile["data_asset_name"])
-    if (
-        not asset
-        or asset.get("state") != "uploaded"
-        or asset.get("size") != profile["data_asset_bytes"]
-        or asset.get("digest") != "sha256:" + profile["data_asset_sha256"]
-    ):
-        raise GateError("remote_asset_identity_failed")
     archive = root / DATA_ASSET_NAME
-    api.request(
-        f"repos/{PRIVATE_REPO}/releases/assets/{asset['id']}",
-        binary_path=archive,
-        max_bytes=profile["data_asset_bytes"],
-    )
+    parts = profile.get("asset_parts", [{"name": profile["data_asset_name"],
+        "bytes": profile["data_asset_bytes"], "sha256": profile["data_asset_sha256"]}])
+    with archive.open("xb") as combined:
+        for index, part in enumerate(parts):
+            asset = assets.get(part["name"])
+            if (not asset or asset.get("state") != "uploaded" or asset.get("size") != part["bytes"]
+                    or asset.get("digest") != "sha256:" + part["sha256"]):
+                raise GateError("remote_asset_identity_failed")
+            target = root / f"transport-{index:03d}.bin"
+            api.request(f"repos/{PRIVATE_REPO}/releases/assets/{asset['id']}",
+                        binary_path=target, max_bytes=part["bytes"])
+            if target.stat().st_size != part["bytes"] or sha(target) != part["sha256"]:
+                raise GateError("downloaded_part_digest_failed" if "asset_parts" in profile else "downloaded_asset_digest_failed")
+            with target.open("rb") as source:
+                broker.shutil.copyfileobj(source, combined)
+            target.unlink()
     if archive.stat().st_size != profile["data_asset_bytes"] or sha(archive) != profile["data_asset_sha256"]:
         raise GateError("downloaded_asset_digest_failed")
     inputs = work / "inputs"
