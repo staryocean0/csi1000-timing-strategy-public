@@ -1,0 +1,60 @@
+{
+  "schema_id": "factorlab.public_research_profiles@1.0",
+  "profiles": {
+    "handoff-verify-v1": {
+      "private_ref": "20b8619722a885db2c46e83cdcf1c949bdedac52",
+      "source_files": {
+        "handoff/package_helpers.py": {
+          "bytes": 1626,
+          "sha256": "59de8d1007b42ae8406ac36478ecdeacb34d0bc95e0e1641ed7d1d3bef27e369"
+        },
+        "handoff/run_study.py": {
+          "bytes": 405,
+          "sha256": "986079cc3c6e1020b71b7dfd5de2341d5947eb12124de5648982cd485892c702"
+        },
+        "handoff/verify_study.py": {
+          "bytes": 1758,
+          "sha256": "9b573885f905a82238b4f273aff5b8a287b87653d6450c02e974350ffb05b21f"
+        },
+        "handoff/RUN_CONTRACT.json": {
+          "bytes": 195,
+          "sha256": "fba915e686213a855475a3a92f7f334b2a3755264b2ec6590e1a91e80ebc7045"
+        },
+        "handoff/INPUT_MANIFEST.json": {
+          "bytes": 156,
+          "sha256": "72ae598f18c761329ddf9286a464be9b5a4e27edbbfb842875e086f23025c4f4"
+        }
+      },
+      "manifest_path": "handoff/INPUT_MANIFEST.json",
+      "manifest_sha256": "72ae598f18c761329ddf9286a464be9b5a4e27edbbfb842875e086f23025c4f4",
+      "data_release_tag": "csi1000-handoff-v1-20260913",
+      "data_asset_name": "csi1000-handoff.tar.gz",
+      "data_asset_sha256": "1976161b108346603561dac0075e435e346892f66f049a3fe194c981c3fc3282",
+      "data_asset_bytes": 650734489,
+      "input_files": {
+        "bundle.tar": {
+          "bytes": 695132160,
+          "sha256": "1c1e737e8d97d0b01bcc696e1893e70d017e926043062e913d06d64d2cc454ad"
+        }
+      },
+      "command": [
+        "handoff/run_study.py",
+        "--inputs",
+        "/work/inputs",
+        "--out",
+        "/results/study"
+      ],
+      "verify_command": [
+        "handoff/verify_study.py",
+        "--inputs",
+        "/work/inputs",
+        "--results",
+        "/results/study"
+      ],
+      "command_timeout_seconds": 600,
+      "verification_timeout_seconds": 180,
+      "new_training": false,
+      "production_authority": false
+    }
+  }
+}
