@@ -1,0 +1,20 @@
+{
+  "schema_id": "risk_tool_v2_canonical_public_data@1.0",
+  "repository": "staryocean0/factorlab-trend-reversion-regime-lab",
+  "ref": "1d760ea9525eb3688b70a4aa0f2b5b207af16a17",
+  "root": "data/market/5m",
+  "files": {
+    "data/market/5m/000688.SH/2020.parquet": {"bytes": 149254, "git_blob_sha1": "36fdf5c907eaaa5d7b8eacaff24f601c539cc302"},
+    "data/market/5m/000688.SH/2021.parquet": {"bytes": 317888, "git_blob_sha1": "804d49ec5338b1e3b8dd65e640ed49231c927ce9"},
+    "data/market/5m/000688.SH/2022.parquet": {"bytes": 321880, "git_blob_sha1": "c3c343f53f7323656815950f54bb962dfab5b703"},
+    "data/market/5m/000688.SH/2023.parquet": {"bytes": 309025, "git_blob_sha1": "02c3a9474dff4e5203cec12ca7a24a3b2be8994b"},
+    "data/market/5m/000688.SH/2024.parquet": {"bytes": 310411, "git_blob_sha1": "2d75a6ba7623c5fe9e3b36cb0904ee542d33110c"},
+    "data/market/5m/000688.SH/2025.parquet": {"bytes": 320754, "git_blob_sha1": "32d6d1754f965dd6298c885e30b244b877d694ed"},
+    "data/market/5m/000852.SH/2020.parquet": {"bytes": 353781, "git_blob_sha1": "c45ef84c123ae9f4ca1843b2816a4f413742547e"},
+    "data/market/5m/000852.SH/2021.parquet": {"bytes": 347162, "git_blob_sha1": "aba298f940c7992ec8814dd8ece197477d106fa9"},
+    "data/market/5m/000852.SH/2022.parquet": {"bytes": 351753, "git_blob_sha1": "fe6eed805f7237091813c32d25011848fc29b705"},
+    "data/market/5m/000852.SH/2023.parquet": {"bytes": 342750, "git_blob_sha1": "0b17d76b150bfd15d45158f100748898e72089b1"},
+    "data/market/5m/000852.SH/2024.parquet": {"bytes": 349739, "git_blob_sha1": "ba45837375d8a3ca64cb3faa7750bf51e9760796"},
+    "data/market/5m/000852.SH/2025.parquet": {"bytes": 353882, "git_blob_sha1": "85159b9fa1b2b6854b1a0f04faa9f963e9d04c13"}
+  }
+}
