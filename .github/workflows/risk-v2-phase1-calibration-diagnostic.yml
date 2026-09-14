@@ -1,0 +1,57 @@
+name: Risk v2 Phase1 calibration diagnostic
+
+on:
+  push:
+    branches:
+      - cloud-workspace-v1
+    paths:
+      - 'executor/risk_v2_calibration_diagnostic_broker.py'
+      - '.github/workflows/risk-v2-phase1-calibration-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostic:
+    if: >-
+      github.repository == 'staryocean0/csi1000-timing-strategy-public' &&
+      github.ref == 'refs/heads/cloud-workspace-v1' &&
+      github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    environment: private-research
+    timeout-minutes: 20
+    steps:
+      - name: Checkout fixed diagnostic executor
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            executor
+            .github/workflows/risk-v2-phase1-calibration-diagnostic.yml
+          sparse-checkout-cone-mode: true
+
+      - name: Static compile check before private credentials
+        run: python3 -m py_compile executor/risk_v2_calibration_diagnostic_broker.py executor/research_broker.py executor/broker.py executor/run_research_in_container.py
+
+      - name: Build isolated runtime before private credentials
+        run: docker build --tag factorlab-runtime:local executor
+
+      - name: Prepare fixed private release inputs
+        id: prepare
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/risk_v2_calibration_diagnostic_broker.py prepare
+
+      - name: Compute diagnostic without private credentials
+        run: python3 executor/risk_v2_calibration_diagnostic_broker.py compute
+
+      - name: Stop owned container before credentials return
+        id: cleanup
+        if: always() && steps.prepare.outcome == 'success'
+        run: python3 executor/risk_v2_calibration_diagnostic_broker.py cleanup
+
+      - name: Return verified diagnostic privately
+        if: always() && steps.prepare.outcome == 'success' && steps.cleanup.outcome == 'success'
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/risk_v2_calibration_diagnostic_broker.py publish
