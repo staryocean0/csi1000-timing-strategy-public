@@ -1,0 +1,11 @@
+{
+  "schema_id": "csi1000.risk_phase1b_source_sync_request@1.0",
+  "sync_id": "risk-v2-phase1b-ordering-calibration-v1",
+  "private_base_sha": "c45c0f991d9d6872bf312bbf0e1f220b98958d75",
+  "target_branch": "research/frozen/risk-v2-phase1b-ordering-calibration-v1",
+  "targets": [
+    "runtime/research/risk_tool_v2_phase1b_ordering_calibration_v1/run_study.py",
+    "runtime/research/risk_tool_v2_phase1b_ordering_calibration_v1/verify_study.py",
+    "docs/research/RISK_TOOL_V2_PHASE1B_ORDERING_CALIBRATION_PROTOCOL_20260914.json"
+  ]
+}
