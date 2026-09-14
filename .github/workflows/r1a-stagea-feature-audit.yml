@@ -43,3 +43,12 @@ jobs:
 
       - name: Run support-only maturity audit
         run: python3 executor-repo/executor/r1a_stagea_support_audit.py --source source
+
+      - name: Package pinned public source snapshot only
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r1a-stagea-public-source-${{ github.sha }}
+          path: source
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
