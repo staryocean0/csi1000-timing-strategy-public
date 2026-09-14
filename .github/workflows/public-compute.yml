@@ -153,6 +153,7 @@ jobs:
             python3 executor/risk_phase1b_private_mirror.py
           elif [ '${{ inputs.profile }}' = 'risk-v2-historical-000852-2015-2019-v1' ]; then
             python3 executor/risk_historical_000852_broker.py publish risk-v2-historical-000852-2015-2019-v1
+            python3 executor/risk_historical_private_mirror.py
           elif [ '${{ inputs.profile }}' = 'overnight-official-inventory-v1' ]; then
             python3 executor/overnight_inventory_broker.py publish overnight-official-inventory-v1
           elif [ '${{ inputs.profile }}' = 'overnight-carrier-materialization-v1' ]; then
