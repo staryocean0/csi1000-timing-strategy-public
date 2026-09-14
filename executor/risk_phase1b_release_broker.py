@@ -18,6 +18,13 @@ rb = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(rb)
 GateError = rb.GateError
 
+# Phase-1b independently recomputes two 5000-draw bootstrap families in the
+# validator. Its frozen in-container validator timeout is 300s, so the host
+# watchdog must exceed that budget. This override is execution-only and does
+# not alter data, models, bootstrap repetitions, seeds, or acceptance gates.
+PHASE1B_VALIDATE_HOST_TIMEOUT_SECONDS = 330
+rb.VALIDATE_HOST_TIMEOUT_SECONDS = PHASE1B_VALIDATE_HOST_TIMEOUT_SECONDS
+
 PROFILE_NAME = "risk-v2-phase1b-ordering-calibration-v1"
 PRIVATE_REF = "c45c0f991d9d6872bf312bbf0e1f220b98958d75"
 RELEASE_ID = 388319643
