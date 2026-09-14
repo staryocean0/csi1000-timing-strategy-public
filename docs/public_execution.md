@@ -16,7 +16,9 @@ controller与runner身份必须分开。controller只负责发起和观察标准
 
 在公库独立开发分支修改可公开的通用工具、治理合同和执行器，跑合成测试，审查diff，再合入公库活动分支；记录确切source commit。需要进入私库的同名通用代码或治理文件，不由Chat直接写私库，而由**独立、窄范围的public→private同步workflow**处理：固定公库source、固定私库base commit、固定文件映射与内容身份，创建专用私库分支，逐文件回读验签，并生成可审查回执。同步workflow不得获得任意私库路径、任意branch、任意shell或整树覆盖权限。
 
-当前治理同步入口是`.github/workflows/public-governance-sync.yml`。它不是研究runner，不读取市场数据，也不能执行策略。正常可由`workflow_dispatch`启动；当当前Chat连接缺少dispatch动作时，允许唯一的非研究替代事件：`cloud-workspace-v1`上固定文件`governance/private_sync/v1/request.json`的`push`。request schema、sync id、private base、目标文件集合和`stage/merge`阶段都由同步器逐项核对；其他push路径不会触发。`stage`只建立固定私库分支和PR并逐字回读；`merge`再次核对private base、PR身份、changed-file集合和目标内容后才合并该PR。该例外**不授权任何私密研究通过push执行**。
+当前治理同步入口是`.github/workflows/public-governance-sync.yml`。它不是研究runner，不读取市场数据，也不能执行策略。正常可由`workflow_dispatch`启动；当当前Chat连接缺少dispatch动作时，允许唯一的非研究替代事件：`cloud-workspace-v1`上固定文件`governance/private_sync/v1/request.json`的`push`。request schema、sync id、private base、目标文件集合和`stage/merge`阶段都由同步器逐项核对；其他push路径不会触发。该例外**不授权任何私密研究通过push执行**。
+
+同步采用两阶段最小权限模型。`stage`只从冻结private base创建确定性同步分支，修改固定allowlist文件，然后逐字回读并核对base→branch diff只能是这些文件。若受限Secret没有Pull Requests权限，不扩大Secret权限。`merge`再次要求private main仍等于冻结base、同步分支behind=0且只ahead允许的修改、changed-file集合和文件内容完全一致，随后仅对private `main`执行`force=false`的Git ref fast-forward，并再次从新main回读文件。任何main漂移、额外文件、内容差异或非快进历史都会fail-closed。
 
 私有策略与研究结果也只在私库成为权威记录，但其创建/更新必须由已冻结研究profile的broker回存或专门同步workflow完成。任何“先冻结到私库”的步骤都必须通过这个受控写入面实现，不能用Chat直接修改私库来省略控制面。
 
