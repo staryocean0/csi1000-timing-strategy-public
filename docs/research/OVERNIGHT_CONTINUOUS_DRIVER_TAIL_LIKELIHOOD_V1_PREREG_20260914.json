@@ -1,0 +1,179 @@
+{
+  "schema_id": "csi1000.overnight_continuous_driver_tail_likelihood_prereg@1.0",
+  "session_date": "2026-09-14",
+  "research_identity": "overnight_continuous_driver_tail_likelihood_v1",
+  "stage": "result_free_development_preregistration",
+  "independent_motivation": "Estimate causal pre-open probabilities of unusually low and unusually high CSI1000 opening gaps from validated continuous Overnight driver coordinates and prior-volatility background, with explicit abstention when directional tail evidence is weak.",
+  "non_rescue_contract": {
+    "uses_prior_six_state_package": false,
+    "uses_high_low_driver_buckets": false,
+    "uses_pairwise_intersections": false,
+    "uses_post_open_clocks": false,
+    "uses_completed_blackbox_failure_behavior": false,
+    "uses_blackbox_for_feature_or_threshold_selection": false,
+    "automatic_successor_or_rescue_authorized": false
+  },
+  "validated_input_bindings": {
+    "global_risk_z": {
+      "component_id": "OFP-B1",
+      "definition": "0.5 * (us_nasdaq / RMS60_prev(us_nasdaq) - us_vix_chg / RMS60_prev(us_vix_chg))"
+    },
+    "china_offshore_z": {
+      "component_id": "OFP-B2",
+      "definition": "a50_channel_return / RMS60_prev(a50_channel_return)"
+    },
+    "driver_coherence": {
+      "component_id": "OFP-B4",
+      "definition": "(global_risk_z + china_offshore_z + fx_cny_z) / (abs(global_risk_z) + abs(china_offshore_z) + abs(fx_cny_z))",
+      "internal_fx_definition": "fx_cny_z = -hkma_usdcny_closure_return / RMS60_prev(hkma_usdcny_closure_return)",
+      "direct_fx_feature_authorized": false
+    },
+    "log_rvol20": {
+      "component_id": "prior_volatility_background",
+      "definition": "log(rvol20)"
+    }
+  },
+  "coordinate_normalization": {
+    "method": "lagged_trailing_RMS",
+    "window": 60,
+    "min_periods": 20,
+    "shift": 1,
+    "current_observation_excluded": true
+  },
+  "private_development_snapshot": {
+    "materialization_public_run_id": "34837972995-1",
+    "receipt_ref": "runs/public-research/34837972995-1",
+    "receipt_path": "research/public-runs/34837972995-1.json",
+    "receipt_git_blob_sha1": "453ad4ad1a2defd8a032d05cc24742db727d323b",
+    "release_tag": "public-research-run-34837972995-1",
+    "asset_name": "results.tar.gz",
+    "asset_bytes": 218006,
+    "asset_sha256": "e1c716fc33fb0b5e50aabff0362f2de8d7bf94aff12ab83a715ea4dfb9384b06",
+    "allowed_calendar_window": "2015-01-05..2020-12-31",
+    "forbidden_row_level_window": "2021-01-01..2025-12-31",
+    "source_repository_runtime_access": false
+  },
+  "target": {
+    "continuous_base": "opening_gap_rvol = gap / rvol20",
+    "tail_definition": "fit-period empirical tails only",
+    "fit_lower_quantile": 0.10,
+    "fit_upper_quantile": 0.90,
+    "quantile_method": "linear",
+    "class_order": ["DOWN", "MID", "UP"],
+    "down_rule": "opening_gap_rvol <= frozen fit q10",
+    "mid_rule": "frozen fit q10 < opening_gap_rvol < frozen fit q90",
+    "up_rule": "opening_gap_rvol >= frozen fit q90",
+    "holdout_or_blackbox_quantiles_recomputed": false
+  },
+  "time_splits": {
+    "fit": "2015-01-05..2018-12-31",
+    "calibration": "2019-01-02..2019-12-31",
+    "development_holdout": "2020-01-02..2020-12-31",
+    "blackbox": "not_authorized_by_this_protocol"
+  },
+  "feature_vector": [
+    "global_risk_z",
+    "china_offshore_z",
+    "driver_coherence",
+    "log_rvol20"
+  ],
+  "feature_standardization": {
+    "method": "fit_only_mean_population_sd",
+    "applied_to": ["global_risk_z", "china_offshore_z", "driver_coherence", "log_rvol20"],
+    "calibration_or_holdout_refit": false,
+    "zero_or_nonfinite_fit_sd": "DEV_INSUFFICIENT"
+  },
+  "model": {
+    "family": "multinomial_logistic_regression",
+    "parameterization": "MID_reference_two_logit_softmax",
+    "down_logit": "intercept_down + standardized_features dot weights_down",
+    "mid_logit": "0",
+    "up_logit": "intercept_up + standardized_features dot weights_up",
+    "loss": "mean_multiclass_negative_log_likelihood_plus_L2_slopes",
+    "l2_lambda": 0.01,
+    "intercepts_penalized": false,
+    "optimizer": "scipy.optimize.minimize_L-BFGS-B",
+    "max_iterations": 2000,
+    "ftol": 1e-12,
+    "gtol": 1e-08,
+    "randomness": "none",
+    "initial_intercepts": "log_fit_class_prior_odds_vs_MID",
+    "initial_slopes": 0.0
+  },
+  "probability_calibration": {
+    "method": "single_temperature_scaling",
+    "fit_window": "calibration",
+    "objective": "multiclass_negative_log_likelihood",
+    "temperature_lower": 0.5,
+    "temperature_upper": 3.0,
+    "optimizer": "scipy.optimize.minimize_scalar_bounded",
+    "xatol": 1e-08,
+    "holdout_labels_used": false
+  },
+  "abstention": {
+    "directional_score": "abs(p_UP - p_DOWN)",
+    "score_threshold": "calibration 80th percentile of directional_score",
+    "quantile_method": "higher",
+    "selected_direction": "UP if p_UP > p_DOWN else DOWN; exact tie abstains",
+    "minimum_selected_tail_uplift_vs_fit_class_prior": 1.5,
+    "state_enum": ["DOWN_TAIL", "ABSTAIN", "UP_TAIL"],
+    "state_is_trading_authority": false
+  },
+  "primary_comparator": {
+    "name": "fit_class_prior_probability_baseline",
+    "probabilities": "fixed fit-period class frequencies applied unchanged to calibration and holdout",
+    "alternative_model_selection_authorized": false
+  },
+  "evidence_sufficiency": {
+    "fit_complete_cases_min": 750,
+    "fit_each_tail_cases_min": 50,
+    "calibration_complete_cases_min": 180,
+    "calibration_each_tail_cases_min": 8,
+    "holdout_complete_cases_min": 180,
+    "holdout_each_tail_cases_min": 8,
+    "all_four_features_and_target_must_be_finite": true
+  },
+  "development_gates": {
+    "model_optimizer_must_converge": true,
+    "holdout_log_loss_relative_improvement_vs_prior_min": 0.01,
+    "holdout_multiclass_brier_relative_improvement_vs_prior_min": 0.01,
+    "holdout_down_one_vs_rest_auc_min": 0.55,
+    "holdout_up_one_vs_rest_auc_min": 0.55,
+    "active_coverage_min": 0.05,
+    "active_coverage_max": 0.30,
+    "active_decisions_min": 12,
+    "active_each_direction_min": 3,
+    "active_directional_tail_precision_uplift_vs_fit_combined_tail_prior_min": 1.5
+  },
+  "development_decision": {
+    "enum": ["DEV_PASS", "DEV_NO_PROGRESS", "DEV_INSUFFICIENT"],
+    "DEV_INSUFFICIENT": "any frozen evidence-sufficiency condition fails or model inputs are degenerate",
+    "DEV_PASS": "all frozen scientific gates pass on the untouched 2020 development holdout",
+    "DEV_NO_PROGRESS": "surface is sufficient but one or more frozen scientific gates fail",
+    "automatic_repair_after_nonpass": false
+  },
+  "frozen_before_holdout_evaluation": [
+    "fit q10/q90 tail cutoffs",
+    "feature means and population standard deviations",
+    "two-logit model coefficients and intercepts",
+    "temperature",
+    "fit class priors",
+    "calibration directional-score abstention threshold"
+  ],
+  "development_outputs": {
+    "aggregate_metrics_allowed": true,
+    "frozen_model_parameters_allowed": true,
+    "row_level_predictions_persisted": false,
+    "development_decision_persisted": true
+  },
+  "future_reusable_blackbox": {
+    "authorized_now": false,
+    "if_DEV_PASS": "requires a separate reviewed public preregistration pinning the exact frozen model artifact and one compact reusable query contract",
+    "future_public_decision_enum": ["PASS", "FAIL", "INSUFFICIENT"],
+    "reuse_is_independent_oos": false,
+    "hidden_behavior_may_guide_repair": false
+  },
+  "current_layer2_risk_tool_authority_changed": false,
+  "new_training": true,
+  "production_authority": false
+}
