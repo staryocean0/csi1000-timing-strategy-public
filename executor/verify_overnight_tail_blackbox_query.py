@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-_spec = importlib.util.spec_from_file_location("_overnight_tail_blackbox_query", HERE / "overnight_tail_blackbox_query.py")
+_spec = importlib.util.spec_from_file_location("_overnight_tail_blackbox_query", HERE / "run_query.py")
 if _spec is None or _spec.loader is None:
     raise RuntimeError("blackbox_query_module_unavailable")
 query = importlib.util.module_from_spec(_spec)
