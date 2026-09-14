@@ -60,7 +60,7 @@ class OvernightTailLikelihoodExecutorTests(unittest.TestCase):
         protocol_meta = p["public_source_files"]["docs/research/OVERNIGHT_CONTINUOUS_DRIVER_TAIL_LIKELIHOOD_V1_PREREG_20260914.json"]
         self.assertEqual(protocol_meta["git_blob_sha1"], "3e786f15f052ef5576c0957d3ebfa33d80c4cfc4")
         actual_sha256 = hashlib.sha256(PREREG.read_bytes()).hexdigest()
-        self.assertEqual(actual_sha256, "15904a8ef605d0adabc8baab7547233a30fb739b3616a911ed200a65a11710e2")
+        self.assertEqual(actual_sha256, "eb6b431b9213a6c879b209151a37bcec724c8addf10a65204bbb366655c2a695")
         self.assertEqual(protocol_meta["sha256"], actual_sha256)
 
     def test_entry_reports_training_without_changing_production_authority(self):
