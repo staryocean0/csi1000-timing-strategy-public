@@ -1,0 +1,7 @@
+{
+  "schema_id": "csi1000.risk_source_sync_request@1.0",
+  "sync_id": "risk-v2-direct-members-v1",
+  "phase": "stage",
+  "private_base_sha": "cbe97535403b17cf8c4311bcc6567328b726ce67",
+  "target": "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v4.py"
+}
