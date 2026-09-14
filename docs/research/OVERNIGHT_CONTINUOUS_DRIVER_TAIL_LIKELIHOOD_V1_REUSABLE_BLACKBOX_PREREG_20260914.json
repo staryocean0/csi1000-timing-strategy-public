@@ -1,0 +1,188 @@
+{
+  "schema_id": "csi1000.overnight_continuous_driver_tail_likelihood_reusable_blackbox_prereg@1.0",
+  "session_date": "2026-09-14",
+  "research_identity": "overnight_continuous_driver_tail_likelihood_reusable_blackbox_v1",
+  "parent_development_identity": "overnight_continuous_driver_tail_likelihood_v1",
+  "stage": "result_free_reusable_blackbox_preregistration",
+  "motivation": "Validate the already-frozen continuous Overnight tail-likelihood model on the reusable 2021-2025 window without refitting, recalibration, threshold selection, feature selection, state rescue, or exposure of diagnostic BLACKBOX behavior.",
+  "parent_development_artifact": {
+    "public_run_id": "34847445307-1",
+    "public_source_sha": "f7ecd91316823607eba66f7fc0875ac4b6e7c3b7",
+    "private_ref": "runs/public-research/34847445307-1",
+    "standard_receipt_path": "research/public-runs/34847445307-1.json",
+    "standard_receipt_git_blob_sha1": "43dd71065d6854fbe545376ec7a8a7f4f6ff7c91",
+    "dev_report_path": "research/public-runs/34847445307-1-overnight-tail-dev-report.json",
+    "dev_report_git_blob_sha1": "4d96922fb86355054dfec64ea621d76e75f75365",
+    "dev_decision": "DEV_PASS",
+    "frozen_model_path": "research/public-runs/34847445307-1-overnight-tail-frozen-model.json",
+    "frozen_model_git_blob_sha1": "2a97f89fa75a575b03352a48498a8e7a1049cca6",
+    "frozen_model_result_sha256": "b5807e248ce142c54857929287fc0a040f3558eac13117de473377ab14b4f396",
+    "development_protocol_sha256": "eb6b431b9213a6c879b209151a37bcec724c8addf10a65204bbb366655c2a695",
+    "result_release_tag": "public-research-run-34847445307-1",
+    "result_archive_sha256": "0bab0d32bba6a17d9cc14158cbebb8a33c595efa99e711e1e29819f79407a468",
+    "result_archive_bytes": 2705,
+    "model_frozen_before_2020_holdout_evaluation": true,
+    "production_authority": false
+  },
+  "blackbox_source": {
+    "repository_role": "historical carrier source only; not CSI1000 control plane",
+    "repository": "staryocean0/factorlab-overnight-open-lab",
+    "ref": "9905c2f8942ad0a2faf106d42c1b62fd6127e646",
+    "files": {
+      "data/development/csi1000_open_pit_panel.parquet": {
+        "git_blob_sha1": "e850bfee1846eb51b9c825e1324bc5182265950d",
+        "bytes": 248701
+      },
+      "data/v6a_external_sources_2015_2025/hkma_usdcny_cross.parquet": {
+        "git_blob_sha1": "0880cd72fb2673c43ecb9fdb45f8709a90e56529",
+        "bytes": 89181
+      },
+      "data/v6a_external_sources_2015_2025/sgx_a50_holiday_endpoints.parquet": {
+        "git_blob_sha1": "6bbcc1a1330b3679f3635bd5de7fe2616c447cb5",
+        "bytes": 21838
+      },
+      "data/v6a_external_sources_2015_2025/sgx_a50_ordinary_preauction_endpoints.parquet": {
+        "git_blob_sha1": "c6a2d814ba6761c9c33cdec2014567fadd3043b4",
+        "bytes": 465381
+      },
+      "data/v6a_external_sources_2015_2025/source_assertions.json": {
+        "git_blob_sha1": "cbbb7eff173443eafb7476fe681916208823b249",
+        "bytes": 244
+      }
+    },
+    "required_source_assertions": {
+      "same_contract_all_events": true,
+      "no_future_volume_or_oi_selection": true,
+      "no_mid_window_roll": true,
+      "no_forward_fill_or_interpolation": true,
+      "blackbox_not_used_for_fit_or_rule_selection": true
+    },
+    "row_values_inspected_during_preregistration": false
+  },
+  "blackbox_window": {
+    "start": "2021-01-01",
+    "end": "2025-12-31",
+    "reused_period_is_independent_oos": false,
+    "single_query_for_this_frozen_identity": true
+  },
+  "frozen_input_construction": {
+    "panel_columns": ["trading_day", "gap", "rvol20", "holiday_reopen", "us_nasdaq", "us_vix_chg"],
+    "global_risk_z": "0.5 * (us_nasdaq / RMS60_prev(us_nasdaq) - us_vix_chg / RMS60_prev(us_vix_chg))",
+    "china_offshore_z": "a50_channel_return / RMS60_prev(a50_channel_return)",
+    "fx_cny_z": "-hkma_usdcny_closure_return / RMS60_prev(hkma_usdcny_closure_return)",
+    "driver_coherence": "(global_risk_z + china_offshore_z + fx_cny_z) / (abs(global_risk_z) + abs(china_offshore_z) + abs(fx_cny_z))",
+    "log_rvol20": "log(rvol20)",
+    "coordinate_rms": {
+      "window": 60,
+      "min_periods": 20,
+      "shift": 1,
+      "current_observation_excluded": true,
+      "history_before_2021_may_be_read_only_to_form_causal_lagged_coordinates": true
+    },
+    "a50_channel": {
+      "ordinary_day_source": "a50_ordinary_preauction_closure_return",
+      "ordinary_target_end_time_lt": 91500,
+      "holiday_reopen_source": "a50_holiday_closure_return",
+      "holiday_target_end_time_lt": 92500,
+      "mode_selected_only_from_holiday_reopen": true,
+      "future_volume_or_oi_selection": false,
+      "mid_window_roll": false,
+      "forward_fill_or_interpolation": false
+    },
+    "hkma": {
+      "target_observation_strictly_before_china_trading_day": true,
+      "start_observation_at_or_before_previous_china_day": true,
+      "forward_fill_or_interpolation": false,
+      "target_date_leakage": false
+    }
+  },
+  "frozen_model_application": {
+    "feature_vector": ["global_risk_z", "china_offshore_z", "driver_coherence", "log_rvol20"],
+    "feature_means_and_population_sds": "load exactly from pinned frozen_model artifact; no refit",
+    "tail_cutoffs": "load exactly from pinned frozen_model artifact; no recomputation",
+    "two_logit_coefficients": "load exactly from pinned frozen_model artifact; no refit",
+    "temperature": "load exactly from pinned frozen_model artifact; no recalibration",
+    "directional_margin_threshold": "load exactly from pinned frozen_model artifact; no reselection",
+    "minimum_selected_tail_uplift_vs_fit_class_prior": "load exactly from pinned frozen_model artifact",
+    "fit_class_priors": "load exactly from pinned frozen_model artifact",
+    "holdout_or_blackbox_information_may_modify_model": false
+  },
+  "target_and_labels": {
+    "continuous_target": "opening_gap_rvol = gap / rvol20",
+    "class_order": ["DOWN", "MID", "UP"],
+    "down_rule": "opening_gap_rvol <= frozen model q10",
+    "mid_rule": "frozen model q10 < opening_gap_rvol < frozen model q90",
+    "up_rule": "opening_gap_rvol >= frozen model q90"
+  },
+  "internal_evidence_sufficiency": {
+    "pooled_complete_cases_min": 900,
+    "pooled_each_tail_cases_min": 40,
+    "each_calendar_year_complete_cases_min": 150,
+    "each_calendar_year_each_tail_cases_min": 5,
+    "all_four_features_and_target_must_be_finite_for_scored_rows": true,
+    "source_assertions_and_causal_clock_integrity_must_pass": true
+  },
+  "internal_validation_gates": {
+    "model_optimizer_or_refit_gate": "not_applicable_frozen_model_only",
+    "pooled_log_loss_relative_improvement_vs_frozen_fit_prior_min": 0.01,
+    "pooled_multiclass_brier_relative_improvement_vs_frozen_fit_prior_min": 0.01,
+    "pooled_down_one_vs_rest_auc_min": 0.55,
+    "pooled_up_one_vs_rest_auc_min": 0.55,
+    "active_coverage_min": 0.05,
+    "active_coverage_max": 0.30,
+    "active_decisions_min": 60,
+    "active_each_direction_min": 15,
+    "active_directional_tail_precision_uplift_vs_frozen_fit_combined_tail_prior_min": 1.5
+  },
+  "decision_contract": {
+    "enum": ["PASS", "FAIL", "INSUFFICIENT"],
+    "INSUFFICIENT": "any frozen evidence-sufficiency or source-integrity condition fails",
+    "PASS": "surface is sufficient and every frozen internal validation gate passes on the pooled 2021-2025 reusable window",
+    "FAIL": "surface is sufficient and one or more frozen internal validation gates fail",
+    "automatic_repair_or_successor_after_nonpass": false,
+    "hidden_behavior_may_guide_future_design": false
+  },
+  "blackbox_output_contract": {
+    "persisted_fields_allowed": [
+      "schema_id",
+      "query_id",
+      "research_identity",
+      "parent_model_artifact_id",
+      "decision",
+      "protocol_sha256",
+      "source_ref",
+      "source_file_blob_identities",
+      "public_detail_release",
+      "internal_metrics_persisted",
+      "reused_period_is_independent_oos",
+      "production_authority"
+    ],
+    "public_detail_release": false,
+    "internal_metrics_persisted": false,
+    "forbidden_persisted_or_printed_information": [
+      "metric values",
+      "probabilities",
+      "scores",
+      "counts",
+      "year or quarter breakdowns",
+      "event rows",
+      "confusion matrices",
+      "per-gate pass/fail vector",
+      "failure attribution",
+      "threshold rescue clues",
+      "feature repair clues"
+    ],
+    "stdout": "decision token only",
+    "row_level_outputs": false
+  },
+  "post_query_governance": {
+    "PASS": "validates this exact frozen reusable identity only; does not grant trading, account execution, or production authority",
+    "FAIL": "close this identity; no threshold, feature, weight, calibration, abstention, source, target, or gate repair from BLACKBOX behavior",
+    "INSUFFICIENT": "close this query as insufficient; incomplete-surface information does not authorize rescue",
+    "automatic_next_query": false,
+    "automatic_successor": false,
+    "2021_2025_reuse_after_query_is_independent_oos": false
+  },
+  "current_layer2_risk_tool_authority_changed": false,
+  "production_authority": false
+}
