@@ -1,0 +1,41 @@
+{
+  "schema_id": "factorlab.public_overnight_inventory_profile@1.0",
+  "profile_name": "overnight-official-inventory-v1",
+  "transport_profile": "handoff-verify-v1",
+  "private_ref": "20b8619722a885db2c46e83cdcf1c949bdedac52",
+  "private_source_files": {
+    "handoff/INPUT_MANIFEST.json": {
+      "bytes": 156,
+      "sha256": "72ae598f18c761329ddf9286a464be9b5a4e27edbbfb842875e086f23025c4f4"
+    }
+  },
+  "public_source_files": {
+    "overnight_inventory.py": {
+      "bytes": 7066,
+      "git_blob_sha1": "1b643a2fb3b4605e613a433b669b714dd8d4f6f2"
+    },
+    "verify_overnight_inventory.py": {
+      "bytes": 4474,
+      "git_blob_sha1": "d0a714812931d63cdfcb0f0ae20f93b00da6c33a"
+    }
+  },
+  "manifest_path": "handoff/INPUT_MANIFEST.json",
+  "command": [
+    "overnight_inventory/run_study.py",
+    "--inputs",
+    "/work/inputs",
+    "--out",
+    "/results/study"
+  ],
+  "verify_command": [
+    "overnight_inventory/verify_study.py",
+    "--inputs",
+    "/work/inputs",
+    "--results",
+    "/results/study"
+  ],
+  "command_timeout_seconds": 120,
+  "verification_timeout_seconds": 60,
+  "new_training": false,
+  "production_authority": false
+}
