@@ -1,8 +1,8 @@
 """Apply one frozen public -> private governance synchronization request.
 
 This is not a research runner. The request has a fixed identity, private base,
-target set and two phases: stage a private PR, then merge that exact PR after
-readback verification. Chat mutates only the public request file.
+target set and two phases: stage an exact private branch, then fast-forward the
+private main ref to that exact verified branch. Chat mutates only public files.
 """
 from __future__ import annotations
 
@@ -32,7 +32,6 @@ PRIVATE_BASE_BRANCH = "main"
 PRIVATE_BASE_SHA = "653fdfc232f1d877f051e05e3238d409d269f85d"
 SYNC_ID = "two-repo-control-plane-hardening-v1"
 PRIVATE_BRANCH = "sync/public-governance/" + SYNC_ID
-SYNC_TITLE = "governance: enforce Chat-only-public two-repo control plane"
 REQUEST_PATH = ROOT / "governance/private_sync/v1/request.json"
 TARGETS = (
     {
@@ -77,9 +76,8 @@ def _load_request() -> dict:
         value = json.loads(REQUEST_PATH.read_text(encoding="utf-8"))
     except Exception:
         raise GateError("invalid_governance_request") from None
-    if not isinstance(value, dict) or set(value) != {
-        "schema_id", "sync_id", "phase", "private_base_sha", "targets"
-    }:
+    expected = {"schema_id", "sync_id", "phase", "private_base_sha", "targets"}
+    if not isinstance(value, dict) or set(value) != expected:
         raise GateError("invalid_governance_request")
     if value["schema_id"] != "csi1000.private_governance_sync_request@1.0":
         raise GateError("invalid_governance_request")
@@ -122,6 +120,16 @@ def _require_private_base(api: GitHub) -> None:
         raise GateError("private_base_moved_re_freeze_required")
 
 
+def _branch_head(api: GitHub) -> str:
+    branch = api.request(
+        f"repos/{PRIVATE_REPO}/branches/" + urllib.parse.quote(PRIVATE_BRANCH, safe="")
+    )
+    head = branch.get("commit", {}).get("sha")
+    if not re.fullmatch(r"[0-9a-f]{40}", head or ""):
+        raise GateError("private_governance_branch_missing")
+    return head
+
+
 def _verify_branch_files(api: GitHub) -> dict[str, str]:
     digests: dict[str, str] = {}
     for row in TARGETS:
@@ -139,6 +147,21 @@ def _verify_branch_files(api: GitHub) -> dict[str, str]:
             raise GateError("private_governance_readback_failed")
         digests[row["target"]] = hashlib.sha256(actual).hexdigest()
     return digests
+
+
+def _verify_exact_compare(api: GitHub, head_sha: str) -> None:
+    compare = api.request(f"repos/{PRIVATE_REPO}/compare/{PRIVATE_BASE_SHA}...{head_sha}")
+    if (
+        compare.get("status") != "ahead"
+        or compare.get("behind_by") != 0
+        or compare.get("merge_base_commit", {}).get("sha") != PRIVATE_BASE_SHA
+    ):
+        raise GateError("private_governance_history_drift")
+    files = compare.get("files")
+    if not isinstance(files, list) or {row.get("filename") for row in files} != set(TARGET_NAMES):
+        raise GateError("private_governance_diff_scope_drift")
+    if any(row.get("status") != "modified" for row in files):
+        raise GateError("private_governance_diff_scope_drift")
 
 
 def stage(api: GitHub) -> None:
@@ -163,74 +186,37 @@ def stage(api: GitHub) -> None:
             },
             method="PUT",
         )
-    digests = _verify_branch_files(api)
-    public_sha = os.environ.get("GITHUB_SHA", "")
-    if not re.fullmatch(r"[0-9a-f]{40}", public_sha):
-        raise GateError("public_source_not_immutable")
-    body = "\n".join(
-        [
-            "Bounded public -> private governance synchronization.", "",
-            f"Sync id: `{SYNC_ID}`",
-            f"Public source: `{PUBLIC_REPO}@{public_sha}`",
-            f"Frozen private base: `{PRIVATE_REPO}@{PRIVATE_BASE_SHA}`",
-            "Targets: `AGENTS.md`, `docs/WORKFLOW.md` only.",
-            "No research execution, private data access, arbitrary paths, or production authority.",
-            "", "SHA256 readback:",
-            *[f"- `{path}`: `{digest}`" for path, digest in sorted(digests.items())],
-        ]
-    )
-    pr = api.request(
-        f"repos/{PRIVATE_REPO}/pulls",
-        {"title": SYNC_TITLE, "head": PRIVATE_BRANCH, "base": PRIVATE_BASE_BRANCH, "body": body},
-        method="POST",
-    )
-    number = pr.get("number")
-    if type(number) is not int or number <= 0:
-        raise GateError("private_governance_pr_creation_failed")
-    print(f"Bounded private governance sync staged as private PR #{number}.")
+    head_sha = _branch_head(api)
+    _verify_branch_files(api)
+    _verify_exact_compare(api, head_sha)
+    print("Bounded private governance sync staged and verified on the fixed private branch.")
 
 
 def merge(api: GitHub) -> None:
     _require_private_base(api)
-    branch = api.request(f"repos/{PRIVATE_REPO}/branches/{urllib.parse.quote(PRIVATE_BRANCH, safe='')}")
-    head_sha = branch.get("commit", {}).get("sha")
-    if not re.fullmatch(r"[0-9a-f]{40}", head_sha or ""):
-        raise GateError("private_governance_branch_missing")
+    head_sha = _branch_head(api)
     _verify_branch_files(api)
-
-    query = urllib.parse.urlencode({
-        "state": "open", "head": "staryocean0:" + PRIVATE_BRANCH, "base": PRIVATE_BASE_BRANCH, "per_page": 10
-    })
-    pulls = api.request(f"repos/{PRIVATE_REPO}/pulls?{query}")
-    if not isinstance(pulls, list) or len(pulls) != 1:
-        raise GateError("private_governance_pr_identity_failed")
-    pr = pulls[0]
-    number = pr.get("number")
-    if type(number) is not int or pr.get("title") != SYNC_TITLE:
-        raise GateError("private_governance_pr_identity_failed")
-    files = api.request(f"repos/{PRIVATE_REPO}/pulls/{number}/files?per_page=100")
-    if not isinstance(files, list) or {row.get("filename") for row in files} != set(TARGET_NAMES):
-        raise GateError("private_governance_pr_scope_drift")
-
+    _verify_exact_compare(api, head_sha)
     result = api.request(
-        f"repos/{PRIVATE_REPO}/pulls/{number}/merge",
-        {
-            "sha": head_sha,
-            "merge_method": "merge",
-            "commit_title": SYNC_TITLE,
-            "commit_message": f"Reviewed public source sync id {SYNC_ID}; production authority remains false.",
-        },
-        method="PUT",
+        f"repos/{PRIVATE_REPO}/git/refs/heads/{PRIVATE_BASE_BRANCH}",
+        {"sha": head_sha, "force": False},
+        method="PATCH",
     )
-    if result.get("merged") is not True or not re.fullmatch(r"[0-9a-f]{40}", result.get("sha", "")):
-        raise GateError("private_governance_merge_failed")
-    merged_sha = result["sha"]
+    if result.get("object", {}).get("sha") != head_sha:
+        raise GateError("private_governance_fast_forward_failed")
+    main = api.request(f"repos/{PRIVATE_REPO}/branches/{PRIVATE_BASE_BRANCH}")
+    if main.get("commit", {}).get("sha") != head_sha:
+        raise GateError("private_governance_fast_forward_readback_failed")
     for row in TARGETS:
         target_q = urllib.parse.quote(row["target"], safe="/")
-        returned = api.request(f"repos/{PRIVATE_REPO}/contents/{target_q}?ref={merged_sha}")
-        if base64.b64decode(returned["content"]) != _source_bytes(row):
-            raise GateError("private_governance_merge_readback_failed")
-    print(f"Bounded private governance sync merged as private PR #{number}.")
+        returned = api.request(f"repos/{PRIVATE_REPO}/contents/{target_q}?ref={head_sha}")
+        try:
+            actual = base64.b64decode(returned["content"])
+        except Exception:
+            raise GateError("private_governance_fast_forward_readback_failed") from None
+        if actual != _source_bytes(row):
+            raise GateError("private_governance_fast_forward_readback_failed")
+    print("Bounded private governance sync fast-forwarded private main after exact diff verification.")
 
 
 def run_sync() -> None:
