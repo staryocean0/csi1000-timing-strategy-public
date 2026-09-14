@@ -79,8 +79,10 @@ class RiskResearchBrokerTests(unittest.TestCase):
             "sha": digest,
             "content": base64.b64encode(raw).decode(),
         }
-        got = risk.fetch_source_file(api, "private/source.py", PRIVATE_REF, git_pair(len(raw), digest))
+        expected = git_pair(len(raw), digest)
+        got = risk.fetch_source_file(api, "private/source.py", PRIVATE_REF, expected)
         self.assertEqual(got, raw)
+        self.assertEqual(expected["sha256"], hashlib.sha256(raw).hexdigest())
         bad = bytearray(raw)
         bad[-2] ^= 1
         api.request.return_value = {
