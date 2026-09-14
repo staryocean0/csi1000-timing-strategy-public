@@ -1,0 +1,42 @@
+name: CSI1000 bounded Risk source sync
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - cloud-workspace-v1
+    paths:
+      - governance/risk_source_sync/v1/request.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: csi1000-risk-source-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: >-
+      github.repository == 'staryocean0/csi1000-timing-strategy-public' &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/cloud-workspace-v1' &&
+      (github.event_name == 'workflow_dispatch' || github.event_name == 'push')
+    runs-on: ubuntu-24.04
+    environment: private-research
+    timeout-minutes: 5
+    steps:
+      - name: Checkout reviewed Risk source sync inputs only
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            executor
+            governance/risk_source_sync/v1
+          sparse-checkout-cone-mode: true
+      - name: Verify bounded Risk source sync contract before credentials
+        run: python3 executor/risk_source_sync.py --self-test
+      - name: Stage reviewed Risk source on fixed private branch
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/risk_source_sync.py
