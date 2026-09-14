@@ -1,11 +1,27 @@
 {
-  "schema_id": "csi1000.risk_phase1b_source_sync_request@1.0",
+  "schema_id": "csi1000.risk_phase1b_source_sync_request@1.1",
   "sync_id": "risk-v2-phase1b-ordering-calibration-v1",
+  "phase": "stage",
   "private_base_sha": "c45c0f991d9d6872bf312bbf0e1f220b98958d75",
   "target_branch": "research/frozen/risk-v2-phase1b-ordering-calibration-v1",
-  "targets": [
-    "runtime/research/risk_tool_v2_phase1b_ordering_calibration_v1/run_study.py",
-    "runtime/research/risk_tool_v2_phase1b_ordering_calibration_v1/verify_study.py",
-    "docs/research/RISK_TOOL_V2_PHASE1B_ORDERING_CALIBRATION_PROTOCOL_20260914.json"
+  "files": [
+    {
+      "source": "executor/risk_phase1b_platt.py",
+      "target": "runtime/research/risk_tool_v2_phase1b_ordering_calibration_v1/run_study.py",
+      "bytes": 17626,
+      "git_blob_sha1": "b8c33e196512dc032756102b73b2247254dd3fbe"
+    },
+    {
+      "source": "executor/risk_phase1b_verifier.py",
+      "target": "runtime/research/risk_tool_v2_phase1b_ordering_calibration_v1/verify_study.py",
+      "bytes": 15694,
+      "git_blob_sha1": "668cc8fadc2153a916fe4ab493ba75adfc3b6c76"
+    },
+    {
+      "source": "docs/research/RISK_TOOL_V2_PHASE1B_ORDERING_CALIBRATION_PROTOCOL_20260914.json",
+      "target": "docs/research/RISK_TOOL_V2_PHASE1B_ORDERING_CALIBRATION_PROTOCOL_20260914.json",
+      "bytes": 5508,
+      "git_blob_sha1": "78528896dbe424af9396e478f114d66b68e7f786"
+    }
   ]
 }
