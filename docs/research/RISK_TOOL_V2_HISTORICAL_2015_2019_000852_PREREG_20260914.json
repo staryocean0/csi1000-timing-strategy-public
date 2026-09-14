@@ -1,5 +1,5 @@
 {
-  "schema_id": "csi1000.risk_tool_v2_historical_000852_2015_2019_prereg@1.0",
+  "schema_id": "csi1000.risk_tool_v2_historical_000852_2015_2019_prereg@1.1",
   "task_id": "CSI1000-RISK-V2-HISTORICAL-000852-2015-2019-V1-20260914",
   "purpose": "Retrospective temporal transportability audit of the already-frozen Phase-1/Phase-1b 15m and 30m Severity signal on earlier CSI1000 history. This is not fresh OOS and does not alter Phase-1 or Phase-1b adjudications.",
   "parent_phase1_verdict": "NOT_SUPPORTED",
@@ -33,6 +33,21 @@
       "2019": {"path": "data/market/5m/000852.SH/2019.parquet", "git_blob_sha1": "9dadff0a88a6a03f8defcf12ba28b1e6f57fd84e", "bytes": 346434}
     },
     "substitute_data_allowed": false
+  },
+  "data_quality_rule": {
+    "reason_for_amendment": "Initial execution stopped before any model metric or scientific result because the frozen Phase-1 state builder requires exactly 48 bars per day. The canonical historical data contain known incomplete trading days, including 2016 circuit-breaker sessions. This rule was frozen before any scientific output was produced.",
+    "eligible_day": "exactly 48 five-minute bars and exactly 24 AM plus 24 PM bars",
+    "incomplete_day_action": "exclude the entire trading day before state construction",
+    "imputation_allowed": false,
+    "interpolation_allowed": false,
+    "partial_day_usage_allowed": false,
+    "expected_incomplete_days_and_bar_counts": {
+      "2016-01-04": 30,
+      "2016-01-07": 5,
+      "2017-08-24": 47
+    },
+    "unexpected_incomplete_day_policy": "fail_closed",
+    "excluded_days_must_be_receipted": true
   },
   "frozen_state_machine": {
     "rv_window": 12,
