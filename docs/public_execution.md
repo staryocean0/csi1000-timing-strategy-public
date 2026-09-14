@@ -8,13 +8,15 @@
 
 `.github/workflows/public-compute.yml`是唯一标准私密研究执行入口，实际研究run必须是`workflow_dispatch`、固定`cloud-workspace-v1`、固定白名单profile。`workflow_dispatch`是GitHub Actions事件类型，不意味着必须由用户本人在网页点击：标杆仓允许Chat连接在暴露该动作时直接调度，也允许独立、已认证的controller调度；GitHub UI只是备用入口。
 
-controller与runner身份必须分开。controller只负责发起和观察标准run，不持有公库`private-research`环境中的`FACTORLAB_PRIVATE_TOKEN`，不读取研究数据、不运行私有研究代码、不伪造run事件。受限私库凭据只在标准workflow的prepare/publish步骤出现。不得用push、PR、fork或修改`GITHUB_EVENT_NAME`替代真正的`workflow_dispatch`。
+controller与runner身份必须分开。controller只负责发起和观察标准run，不持有公库`private-research`环境中的`FACTORLAB_PRIVATE_TOKEN`，不读取研究数据、不运行私有研究代码、不伪造run事件。受限私库凭据只在标准workflow的prepare/publish步骤出现。不得用push、PR、fork或修改`GITHUB_EVENT_NAME`替代真正的`workflow_dispatch`执行私密研究。
 
 当前Chat连接器是否暴露“新建workflow dispatch”必须按会话实时发现，不能由仓库文档假定。若当前连接器缺失该动作，应记录为**控制面运行时能力缺口**；这不否定GitHub文件读写、公共runner、私库Secret或broker回存能力。标杆多因子仓的已验证闭环曾由独立本地controller调度标准workflow，再由Chat/控制器回读私库结果。本仓沿同一身份边界，不把用户本人点击UI定义为架构必需步骤。
 
 ## 通用代码和治理修改如何进入私库
 
-在公库独立开发分支修改可公开的通用工具、治理合同和执行器，跑合成测试，审查diff，再合入公库活动分支；记录确切source commit。需要进入私库的同名通用代码或治理文件，不由Chat直接写私库，而由**独立、窄范围的public→private同步workflow**处理：固定公库source commit、固定私库base commit、固定文件映射与SHA256，创建专用私库分支，逐文件回读验签，并生成可审查回执。同步workflow不得获得任意私库路径、任意branch、任意shell或整树覆盖权限。
+在公库独立开发分支修改可公开的通用工具、治理合同和执行器，跑合成测试，审查diff，再合入公库活动分支；记录确切source commit。需要进入私库的同名通用代码或治理文件，不由Chat直接写私库，而由**独立、窄范围的public→private同步workflow**处理：固定公库source、固定私库base commit、固定文件映射与内容身份，创建专用私库分支，逐文件回读验签，并生成可审查回执。同步workflow不得获得任意私库路径、任意branch、任意shell或整树覆盖权限。
+
+当前治理同步入口是`.github/workflows/public-governance-sync.yml`。它不是研究runner，不读取市场数据，也不能执行策略。正常可由`workflow_dispatch`启动；当当前Chat连接缺少dispatch动作时，允许唯一的非研究替代事件：`cloud-workspace-v1`上固定文件`governance/private_sync/v1/request.json`的`push`。request schema、sync id、private base、目标文件集合和`stage/merge`阶段都由同步器逐项核对；其他push路径不会触发。`stage`只建立固定私库分支和PR并逐字回读；`merge`再次核对private base、PR身份、changed-file集合和目标内容后才合并该PR。该例外**不授权任何私密研究通过push执行**。
 
 私有策略与研究结果也只在私库成为权威记录，但其创建/更新必须由已冻结研究profile的broker回存或专门同步workflow完成。任何“先冻结到私库”的步骤都必须通过这个受控写入面实现，不能用Chat直接修改私库来省略控制面。
 
