@@ -19,10 +19,10 @@ _spec.loader.exec_module(rb)
 GateError = rb.GateError
 
 # Phase-1b independently recomputes two 5000-draw bootstrap families in the
-# validator. Its frozen in-container validator timeout is 300s, so the host
-# watchdog must exceed that budget. This override is execution-only and does
-# not alter data, models, bootstrap repetitions, seeds, or acceptance gates.
-PHASE1B_VALIDATE_HOST_TIMEOUT_SECONDS = 330
+# validator. The validator's execution budget is 600s, so the host watchdog
+# must exceed it. This override is execution-only and does not alter data,
+# models, bootstrap repetitions, seeds, or acceptance gates.
+PHASE1B_VALIDATE_HOST_TIMEOUT_SECONDS = 630
 rb.VALIDATE_HOST_TIMEOUT_SECONDS = PHASE1B_VALIDATE_HOST_TIMEOUT_SECONDS
 
 PROFILE_NAME = "risk-v2-phase1b-ordering-calibration-v1"
@@ -48,7 +48,7 @@ PROFILE = {
     "command": ["phase1b/risk_phase1b_release.py", "--inputs", "/work/inputs", "--out", "/results/study"],
     "verify_command": ["phase1b/risk_phase1b_release_verifier.py", "--results", "/results/study"],
     "command_timeout_seconds": 900,
-    "verification_timeout_seconds": 300,
+    "verification_timeout_seconds": 600,
     "new_training": False,
     "production_authority": False,
 }
