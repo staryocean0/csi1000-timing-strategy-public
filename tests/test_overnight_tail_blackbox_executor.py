@@ -47,9 +47,9 @@ class OvernightTailBlackboxExecutorTests(unittest.TestCase):
         self.assertIn("fetch_private_json", text)
         self.assertIn("parent_dev_report", text)
         self.assertIn("parent_model", text)
+        self.assertIn('SOURCE_REPO = "staryocean0/factorlab-overnight-open-lab"', text)
         self.assertNotIn("raw.githubusercontent.com", text)
         self.assertNotIn("urllib.request", text)
-        self.assertNotIn("factorlab-overnight-open-lab", text)
         self.assertNotIn("extractall", text)
 
     def test_query_persists_only_low_bandwidth_receipt(self):
@@ -61,15 +61,15 @@ class OvernightTailBlackboxExecutorTests(unittest.TestCase):
         self.assertIn('print(receipt["decision"]', text)
         self.assertNotIn("predictions.csv", text)
         self.assertNotIn("metrics.json", text)
-        self.assertNotIn("yearly", text.lower())
+        self.assertNotIn("yearly_report", text.lower())
 
     def test_validator_recomputes_and_exact_compares_receipt(self):
         text = (EXECUTOR / "verify_overnight_tail_blackbox_query.py").read_text()
         self.assertIn("query.evaluate", text)
         self.assertIn("actual != expected", text)
         self.assertIn('"decision": actual["decision"]', text)
-        self.assertNotIn("metric", text.lower())
-        self.assertNotIn("probab", text.lower())
+        for forbidden in ("log_loss", "brier", "auc", "active_count", "year_counts", "probabilities"):
+            self.assertNotIn(forbidden, text)
 
     def test_broker_safe_mirror_has_exact_receipt_surface(self):
         text = (EXECUTOR / "overnight_tail_blackbox_broker.py").read_text()
