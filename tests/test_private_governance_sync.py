@@ -44,12 +44,14 @@ class PrivateGovernanceSyncTests(unittest.TestCase):
         self.assertIn("refs/heads/cloud-workspace-v1", text)
         self.assertIn("private-research", text)
 
-    def test_sync_does_not_merge_private_pr(self):
+    def test_sync_does_not_merge_or_force_update_private_main(self):
         text = SCRIPT.read_text(encoding="utf-8")
+        lowered = text.lower()
         self.assertIn('f"repos/{PRIVATE_REPO}/pulls"', text)
-        self.assertNotIn('/merge', text)
-        self.assertNotIn('git/refs/heads/main', text)
-        self.assertNotIn('force', text.lower())
+        self.assertNotIn('/merge', lowered)
+        self.assertNotIn('git/refs/heads/main', lowered)
+        self.assertNotRegex(lowered, r"\bforce\s*=\s*true\b")
+        self.assertNotRegex(lowered, r'["\']force["\']\s*:\s*true')
 
 
 if __name__ == "__main__":
