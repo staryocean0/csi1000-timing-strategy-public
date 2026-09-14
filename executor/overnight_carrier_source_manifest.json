@@ -1,0 +1,31 @@
+{
+  "schema_id": "csi1000.overnight_carrier_source_manifest@1.0",
+  "external_repository": "staryocean0/factorlab-overnight-open-lab",
+  "external_ref": "9905c2f8942ad0a2faf106d42c1b62fd6127e646",
+  "external_manifests": {
+    "data/runtime_text_2015_2025/manifest.json": {
+      "git_blob_sha1": "9a21c50d16b03e45e2e9e896dd824e56f544e57f"
+    },
+    "data/driver_runtime_text_2015_2020/manifest.json": {
+      "git_blob_sha1": "7c323a05660803b326afc2e36fbf19249fa81909"
+    }
+  },
+  "private_authority": {
+    "private_ref": "cbe97535403b17cf8c4311bcc6567328b726ce67",
+    "official_snapshot_id": "d113b42dca967bb1061c8a6115c5d934e5a41074",
+    "files": {
+      "runtime/research/cloud_imports/overnight_open_context/d113b42dca967bb1061c8a6115c5d934e5a41074/docs/governance/package_scope.json": {
+        "git_blob_sha1": "36f1ee06201a4a8382d9dc49b47f7fbd584d15df"
+      },
+      "runtime/research/cloud_imports/overnight_open_context/d113b42dca967bb1061c8a6115c5d934e5a41074/docs/governance/component_bindings_v1.json": {
+        "git_blob_sha1": "fef1fbb57ef5cb49493012f691a1b975201eb22e"
+      }
+    }
+  },
+  "required_years": [2015, 2016, 2017, 2018, 2019, 2020],
+  "withheld_years": [2021, 2022, 2023, 2024, 2025],
+  "purpose": "materialize fixed development-only Overnight carriers into a CSI1000 private run result",
+  "scientific_change": false,
+  "new_training": false,
+  "production_authority": false
+}
