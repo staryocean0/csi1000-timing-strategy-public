@@ -25,7 +25,8 @@ jobs:
        github.event.issue.title == 'controller: risk-v2-severity-persistence-v1' ||
        github.event.issue.title == 'controller: risk-v2-phase1b-ordering-calibration-v1' ||
        github.event.issue.title == 'controller: overnight-carrier-materialization-v1' ||
-       github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-dev-v1')
+       github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-dev-v1' ||
+       github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-blackbox-v1')
     runs-on: ubuntu-24.04
     timeout-minutes: 2
     env:
@@ -54,6 +55,9 @@ jobs:
               ;;
             'controller: overnight-continuous-tail-likelihood-dev-v1')
               profile='overnight-continuous-tail-likelihood-dev-v1'
+              ;;
+            'controller: overnight-continuous-tail-likelihood-blackbox-v1')
+              profile='overnight-continuous-tail-likelihood-blackbox-v1'
               ;;
             *)
               echo 'Execution stopped: unapproved_controller_request' >&2
