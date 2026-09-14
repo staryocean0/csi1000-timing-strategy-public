@@ -36,6 +36,8 @@ jobs:
           sparse-checkout: |
             executor
             tests
+            docs/research
+            governance/private_sync
             .github/workflows
           sparse-checkout-cone-mode: true
       - name: Synthetic executor tests
