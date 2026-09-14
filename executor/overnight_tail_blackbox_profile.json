@@ -1,0 +1,56 @@
+{
+  "schema_id": "factorlab.public_overnight_tail_blackbox_profile@1.0",
+  "profile_name": "overnight-continuous-tail-likelihood-blackbox-v1",
+  "private_ref": "cbe97535403b17cf8c4311bcc6567328b726ce67",
+  "parent_model": {
+    "ref": "runs/public-research/34847445307-1",
+    "path": "research/public-runs/34847445307-1-overnight-tail-frozen-model.json",
+    "git_blob_sha1": "2a97f89fa75a575b03352a48498a8e7a1049cca6"
+  },
+  "parent_dev_report": {
+    "ref": "runs/public-research/34847445307-1",
+    "path": "research/public-runs/34847445307-1-overnight-tail-dev-report.json",
+    "git_blob_sha1": "4d96922fb86355054dfec64ea621d76e75f75365",
+    "required_decision": "DEV_PASS"
+  },
+  "public_source_files": {
+    "overnight_tail_blackbox_stage_public.py": {
+      "git_blob_sha1": "053208edae1f89decf654d3865b12f7b8270c425"
+    },
+    "overnight_tail_blackbox_query.py": {
+      "git_blob_sha1": "4ddaa8fa7edc4ee99eb486ecb39cfe0c3dc7caea"
+    },
+    "verify_overnight_tail_blackbox_query.py": {
+      "git_blob_sha1": "cc67334dc218dd7a5b83253fecd3a772de41a867"
+    },
+    "docs/research/OVERNIGHT_CONTINUOUS_DRIVER_TAIL_LIKELIHOOD_V1_REUSABLE_BLACKBOX_PREREG_20260914.json": {
+      "git_blob_sha1": "baa128d8e8978afccf34c7792f90439179a77377"
+    }
+  },
+  "command": [
+    "overnight_tail_blackbox/run_query.py",
+    "--source-root",
+    "/work/blackbox_source",
+    "--model",
+    "/work/overnight_tail_blackbox/frozen_model.json",
+    "--protocol",
+    "/work/overnight_tail_blackbox/protocol.json",
+    "--out",
+    "/results/study"
+  ],
+  "verify_command": [
+    "overnight_tail_blackbox/verify_query.py",
+    "--source-root",
+    "/work/blackbox_source",
+    "--model",
+    "/work/overnight_tail_blackbox/frozen_model.json",
+    "--protocol",
+    "/work/overnight_tail_blackbox/protocol.json",
+    "--results",
+    "/results/study"
+  ],
+  "command_timeout_seconds": 300,
+  "verification_timeout_seconds": 300,
+  "new_training": false,
+  "production_authority": false
+}

@@ -10,7 +10,7 @@ permissions:
 jobs:
   tests:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - name: Checkout public code only
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -18,3 +18,7 @@ jobs:
           persist-credentials: false
       - name: Run executor unit tests
         run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Install synthetic Overnight smoke dependencies
+        run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt
+      - name: Run synthetic Overnight BLACKBOX runtime smoke
+        run: python3 tests/smoke_overnight_tail_blackbox.py

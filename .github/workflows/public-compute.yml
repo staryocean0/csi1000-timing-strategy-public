@@ -13,6 +13,7 @@ on:
           - overnight-official-inventory-v1
           - overnight-carrier-materialization-v1
           - overnight-continuous-tail-likelihood-dev-v1
+          - overnight-continuous-tail-likelihood-blackbox-v1
         default: runtime-smoke
         required: true
 permissions:
@@ -58,9 +59,13 @@ jobs:
         if: inputs.profile == 'overnight-carrier-materialization-v1'
         timeout-minutes: 4
         run: python3 executor/overnight_carrier_stage_public.py
+      - name: Stage fixed public Overnight BLACKBOX inputs without private credentials
+        if: inputs.profile == 'overnight-continuous-tail-likelihood-blackbox-v1'
+        timeout-minutes: 2
+        run: python3 executor/overnight_tail_blackbox_stage_public.py
       - name: Prepare fixed private inputs
         id: prepare
-        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1'
+        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-blackbox-v1'
         timeout-minutes: 6
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
@@ -77,11 +82,13 @@ jobs:
             python3 executor/overnight_carrier_materialization_broker.py prepare overnight-carrier-materialization-v1
           elif [ '${{ inputs.profile }}' = 'overnight-continuous-tail-likelihood-dev-v1' ]; then
             python3 executor/overnight_tail_likelihood_entry.py prepare overnight-continuous-tail-likelihood-dev-v1
+          elif [ '${{ inputs.profile }}' = 'overnight-continuous-tail-likelihood-blackbox-v1' ]; then
+            python3 executor/overnight_tail_blackbox_broker.py prepare overnight-continuous-tail-likelihood-blackbox-v1
           else
             exit 2
           fi
       - name: Compute without private credentials
-        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1'
+        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-blackbox-v1'
         timeout-minutes: 16
         run: |
           if [ '${{ inputs.profile }}' = 'handoff-verify-v1' ]; then
@@ -96,6 +103,8 @@ jobs:
             python3 executor/overnight_carrier_materialization_broker.py compute overnight-carrier-materialization-v1
           elif [ '${{ inputs.profile }}' = 'overnight-continuous-tail-likelihood-dev-v1' ]; then
             python3 executor/overnight_tail_likelihood_entry.py compute overnight-continuous-tail-likelihood-dev-v1
+          elif [ '${{ inputs.profile }}' = 'overnight-continuous-tail-likelihood-blackbox-v1' ]; then
+            python3 executor/overnight_tail_blackbox_broker.py compute overnight-continuous-tail-likelihood-blackbox-v1
           else
             exit 2
           fi
@@ -116,6 +125,8 @@ jobs:
             python3 executor/overnight_carrier_materialization_broker.py cleanup overnight-carrier-materialization-v1
           elif [ '${{ inputs.profile }}' = 'overnight-continuous-tail-likelihood-dev-v1' ]; then
             python3 executor/overnight_tail_likelihood_entry.py cleanup overnight-continuous-tail-likelihood-dev-v1
+          elif [ '${{ inputs.profile }}' = 'overnight-continuous-tail-likelihood-blackbox-v1' ]; then
+            python3 executor/overnight_tail_blackbox_broker.py cleanup overnight-continuous-tail-likelihood-blackbox-v1
           else
             exit 2
           fi
@@ -139,6 +150,8 @@ jobs:
             python3 executor/overnight_carrier_materialization_broker.py publish overnight-carrier-materialization-v1
           elif [ '${{ inputs.profile }}' = 'overnight-continuous-tail-likelihood-dev-v1' ]; then
             python3 executor/overnight_tail_likelihood_entry.py publish overnight-continuous-tail-likelihood-dev-v1
+          elif [ '${{ inputs.profile }}' = 'overnight-continuous-tail-likelihood-blackbox-v1' ]; then
+            python3 executor/overnight_tail_blackbox_broker.py publish overnight-continuous-tail-likelihood-blackbox-v1
           else
             exit 2
           fi
