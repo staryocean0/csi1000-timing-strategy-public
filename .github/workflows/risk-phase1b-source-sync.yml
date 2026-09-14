@@ -1,0 +1,45 @@
+name: CSI1000 bounded Phase-1b source sync
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - cloud-workspace-v1
+    paths:
+      - governance/risk_phase1b_source_v1/request.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: csi1000-risk-phase1b-source-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: >-
+      github.repository == 'staryocean0/csi1000-timing-strategy-public' &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/cloud-workspace-v1' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    environment: private-research
+    timeout-minutes: 5
+    steps:
+      - name: Checkout reviewed Phase-1b sync surface only
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            executor
+            docs/research/RISK_TOOL_V2_PHASE1B_ORDERING_CALIBRATION_PROTOCOL_20260914.json
+            governance/risk_phase1b_source_v1
+          sparse-checkout-cone-mode: false
+
+      - name: Verify fixed sync contract before private credentials
+        run: python3 executor/risk_phase1b_source_sync.py --self-test
+
+      - name: Stage exact reviewed sources on fixed private branch
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/risk_phase1b_source_sync.py
