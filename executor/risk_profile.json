@@ -2,7 +2,7 @@
   "schema_id": "factorlab.public_risk_research_profile@1.0",
   "profile_name": "risk-v2-severity-persistence-v1",
   "transport_profile": "handoff-verify-v1",
-  "private_ref": "b3a3f8d11e7e1ded911632d22d1b0fbde1917c32",
+  "private_ref": "802f4c3be2b2a811883049eb79571ee80239df52",
   "source_files": {
     "runtime/research/risk_tool_v2_severity_persistence_v1/run_study.py": {
       "bytes": 31380,
@@ -11,6 +11,10 @@
     "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v2.py": {
       "bytes": 5018,
       "git_blob_sha1": "ede91a2cacff63477e0cd4d7f50faa92f95cb920"
+    },
+    "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v3.py": {
+      "bytes": 2223,
+      "git_blob_sha1": "ca30ce82b9d0f9078e901fdb917bc965e8f37ce4"
     },
     "runtime/research/risk_tool_v2_severity_persistence_v1/verify_study.py": {
       "bytes": 16492,
@@ -31,7 +35,7 @@
   },
   "manifest_path": "handoff/INPUT_MANIFEST.json",
   "command": [
-    "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v2.py",
+    "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v3.py",
     "--inputs",
     "/work/inputs",
     "--out",

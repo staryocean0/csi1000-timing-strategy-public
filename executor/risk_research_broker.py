@@ -43,6 +43,7 @@ RISK_PROFILE_KEYS = {
 SOURCE_PATHS = (
     "runtime/research/risk_tool_v2_severity_persistence_v1/run_study.py",
     "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v2.py",
+    "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v3.py",
     "runtime/research/risk_tool_v2_severity_persistence_v1/verify_study.py",
     "runtime/research/risk_tool_v2_severity_persistence_v1/verify_study_v2.py",
     "docs/research/RISK_TOOL_V2_SEVERITY_PERSISTENCE_PROTOCOL_20260914.json",
@@ -50,7 +51,7 @@ SOURCE_PATHS = (
 )
 MANIFEST_PATH = "handoff/INPUT_MANIFEST.json"
 COMMAND = [
-    "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v2.py",
+    "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v3.py",
     "--inputs",
     "/work/inputs",
     "--out",
