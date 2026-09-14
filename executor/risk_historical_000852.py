@@ -24,6 +24,7 @@ DATA = {
     2018: (351575, "db4b03041c673a60606b75a56e15682f42e2b7a4"),
     2019: (346434, "9dadff0a88a6a03f8defcf12ba28b1e6f57fd84e"),
 }
+EXPECTED_INCOMPLETE = {"2016-01-04": 30, "2016-01-07": 5, "2017-08-24": 47}
 
 
 def sha256(path: Path) -> str:
@@ -51,6 +52,33 @@ def load_base(inputs: Path):
     base.AUDIT_YEARS = ()
     base.HORIZONS = HORIZONS
     return base
+
+
+def filter_complete_days(base, frames: dict) -> tuple[dict, dict]:
+    filtered = {}
+    excluded = {}
+    observed_all = {}
+    for year in YEARS:
+        frame = frames[(SYMBOL, year)]
+        z = base.normalize_source(frame, SYMBOL, year)
+        z["session"] = np.where(z.bar_end.dt.hour < 12, "AM", "PM")
+        totals = z.groupby("trading_day", sort=False).size()
+        sessions = z.groupby(["trading_day", "session"], sort=False).size()
+        bad = {}
+        for day, count in totals.items():
+            am = int(sessions.get((day, "AM"), 0))
+            pm = int(sessions.get((day, "PM"), 0))
+            if int(count) != 48 or am != 24 or pm != 24:
+                bad[str(day)] = int(count)
+        observed_all.update(bad)
+        good_days = set(totals.index) - set(bad)
+        raw_days = pd.to_datetime(frame["trading_day"], errors="coerce").dt.strftime("%Y-%m-%d")
+        filtered[(SYMBOL, year)] = frame[raw_days.isin(good_days)].copy()
+        for day, count in bad.items():
+            excluded[day] = {"year": year, "bar_count": count, "action": "excluded_entire_day"}
+    if observed_all != EXPECTED_INCOMPLETE:
+        raise RuntimeError(f"unexpected_incomplete_day_set:{observed_all}")
+    return filtered, excluded
 
 
 def auc(y, p) -> float:
@@ -143,6 +171,7 @@ def load_inputs(inputs: Path):
 def run(inputs: Path, out: Path) -> dict:
     base = load_base(inputs)
     model_freeze, cal_freeze, frames, receipt = load_inputs(inputs)
+    frames, excluded_days = filter_complete_days(base, frames)
     states = base.build_state_rows(frames)
     cohort = base.build_primary_cohort(states)
     if set(cohort.year.unique()) - set(YEARS) or not cohort.symbol.eq(SYMBOL).all():
@@ -209,11 +238,13 @@ def run(inputs: Path, out: Path) -> dict:
     pd.DataFrame(support_rows).to_csv(out / "SUPPORT_AUDIT.csv", index=False)
     pd.DataFrame(metric_rows).to_csv(out / "HORIZON_METRICS.csv", index=False)
     (out / "INPUT_DATA_RECEIPT.json").write_text(json.dumps({
-        "schema_id":"risk_tool_v2_historical_000852_input@1.0",
+        "schema_id":"risk_tool_v2_historical_000852_input@1.1",
         "repository":"staryocean0/factorlab-trend-reversion-regime-lab",
         "ref":"1d760ea9525eb3688b70a4aa0f2b5b207af16a17",
         "files":receipt, "years_read":list(YEARS), "year_2026_read":False,
-        "symbol":SYMBOL, "substitute_data_used":False
+        "symbol":SYMBOL, "substitute_data_used":False,
+        "incomplete_day_policy":"exclude_entire_day_no_imputation",
+        "excluded_incomplete_days":excluded_days
     }, indent=2, sort_keys=True)+"\n")
     (out / "MODEL_INPUT_RECEIPT.json").write_text(json.dumps({
         "phase1_model_freeze_sha256":MODEL_SHA256,
@@ -222,11 +253,12 @@ def run(inputs: Path, out: Path) -> dict:
         "new_severity_feature_fit":False, "production_authority":False
     }, indent=2, sort_keys=True)+"\n")
     summary = {
-        "schema_id":"risk_tool_v2_historical_000852_summary@1.0",
+        "schema_id":"risk_tool_v2_historical_000852_summary@1.1",
         "study_type":"retrospective_temporal_transportability_not_fresh_oos",
         "overall_verdict":overall, "horizons":results,
         "phase1_verdict_immutable":"NOT_SUPPORTED",
         "phase1b_verdict_immutable":"ORDERING_AND_CALIBRATION_SUPPORTED_PENDING_FRESH_OOS",
+        "excluded_incomplete_days":excluded_days,
         "year_2026_read":False, "cross_symbol_claim":False,
         "production_authority":False
     }
