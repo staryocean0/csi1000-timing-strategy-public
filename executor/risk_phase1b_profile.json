@@ -1,0 +1,41 @@
+{
+  "schema_id": "factorlab.public_risk_phase1b_profile@1.0",
+  "profile_name": "risk-v2-phase1b-ordering-calibration-v1",
+  "transport_profile": "handoff-verify-v1",
+  "private_ref": "3879de41a5ac7c12246b811f51d16dc8586b9dae",
+  "source_files": {
+    "runtime/research/risk_tool_v2_severity_persistence_v1/run_study.py": {
+      "bytes": 31380,
+      "git_blob_sha1": "7a9f238442f5a4836c6f38dcafec4bc34526fc5c"
+    },
+    "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v2.py": {
+      "bytes": 5018,
+      "git_blob_sha1": "ede91a2cacff63477e0cd4d7f50faa92f95cb920"
+    },
+    "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v3.py": {
+      "bytes": 7146,
+      "git_blob_sha1": "9055b9d8e66860e495e471e4437fb79347cf3020"
+    },
+    "handoff/INPUT_MANIFEST.json": {
+      "bytes": 156,
+      "git_blob_sha1": "755c5760b4f19dcbd1be8d1dca27e476639b3c24"
+    }
+  },
+  "manifest_path": "handoff/INPUT_MANIFEST.json",
+  "command": [
+    "/risk_phase1b_platt.py",
+    "--inputs",
+    "/work/inputs",
+    "--out",
+    "/results/study"
+  ],
+  "verify_command": [
+    "/risk_phase1b_verifier.py",
+    "--results",
+    "/results/study"
+  ],
+  "command_timeout_seconds": 900,
+  "verification_timeout_seconds": 300,
+  "new_training": false,
+  "production_authority": false
+}
