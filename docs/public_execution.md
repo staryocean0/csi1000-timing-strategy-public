@@ -1,6 +1,8 @@
 # 公库计算、私库保存与代码回合
 
-本项目按多因子双仓标杆的同一三层闭环运行：Chat负责研究设计、仓库修改和控制面决策；已认证controller负责发起公库标准`workflow_dispatch`并跟踪run；私库冻结源码、输入和验收并保存结果；公库标准runner执行批准profile，broker在运行结束后自动回存私库run分支和私有Release。私库Actions关闭。
+本项目按多因子双仓标杆的同一三层闭环运行：Chat负责研究设计、**仅限公库的修改**和控制面决策；已认证controller负责发起公库标准`workflow_dispatch`并跟踪run；私库冻结源码、输入和验收并保存权威结果；公库标准runner执行批准profile，broker在运行结束后自动回存私库run分支和私有Release。私库Actions关闭。
+
+这里的核心不是“公私库都能被Chat写”，而是**公库是Chat修改面与执行控制面，私库是受控写入后的权威存储面**。即使连接器技术上暴露私库写动作，Chat也不得直接修改私库；私库变化必须由公库中经审查、固定路径、固定输入、fail-closed的workflow/broker产生，并接受回读验签或私库治理验收。
 
 ## 调度控制面
 
@@ -10,9 +12,21 @@ controller与runner身份必须分开。controller只负责发起和观察标准
 
 当前Chat连接器是否暴露“新建workflow dispatch”必须按会话实时发现，不能由仓库文档假定。若当前连接器缺失该动作，应记录为**控制面运行时能力缺口**；这不否定GitHub文件读写、公共runner、私库Secret或broker回存能力。标杆多因子仓的已验证闭环曾由独立本地controller调度标准workflow，再由Chat/控制器回读私库结果。本仓沿同一身份边界，不把用户本人点击UI定义为架构必需步骤。
 
-## 通用代码修改后合入私库
+## 通用代码和治理修改如何进入私库
 
-在公库独立开发分支修改可公开的通用工具，跑合成测试，审查diff，再合入公库活动分支；记录确切source commit。随后在私库独立分支按文件清单导入，核对双方同名文件差异后逐段合并，保留旧冻结源码。私有策略改动直接在私库完成；不得为“先公后私”公开私密策略。最终以私库PR或明确回执接受，不覆盖全部runtime。
+在公库独立开发分支修改可公开的通用工具、治理合同和执行器，跑合成测试，审查diff，再合入公库活动分支；记录确切source commit。需要进入私库的同名通用代码或治理文件，不由Chat直接写私库，而由**独立、窄范围的public→private同步workflow**处理：固定公库source commit、固定私库base commit、固定文件映射与SHA256，创建专用私库分支，逐文件回读验签，并生成可审查回执。同步workflow不得获得任意私库路径、任意branch、任意shell或整树覆盖权限。
+
+私有策略与研究结果也只在私库成为权威记录，但其创建/更新必须由已冻结研究profile的broker回存或专门同步workflow完成。任何“先冻结到私库”的步骤都必须通过这个受控写入面实现，不能用Chat直接修改私库来省略控制面。
+
+现有科研结果broker的写入范围保持不变：它只负责研究run结果、私有Release和`research/public-runs/...`回执。**不得为了治理同步而把科研broker扩成任意私库文件写入器。** 治理/通用代码同步必须使用独立实现和独立allowlist。
+
+## 外部来源仓库边界
+
+中证1000项目只有这一对仓库可以拥有项目级current authority：公库是执行/同步控制面，`staryocean0/csi1000-timing-strategy-private`是权威研究状态与结果存储面。私库`CHAT_START.md`、`CLOUD_CURRENT.json`及其引用的冻结合同定义当前研究锚点。
+
+其他`factorlab-*`仓库可以作为历史证据、工具来源或待导入代码来源，读取时记录固定repo/ref/commit/文件哈希；它们不得拥有本项目的`current authority`、`active_research`、canonical BLACKBOX ledger或项目级workflow state。外部仓中的实验、receipt或BLACKBOX结论，在经本双仓控制面固定来源并导入/重放、由私库回执接受之前，只是**external evidence**，不能自动成为中证1000科学结论。
+
+若历史工作曾在外部仓越过该边界，应保留其提交和失败结果，不继续在外部仓扩展中证1000治理；在本公库建立纠偏/导入合同，通过受控workflow把需要保留的代码或低带宽结论带回私库。禁止根据外部BLACKBOX隐藏行为做阈值、桶、时钟或赢家救援。
 
 ## 已登记profile
 
