@@ -15,31 +15,25 @@ BOOTSTRAP_REPS=5000; BOOTSTRAP_SEED=20260914
 MODEL_SHA="b81cae6208d96890c0fd83d47e4ea8c8a81ba55b41c78f58db29e9160f173551"
 CAL_SHA="74ecd25790123f026e29cba7bb84322aad8a385c10fe3d60ef0d75d52d1b1909"
 DATA={2015:(368026,"9d2d84440275413623ff738ae8c25950e4b67f27"),2016:(351061,"08c24b173d259f44061e2f7ffdc572b99ede2dfc"),2017:(347979,"31a9c0700b8d96249313738bccbf4502c0489be7"),2018:(351575,"db4b03041c673a60606b75a56e15682f42e2b7a4"),2019:(346434,"9dadff0a88a6a03f8defcf12ba28b1e6f57fd84e")}
+EXPECTED_INCOMPLETE={"2016-01-04":30,"2016-01-07":5,"2017-08-24":47}
 
 
 def sha256(p:Path)->str:
     with p.open("rb") as f:return hashlib.file_digest(f,"sha256").hexdigest()
-
 def blobsha(p:Path)->str:
     r=p.read_bytes();return hashlib.sha1(b"blob "+str(len(r)).encode()+b"\0"+r).hexdigest()
-
 def auc(y,p):
     y=np.asarray(y,int);p=np.asarray(p,float);n1=int(y.sum());n0=len(y)-n1
     if n1<=0 or n0<=0:raise RuntimeError("auc_single_class")
     r=rankdata(p,method="average");return float((r[y==1].sum()-n1*(n1+1)/2)/(n1*n0))
-
 def one(y,p):
     y=np.asarray(y,float);p=np.asarray(p,float);q=np.clip(p,1e-12,1-1e-12)
     return {"auroc":auc(y,p),"brier":float(np.mean((p-y)**2)),"log_loss":float(-np.mean(y*np.log(q)+(1-y)*np.log(1-q)))}
-
 def paired(z,yc,bc,cc):
     b=one(z[yc],z[bc]);c=one(z[yc],z[cc]);return {"auroc_gain":c["auroc"]-b["auroc"],"brier_gain":b["brier"]-c["brier"],"logloss_gain":b["log_loss"]-c["log_loss"]}
-
 def platt(beta,p):
     q=np.clip(np.asarray(p,float),1e-6,1-1e-6);x=np.log(q/(1-q));e=np.clip(float(beta[0])+float(beta[1])*x,-35,35);return 1/(1+np.exp(-e))
-
 def close(a,b,tol=1e-11):return bool(np.allclose(float(a),float(b),rtol=0,atol=tol,equal_nan=True))
-
 
 def load_base(inputs):
     p=inputs/"phase1_run_study.py"
@@ -48,6 +42,19 @@ def load_base(inputs):
     m.SYMBOLS=(SYMBOL,);m.YEARS=YEARS;m.DEV_YEARS=YEARS;m.AUDIT_YEARS=();m.HORIZONS=HORIZONS
     return m
 
+def filter_complete_days(base,frames):
+    out={};observed={};excluded={}
+    for year in YEARS:
+        frame=frames[(SYMBOL,year)];z=base.normalize_source(frame,SYMBOL,year);z["session"]=np.where(z.bar_end.dt.hour<12,"AM","PM")
+        totals=z.groupby("trading_day",sort=False).size();sessions=z.groupby(["trading_day","session"],sort=False).size();bad={}
+        for day,count in totals.items():
+            am=int(sessions.get((day,"AM"),0));pm=int(sessions.get((day,"PM"),0))
+            if int(count)!=48 or am!=24 or pm!=24:bad[str(day)]=int(count)
+        observed.update(bad);good=set(totals.index)-set(bad);raw_days=pd.to_datetime(frame["trading_day"],errors="coerce").dt.strftime("%Y-%m-%d")
+        out[(SYMBOL,year)]=frame[raw_days.isin(good)].copy()
+        for day,count in bad.items():excluded[day]={"year":year,"bar_count":count,"action":"excluded_entire_day"}
+    if observed!=EXPECTED_INCOMPLETE:raise RuntimeError(f"unexpected_incomplete_day_set:{observed}")
+    return out,excluded
 
 def bootstrap(z,yc):
     groups=[g.index.to_numpy() for _,g in z.groupby("trading_day",sort=True)];rng=np.random.default_rng(BOOTSTRAP_SEED);d=np.empty(BOOTSTRAP_REPS)
@@ -55,7 +62,6 @@ def bootstrap(z,yc):
         ids=rng.integers(0,len(groups),size=len(groups));q=z.loc[np.concatenate([groups[j] for j in ids])]
         d[i]=auc(q[yc],q.p_C)-auc(q[yc],q.p_B)
     return float(np.quantile(d,0.025))
-
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument("--inputs",type=Path,required=True);ap.add_argument("--results",type=Path,required=True);a=ap.parse_args();inputs=a.inputs.resolve();root=a.results.resolve()
@@ -68,11 +74,14 @@ def main():
         p=inputs/f"{y}.parquet"
         if p.stat().st_size!=size or blobsha(p)!=blob:raise RuntimeError("historical_data_identity_mismatch")
         frames[(SYMBOL,y)]=pd.read_parquet(p)
+    frames,excluded=filter_complete_days(base,frames)
     states=base.build_state_rows(frames);cohort=base.build_primary_cohort(states)
     got_states=pd.read_parquet(root/"state_rows.parquet");got_cohort=pd.read_parquet(root/"cohort_rows.parquet")
     if len(states)!=len(got_states) or len(cohort)!=len(got_cohort):raise RuntimeError("row_count_mismatch")
-    summary=json.loads((root/"SUMMARY.json").read_text());metrics=pd.read_csv(root/"HORIZON_METRICS.csv");support_csv=pd.read_csv(root/"SUPPORT_AUDIT.csv")
+    summary=json.loads((root/"SUMMARY.json").read_text());metrics=pd.read_csv(root/"HORIZON_METRICS.csv");support_csv=pd.read_csv(root/"SUPPORT_AUDIT.csv");receipt=json.loads((root/"INPUT_DATA_RECEIPT.json").read_text())
     if summary.get("year_2026_read") is not False or summary.get("cross_symbol_claim") is not False:raise RuntimeError("scope_violation")
+    if summary.get("excluded_incomplete_days")!=excluded or receipt.get("excluded_incomplete_days")!=excluded:raise RuntimeError("excluded_day_receipt_mismatch")
+    if receipt.get("incomplete_day_policy")!="exclude_entire_day_no_imputation" or receipt.get("year_2026_read") is not False:raise RuntimeError("data_quality_policy_mismatch")
     statuses=[]
     for h in HORIZONS:
         yc=f"normal_within_{h}m";z=cohort[cohort[yc].notna()].copy();y=z[yc].astype(int);by=z.groupby("year").size().reindex(YEARS,fill_value=0)
@@ -98,6 +107,6 @@ def main():
         statuses.append(status)
     overall="ROBUST_SUPPORTED_BOTH" if statuses==["ROBUST_SUPPORTED","ROBUST_SUPPORTED"] else ("ROBUST_SUPPORTED_PARTIAL" if "ROBUST_SUPPORTED" in statuses else "NOT_SUPPORTED")
     if summary["overall_verdict"]!=overall:raise RuntimeError("overall_verdict_mismatch")
-    print(json.dumps({"status":"verified","overall_verdict":overall},sort_keys=True))
+    print(json.dumps({"status":"verified","overall_verdict":overall,"excluded_incomplete_days":excluded},sort_keys=True))
 
 if __name__=="__main__":main()
