@@ -7,6 +7,7 @@ fixed handoff INPUT_MANIFEST; inventory/validator programs are reviewed public s
 from __future__ import annotations
 
 import base64
+import hashlib
 import importlib.util
 import json
 import re
@@ -91,12 +92,15 @@ legacy_publish = base.publish
 
 
 def _digest(value):
-    if not isinstance(value, dict) or set(value) != {"bytes", "sha256"}:
+    if not isinstance(value, dict) or set(value) not in ({"bytes", "sha256"}, {"bytes", "git_blob_sha1"}):
         raise GateError("unknown_profile_field")
-    size, digest = value["bytes"], value["sha256"]
+    size = value["bytes"]
     if type(size) is not int or size <= 0 or size > base.SOURCE_BYTES_MAX:
         raise GateError("profile_file_size_invalid")
-    if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+    if "sha256" in value:
+        if not isinstance(value["sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", value["sha256"]):
+            raise GateError("profile_not_immutable")
+    elif not isinstance(value["git_blob_sha1"], str) or not re.fullmatch(r"[0-9a-f]{40}", value["git_blob_sha1"]):
         raise GateError("profile_not_immutable")
 
 
@@ -188,14 +192,22 @@ def prepare_inputs(api, root, profile):
     for public_name, relative_target in PUBLIC_SOURCE_MAP.items():
         source = HERE / public_name
         expected = cfg["public_source_files"][public_name]
-        if not source.is_file() or source.stat().st_size != expected["bytes"] or base.sha(source) != expected["sha256"]:
+        if not source.is_file() or source.stat().st_size != expected["bytes"]:
+            raise GateError("public_source_digest_mismatch")
+        raw = source.read_bytes()
+        if "sha256" in expected:
+            verified = hashlib.sha256(raw).hexdigest() == expected["sha256"]
+        else:
+            verified = hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest() == expected["git_blob_sha1"]
+        if not verified:
             raise GateError("public_source_digest_mismatch")
         target = work / relative_target
         target.parent.mkdir(parents=True, exist_ok=True)
         if target.exists():
             raise GateError("public_source_target_exists")
         shutil.copyfile(source, target)
-        if target.stat().st_size != expected["bytes"] or base.sha(target) != expected["sha256"]:
+        copied = target.read_bytes()
+        if copied != raw:
             raise GateError("public_source_copy_mismatch")
     return work
 
