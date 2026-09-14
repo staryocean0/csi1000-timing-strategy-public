@@ -2,6 +2,11 @@ name: CSI1000 bounded private governance sync
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - cloud-workspace-v1
+    paths:
+      - governance/private_sync/v1/request.json
 
 permissions:
   contents: read
@@ -16,7 +21,7 @@ jobs:
       github.repository == 'staryocean0/csi1000-timing-strategy-public' &&
       github.event.repository.private == false &&
       github.ref == 'refs/heads/cloud-workspace-v1' &&
-      github.event_name == 'workflow_dispatch'
+      (github.event_name == 'workflow_dispatch' || github.event_name == 'push')
     runs-on: ubuntu-24.04
     environment: private-research
     timeout-minutes: 5
@@ -31,7 +36,7 @@ jobs:
           sparse-checkout-cone-mode: true
       - name: Verify bounded sync contract before credentials
         run: python3 executor/private_governance_sync.py --self-test
-      - name: Stage reviewed governance update as private PR
+      - name: Apply fixed governance request
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
         run: python3 executor/private_governance_sync.py
