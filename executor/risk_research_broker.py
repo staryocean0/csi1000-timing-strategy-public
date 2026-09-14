@@ -64,6 +64,12 @@ VERIFY_COMMAND = [
     "--results",
     "/results/study",
 ]
+DIAGNOSTIC_TEXT_FILES = (
+    "compute.log",
+    "compute_receipt.json",
+    "controller_validation.json",
+)
+DIAGNOSTIC_TEXT_MAX_BYTES = 64 * 1024
 
 
 def digest_pair(value, min_bytes=1, max_bytes=base.SOURCE_BYTES_MAX):
@@ -162,6 +168,55 @@ def load_profile(name):
     return base.validate_profile(merged)
 
 
+def _publish_failure_diagnostics():
+    state, root = base.load_state()
+    api = base.require_private_api()
+    results = root / "results"
+    published = 0
+    for name in DIAGNOSTIC_TEXT_FILES:
+        path = results / name
+        if path.is_symlink():
+            raise GateError("diagnostic_text_is_link")
+        if not path.is_file():
+            continue
+        raw = path.read_bytes()
+        if len(raw) > DIAGNOSTIC_TEXT_MAX_BYTES:
+            raise GateError("diagnostic_text_too_large")
+        try:
+            raw.decode("utf-8")
+        except UnicodeDecodeError:
+            raise GateError("diagnostic_text_not_utf8") from None
+        target = f"repos/{base.PRIVATE_REPO}/contents/research/public-runs/{state['run_id']}-diagnostics/{name}"
+        api.request(
+            target,
+            {
+                "message": "Record bounded Risk Tool failure diagnostic [skip ci]",
+                "branch": state["branch"],
+                "content": base64.b64encode(raw).decode("ascii"),
+            },
+            method="PUT",
+        )
+        returned = api.request(target + "?ref=" + base.urllib.parse.quote(state["branch"], safe=""))
+        if base64.b64decode(returned["content"]) != raw:
+            raise GateError("private_diagnostic_readback_failed")
+        published += 1
+    if published == 0:
+        raise GateError("diagnostic_text_missing")
+    print("Bounded Risk Tool failure diagnostics verified on the private run branch.")
+
+
+_original_publish = base.publish
+
+
+def publish(profile):
+    try:
+        _original_publish(profile)
+    except GateError as error:
+        if str(error) == "compute_failed_consult_private_receipt":
+            _publish_failure_diagnostics()
+        raise
+
+
 # Patch only the immutable policy surface of the reviewed broker. Transport, isolation,
 # result collection, cleanup and private writeback code are reused unchanged.
 base.PROFILE_NAME = PROFILE_NAME
@@ -172,6 +227,7 @@ base.VERIFY_COMMAND = VERIFY_COMMAND
 base._digest_pair = digest_pair
 base.fetch_source_file = fetch_source_file
 base.load_profile = load_profile
+base.publish = publish
 
 
 def run():
