@@ -34,7 +34,8 @@ class OvernightTailLikelihoodExecutorTests(unittest.TestCase):
     def test_broker_is_bounded_and_never_uses_external_source_runtime(self):
         text = (EXECUTOR / "overnight_tail_likelihood_broker.py").read_text()
         self.assertIn("overnight-continuous-tail-likelihood-dev-v1", text)
-        self.assertIn("public-research-run-34837972995-1", text)
+        self.assertIn('MATERIALIZATION_RUN_ID = "34837972995-1"', text)
+        self.assertIn("public-research-run-{MATERIALIZATION_RUN_ID}", text)
         self.assertIn("blackbox_row_file_exposed", text)
         self.assertNotIn("factorlab-overnight-open-lab", text)
         self.assertNotIn("raw.githubusercontent.com", text)
