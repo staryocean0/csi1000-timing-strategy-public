@@ -10,6 +10,7 @@ on:
           - handoff-verify-v1
           - risk-v2-severity-persistence-v1
           - overnight-official-inventory-v1
+          - overnight-carrier-materialization-v1
         default: runtime-smoke
         required: true
 permissions:
@@ -51,9 +52,13 @@ jobs:
       - name: Prove isolated runtime with no private data
         timeout-minutes: 2
         run: python3 executor/broker.py runtime-smoke
+      - name: Stage fixed public Overnight carriers without private credentials
+        if: inputs.profile == 'overnight-carrier-materialization-v1'
+        timeout-minutes: 4
+        run: python3 executor/overnight_carrier_stage_public.py
       - name: Prepare fixed private inputs
         id: prepare
-        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'overnight-official-inventory-v1'
+        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1'
         timeout-minutes: 6
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
@@ -64,11 +69,13 @@ jobs:
             python3 executor/risk_research_broker.py prepare risk-v2-severity-persistence-v1
           elif [ '${{ inputs.profile }}' = 'overnight-official-inventory-v1' ]; then
             python3 executor/overnight_inventory_broker.py prepare overnight-official-inventory-v1
+          elif [ '${{ inputs.profile }}' = 'overnight-carrier-materialization-v1' ]; then
+            python3 executor/overnight_carrier_materialization_broker.py prepare overnight-carrier-materialization-v1
           else
             exit 2
           fi
       - name: Compute without private credentials
-        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'overnight-official-inventory-v1'
+        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1'
         timeout-minutes: 16
         run: |
           if [ '${{ inputs.profile }}' = 'handoff-verify-v1' ]; then
@@ -77,6 +84,8 @@ jobs:
             python3 executor/risk_research_broker.py compute risk-v2-severity-persistence-v1
           elif [ '${{ inputs.profile }}' = 'overnight-official-inventory-v1' ]; then
             python3 executor/overnight_inventory_broker.py compute overnight-official-inventory-v1
+          elif [ '${{ inputs.profile }}' = 'overnight-carrier-materialization-v1' ]; then
+            python3 executor/overnight_carrier_materialization_broker.py compute overnight-carrier-materialization-v1
           else
             exit 2
           fi
@@ -91,6 +100,8 @@ jobs:
             python3 executor/risk_research_broker.py cleanup risk-v2-severity-persistence-v1
           elif [ '${{ inputs.profile }}' = 'overnight-official-inventory-v1' ]; then
             python3 executor/overnight_inventory_broker.py cleanup overnight-official-inventory-v1
+          elif [ '${{ inputs.profile }}' = 'overnight-carrier-materialization-v1' ]; then
+            python3 executor/overnight_carrier_materialization_broker.py cleanup overnight-carrier-materialization-v1
           else
             exit 2
           fi
@@ -106,6 +117,8 @@ jobs:
             python3 executor/risk_research_broker.py publish risk-v2-severity-persistence-v1
           elif [ '${{ inputs.profile }}' = 'overnight-official-inventory-v1' ]; then
             python3 executor/overnight_inventory_broker.py publish overnight-official-inventory-v1
+          elif [ '${{ inputs.profile }}' = 'overnight-carrier-materialization-v1' ]; then
+            python3 executor/overnight_carrier_materialization_broker.py publish overnight-carrier-materialization-v1
           else
             exit 2
           fi
