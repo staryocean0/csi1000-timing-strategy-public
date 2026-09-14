@@ -10,6 +10,6 @@ No outcome analysis, model fitting, threshold selection, strategy replay, or P5 
 
 A successful carrier readback may only enable a later reviewed change to freeze a new non-rescue Overnight identity. That later identity must be fully frozen before any later evaluation.
 
-This step does not alter the current Layer2 Risk Tool authority.
+The standard reviewed CSI1000 handoff remains the authority boundary for the migrated Overnight governance snapshot. This step does not alter the current Layer2 Risk Tool authority.
 
 production_authority=false
