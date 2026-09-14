@@ -7,6 +7,14 @@ on:
       - 'executor/r1a_stagea_support_audit.py'
       - 'executor/r1a_stagea_baseline_audit.py'
       - 'executor/r1a_stagea_strict_acceptance.py'
+      - 'executor/r1a_stagea_profile_task.py'
+      - 'executor/r1a_stagea_profile_verify.py'
+      - 'executor/r1a_stagea_profile.json'
+      - 'executor/r1a_stagea_broker.py'
+      - 'executor/r1a_stagea_container.py'
+      - 'executor/r1a_stagea_requirements.txt'
+      - 'executor/r1a-stagea.Dockerfile'
+      - 'tests/test_r1a_stagea_broker.py'
       - '.github/workflows/r1a-stagea-feature-audit.yml'
 
 permissions:
@@ -16,7 +24,7 @@ jobs:
   stagea-audit:
     if: github.repository == 'staryocean0/csi1000-timing-strategy-public'
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - name: Checkout public audit code
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -36,6 +44,10 @@ jobs:
             research/index_price_validity
             docs/governance/INDEX_PRICE_VALIDITY_FREEZE@1.0.json
           sparse-checkout-cone-mode: false
+
+      - name: Build fixed R1A Stage A runtime
+        working-directory: executor-repo/executor
+        run: docker build --tag factorlab-r1a-stagea:pr --file r1a-stagea.Dockerfile .
 
       - name: Install audit dependencies
         run: python3 -m pip install --disable-pip-version-check --no-input numpy==2.5.3 pandas==3.0.5 pyarrow==25.0.1
