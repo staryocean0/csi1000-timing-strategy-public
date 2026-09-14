@@ -57,12 +57,12 @@ class RiskPhase1bStandardTests(unittest.TestCase):
         self.assertIn('"bytes": 776877', broker)
         self.assertIn('env.get("GITHUB_EVENT_NAME") != "workflow_dispatch"', broker)
         self.assertNotIn('GITHUB_EVENT_NAME") != "push"', broker)
-        self.assertIn("PHASE1B_VALIDATE_HOST_TIMEOUT_SECONDS = 330", broker)
+        self.assertIn("PHASE1B_VALIDATE_HOST_TIMEOUT_SECONDS = 630", broker)
         self.assertIn(
             "rb.VALIDATE_HOST_TIMEOUT_SECONDS = PHASE1B_VALIDATE_HOST_TIMEOUT_SECONDS",
             broker,
         )
-        self.assertIn('"verification_timeout_seconds": 300', broker)
+        self.assertIn('"verification_timeout_seconds": 600', broker)
 
     def test_producer_and_verifier_recompute_support_and_calibration(self):
         producer = (ROOT / "executor/risk_phase1b_release.py").read_text()
