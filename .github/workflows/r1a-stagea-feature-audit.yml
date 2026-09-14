@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'executor/r1a_stagea_feature_audit.py'
+      - 'executor/r1a_stagea_support_audit.py'
       - '.github/workflows/r1a-stagea-feature-audit.yml'
 
 permissions:
@@ -34,8 +35,11 @@ jobs:
             docs/governance/INDEX_PRICE_VALIDITY_FREEZE@1.0.json
           sparse-checkout-cone-mode: false
 
-      - name: Install feature-audit dependencies
+      - name: Install audit dependencies
         run: python3 -m pip install --disable-pip-version-check --no-input numpy==2.5.3 pandas==3.0.5 pyarrow==25.0.1
 
       - name: Run feature-only causal audit
         run: python3 executor-repo/executor/r1a_stagea_feature_audit.py --source source
+
+      - name: Run support-only maturity audit
+        run: python3 executor-repo/executor/r1a_stagea_support_audit.py --source source
