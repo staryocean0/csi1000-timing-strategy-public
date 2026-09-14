@@ -55,13 +55,12 @@ class OvernightTailLikelihoodPreregTests(unittest.TestCase):
         self.assertEqual(p["development_decision"]["enum"], ["DEV_PASS", "DEV_NO_PROGRESS", "DEV_INSUFFICIENT"])
         self.assertFalse(p["development_decision"]["automatic_repair_after_nonpass"])
 
-    def test_preregistration_has_no_execution_route(self):
-        workflow = WORKFLOW.read_text()
-        controller = CONTROLLER.read_text()
-        self.assertNotIn(PROFILE_NAME, workflow)
-        self.assertNotIn(PROFILE_NAME, controller)
-        self.assertFalse((ROOT / "executor" / "overnight_tail_likelihood_dev.py").exists())
-        self.assertFalse((ROOT / "executor" / "overnight_tail_likelihood_broker.py").exists())
+    def test_preregistration_itself_grants_no_execution_or_blackbox_authority(self):
+        p = self.load()
+        self.assertEqual(p["stage"], "result_free_development_preregistration")
+        self.assertFalse(p["future_reusable_blackbox"]["authorized_now"])
+        self.assertFalse(p["non_rescue_contract"]["automatic_successor_or_rescue_authorized"])
+        self.assertFalse(p["production_authority"])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,48 @@
+{
+  "schema_id": "factorlab.public_overnight_tail_likelihood_training_profile@1.0",
+  "profile_name": "overnight-continuous-tail-likelihood-dev-v1",
+  "private_ref": "cbe97535403b17cf8c4311bcc6567328b726ce67",
+  "carrier_source": {
+    "receipt_ref": "runs/public-research/34837972995-1",
+    "receipt_path": "research/public-runs/34837972995-1.json",
+    "receipt_git_blob_sha1": "453ad4ad1a2defd8a032d05cc24742db727d323b",
+    "release_tag": "public-research-run-34837972995-1",
+    "asset_name": "results.tar.gz",
+    "asset_bytes": 218006,
+    "asset_sha256": "e1c716fc33fb0b5e50aabff0362f2de8d7bf94aff12ab83a715ea4dfb9384b06"
+  },
+  "public_source_files": {
+    "overnight_tail_likelihood_dev.py": {
+      "git_blob_sha1": "8fac4f15c0c6c4372ec93b40e9969f9a459dfc6d"
+    },
+    "verify_overnight_tail_likelihood_dev.py": {
+      "git_blob_sha1": "2cb17eca52a28894959ac3fb05e1c6c95317ec73"
+    },
+    "docs/research/OVERNIGHT_CONTINUOUS_DRIVER_TAIL_LIKELIHOOD_V1_PREREG_20260914.json": {
+      "git_blob_sha1": "3e786f15f052ef5576c0957d3ebfa33d80c4cfc4",
+      "sha256": "cb153fa7f4642cf859ffc6fbf40011823bc314258a5ff704ecb02953f2fd26fd"
+    }
+  },
+  "command": [
+    "overnight_tail_likelihood/run_study.py",
+    "--carrier-root",
+    "/work/carrier_snapshot/carrier",
+    "--protocol",
+    "/work/overnight_tail_likelihood/protocol.json",
+    "--out",
+    "/results/study"
+  ],
+  "verify_command": [
+    "overnight_tail_likelihood/verify_study.py",
+    "--carrier-root",
+    "/work/carrier_snapshot/carrier",
+    "--protocol",
+    "/work/overnight_tail_likelihood/protocol.json",
+    "--results",
+    "/results/study"
+  ],
+  "command_timeout_seconds": 300,
+  "verification_timeout_seconds": 300,
+  "new_training": true,
+  "production_authority": false
+}
