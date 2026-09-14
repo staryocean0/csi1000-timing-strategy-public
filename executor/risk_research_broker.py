@@ -12,6 +12,7 @@ import hashlib
 import importlib.util
 import json
 import re
+import tarfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -68,8 +69,10 @@ DIAGNOSTIC_TEXT_FILES = (
     "compute.log",
     "compute_receipt.json",
     "controller_validation.json",
+    "bundle_layout.json",
 )
 DIAGNOSTIC_TEXT_MAX_BYTES = 64 * 1024
+ARCHIVE_SUFFIXES = (".tar", ".tar.gz", ".tgz", ".zip", ".gz", ".bz2", ".xz")
 
 
 def digest_pair(value, min_bytes=1, max_bytes=base.SOURCE_BYTES_MAX):
@@ -105,8 +108,6 @@ def fetch_source_file(api, path, ref, expected):
         digest = hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest()
         if meta.get("sha") != expected["git_blob_sha1"] or digest != expected["git_blob_sha1"]:
             raise GateError("source_blob_digest_mismatch")
-        # The reused legacy prepare path performs a second on-disk SHA-256 check.
-        # Populate that derived digest only after the immutable Git blob identity passes.
         expected["sha256"] = content_sha256
     elif content_sha256 != expected["sha256"]:
         raise GateError("source_blob_digest_mismatch")
@@ -168,6 +169,53 @@ def load_profile(name):
     return base.validate_profile(merged)
 
 
+def _row(name, meta):
+    if not isinstance(meta, dict) or set(meta) != {"bytes", "sha256"}:
+        raise GateError("bundle_layout_manifest_metadata_invalid")
+    return {"path": name, "bytes": meta["bytes"], "sha256": meta["sha256"]}
+
+
+def _write_bundle_layout():
+    state, root = base.load_state()
+    bundle = root / "work" / "inputs" / "bundle.tar"
+    with tarfile.open(bundle, "r:") as archive:
+        member = archive.getmember("BUNDLE_MANIFEST.json")
+        stream = archive.extractfile(member)
+        if stream is None:
+            raise GateError("bundle_layout_manifest_unreadable")
+        manifest = json.load(stream)
+    files = manifest.get("files") if isinstance(manifest, dict) else None
+    if manifest.get("schema") != "csi1000_handoff_bundle@1" or not isinstance(files, dict):
+        raise GateError("bundle_layout_manifest_invalid")
+    names = sorted(files)
+    archive_like = [name for name in names if name.lower().endswith(ARCHIVE_SUFFIXES)]
+    canonical_5m_like = [name for name in names if "data/market/5m/" in name.lower()]
+    five_minute_like = [name for name in names if "5m" in name.lower()][:100]
+    layer_like = [name for name in names if "layer" in name.lower()][:100]
+    bundle_like = [name for name in names if "bundle" in name.lower()][:100]
+    value = {
+        "schema_id": "risk_tool_v2_bundle_layout@1.0",
+        "public_run_id": state["run_id"],
+        "manifest_schema": manifest.get("schema"),
+        "file_count": len(files),
+        "archive_like": [_row(name, files[name]) for name in archive_like[:100]],
+        "archive_like_total": len(archive_like),
+        "canonical_5m_like": [_row(name, files[name]) for name in canonical_5m_like],
+        "canonical_5m_like_total": len(canonical_5m_like),
+        "five_minute_like": [_row(name, files[name]) for name in five_minute_like],
+        "five_minute_like_total": sum("5m" in name.lower() for name in names),
+        "layer_like": [_row(name, files[name]) for name in layer_like],
+        "layer_like_total": sum("layer" in name.lower() for name in names),
+        "bundle_like": [_row(name, files[name]) for name in bundle_like],
+        "bundle_like_total": sum("bundle" in name.lower() for name in names),
+        "market_rows_read": 0,
+    }
+    raw = (json.dumps(value, indent=2, sort_keys=True) + "\n").encode("utf-8")
+    if len(raw) > DIAGNOSTIC_TEXT_MAX_BYTES:
+        raise GateError("bundle_layout_too_large")
+    (root / "results" / "bundle_layout.json").write_bytes(raw)
+
+
 def _publish_failure_diagnostics():
     state, root = base.load_state()
     api = base.require_private_api()
@@ -205,7 +253,13 @@ def _publish_failure_diagnostics():
     print("Bounded Risk Tool failure diagnostics verified on the private run branch.")
 
 
+_original_prepare = base.prepare
 _original_publish = base.publish
+
+
+def prepare(profile_name, profile):
+    _original_prepare(profile_name, profile)
+    _write_bundle_layout()
 
 
 def publish(profile):
@@ -217,8 +271,6 @@ def publish(profile):
         raise
 
 
-# Patch only the immutable policy surface of the reviewed broker. Transport, isolation,
-# result collection, cleanup and private writeback code are reused unchanged.
 base.PROFILE_NAME = PROFILE_NAME
 base.SOURCE_PATHS = SOURCE_PATHS
 base.MANIFEST_PATH = MANIFEST_PATH
@@ -227,6 +279,7 @@ base.VERIFY_COMMAND = VERIFY_COMMAND
 base._digest_pair = digest_pair
 base.fetch_source_file = fetch_source_file
 base.load_profile = load_profile
+base.prepare = prepare
 base.publish = publish
 
 
