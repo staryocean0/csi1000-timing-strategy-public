@@ -1,0 +1,26 @@
+name: R1A Stage B math self-test
+
+on:
+  pull_request:
+    paths:
+      - 'executor/r1a_stageb_statistical_protocol.json'
+      - 'executor/r1a_stageb_math_selftest.py'
+      - '.github/workflows/r1a-stageb-math-selftest.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  math-selftest:
+    if: github.repository == 'staryocean0/csi1000-timing-strategy-public'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout protocol branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install fixed math dependency
+        run: python3 -m pip install --disable-pip-version-check --no-input numpy==2.5.3
+      - name: Run synthetic-only Stage B math self-test
+        run: python3 executor/r1a_stageb_math_selftest.py
