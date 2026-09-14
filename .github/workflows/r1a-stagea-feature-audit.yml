@@ -6,6 +6,7 @@ on:
       - 'executor/r1a_stagea_feature_audit.py'
       - 'executor/r1a_stagea_support_audit.py'
       - 'executor/r1a_stagea_baseline_audit.py'
+      - 'executor/r1a_stagea_strict_acceptance.py'
       - '.github/workflows/r1a-stagea-feature-audit.yml'
 
 permissions:
@@ -47,6 +48,9 @@ jobs:
 
       - name: Run complete outcome-blind baseline audit
         run: python3 executor-repo/executor/r1a_stagea_baseline_audit.py --source source > "$RUNNER_TEMP/r1a_stagea.json"
+
+      - name: Run strict Stage A acceptance verifier
+        run: python3 executor-repo/executor/r1a_stagea_strict_acceptance.py --source source
 
       - name: Verify Stage A gate status without persisting research results
         shell: bash
