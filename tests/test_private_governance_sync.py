@@ -51,15 +51,14 @@ class PrivateGovernanceSyncTests(unittest.TestCase):
         self.assertNotIn("inputs:", text)
         self.assertIn("private-research", text)
 
-    def test_merge_is_pr_scoped_and_never_force_updates_main_ref(self):
+    def test_merge_is_exact_compare_then_non_force_fast_forward(self):
         text = SCRIPT.read_text(encoding="utf-8")
-        lowered = text.lower()
-        self.assertIn('f"repos/{PRIVATE_REPO}/pulls/{number}/merge"', text)
-        self.assertIn('"branch": PRIVATE_BRANCH', text)
-        self.assertNotIn('git/refs/heads/main', lowered)
-        self.assertNotRegex(lowered, r"\bforce\s*=\s*true\b")
-        self.assertNotRegex(lowered, r'["\']force["\']\s*:\s*true')
+        self.assertIn('f"repos/{PRIVATE_REPO}/compare/{PRIVATE_BASE_SHA}...{head_sha}"', text)
         self.assertIn('set(TARGET_NAMES)', text)
+        self.assertIn('f"repos/{PRIVATE_REPO}/git/refs/heads/{PRIVATE_BASE_BRANCH}"', text)
+        self.assertIn('{"sha": head_sha, "force": False}', text)
+        self.assertNotIn('"force": True', text)
+        self.assertNotIn("/pulls", text)
         self.assertTrue(REQUEST.is_file())
 
 
