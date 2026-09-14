@@ -114,12 +114,14 @@ def rolling_vol(prices: np.ndarray, window: int) -> np.ndarray:
     ret = np.full(len(prices), np.nan, dtype=float)
     if len(prices) > 1:
         ret[1:] = np.diff(np.log(prices))
-    out = np.full(len(prices), np.nan, dtype=float)
-    for i in range(window, len(prices)):
-        x = ret[i - window + 1 : i + 1]
-        if len(x) == window and np.isfinite(x).all():
-            out[i] = float(np.std(x, ddof=0))
-    return out
+    # Same frozen statistic as the scalar implementation: population SD of the
+    # last ``window`` observed one-bar log returns ending at each bar.
+    return (
+        pd.Series(ret, dtype=float)
+        .rolling(window=window, min_periods=window)
+        .std(ddof=0)
+        .to_numpy(float)
+    )
 
 
 def canonical_hash(frame: pd.DataFrame, columns: list[str]) -> str:
