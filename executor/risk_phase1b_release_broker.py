@@ -18,7 +18,7 @@ PROFILE_NAME="risk-v2-phase1b-ordering-calibration-v1"
 RELEASE_ID=388319643;ASSET_ID=563182909;ASSET_NAME="results.tar.gz";ASSET_BYTES=8115479
 ASSET_SHA256="c201cd1b2ab18442ca49d60209b181557335595efdb6a4da5d78549b5c32b21b"
 INPUTS={
- "study/state_rows.parquet":{"bytes":1487729,"sha256":"e74e497ddf075f7b1519ab3afd96dddfeafbeafce7e4bab86a77d9037e23e30d"},
+ "study/state_rows.parquet":{"bytes":8159191,"sha256":"e74e497ddf075f7b1519ab3afd96dddfeafbeafce7e4bab86a77d9037e23e30d"},
  "study/cohort_rows.parquet":{"bytes":776877,"sha256":"53276c7f25861b8a064288f8662c1a391c0c5af75758376df60e98ab180c4234"},
 }
 PROFILE={
