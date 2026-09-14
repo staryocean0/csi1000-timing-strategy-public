@@ -1,0 +1,37 @@
+name: CSI1000 bounded private governance sync
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: csi1000-private-governance-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: >-
+      github.repository == 'staryocean0/csi1000-timing-strategy-public' &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/cloud-workspace-v1' &&
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    environment: private-research
+    timeout-minutes: 5
+    steps:
+      - name: Checkout reviewed public governance sources only
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            executor
+            governance/private_sync/v1
+          sparse-checkout-cone-mode: true
+      - name: Verify bounded sync contract before credentials
+        run: python3 executor/private_governance_sync.py --self-test
+      - name: Stage reviewed governance update as private PR
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/private_governance_sync.py
