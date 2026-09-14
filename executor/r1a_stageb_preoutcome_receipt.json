@@ -1,0 +1,19 @@
+{
+  "schema": "r1a_stageb_preoutcome_common_terminal_receipt_v1",
+  "source_commit": "ab4979b224d8ee97f89b75ac428ddd71887fecf1",
+  "stageA_pass_commit": "8499704191bd6e08b1be92a1dfcd80d3c2cedb1e",
+  "actions_run": 34835576658,
+  "mother_population": 1296,
+  "common_terminal_events": 1296,
+  "retention": 1.0,
+  "retention_gate_min": 0.99,
+  "max_horizon_observed_bars": 240,
+  "current_validation_outcomes_constructed": false,
+  "data_2026_opened": false,
+  "synthetic_math_selftest": "PASS",
+  "preoutcome_cohort_gate": "PASS",
+  "real_stageB_residual_outcomes_opened": false,
+  "fresh_oos": false,
+  "accepted_trading_strategy": false,
+  "production_authority": false
+}
