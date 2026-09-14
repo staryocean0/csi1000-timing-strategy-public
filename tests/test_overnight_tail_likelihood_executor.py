@@ -67,6 +67,18 @@ class OvernightTailLikelihoodExecutorTests(unittest.TestCase):
         self.assertIn("_original_compute", text)
         self.assertIn("_original_publish", text)
 
+    def test_private_mirror_surface_is_exact_and_non_row_level(self):
+        text = (EXECUTOR / "overnight_tail_likelihood_entry.py").read_text()
+        self.assertIn("overnight-tail-dev-report", text)
+        self.assertIn("overnight-tail-frozen-model", text)
+        self.assertIn("SAFE_OUTPUT_MAX_BYTES = 256 * 1024", text)
+        self.assertIn('value.get("blackbox_rows_read") != 0', text)
+        self.assertIn('value.get("opening_clock_files_read") != 0', text)
+        self.assertIn('value.get("row_level_predictions_persisted") is not False', text)
+        self.assertIn('value.get("blackbox_authorized", False) is not False', text)
+        self.assertIn('value.get("production_authority") is not False', text)
+        self.assertNotIn("predictions.csv", text)
+
     def test_workflow_and_controller_route_only_reviewed_training_profile(self):
         workflow = WORKFLOW.read_text()
         controller = CONTROLLER.read_text()
