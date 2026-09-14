@@ -52,23 +52,47 @@ jobs:
         timeout-minutes: 6
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
-        run: python3 executor/research_entry.py prepare '${{ inputs.profile }}'
+        run: |
+          if [ '${{ inputs.profile }}' = 'handoff-verify-v1' ]; then
+            python3 executor/research_broker.py prepare handoff-verify-v1
+          elif [ '${{ inputs.profile }}' = 'risk-v2-severity-persistence-v1' ]; then
+            python3 executor/risk_research_broker.py prepare risk-v2-severity-persistence-v1
+          else
+            exit 2
+          fi
       - name: Compute without private credentials
         if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1'
         timeout-minutes: 16
-        env:
-          FACTORLAB_RESEARCH_PROFILE: ${{ inputs.profile }}
-        run: python3 executor/research_entry.py compute '${{ inputs.profile }}'
+        run: |
+          if [ '${{ inputs.profile }}' = 'handoff-verify-v1' ]; then
+            python3 executor/research_broker.py compute handoff-verify-v1
+          elif [ '${{ inputs.profile }}' = 'risk-v2-severity-persistence-v1' ]; then
+            python3 executor/risk_research_broker.py compute risk-v2-severity-persistence-v1
+          else
+            exit 2
+          fi
       - name: Stop owned container before credentials return
         id: cleanup
         if: always() && steps.prepare.outcome == 'success'
         timeout-minutes: 1
-        env:
-          FACTORLAB_RESEARCH_PROFILE: ${{ inputs.profile }}
-        run: python3 executor/research_entry.py cleanup '${{ inputs.profile }}'
+        run: |
+          if [ '${{ inputs.profile }}' = 'handoff-verify-v1' ]; then
+            python3 executor/research_broker.py cleanup handoff-verify-v1
+          elif [ '${{ inputs.profile }}' = 'risk-v2-severity-persistence-v1' ]; then
+            python3 executor/risk_research_broker.py cleanup risk-v2-severity-persistence-v1
+          else
+            exit 2
+          fi
       - name: Return verified results privately
         if: always() && steps.prepare.outcome == 'success' && steps.cleanup.outcome == 'success'
         timeout-minutes: 6
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
-        run: python3 executor/research_entry.py publish '${{ inputs.profile }}'
+        run: |
+          if [ '${{ inputs.profile }}' = 'handoff-verify-v1' ]; then
+            python3 executor/research_broker.py publish handoff-verify-v1
+          elif [ '${{ inputs.profile }}' = 'risk-v2-severity-persistence-v1' ]; then
+            python3 executor/risk_research_broker.py publish risk-v2-severity-persistence-v1
+          else
+            exit 2
+          fi
