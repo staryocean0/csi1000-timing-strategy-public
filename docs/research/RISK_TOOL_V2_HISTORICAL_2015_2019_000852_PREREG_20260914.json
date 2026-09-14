@@ -1,0 +1,104 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_historical_000852_2015_2019_prereg@1.0",
+  "task_id": "CSI1000-RISK-V2-HISTORICAL-000852-2015-2019-V1-20260914",
+  "purpose": "Retrospective temporal transportability audit of the already-frozen Phase-1/Phase-1b 15m and 30m Severity signal on earlier CSI1000 history. This is not fresh OOS and does not alter Phase-1 or Phase-1b adjudications.",
+  "parent_phase1_verdict": "NOT_SUPPORTED",
+  "parent_phase1b_verdict": "ORDERING_AND_CALIBRATION_SUPPORTED_PENDING_FRESH_OOS",
+  "scope": {
+    "symbol": "000852.SH",
+    "years": [2015, 2016, 2017, 2018, 2019],
+    "horizons_minutes": [15, 30],
+    "historical_only": true,
+    "fresh_oos": false,
+    "pnl": false,
+    "strategy_threshold_search": false,
+    "multiscale": false,
+    "production_authority": false,
+    "year_2026_read": false
+  },
+  "availability_boundary": {
+    "000852_history_available_2015_2019": true,
+    "000688_history_available_2015_2019": false,
+    "reason": "At immutable canonical ref, data/market/5m/000688.SH starts at 2020. No synthetic or substitute 000688 history is permitted.",
+    "cross_symbol_claims_allowed": false
+  },
+  "canonical_data": {
+    "repository": "staryocean0/factorlab-trend-reversion-regime-lab",
+    "ref": "1d760ea9525eb3688b70a4aa0f2b5b207af16a17",
+    "files": {
+      "2015": {"path": "data/market/5m/000852.SH/2015.parquet", "git_blob_sha1": "9d2d84440275413623ff738ae8c25950e4b67f27", "bytes": 368026},
+      "2016": {"path": "data/market/5m/000852.SH/2016.parquet", "git_blob_sha1": "08c24b173d259f44061e2f7ffdc572b99ede2dfc", "bytes": 351061},
+      "2017": {"path": "data/market/5m/000852.SH/2017.parquet", "git_blob_sha1": "31a9c0700b8d96249313738bccbf4502c0489be7", "bytes": 347979},
+      "2018": {"path": "data/market/5m/000852.SH/2018.parquet", "git_blob_sha1": "db4b03041c673a60606b75a56e15682f42e2b7a4", "bytes": 351575},
+      "2019": {"path": "data/market/5m/000852.SH/2019.parquet", "git_blob_sha1": "9dadff0a88a6a03f8defcf12ba28b1e6f57fd84e", "bytes": 346434}
+    },
+    "substitute_data_allowed": false
+  },
+  "frozen_state_machine": {
+    "rv_window": 12,
+    "bg_window": 48,
+    "highvol_ratio": 1.5,
+    "recovery_normal_ratio": 1.1,
+    "shock_sigma": 3.0,
+    "daily_state_reset": true,
+    "age_buckets": {"LT15": "<=2 bars", "M15_25": "3-5 bars", "M30_40": "6-8 bars", "GE45": ">=9 bars"},
+    "short_horizon_clock": "continuous_AM_or_PM_session_no_lunch_crossing"
+  },
+  "frozen_model_identity": {
+    "phase1_public_run_id": "34834408567-1",
+    "phase1_private_release_id": 388319643,
+    "model_freeze_sha256": "b81cae6208d96890c0fd83d47e4ea8c8a81ba55b41c78f58db29e9160f173551",
+    "phase1b_public_run_id": "34844053584-1",
+    "phase1b_private_release_id": 388398729,
+    "calibration_freeze_sha256": "74ecd25790123f026e29cba7bb84322aad8a385c10fe3d60ef0d75d52d1b1909",
+    "parent_score_refit": false,
+    "new_severity_feature_fit": false,
+    "calibration_refit": false
+  },
+  "support_gate_per_horizon": {
+    "pooled_rows_ge": 4000,
+    "each_year_rows_ge": 500,
+    "positive_ge": 500,
+    "negative_ge": 500
+  },
+  "ordering_test": {
+    "metric": "AUROC(C)-AUROC(B)",
+    "bootstrap_cluster": "trading_day",
+    "bootstrap_repetitions": 5000,
+    "bootstrap_seed": 20260914,
+    "family_size": 2,
+    "family_one_sided_alpha": 0.05,
+    "lower_quantile": 0.025,
+    "gates": [
+      "pooled_auroc_gain_gt_zero",
+      "family_adjusted_bootstrap_lower_gt_zero",
+      "at_least_4_of_5_years_auroc_gain_nonnegative"
+    ]
+  },
+  "calibration_test": {
+    "method": "apply frozen Phase-1b repeat_audit Platt parameters without refit",
+    "gates": [
+      "pooled_calibrated_brier_gain_gt_zero",
+      "pooled_calibrated_logloss_gain_gt_zero",
+      "at_least_4_of_5_years_brier_and_logloss_gain_nonnegative"
+    ]
+  },
+  "adjudication": {
+    "ROBUST_SUPPORTED": "support gate passes and all ordering plus calibration gates pass",
+    "ORDERING_ONLY": "support passes and ordering passes but calibration does not",
+    "NOT_SUPPORTED": "support passes but ordering fails",
+    "INSUFFICIENT_SUPPORT": "support gate fails"
+  },
+  "interpretation_boundary": {
+    "not_chronological_fresh_oos": true,
+    "no_cross_symbol_claim": true,
+    "cannot_unlock_or_replace_2026_fresh_oos": true,
+    "phase1_and_phase1b_verdicts_immutable": true
+  },
+  "execution": {
+    "standard_workflow_dispatch_only": true,
+    "independent_verifier_required": true,
+    "results_private": true,
+    "post_result_retuning_forbidden": true
+  }
+}
