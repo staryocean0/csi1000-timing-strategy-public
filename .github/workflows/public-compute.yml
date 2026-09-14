@@ -39,6 +39,8 @@ jobs:
             docs/research
             governance/private_sync
             .github/workflows
+            docs/research
+            governance/private_sync/v1
           sparse-checkout-cone-mode: true
       - name: Synthetic executor tests
         timeout-minutes: 2
