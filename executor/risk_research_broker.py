@@ -10,6 +10,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import importlib.util
+import json
 import re
 from pathlib import Path
 
@@ -23,6 +24,22 @@ _spec.loader.exec_module(base)
 GateError = base.GateError
 
 PROFILE_NAME = "risk-v2-severity-persistence-v1"
+TRANSPORT_PROFILE_NAME = "handoff-verify-v1"
+RISK_PROFILE_SCHEMA = "factorlab.public_risk_research_profile@1.0"
+RISK_PROFILE_KEYS = {
+    "schema_id",
+    "profile_name",
+    "transport_profile",
+    "private_ref",
+    "source_files",
+    "manifest_path",
+    "command",
+    "verify_command",
+    "command_timeout_seconds",
+    "verification_timeout_seconds",
+    "new_training",
+    "production_authority",
+}
 SOURCE_PATHS = (
     "runtime/research/risk_tool_v2_severity_persistence_v1/run_study.py",
     "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v2.py",
@@ -49,12 +66,7 @@ VERIFY_COMMAND = [
 
 
 def digest_pair(value, min_bytes=1, max_bytes=base.SOURCE_BYTES_MAX):
-    """Accept legacy SHA-256 pairs or immutable Git blob SHA-1 pairs.
-
-    Git blob identity is used only for the new private source files because the GitHub
-    contents API exposes that object id directly. The raw bytes are independently hashed
-    again using Git's blob framing before use.
-    """
+    """Accept legacy SHA-256 pairs or immutable Git blob SHA-1 pairs."""
     if not isinstance(value, dict):
         raise GateError("unknown_profile_field")
     keys = set(value)
@@ -66,9 +78,8 @@ def digest_pair(value, min_bytes=1, max_bytes=base.SOURCE_BYTES_MAX):
     if "sha256" in value:
         if not isinstance(value["sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", value["sha256"]):
             raise GateError("profile_not_immutable")
-    else:
-        if not isinstance(value["git_blob_sha1"], str) or not re.fullmatch(r"[0-9a-f]{40}", value["git_blob_sha1"]):
-            raise GateError("profile_not_immutable")
+    elif not isinstance(value["git_blob_sha1"], str) or not re.fullmatch(r"[0-9a-f]{40}", value["git_blob_sha1"]):
+        raise GateError("profile_not_immutable")
 
 
 def fetch_source_file(api, path, ref, expected):
@@ -91,6 +102,61 @@ def fetch_source_file(api, path, ref, expected):
     return raw
 
 
+def load_profile(name):
+    if name != PROFILE_NAME:
+        raise GateError("unknown_profile")
+    try:
+        risk_cfg = json.loads((HERE / "risk_profile.json").read_text())
+        catalog = json.loads((HERE / "research_profiles.json").read_text())
+    except Exception:
+        raise GateError("profile_catalog_unavailable") from None
+    if set(risk_cfg) != RISK_PROFILE_KEYS or risk_cfg.get("schema_id") != RISK_PROFILE_SCHEMA:
+        raise GateError("profile_catalog_invalid")
+    if risk_cfg.get("profile_name") != PROFILE_NAME or risk_cfg.get("transport_profile") != TRANSPORT_PROFILE_NAME:
+        raise GateError("profile_catalog_invalid")
+    if catalog.get("schema_id") != base.PROFILE_SCHEMA or set(catalog) != {"schema_id", "profiles"}:
+        raise GateError("profile_catalog_invalid")
+    transport = catalog.get("profiles", {}).get(TRANSPORT_PROFILE_NAME)
+    if not isinstance(transport, dict):
+        raise GateError("incomplete_profile")
+    inherited = {
+        key: transport[key]
+        for key in (
+            "manifest_sha256",
+            "data_release_tag",
+            "data_asset_name",
+            "data_asset_sha256",
+            "data_asset_bytes",
+            "input_files",
+            "asset_parts",
+        )
+        if key in transport
+    }
+    required_inherited = {
+        "manifest_sha256",
+        "data_release_tag",
+        "data_asset_name",
+        "data_asset_sha256",
+        "data_asset_bytes",
+        "input_files",
+    }
+    if not required_inherited.issubset(inherited):
+        raise GateError("incomplete_profile")
+    merged = {
+        "private_ref": risk_cfg["private_ref"],
+        "source_files": risk_cfg["source_files"],
+        "manifest_path": risk_cfg["manifest_path"],
+        **inherited,
+        "command": risk_cfg["command"],
+        "verify_command": risk_cfg["verify_command"],
+        "command_timeout_seconds": risk_cfg["command_timeout_seconds"],
+        "verification_timeout_seconds": risk_cfg["verification_timeout_seconds"],
+        "new_training": risk_cfg["new_training"],
+        "production_authority": risk_cfg["production_authority"],
+    }
+    return base.validate_profile(merged)
+
+
 # Patch only the immutable policy surface of the reviewed broker. Transport, isolation,
 # result collection, cleanup and private writeback code are reused unchanged.
 base.PROFILE_NAME = PROFILE_NAME
@@ -100,6 +166,7 @@ base.COMMAND = COMMAND
 base.VERIFY_COMMAND = VERIFY_COMMAND
 base._digest_pair = digest_pair
 base.fetch_source_file = fetch_source_file
+base.load_profile = load_profile
 
 
 def run():
