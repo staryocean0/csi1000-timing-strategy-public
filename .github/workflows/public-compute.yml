@@ -104,6 +104,7 @@ jobs:
             python3 executor/research_broker.py publish handoff-verify-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-severity-persistence-v1' ]; then
             python3 executor/risk_research_broker.py publish risk-v2-severity-persistence-v1
+            python3 executor/risk_success_mirror.py
           elif [ '${{ inputs.profile }}' = 'overnight-official-inventory-v1' ]; then
             python3 executor/overnight_inventory_broker.py publish overnight-official-inventory-v1
           else
