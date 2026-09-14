@@ -1,0 +1,10 @@
+{
+  "schema_id": "csi1000.private_governance_sync_request@1.0",
+  "sync_id": "two-repo-control-plane-hardening-v1",
+  "phase": "stage",
+  "private_base_sha": "653fdfc232f1d877f051e05e3238d409d269f85d",
+  "targets": [
+    "AGENTS.md",
+    "docs/WORKFLOW.md"
+  ]
+}
