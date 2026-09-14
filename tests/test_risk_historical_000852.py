@@ -20,6 +20,11 @@ class HistoricalRiskTests(unittest.TestCase):
         for t in (r,v):
             self.assertIn("BOOTSTRAP_REPS = 5000",t.replace("BOOTSTRAP_REPS=5000","BOOTSTRAP_REPS = 5000"));self.assertIn("EXPECTED_INCOMPLETE",t);self.assertIn("filter_complete_days",t);self.assertNotIn("2026.parquet",t)
         self.assertNotIn("fit_ridge(",r);self.assertNotIn("fit_platt(",r)
+    def test_verifier_success_status_matches_broker_contract(self):
+        v=(ROOT/"executor/risk_historical_000852_verifier.py").read_text();b=(ROOT/"executor/research_broker.py").read_text()
+        self.assertIn('validated.get("status") == "passed"',b)
+        self.assertIn('"status":"passed"',v)
+        self.assertNotIn('"status":"verified"',v)
     def test_broker_is_dispatch_only_and_fixed(self):
         b=(ROOT/"executor/risk_historical_000852_broker.py").read_text();self.assertIn('PROFILE_NAME="'+PROFILE+'"',b);self.assertIn('GITHUB_EVENT_NAME")!="workflow_dispatch"',b);self.assertIn("388319643",b);self.assertIn("388398729",b);self.assertIn("1d760ea9525eb3688b70a4aa0f2b5b207af16a17",b)
     def test_standard_workflow_and_controller_route_profile(self):

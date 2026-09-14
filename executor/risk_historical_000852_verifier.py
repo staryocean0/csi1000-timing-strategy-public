@@ -107,6 +107,6 @@ def main():
         statuses.append(status)
     overall="ROBUST_SUPPORTED_BOTH" if statuses==["ROBUST_SUPPORTED","ROBUST_SUPPORTED"] else ("ROBUST_SUPPORTED_PARTIAL" if "ROBUST_SUPPORTED" in statuses else "NOT_SUPPORTED")
     if summary["overall_verdict"]!=overall:raise RuntimeError("overall_verdict_mismatch")
-    print(json.dumps({"status":"verified","overall_verdict":overall,"excluded_incomplete_days":excluded},sort_keys=True))
+    print(json.dumps({"status":"passed","overall_verdict":overall,"excluded_incomplete_days":excluded},sort_keys=True))
 
 if __name__=="__main__":main()
