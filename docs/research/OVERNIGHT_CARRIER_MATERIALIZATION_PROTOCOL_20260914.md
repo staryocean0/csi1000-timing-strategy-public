@@ -6,6 +6,8 @@ The historical carrier source only is fixed to the reviewed 2015-2020 developmen
 
 No outcome analysis, model fitting, threshold search, or strategy replay is authorized.
 
+A successful carrier readback may only enable a later reviewed change to freeze a new non-rescue Overnight identity. That later identity must be fully frozen before any later evaluation.
+
 This step does not alter the current Layer2 Risk Tool authority.
 
 production_authority=false
