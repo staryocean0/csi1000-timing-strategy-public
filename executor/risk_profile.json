@@ -35,7 +35,7 @@
   },
   "manifest_path": "handoff/INPUT_MANIFEST.json",
   "command": [
-    "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v3.py",
+    "risk_public_input_adapter.py",
     "--inputs",
     "/work/inputs",
     "--out",

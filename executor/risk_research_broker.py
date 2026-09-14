@@ -22,6 +22,14 @@ if _spec is None or _spec.loader is None:
 base = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(base)
 
+_transport_spec = importlib.util.spec_from_file_location(
+    "_risk_public_data_transport", HERE / "risk_public_data_transport.py"
+)
+if _transport_spec is None or _transport_spec.loader is None:
+    raise RuntimeError("risk public data transport unavailable")
+transport = importlib.util.module_from_spec(_transport_spec)
+_transport_spec.loader.exec_module(transport)
+
 GateError = base.GateError
 
 PROFILE_NAME = "risk-v2-severity-persistence-v1"
@@ -52,7 +60,7 @@ SOURCE_PATHS = (
 )
 MANIFEST_PATH = "handoff/INPUT_MANIFEST.json"
 COMMAND = [
-    "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v3.py",
+    "risk_public_input_adapter.py",
     "--inputs",
     "/work/inputs",
     "--out",
@@ -128,11 +136,11 @@ def load_profile(name):
         raise GateError("profile_catalog_invalid")
     if catalog.get("schema_id") != base.PROFILE_SCHEMA or set(catalog) != {"schema_id", "profiles"}:
         raise GateError("profile_catalog_invalid")
-    transport = catalog.get("profiles", {}).get(TRANSPORT_PROFILE_NAME)
-    if not isinstance(transport, dict):
+    transport_profile = catalog.get("profiles", {}).get(TRANSPORT_PROFILE_NAME)
+    if not isinstance(transport_profile, dict):
         raise GateError("incomplete_profile")
     inherited = {
-        key: transport[key]
+        key: transport_profile[key]
         for key in (
             "manifest_sha256",
             "data_release_tag",
@@ -142,7 +150,7 @@ def load_profile(name):
             "input_files",
             "asset_parts",
         )
-        if key in transport
+        if key in transport_profile
     }
     required_inherited = {
         "manifest_sha256",
@@ -167,6 +175,15 @@ def load_profile(name):
         "production_authority": risk_cfg["production_authority"],
     }
     return base.validate_profile(merged)
+
+
+def prepare_inputs(api, root, profile):
+    work = _original_prepare_inputs(api, root, profile)
+    try:
+        transport.materialize(root)
+    except transport.TransportError as error:
+        raise GateError(str(error)) from None
+    return work
 
 
 def _row(name, meta):
@@ -253,6 +270,7 @@ def _publish_failure_diagnostics():
     print("Bounded Risk Tool failure diagnostics verified on the private run branch.")
 
 
+_original_prepare_inputs = base.prepare_inputs
 _original_prepare = base.prepare
 _original_publish = base.publish
 
@@ -279,6 +297,7 @@ base.VERIFY_COMMAND = VERIFY_COMMAND
 base._digest_pair = digest_pair
 base.fetch_source_file = fetch_source_file
 base.load_profile = load_profile
+base.prepare_inputs = prepare_inputs
 base.prepare = prepare
 base.publish = publish
 
