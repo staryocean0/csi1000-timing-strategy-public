@@ -1,0 +1,41 @@
+name: R1A Stage A feature-only audit
+
+on:
+  pull_request:
+    paths:
+      - 'executor/r1a_stagea_feature_audit.py'
+      - '.github/workflows/r1a-stagea-feature-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  feature-audit:
+    if: github.repository == 'staryocean0/csi1000-timing-strategy-public'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout public audit code
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          path: executor-repo
+
+      - name: Checkout pinned public source and annual CSI1000 data
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: staryocean0/factorlab-trend-reversion-regime-lab
+          ref: ab4979b224d8ee97f89b75ac428ddd71887fecf1
+          persist-credentials: false
+          path: source
+          sparse-checkout: |
+            data/market/1m/000852.SH
+            research/index_price_validity
+            docs/governance/INDEX_PRICE_VALIDITY_FREEZE@1.0.json
+          sparse-checkout-cone-mode: false
+
+      - name: Install feature-audit dependencies
+        run: python3 -m pip install --disable-pip-version-check --no-input numpy==2.5.3 pandas==3.0.5 pyarrow==25.0.1
+
+      - name: Run feature-only causal audit
+        run: python3 executor-repo/executor/r1a_stagea_feature_audit.py --source source
