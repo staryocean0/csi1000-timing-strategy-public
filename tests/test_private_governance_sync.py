@@ -37,7 +37,10 @@ class PrivateGovernanceSyncTests(unittest.TestCase):
             self.assertIn("私库", text)
         mod.self_test()
         request = mod._load_request()
-        self.assertEqual(request["phase"], "stage")
+        # The reviewed request remains in its completed merge phase after PR #10.
+        # Do not rewrite it merely to make the test green: changing it on the
+        # control branch would retrigger the private governance workflow.
+        self.assertEqual(request["phase"], "merge")
         self.assertEqual(request["targets"], ["AGENTS.md", "docs/WORKFLOW.md"])
 
     def test_workflow_only_accepts_manual_or_fixed_request_push(self):
