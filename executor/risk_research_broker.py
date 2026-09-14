@@ -94,11 +94,15 @@ def fetch_source_file(api, path, ref, expected):
         raise GateError("source_blob_identity_failed") from None
     if len(raw) != expected["bytes"]:
         raise GateError("source_blob_identity_failed")
+    content_sha256 = hashlib.sha256(raw).hexdigest()
     if "git_blob_sha1" in expected:
         digest = hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest()
         if meta.get("sha") != expected["git_blob_sha1"] or digest != expected["git_blob_sha1"]:
             raise GateError("source_blob_digest_mismatch")
-    elif hashlib.sha256(raw).hexdigest() != expected["sha256"]:
+        # The reused legacy prepare path performs a second on-disk SHA-256 check.
+        # Populate that derived digest only after the immutable Git blob identity passes.
+        expected["sha256"] = content_sha256
+    elif content_sha256 != expected["sha256"]:
         raise GateError("source_blob_digest_mismatch")
     return raw
 
