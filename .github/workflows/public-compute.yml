@@ -9,9 +9,9 @@ on:
           - runtime-smoke
           - handoff-verify-v1
           - risk-v2-severity-persistence-v1
+          - risk-v2-phase1b-ordering-calibration-v1
           - overnight-official-inventory-v1
           - overnight-carrier-materialization-v1
-          - overnight-continuous-tail-likelihood-dev-v1
         default: runtime-smoke
         required: true
 permissions:
@@ -59,7 +59,7 @@ jobs:
         run: python3 executor/overnight_carrier_stage_public.py
       - name: Prepare fixed private inputs
         id: prepare
-        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1'
+        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1'
         timeout-minutes: 6
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
@@ -68,29 +68,29 @@ jobs:
             python3 executor/research_broker.py prepare handoff-verify-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-severity-persistence-v1' ]; then
             python3 executor/risk_research_broker.py prepare risk-v2-severity-persistence-v1
+          elif [ '${{ inputs.profile }}' = 'risk-v2-phase1b-ordering-calibration-v1' ]; then
+            python3 executor/risk_phase1b_release_broker.py prepare risk-v2-phase1b-ordering-calibration-v1
           elif [ '${{ inputs.profile }}' = 'overnight-official-inventory-v1' ]; then
             python3 executor/overnight_inventory_broker.py prepare overnight-official-inventory-v1
           elif [ '${{ inputs.profile }}' = 'overnight-carrier-materialization-v1' ]; then
             python3 executor/overnight_carrier_materialization_broker.py prepare overnight-carrier-materialization-v1
-          elif [ '${{ inputs.profile }}' = 'overnight-continuous-tail-likelihood-dev-v1' ]; then
-            python3 executor/overnight_tail_likelihood_entry.py prepare overnight-continuous-tail-likelihood-dev-v1
           else
             exit 2
           fi
       - name: Compute without private credentials
-        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1'
+        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1'
         timeout-minutes: 16
         run: |
           if [ '${{ inputs.profile }}' = 'handoff-verify-v1' ]; then
             python3 executor/research_broker.py compute handoff-verify-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-severity-persistence-v1' ]; then
             python3 executor/risk_research_broker.py compute risk-v2-severity-persistence-v1
+          elif [ '${{ inputs.profile }}' = 'risk-v2-phase1b-ordering-calibration-v1' ]; then
+            python3 executor/risk_phase1b_release_broker.py compute risk-v2-phase1b-ordering-calibration-v1
           elif [ '${{ inputs.profile }}' = 'overnight-official-inventory-v1' ]; then
             python3 executor/overnight_inventory_broker.py compute overnight-official-inventory-v1
           elif [ '${{ inputs.profile }}' = 'overnight-carrier-materialization-v1' ]; then
             python3 executor/overnight_carrier_materialization_broker.py compute overnight-carrier-materialization-v1
-          elif [ '${{ inputs.profile }}' = 'overnight-continuous-tail-likelihood-dev-v1' ]; then
-            python3 executor/overnight_tail_likelihood_entry.py compute overnight-continuous-tail-likelihood-dev-v1
           else
             exit 2
           fi
@@ -103,12 +103,12 @@ jobs:
             python3 executor/research_broker.py cleanup handoff-verify-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-severity-persistence-v1' ]; then
             python3 executor/risk_research_broker.py cleanup risk-v2-severity-persistence-v1
+          elif [ '${{ inputs.profile }}' = 'risk-v2-phase1b-ordering-calibration-v1' ]; then
+            python3 executor/risk_phase1b_release_broker.py cleanup risk-v2-phase1b-ordering-calibration-v1
           elif [ '${{ inputs.profile }}' = 'overnight-official-inventory-v1' ]; then
             python3 executor/overnight_inventory_broker.py cleanup overnight-official-inventory-v1
           elif [ '${{ inputs.profile }}' = 'overnight-carrier-materialization-v1' ]; then
             python3 executor/overnight_carrier_materialization_broker.py cleanup overnight-carrier-materialization-v1
-          elif [ '${{ inputs.profile }}' = 'overnight-continuous-tail-likelihood-dev-v1' ]; then
-            python3 executor/overnight_tail_likelihood_entry.py cleanup overnight-continuous-tail-likelihood-dev-v1
           else
             exit 2
           fi
@@ -123,12 +123,13 @@ jobs:
           elif [ '${{ inputs.profile }}' = 'risk-v2-severity-persistence-v1' ]; then
             python3 executor/risk_research_broker.py publish risk-v2-severity-persistence-v1
             python3 executor/risk_success_mirror.py
+          elif [ '${{ inputs.profile }}' = 'risk-v2-phase1b-ordering-calibration-v1' ]; then
+            python3 executor/risk_phase1b_release_broker.py publish risk-v2-phase1b-ordering-calibration-v1
+            python3 executor/risk_phase1b_private_mirror.py
           elif [ '${{ inputs.profile }}' = 'overnight-official-inventory-v1' ]; then
             python3 executor/overnight_inventory_broker.py publish overnight-official-inventory-v1
           elif [ '${{ inputs.profile }}' = 'overnight-carrier-materialization-v1' ]; then
             python3 executor/overnight_carrier_materialization_broker.py publish overnight-carrier-materialization-v1
-          elif [ '${{ inputs.profile }}' = 'overnight-continuous-tail-likelihood-dev-v1' ]; then
-            python3 executor/overnight_tail_likelihood_entry.py publish overnight-continuous-tail-likelihood-dev-v1
           else
             exit 2
           fi
