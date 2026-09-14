@@ -1,8 +1,6 @@
 import base64
 import hashlib
 import importlib.util
-import json
-import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -83,7 +81,8 @@ class RiskResearchBrokerTests(unittest.TestCase):
         }
         got = risk.fetch_source_file(api, "private/source.py", PRIVATE_REF, git_pair(len(raw), digest))
         self.assertEqual(got, raw)
-        bad = bytearray(raw); bad[-2] ^= 1
+        bad = bytearray(raw)
+        bad[-2] ^= 1
         api.request.return_value = {
             "type": "file",
             "encoding": "base64",
@@ -95,19 +94,15 @@ class RiskResearchBrokerTests(unittest.TestCase):
             risk.fetch_source_file(api, "private/source.py", PRIVATE_REF, git_pair(len(bad), digest))
         self.assertEqual(str(error.exception), "source_blob_digest_mismatch")
 
-    def test_catalog_load_accepts_only_named_risk_profile(self):
-        with tempfile.TemporaryDirectory() as temp:
-            here = Path(temp)
-            here.joinpath("research_profiles.json").write_text(json.dumps({
-                "schema_id": risk.base.PROFILE_SCHEMA,
-                "profiles": {risk.PROFILE_NAME: valid_profile()},
-            }))
-            with mock.patch.object(risk.base, "HERE", here):
-                loaded = risk.base.load_profile(risk.PROFILE_NAME)
-                self.assertEqual(loaded["command"], risk.COMMAND)
-                with self.assertRaises(GateError) as error:
-                    risk.base.load_profile("handoff-verify-v1")
-                self.assertEqual(str(error.exception), "unknown_profile")
+    def test_catalog_load_inherits_only_reviewed_handoff_transport(self):
+        loaded = risk.load_profile(risk.PROFILE_NAME)
+        self.assertEqual(loaded["command"], risk.COMMAND)
+        self.assertEqual(loaded["verify_command"], risk.VERIFY_COMMAND)
+        self.assertEqual(set(loaded["source_files"]), set(risk.SOURCE_PATHS))
+        self.assertEqual(loaded["data_release_tag"], risk.base.DATA_RELEASE_TAG)
+        with self.assertRaises(GateError) as error:
+            risk.load_profile("handoff-verify-v1")
+        self.assertEqual(str(error.exception), "unknown_profile")
 
     def test_legacy_broker_file_is_not_the_risk_policy(self):
         legacy_spec = importlib.util.spec_from_file_location("legacy_research_broker_test", ROOT / "executor/research_broker.py")
