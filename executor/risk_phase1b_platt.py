@@ -29,7 +29,7 @@ def boot(x,y,b,c):
   k=r.integers(0,len(G),len(G));Y=np.concatenate([G[j][0] for j in k]);B=np.concatenate([G[j][1] for j in k]);C=np.concatenate([G[j][2] for j in k]);d[i]=auc(Y,C)-auc(Y,B)
  return float(np.quantile(d,.025))
 def run(inp,out):
- base=loadmod("/risk_public_input_adapter.py")
+ base=loadmod(Path(__file__).with_name("risk_public_input_adapter.py"))
  with tempfile.TemporaryDirectory() as td:
   tmp=Path(td)/"phase1";base.run(inp,tmp);st=tmp/"state_rows.parquet";co=tmp/"cohort_rows.parquet"
   if sha(st)!=PSTATE or sha(co)!=PCOH:raise RuntimeError("parent output drift")
