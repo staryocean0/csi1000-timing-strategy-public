@@ -1,3 +1,4 @@
+import hashlib
 import importlib.util
 import json
 import unittest
@@ -58,7 +59,9 @@ class OvernightTailLikelihoodExecutorTests(unittest.TestCase):
         self.assertFalse(frozen["production_authority"])
         protocol_meta = p["public_source_files"]["docs/research/OVERNIGHT_CONTINUOUS_DRIVER_TAIL_LIKELIHOOD_V1_PREREG_20260914.json"]
         self.assertEqual(protocol_meta["git_blob_sha1"], "3e786f15f052ef5576c0957d3ebfa33d80c4cfc4")
-        self.assertEqual(protocol_meta["sha256"], "cb153fa7f4642cf859ffc6fbf40011823bc314258a5ff704ecb02953f2fd26fd")
+        actual_sha256 = hashlib.sha256(PREREG.read_bytes()).hexdigest()
+        self.assertEqual(actual_sha256, "15904a8ef605d0adabc8baab7547233a30fb739b3616a911ed200a65a11710e2")
+        self.assertEqual(protocol_meta["sha256"], actual_sha256)
 
     def test_entry_reports_training_without_changing_production_authority(self):
         text = (EXECUTOR / "overnight_tail_likelihood_entry.py").read_text()
