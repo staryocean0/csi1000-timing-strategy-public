@@ -1,14 +1,16 @@
 {
-  "schema_id": "csi1000.risk_tool_v2_phase1b_release_execution_overlay@1.0",
+  "schema_id": "csi1000.risk_tool_v2_phase1b_release_execution_overlay@1.1",
   "date": "2026-09-14",
   "statistical_protocol": {
-    "source_branch": "research/risk-v2-phase1b-ordering-calibration-v1",
     "protocol_path": "docs/research/RISK_TOOL_V2_PHASE1B_ORDERING_CALIBRATION_PROTOCOL_20260914.json",
     "protocol_blob_sha1": "78528896dbe424af9396e478f114d66b68e7f786",
     "schema_id": "csi1000.risk_tool_v2_phase1b_ordering_calibration_protocol@1.2",
     "changed_by_overlay": false
   },
   "transport_change_only": true,
+  "execution_event_boundary": "workflow_dispatch",
+  "standard_workflow": ".github/workflows/public-compute.yml",
+  "profile": "risk-v2-phase1b-ordering-calibration-v1",
   "reason": "Consume the already-verified Phase-1 saved scores directly instead of reconstructing the parent experiment from market inputs.",
   "parent_release": {
     "repository": "staryocean0/csi1000-timing-strategy-private",
@@ -17,8 +19,16 @@
     "asset_name": "results.tar.gz",
     "asset_bytes": 8115479,
     "asset_sha256": "c201cd1b2ab18442ca49d60209b181557335595efdb6a4da5d78549b5c32b21b",
-    "state_rows": {"member": "study/state_rows.parquet", "bytes": 8159191, "sha256": "e74e497ddf075f7b1519ab3afd96dddfeafbeafce7e4bab86a77d9037e23e30d"},
-    "cohort_rows": {"member": "study/cohort_rows.parquet", "bytes": 776877, "sha256": "53276c7f25861b8a064288f8662c1a391c0c5af75758376df60e98ab180c4234"}
+    "state_rows": {
+      "member": "study/state_rows.parquet",
+      "bytes": 8159191,
+      "sha256": "e74e497ddf075f7b1519ab3afd96dddfeafbeafce7e4bab86a77d9037e23e30d"
+    },
+    "cohort_rows": {
+      "member": "study/cohort_rows.parquet",
+      "bytes": 776877,
+      "sha256": "53276c7f25861b8a064288f8662c1a391c0c5af75758376df60e98ab180c4234"
+    }
   },
   "allowed_parent_inputs": ["state_rows.parquet", "cohort_rows.parquet"],
   "market_source_reconstruction": false,

@@ -1,8 +1,8 @@
 {
-  "schema_id": "csi1000.risk_tool_v2_phase1b_ordering_calibration_protocol@1.0",
+  "schema_id": "csi1000.risk_tool_v2_phase1b_ordering_calibration_protocol@1.2",
   "task_id": "CSI1000-RISK-V2-SEVERITY-ORDERING-CALIBRATION-V1-20260914",
   "parent_adjudication": "docs/research/RISK_TOOL_V2_PHASE1_SCIENTIFIC_ADJUDICATION_20260914.json",
-  "purpose": "Test whether continuous Severity carries stable 15m/30m ordering information beyond frozen V19 State plus shock-age when both baseline and challenger use the same fixed penalized logistic link. This is a new preregistered question, not a rescue or reinterpretation of Phase-1.",
+  "purpose": "Test whether the already-frozen Phase-1 Severity challenger score carries stable 15m/30m ordering information beyond State+shock-age, and whether a symmetric fixed calibration layer converts that ordering into stable probability-score improvement. Phase-1 remains NOT_SUPPORTED.",
   "phase1_verdict_immutable": "NOT_SUPPORTED",
   "scope": {
     "horizons_minutes": [15, 30],
@@ -10,11 +10,21 @@
     "strategy_threshold_search": false,
     "routing_authority": false,
     "production_authority": false,
-    "multiscale": false
+    "multiscale": false,
+    "new_severity_feature_fit": false
   },
-  "data": {
-    "repository": "staryocean0/factorlab-trend-reversion-regime-lab",
-    "ref": "1d760ea9525eb3688b70a4aa0f2b5b207af16a17",
+  "parent_result_identity": {
+    "public_run_id": "34834408567-1",
+    "private_release_id": 388319643,
+    "archive_sha256": "c201cd1b2ab18442ca49d60209b181557335595efdb6a4da5d78549b5c32b21b",
+    "state_rows_sha256": "e74e497ddf075f7b1519ab3afd96dddfeafbeafce7e4bab86a77d9037e23e30d",
+    "cohort_rows_sha256": "53276c7f25861b8a064288f8662c1a391c0c5af75758376df60e98ab180c4234",
+    "required_score_columns": ["p_B_15m", "p_C_15m", "p_B_30m", "p_C_30m"],
+    "parent_rows_must_reproduce_byte_identically": true
+  },
+  "data_lineage": {
+    "canonical_repository": "staryocean0/factorlab-trend-reversion-regime-lab",
+    "canonical_ref": "1d760ea9525eb3688b70a4aa0f2b5b207af16a17",
     "canonical_suffix": "data/market/5m/<symbol>/<year>.parquet",
     "symbols": ["000688.SH", "000852.SH"],
     "warmup_years": [2020],
@@ -24,71 +34,38 @@
     "fresh_oos_read_in_phase1b": false,
     "substitute_data_allowed": false
   },
-  "state_machine": {
-    "rv_window": 12,
-    "bg_window": 48,
-    "highvol_ratio": 1.5,
-    "recovery_normal_ratio": 1.1,
-    "shock_sigma": 3.0,
-    "daily_state_reset": true,
-    "states": ["NORMAL", "UNSAFE", "RECOVERING"],
-    "age_buckets": {"LT15": "<=2 bars", "M15_25": "3-5 bars", "M30_40": "6-8 bars", "GE45": ">=9 bars"}
+  "ordering_test": {
+    "baseline_score": "frozen Phase-1 p_B_<h>m",
+    "challenger_score": "frozen Phase-1 p_C_<h>m",
+    "metric": "AUROC(C)-AUROC(B)",
+    "score_refit": false,
+    "development": "use Phase-1 2021-2023 LOYO out-of-fold scores exactly as stored",
+    "repeat_audit": "use Phase-1 fixed 2024-2025 scores exactly as stored"
   },
-  "cohort": {
-    "episode_start": "shock bar not immediately preceded by UNSAFE within the same trading day",
-    "rows": "post-shock UNSAFE or RECOVERING rows until first NORMAL, with later shocks resetting shock-age",
-    "label_clock": "same continuous AM/PM session",
-    "horizons_minutes": [15, 30],
-    "overnight": false
-  },
-  "models": {
-    "objective": "penalized_binomial_log_likelihood",
-    "ridge_lambda": 0.01,
+  "calibration": {
+    "method": "Platt scaling applied symmetrically and separately to B and C",
+    "input": "logit(clip(parent_score,1e-6,1-1e-6))",
+    "model": "intercept plus one slope under binomial log-likelihood",
+    "slope_ridge_lambda": 1e-6,
     "penalize_intercept": false,
     "max_iterations": 100,
     "newton_tolerance": 1e-10,
-    "probability_epsilon": 1e-12,
-    "hyperparameter_search": false,
-    "standardization": "training-fold mean/sd for every non-intercept column; sd<=0 replaced by 1",
-    "baseline_B": [
-      "intercept",
-      "symbol_000852",
-      "seven non-reference State|age cell indicators; reference=UNSAFE|LT15"
-    ],
-    "challenger_C_additions": [
-      "a=log1p(max(shock_intensity,0))",
-      "b=log(max(vol_ratio,1e-12))",
-      "a2",
-      "b2",
-      "ab",
-      "a_x_RECOVERING",
-      "b_x_RECOVERING",
-      "a2_x_RECOVERING",
-      "b2_x_RECOVERING",
-      "ab_x_RECOVERING"
-    ]
+    "development": "second-level leave-one-year-out: fit calibrator on the other two years' Phase-1 OOF scores and apply to held year",
+    "repeat_audit": "fit calibrators once on all 2021-2023 Phase-1 OOF scores and apply unchanged to 2024-2025",
+    "hyperparameter_search": false
   },
-  "validation": {
-    "development": "leave-one-year-out over 2021/2022/2023; concatenate held-year predictions",
-    "repeat_audit": "fit once on all 2021-2023 and evaluate 2024 and 2025 without refit",
-    "primary_ordering_metric": "AUROC gain = AUROC(C)-AUROC(B)",
-    "proper_score_gains": {
-      "brier_gain": "Brier(B)-Brier(C)",
-      "logloss_gain": "LogLoss(B)-LogLoss(C)"
-    },
-    "bootstrap": {
-      "cluster": "trading_day",
-      "repetitions": 5000,
-      "seed": 20260914,
-      "family_size": 2,
-      "family_one_sided_alpha": 0.05,
-      "lower_quantile": 0.025
-    }
+  "bootstrap": {
+    "metric": "raw-score AUROC gain",
+    "cluster": "trading_day across both symbols",
+    "repetitions": 5000,
+    "seed": 20260914,
+    "family_size": 2,
+    "family_one_sided_alpha": 0.05,
+    "lower_quantile": 0.025
   },
   "support_gates": {
     "development_rows_min": 3000,
     "development_symbol_year_rows_min": 200,
-    "loyo_state_age_training_cell_min": 50,
     "development_positive_min": 100,
     "development_negative_min": 100,
     "repeat_audit_rows_min": 2000,
@@ -97,23 +74,23 @@
     "repeat_audit_negative_min": 100
   },
   "ordering_acceptance_gates": [
-    "development pooled AUROC gain > 0",
-    "development family-adjusted trading-day bootstrap lower bound for AUROC gain > 0",
-    "at least 2 of 3 held development years have AUROC gain >= 0",
-    "each symbol development AUROC gain >= 0",
-    "repeat-audit pooled AUROC gain >= 0",
-    "each of 2024 and 2025 repeat-audit AUROC gain >= 0",
-    "each symbol repeat-audit AUROC gain >= 0"
+    "development pooled raw-score AUROC gain > 0",
+    "development family-adjusted trading-day bootstrap lower bound for raw-score AUROC gain > 0",
+    "at least 2 of 3 development years have raw-score AUROC gain >= 0",
+    "each symbol development raw-score AUROC gain >= 0",
+    "repeat-audit pooled raw-score AUROC gain >= 0",
+    "each of 2024 and 2025 repeat-audit raw-score AUROC gain >= 0",
+    "each symbol repeat-audit raw-score AUROC gain >= 0"
   ],
   "calibrated_increment_acceptance_gates": [
     "all ordering acceptance gates pass",
-    "development pooled Brier gain > 0",
-    "development pooled LogLoss gain > 0",
-    "at least 2 of 3 held development years have both Brier gain >= 0 and LogLoss gain >= 0",
-    "repeat-audit pooled Brier gain >= 0",
-    "repeat-audit pooled LogLoss gain >= 0",
-    "each of 2024 and 2025 repeat-audit years has both Brier gain >= 0 and LogLoss gain >= 0",
-    "each symbol repeat-audit has both Brier gain >= 0 and LogLoss gain >= 0"
+    "development pooled cross-fitted calibrated Brier gain > 0",
+    "development pooled cross-fitted calibrated LogLoss gain > 0",
+    "at least 2 of 3 development years have both calibrated Brier gain >= 0 and calibrated LogLoss gain >= 0",
+    "repeat-audit pooled calibrated Brier gain >= 0",
+    "repeat-audit pooled calibrated LogLoss gain >= 0",
+    "each of 2024 and 2025 repeat-audit years has both calibrated gains >= 0",
+    "each symbol repeat-audit has both calibrated gains >= 0"
   ],
   "verdicts": {
     "ORDERING_AND_CALIBRATION_SUPPORTED_PENDING_FRESH_OOS": "ordering and calibrated increment gates both pass",
@@ -133,7 +110,7 @@
     "SUMMARY.json",
     "SUPPORT_AUDIT.csv",
     "HORIZON_METRICS.csv",
-    "MODEL_FREEZE.json",
+    "CALIBRATION_FREEZE.json",
     "INPUT_DATA_RECEIPT.json",
     "FRESH_OOS_GATE.json",
     "state_rows.parquet",
