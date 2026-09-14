@@ -1,0 +1,56 @@
+name: CSI1000 bounded dispatch controller
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: read
+  actions: write
+
+concurrency:
+  group: csi1000-dispatch-controller-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    if: >-
+      github.repository == 'staryocean0/csi1000-timing-strategy-public' &&
+      github.event_name == 'issues' &&
+      github.event.action == 'opened' &&
+      github.event.issue.user.login == github.repository_owner &&
+      (github.event.issue.title == 'controller: runtime-smoke' ||
+       github.event.issue.title == 'controller: handoff-verify-v1' ||
+       github.event.issue.title == 'controller: risk-v2-severity-persistence-v1')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    env:
+      REQUEST_TITLE: ${{ github.event.issue.title }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Dispatch approved standard profile
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$REQUEST_TITLE" in
+            'controller: runtime-smoke')
+              profile='runtime-smoke'
+              ;;
+            'controller: handoff-verify-v1')
+              profile='handoff-verify-v1'
+              ;;
+            'controller: risk-v2-severity-persistence-v1')
+              profile='risk-v2-severity-persistence-v1'
+              ;;
+            *)
+              echo 'Execution stopped: unapproved_controller_request' >&2
+              exit 64
+              ;;
+          esac
+          gh api \
+            --method POST \
+            repos/staryocean0/csi1000-timing-strategy-public/actions/workflows/public-compute.yml/dispatches \
+            -f ref='cloud-workspace-v1' \
+            -f "inputs[profile]=$profile"
+          echo 'Approved standard workflow_dispatch submitted.'
