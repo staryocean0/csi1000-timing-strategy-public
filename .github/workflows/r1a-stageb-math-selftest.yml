@@ -5,6 +5,7 @@ on:
     paths:
       - 'executor/r1a_stageb_statistical_protocol.json'
       - 'executor/r1a_stageb_math_selftest.py'
+      - 'executor/r1a_stageb_preoutcome_audit.py'
       - '.github/workflows/r1a-stageb-math-selftest.yml'
 
 permissions:
@@ -20,7 +21,26 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-      - name: Install fixed math dependency
-        run: python3 -m pip install --disable-pip-version-check --no-input numpy==2.5.3
+          path: executor-repo
+
+      - name: Checkout pinned public source and annual CSI1000 data
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: staryocean0/factorlab-trend-reversion-regime-lab
+          ref: ab4979b224d8ee97f89b75ac428ddd71887fecf1
+          persist-credentials: false
+          path: source
+          sparse-checkout: |
+            data/market/1m/000852.SH
+            research/index_price_validity
+            docs/governance/INDEX_PRICE_VALIDITY_FREEZE@1.0.json
+          sparse-checkout-cone-mode: false
+
+      - name: Install fixed math dependencies
+        run: python3 -m pip install --disable-pip-version-check --no-input numpy==2.5.3 pandas==3.0.5 pyarrow==25.0.1
+
       - name: Run synthetic-only Stage B math self-test
-        run: python3 executor/r1a_stageb_math_selftest.py
+        run: python3 executor-repo/executor/r1a_stageb_math_selftest.py
+
+      - name: Run outcome-blind common-terminal cohort gate
+        run: python3 executor-repo/executor/r1a_stageb_preoutcome_audit.py --source source
