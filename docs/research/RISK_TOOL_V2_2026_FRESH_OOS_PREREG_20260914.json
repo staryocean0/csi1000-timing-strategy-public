@@ -1,0 +1,123 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_2026_fresh_oos_prereg@1.0",
+  "task_id": "CSI1000-RISK-V2-2026-FRESH-OOS-V1-20260914",
+  "purpose": "One-time fresh out-of-sample test of the already-frozen 15m/30m Severity ordering plus symmetric Platt calibration. No model, feature, threshold, calibration, horizon, cutoff, or acceptance-gate fitting is allowed after this preregistration.",
+  "phase1_parent_verdict_immutable": "NOT_SUPPORTED",
+  "phase1b_authority": {
+    "public_run_id": "34844053584-1",
+    "public_source_sha": "a2bca006c04d1300f3c41dafad5691196b30c1ea",
+    "private_release_id": 388398729,
+    "private_archive_sha256": "197c15aaa725a20cbfd7b07ff639e59c400b38eaa49c0141fa6fca9d035dd3fc",
+    "phase1b_verdict": "ORDERING_AND_CALIBRATION_SUPPORTED_PENDING_FRESH_OOS",
+    "eligible_horizons_minutes": [15, 30],
+    "independent_verifier_passed": true,
+    "fresh_oos_unlocked": true,
+    "year_2026_read_in_phase1b": false
+  },
+  "frozen_phase1_model_identity": {
+    "source_run_id": "34834408567-1",
+    "model_freeze_sha256": "b81cae6208d96890c0fd83d47e4ea8c8a81ba55b41c78f58db29e9160f173551",
+    "development_years": [2021, 2022, 2023],
+    "ridge_lambda": 0.01,
+    "score_refit_in_fresh_oos": false
+  },
+  "frozen_calibration": {
+    "method": "Platt",
+    "score_clip": 1e-6,
+    "slope_ridge_lambda": 1e-6,
+    "penalize_intercept": false,
+    "hyperparameter_search": false,
+    "parameters": {
+      "15": {
+        "B": [-0.0005783322327921923, 1.0012925611665986],
+        "C": [-0.03819573273361419, 1.0031313564853719]
+      },
+      "30": {
+        "B": [0.0048316291422488035, 1.0176058836682678],
+        "C": [-0.01552854661043555, 0.9880960138797352]
+      }
+    },
+    "calibration_refit_in_fresh_oos": false
+  },
+  "fresh_oos_window": {
+    "year": 2026,
+    "cutoff_trading_day_inclusive": "2026-09-11",
+    "cutoff_is_immutable": true,
+    "reason": "Last completed trading day before preregistration on 2026-09-14; later 2026 observations may not be added to rescue or strengthen the test.",
+    "horizons_minutes": [15, 30],
+    "same_continuous_AM_PM_session_no_lunch_crossing": true,
+    "overnight": false
+  },
+  "canonical_data_readiness": {
+    "repository": "staryocean0/factorlab-trend-reversion-regime-lab",
+    "required_paths": [
+      "data/market/5m/000688.SH/2026.parquet",
+      "data/market/5m/000852.SH/2026.parquet"
+    ],
+    "warmup_required_paths": [
+      "data/market/5m/000688.SH/2025.parquet",
+      "data/market/5m/000852.SH/2025.parquet"
+    ],
+    "current_status_at_preregistration": "NOT_AVAILABLE",
+    "current_main_checked_at_preregistration": true,
+    "source_ref_selection_rule": "Before any 2026 row-level scientific read, pin one immutable commit containing both required 2026 paths; all previously frozen 2020-2025 canonical shard identities must match the Phase-1 canonical manifest exactly.",
+    "alternate_5m_views_allowed": false,
+    "substitute_data_allowed": false,
+    "execution_profile_may_exist_before_data_ready": false,
+    "row_level_scientific_read_before_data_ready": false,
+    "staging_rule": "After a qualifying immutable commit is pinned, a transport-only stage may materialize only rows with trading_day <= 2026-09-11 for scientific compute; staging must not calculate outcomes or acceptance metrics."
+  },
+  "support_gates_per_horizon": {
+    "fresh_rows_min": 1200,
+    "fresh_rows_each_symbol_min": 500,
+    "fresh_positive_min": 100,
+    "fresh_negative_min": 100,
+    "trading_day_clusters_min": 100
+  },
+  "fresh_oos_bootstrap": {
+    "metric": "raw-score AUROC(C)-AUROC(B)",
+    "cluster": "trading_day across both symbols",
+    "repetitions": 5000,
+    "seed": 20260914,
+    "family_size": 2,
+    "family_one_sided_alpha": 0.05,
+    "lower_quantile": 0.025
+  },
+  "fresh_oos_acceptance_gates_per_horizon": [
+    "all support gates pass",
+    "fresh pooled raw-score AUROC(C)-AUROC(B) > 0",
+    "family-adjusted trading-day bootstrap lower bound for raw-score AUROC gain > 0",
+    "each symbol raw-score AUROC gain >= 0",
+    "fresh pooled calibrated Brier gain B-minus-C > 0",
+    "fresh pooled calibrated LogLoss gain B-minus-C > 0",
+    "each symbol calibrated Brier gain >= 0 and calibrated LogLoss gain >= 0"
+  ],
+  "verdicts": {
+    "FRESH_OOS_SUPPORTED": "All frozen support and acceptance gates pass for the horizon.",
+    "FRESH_OOS_NOT_SUPPORTED": "Support is adequate but one or more frozen scientific acceptance gates fail.",
+    "INSUFFICIENT_2026_SUPPORT": "One or more frozen support gates fail; this does not authorize extending the cutoff or changing the model."
+  },
+  "authority_after_result": {
+    "if_supported": "Severity may be promoted from descriptive diagnostic to research-supported 15m/30m Layer2 probability component, subject to separate Layer3 integration research and still with production_authority=false.",
+    "if_not_supported": "Severity remains non-authoritative for Layer2 probability decisions; no rescue retuning on revealed 2026 is allowed.",
+    "if_insufficient_support": "2026 is considered revealed once evaluated; extending the window requires a new preregistration and may not be represented as the original fresh OOS test."
+  },
+  "one_time_reveal_policy": {
+    "first_successful_scientific_run_is_authoritative": true,
+    "technical_byte_identical_rerun_allowed": true,
+    "post_reveal_retuning": false,
+    "post_reveal_horizon_selection": false,
+    "post_reveal_cutoff_extension": false
+  },
+  "scope": {
+    "pnl": false,
+    "strategy_threshold_search": false,
+    "routing_authority": false,
+    "production_authority": false,
+    "multiscale": false,
+    "new_training": false
+  },
+  "execution_route_registered": false,
+  "year_2026_read": false,
+  "production_authority": false
+}
