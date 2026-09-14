@@ -47,7 +47,7 @@ PROFILE = {
 def require_context() -> None:
     env = os.environ
     if (env.get("GITHUB_ACTIONS") != "true" or env.get("GITHUB_REPOSITORY") != rb.PUBLIC_REPO
-            or env.get("GITHUB_EVENT_NAME") != "push" or env.get("GITHUB_REF") != "refs/heads/cloud-workspace-v1"):
+            or env.get("GITHUB_EVENT_NAME") != "workflow_dispatch" or env.get("GITHUB_REF") != "refs/heads/cloud-workspace-v1"):
         raise GateError("not_approved_diagnostic_context")
     if not re.fullmatch(r"[0-9]+", env.get("GITHUB_RUN_ID", "")) or not re.fullmatch(r"[0-9]+", env.get("GITHUB_RUN_ATTEMPT", "")):
         raise GateError("invalid_run_identity")
