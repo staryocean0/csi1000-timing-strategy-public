@@ -2,7 +2,7 @@
   "schema_id": "factorlab.public_risk_research_profile@1.0",
   "profile_name": "risk-v2-severity-persistence-v1",
   "transport_profile": "handoff-verify-v1",
-  "private_ref": "802f4c3be2b2a811883049eb79571ee80239df52",
+  "private_ref": "3879de41a5ac7c12246b811f51d16dc8586b9dae",
   "source_files": {
     "runtime/research/risk_tool_v2_severity_persistence_v1/run_study.py": {
       "bytes": 31380,
@@ -13,8 +13,8 @@
       "git_blob_sha1": "ede91a2cacff63477e0cd4d7f50faa92f95cb920"
     },
     "runtime/research/risk_tool_v2_severity_persistence_v1/run_study_v3.py": {
-      "bytes": 2223,
-      "git_blob_sha1": "ca30ce82b9d0f9078e901fdb917bc965e8f37ce4"
+      "bytes": 7146,
+      "git_blob_sha1": "9055b9d8e66860e495e471e4437fb79347cf3020"
     },
     "runtime/research/risk_tool_v2_severity_persistence_v1/verify_study.py": {
       "bytes": 16492,
