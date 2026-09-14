@@ -113,11 +113,13 @@ class RiskResearchBrokerTests(unittest.TestCase):
         with self.assertRaises(legacy.GateError):
             legacy.load_profile(risk.PROFILE_NAME)
 
-    def test_router_has_only_reviewed_research_profiles(self):
-        entry_spec = importlib.util.spec_from_file_location("research_entry", ROOT / "executor/research_entry.py")
-        entry = importlib.util.module_from_spec(entry_spec)
-        entry_spec.loader.exec_module(entry)
-        self.assertEqual(set(entry.BROKERS), {"handoff-verify-v1", "risk-v2-severity-persistence-v1"})
+    def test_workflow_routes_risk_without_replacing_legacy_entrypoint(self):
+        text = (ROOT / ".github/workflows/public-compute.yml").read_text()
+        self.assertIn("python3 executor/research_broker.py prepare handoff-verify-v1", text)
+        self.assertIn("python3 executor/risk_research_broker.py prepare risk-v2-severity-persistence-v1", text)
+        self.assertIn("python3 executor/research_broker.py compute handoff-verify-v1", text)
+        self.assertIn("python3 executor/risk_research_broker.py compute risk-v2-severity-persistence-v1", text)
+        self.assertEqual(text.count("secrets.FACTORLAB_PRIVATE_TOKEN"), 2)
 
 
 if __name__ == "__main__":
