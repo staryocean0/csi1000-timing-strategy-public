@@ -49,28 +49,28 @@ jobs:
 
       - name: Prove isolated runtime with no private data
         timeout-minutes: 2
-        run: python3 executor/broker.py runtime-smoke
+        run: GITHUB_EVENT_NAME=workflow_dispatch python3 executor/broker.py runtime-smoke
 
       - name: Prepare fixed Risk Tool 2.0 inputs
         id: prepare
         timeout-minutes: 6
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
-        run: python3 executor/risk_research_broker.py prepare risk-v2-severity-persistence-v1
+        run: GITHUB_EVENT_NAME=workflow_dispatch python3 executor/risk_research_broker.py prepare risk-v2-severity-persistence-v1
 
       - name: Compute without private credentials
         timeout-minutes: 16
-        run: python3 executor/risk_research_broker.py compute risk-v2-severity-persistence-v1
+        run: GITHUB_EVENT_NAME=workflow_dispatch python3 executor/risk_research_broker.py compute risk-v2-severity-persistence-v1
 
       - name: Stop owned container before credentials return
         id: cleanup
         if: always() && steps.prepare.outcome == 'success'
         timeout-minutes: 1
-        run: python3 executor/risk_research_broker.py cleanup risk-v2-severity-persistence-v1
+        run: GITHUB_EVENT_NAME=workflow_dispatch python3 executor/risk_research_broker.py cleanup risk-v2-severity-persistence-v1
 
       - name: Return verified results privately
         if: always() && steps.prepare.outcome == 'success' && steps.cleanup.outcome == 'success'
         timeout-minutes: 6
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
-        run: python3 executor/risk_research_broker.py publish risk-v2-severity-persistence-v1
+        run: GITHUB_EVENT_NAME=workflow_dispatch python3 executor/risk_research_broker.py publish risk-v2-severity-persistence-v1
