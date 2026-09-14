@@ -117,7 +117,7 @@ class OvernightInventoryTests(unittest.TestCase):
     def test_protocol_does_not_authorize_outcome_research(self):
         protocol = (ROOT / "docs" / "research" / "OVERNIGHT_OFFICIAL_SNAPSHOT_INVENTORY_PROTOCOL_20260914.md").read_text()
         self.assertIn("active_research=null", protocol)
-        self.assertIn("not a successor study", protocol)
+        self.assertIn("**not** a successor study", protocol)
         self.assertIn("No outcome-bearing research is authorized", protocol)
         self.assertIn("2021-2025 remains reusable BLACKBOX material", protocol)
 
