@@ -1,0 +1,1 @@
+This directory contains the bounded public-to-private source synchronization surface for the preregistered Risk Tool 2.0 Phase-1b ordering/calibration study. The request is fixed to one private base commit, one private branch, and three exact target paths. It is control-plane synchronization only and never executes research.
