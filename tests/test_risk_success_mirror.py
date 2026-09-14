@@ -1,19 +1,25 @@
-import importlib.util
+import ast
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def text_outputs_from_source():
+    source = (ROOT / "executor/risk_success_mirror.py").read_text()
+    tree = ast.parse(source)
+    for node in tree.body:
+        if isinstance(node, ast.Assign):
+            if any(isinstance(target, ast.Name) and target.id == "TEXT_OUTPUTS" for target in node.targets):
+                return tuple(ast.literal_eval(node.value))
+    raise AssertionError("TEXT_OUTPUTS not found")
+
+
 class RiskSuccessMirrorTests(unittest.TestCase):
     def test_mirror_surface_is_fixed_text_only(self):
-        spec = importlib.util.spec_from_file_location(
-            "risk_success_mirror", ROOT / "executor/risk_success_mirror.py"
-        )
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
+        outputs = text_outputs_from_source()
         self.assertEqual(
-            set(module.TEXT_OUTPUTS),
+            set(outputs),
             {
                 "SUMMARY.json",
                 "SUPPORT_AUDIT.csv",
@@ -24,7 +30,7 @@ class RiskSuccessMirrorTests(unittest.TestCase):
                 "INPUT_DATA_RECEIPT.json",
             },
         )
-        self.assertFalse(any(name.endswith(".parquet") for name in module.TEXT_OUTPUTS))
+        self.assertFalse(any(name.endswith(".parquet") for name in outputs))
 
     def test_workflow_mirrors_only_after_successful_risk_publish(self):
         text = (ROOT / ".github/workflows/public-compute.yml").read_text()
