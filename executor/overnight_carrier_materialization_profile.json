@@ -1,0 +1,45 @@
+{
+  "schema_id": "factorlab.public_overnight_carrier_materialization_profile@1.0",
+  "profile_name": "overnight-carrier-materialization-v1",
+  "transport_profile": "handoff-verify-v1",
+  "private_ref": "cbe97535403b17cf8c4311bcc6567328b726ce67",
+  "private_source_files": {
+    "handoff/INPUT_MANIFEST.json": {
+      "bytes": 156,
+      "sha256": "72ae598f18c761329ddf9286a464be9b5a4e27edbbfb842875e086f23025c4f4"
+    }
+  },
+  "public_source_files": {
+    "overnight_carrier_source_manifest.json": {
+      "git_blob_sha1": "c6f5d5949442a90439924470746f1c2d9ccee4ca"
+    },
+    "overnight_carrier_materialization.py": {
+      "git_blob_sha1": "527eb56ee90adb9711f68ede72b84cc5c2a55cc9"
+    },
+    "verify_overnight_carrier_materialization.py": {
+      "git_blob_sha1": "f58ae45724eb79930c42485d37c895159b0728ec"
+    },
+    "overnight_carrier_stage_public.py": {
+      "git_blob_sha1": "5370289ed122d3104e6db9442937dfe5f5637dc7"
+    }
+  },
+  "source_manifest_path": "overnight_carrier_source_manifest.json",
+  "command": [
+    "overnight_carrier_materialization/run_study.py",
+    "--inputs",
+    "/work/overnight_carrier",
+    "--out",
+    "/results/study"
+  ],
+  "verify_command": [
+    "overnight_carrier_materialization/verify_study.py",
+    "--inputs",
+    "/work/overnight_carrier",
+    "--results",
+    "/results/study"
+  ],
+  "command_timeout_seconds": 120,
+  "verification_timeout_seconds": 60,
+  "new_training": false,
+  "production_authority": false
+}
