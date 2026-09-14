@@ -1,7 +1,7 @@
 # 中证1000择时策略：公共执行与通用代码开发
 
 先读docs/public_execution.md。本库只包含公开执行器、测试、说明和经审查的通用代码；私有资产位于staryocean0/csi1000-timing-strategy-private。
-活动分支cloud-workspace-v1。手动profile仅runtime-smoke、handoff-verify-v1；后者验签固定交接包，不训练、不重新研究。尚无本主题的已验收经济策略profile。
+活动分支cloud-workspace-v1。标准手工profile包括runtime-smoke、handoff-verify-v1和risk-v2-severity-persistence-v1；Risk Tool 2.0 profile只执行已冻结的Layer2 Severity × Persistence研究，不计算PnL、不授予策略路由或生产权限。尚无本主题的已验收经济策略profile。
 
 ## 执行与信息边界
 
@@ -18,7 +18,6 @@
 DeepSeek禁用，Luna/Terra/Spark仅当前用户明确请求；不使用Auto/Fast或退休工作流。云端缺数据时在docs/ops/cloud_local_communication.md写最小可执行交接，不能默默补数、自动下载全本地仓或用别的年份冒充。
 
 ## 仓库操作被拒绝后的助手自审规则
-
 
 仓库修改内容由执行助手生成时，排查责任首先属于助手，不应把“为什么被拒绝”直接丢给用户。收到平台安全拒绝或其他无提交结果后，先停止该次写入并重新审查自己准备的动作、目标和内容。
 
