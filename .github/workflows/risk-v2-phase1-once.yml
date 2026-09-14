@@ -28,7 +28,7 @@ jobs:
         timeout-minutes: 3
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          ref: 8c514f058649870d4ae063ba62c4b28769850530
+          ref: c95dab7d6ac5e2cd5b6014a0e08e0004eec13905
           persist-credentials: false
           sparse-checkout: |
             executor
@@ -37,7 +37,7 @@ jobs:
           sparse-checkout-cone-mode: true
 
       - name: Assert frozen public executor identity
-        run: test "$(git rev-parse HEAD)" = "8c514f058649870d4ae063ba62c4b28769850530"
+        run: test "$(git rev-parse HEAD)" = "c95dab7d6ac5e2cd5b6014a0e08e0004eec13905"
 
       - name: Synthetic executor tests
         timeout-minutes: 2
