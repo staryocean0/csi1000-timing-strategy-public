@@ -25,8 +25,14 @@ class HistoricalRiskTests(unittest.TestCase):
         self.assertIn('validated.get("status") == "passed"',b)
         self.assertIn('"status":"passed"',v)
         self.assertNotIn('"status":"verified"',v)
+    def test_private_text_mirror_is_bounded_and_success_only(self):
+        m=(ROOT/"executor/risk_historical_private_mirror.py").read_text();compile(m,"mirror","exec")
+        for name in ("SUMMARY.json","SUPPORT_AUDIT.csv","HORIZON_METRICS.csv","INPUT_DATA_RECEIPT.json","MODEL_INPUT_RECEIPT.json"):
+            self.assertIn('"'+name+'"',m)
+        self.assertNotIn("cohort_rows.parquet",m);self.assertNotIn("state_rows.parquet",m)
+        self.assertIn('state.get("compute_success") is not True',m);self.assertIn('state.get("cleanup_complete") is not True',m)
     def test_broker_is_dispatch_only_and_fixed(self):
         b=(ROOT/"executor/risk_historical_000852_broker.py").read_text();self.assertIn('PROFILE_NAME="'+PROFILE+'"',b);self.assertIn('GITHUB_EVENT_NAME")!="workflow_dispatch"',b);self.assertIn("388319643",b);self.assertIn("388398729",b);self.assertIn("1d760ea9525eb3688b70a4aa0f2b5b207af16a17",b)
     def test_standard_workflow_and_controller_route_profile(self):
-        w=(ROOT/".github/workflows/public-compute.yml").read_text();c=(ROOT/".github/workflows/controller-dispatch.yml").read_text();self.assertIn(PROFILE,w);self.assertIn("workflow_dispatch:",w);self.assertNotIn("push:\n",w);self.assertIn("controller: "+PROFILE,c);self.assertIn("profile='"+PROFILE+"'",c)
+        w=(ROOT/".github/workflows/public-compute.yml").read_text();c=(ROOT/".github/workflows/controller-dispatch.yml").read_text();self.assertIn(PROFILE,w);self.assertIn("workflow_dispatch:",w);self.assertNotIn("push:\n",w);self.assertIn("controller: "+PROFILE,c);self.assertIn("profile='"+PROFILE+"'",c);self.assertIn("python3 executor/risk_historical_private_mirror.py",w)
 if __name__=="__main__":unittest.main()
