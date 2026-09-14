@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import argparse
 import base64
-import hashlib
 import importlib.util
 import json
 import os
@@ -25,14 +24,6 @@ if _spec is None or _spec.loader is None:
     raise RuntimeError("base_broker_unavailable")
 base = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(base)
-
-_feature_spec = importlib.util.spec_from_file_location(
-    "_r1a_feature_audit", HERE / "r1a_stagea_feature_audit.py"
-)
-if _feature_spec is None or _feature_spec.loader is None:
-    raise RuntimeError("feature_audit_unavailable")
-feature = importlib.util.module_from_spec(_feature_spec)
-_feature_spec.loader.exec_module(feature)
 
 GateError = base.GateError
 PROFILE_NAME = "r1a-parent-continuation-stagea-v1"
@@ -65,6 +56,17 @@ PROFILE_KEYS = {
 def require(ok: bool, message: str) -> None:
     if not ok:
         raise GateError(message)
+
+
+def load_feature_module():
+    spec = importlib.util.spec_from_file_location(
+        "_r1a_feature_audit", HERE / "r1a_stagea_feature_audit.py"
+    )
+    if spec is None or spec.loader is None:
+        raise GateError("feature_audit_unavailable")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def load_profile(name: str) -> dict:
@@ -136,6 +138,7 @@ def copy_regular(source: Path, target: Path) -> None:
 def prepare(profile: dict) -> None:
     require(not os.environ.get("FACTORLAB_PRIVATE_TOKEN"), "private_token_forbidden_in_public_prepare")
     require(not state_path().exists(), "existing_run_state")
+    feature = load_feature_module()
     workspace = Path(os.environ["GITHUB_WORKSPACE"]).resolve()
     source_checkout = workspace / "r1a-source"
     require(source_checkout.is_dir(), "pinned_public_source_checkout_missing")
