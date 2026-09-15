@@ -1,0 +1,61 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_15m_annual_calibration_drift_diagnostic@1.0",
+  "task_id": "CSI1000-RISK-V2-15M-ANNUAL-CALIBRATION-DRIFT-DIAGNOSTIC-V1-20260915",
+  "status": "frozen_before_finer_decomposition_read",
+  "parent_acceptance_profile": "risk-tool-v2-temporal-stability-hierarchical-v1",
+  "parent_verified_run": "34919074188-1",
+  "parent_bottleneck": "annual.calibration",
+  "horizon_minutes": 15,
+  "symbol": "000852.SH",
+  "years_read": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],
+  "hard_gate_years": [2015,2016,2017,2018,2019,2021,2022,2023,2024,2025],
+  "warmup_year": 2020,
+  "year_2026_read": false,
+  "purpose": "diagnose the already-revealed 15m annual calibration instability without changing or rescuing the parent candidate",
+  "frozen_model": {
+    "phase1_model_freeze_sha256": "b81cae6208d96890c0fd83d47e4ea8c8a81ba55b41c78f58db29e9160f173551",
+    "phase1b_calibration_freeze_sha256": "74ecd25790123f026e29cba7bb84322aad8a385c10fe3d60ef0d75d52d1b1909",
+    "parent_score_refit": false,
+    "calibration_refit": false,
+    "new_training": false
+  },
+  "fixed_decomposition": {
+    "year": true,
+    "current_state": ["UNSAFE","RECOVERING"],
+    "age_bucket": ["LT15","M15_25","M30_40","GE45"],
+    "calibrated_C_probability_band_edges": [0.0,0.05,0.1,0.2,0.4,0.6,0.8,0.9,0.95,1.0],
+    "extreme_surprise_thresholds": {"low": 0.1, "high": 0.9}
+  },
+  "fixed_metrics": [
+    "rows","positive","negative","event_rate",
+    "B_raw_brier","C_raw_brier","B_raw_logloss","C_raw_logloss",
+    "B_cal_brier","C_cal_brier","B_cal_logloss","C_cal_logloss",
+    "calibrated_brier_gain","calibrated_logloss_gain",
+    "B_cal_mean_probability","C_cal_mean_probability",
+    "B_cal_signed_bias","C_cal_signed_bias",
+    "B_platt_logloss_delta_vs_raw","C_platt_logloss_delta_vs_raw",
+    "stratum_logloss_gain_contribution_to_year",
+    "stratum_brier_gain_contribution_to_year",
+    "extreme_surprise_count","extreme_surprise_logloss_contribution"
+  ],
+  "outputs": [
+    "DIAGNOSTIC_SUMMARY.json",
+    "YEAR_DECOMPOSITION.csv",
+    "CELL_DECOMPOSITION.csv",
+    "PROBABILITY_BAND_DECOMPOSITION.csv",
+    "INPUT_DATA_RECEIPT.json",
+    "MODEL_INPUT_RECEIPT.json"
+  ],
+  "interpretation_rules": {
+    "diagnostic_only": true,
+    "no_acceptance_state_change": true,
+    "no_threshold_change": true,
+    "no_horizon_change": true,
+    "no_post_result_recalibration": true,
+    "no_2026": true,
+    "no_pnl": true,
+    "no_production_authority": true,
+    "future_candidate_requires_new_profile_id_and_new_pre_result_freeze": true
+  },
+  "stop_rule": "after verified aggregate decomposition is produced, stop this diagnostic; do not fit or test a repair inside the same task"
+}
