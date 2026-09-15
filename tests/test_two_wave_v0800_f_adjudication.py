@@ -99,7 +99,7 @@ class TwoWaveV0800FAdjudicationTest(unittest.TestCase):
         self.assertEqual(frozen["between_event_state"], "undefined")
         self.assertFalse(frozen["carry_forward"])
         note = NOTE.read_text(encoding="utf-8")
-        self.assertIn("eligible-only continuity is materially false", note)
+        self.assertIn("Eligible-only continuity is materially false", note)
         self.assertIn("F does **not** create a bar-time market state", note)
         self.assertIn("No carry-forward rule should be smuggled", note)
 
