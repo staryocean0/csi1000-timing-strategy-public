@@ -11,6 +11,7 @@ on:
           - risk-v2-severity-persistence-v1
           - risk-v2-phase1-calibration-diagnostic-20260914
           - risk-v2-phase1b-ordering-calibration-v1
+          - risk-v2-phase1b-carrier-inventory-v1
           - risk-v2-historical-000852-2015-2019-v1
           - risk-v2-temporal-stability-2015-2025-v1
           - risk-v2-15m-annual-calibration-diagnostic-v1
@@ -74,7 +75,7 @@ jobs:
         run: python3 executor/overnight_tail_blackbox_stage_public.py
       - name: Prepare fixed private inputs
         id: prepare
-        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1-calibration-diagnostic-20260914' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'risk-v2-historical-000852-2015-2019-v1' || inputs.profile == 'risk-v2-temporal-stability-2015-2025-v1' || inputs.profile == 'risk-v2-15m-annual-calibration-diagnostic-v1' || inputs.profile == 'risk-v2-15m-tail-robust-calibration-v2' || inputs.profile == 'risk-v2-weekly-support-diagnostic-v1' || inputs.profile == 'risk-v2-weekly-window-feasibility-v1' || inputs.profile == 'risk-v2-temporal-stability-2week-v2' || inputs.profile == 'risk-v2-weekly-ordering-diagnostic-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-blackbox-v1'
+        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1-calibration-diagnostic-20260914' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'risk-v2-phase1b-carrier-inventory-v1' || inputs.profile == 'risk-v2-historical-000852-2015-2019-v1' || inputs.profile == 'risk-v2-temporal-stability-2015-2025-v1' || inputs.profile == 'risk-v2-15m-annual-calibration-diagnostic-v1' || inputs.profile == 'risk-v2-15m-tail-robust-calibration-v2' || inputs.profile == 'risk-v2-weekly-support-diagnostic-v1' || inputs.profile == 'risk-v2-weekly-window-feasibility-v1' || inputs.profile == 'risk-v2-temporal-stability-2week-v2' || inputs.profile == 'risk-v2-weekly-ordering-diagnostic-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-blackbox-v1'
         timeout-minutes: 6
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
@@ -87,6 +88,8 @@ jobs:
             python3 executor/risk_v2_calibration_diagnostic_broker.py prepare risk-v2-phase1-calibration-diagnostic-20260914
           elif [ '${{ inputs.profile }}' = 'risk-v2-phase1b-ordering-calibration-v1' ]; then
             python3 executor/risk_phase1b_release_broker.py prepare risk-v2-phase1b-ordering-calibration-v1
+          elif [ '${{ inputs.profile }}' = 'risk-v2-phase1b-carrier-inventory-v1' ]; then
+            python3 executor/risk_phase1b_carrier_inventory_broker.py prepare risk-v2-phase1b-carrier-inventory-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-historical-000852-2015-2019-v1' ]; then
             python3 executor/risk_historical_000852_broker.py prepare risk-v2-historical-000852-2015-2019-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-temporal-stability-2015-2025-v1' ]; then
@@ -115,7 +118,7 @@ jobs:
             exit 2
           fi
       - name: Compute without private credentials
-        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1-calibration-diagnostic-20260914' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'risk-v2-historical-000852-2015-2019-v1' || inputs.profile == 'risk-v2-temporal-stability-2015-2025-v1' || inputs.profile == 'risk-v2-15m-annual-calibration-diagnostic-v1' || inputs.profile == 'risk-v2-15m-tail-robust-calibration-v2' || inputs.profile == 'risk-v2-weekly-support-diagnostic-v1' || inputs.profile == 'risk-v2-weekly-window-feasibility-v1' || inputs.profile == 'risk-v2-temporal-stability-2week-v2' || inputs.profile == 'risk-v2-weekly-ordering-diagnostic-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-blackbox-v1'
+        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1-calibration-diagnostic-20260914' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'risk-v2-phase1b-carrier-inventory-v1' || inputs.profile == 'risk-v2-historical-000852-2015-2019-v1' || inputs.profile == 'risk-v2-temporal-stability-2015-2025-v1' || inputs.profile == 'risk-v2-15m-annual-calibration-diagnostic-v1' || inputs.profile == 'risk-v2-15m-tail-robust-calibration-v2' || inputs.profile == 'risk-v2-weekly-support-diagnostic-v1' || inputs.profile == 'risk-v2-weekly-window-feasibility-v1' || inputs.profile == 'risk-v2-temporal-stability-2week-v2' || inputs.profile == 'risk-v2-weekly-ordering-diagnostic-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-blackbox-v1'
         timeout-minutes: 16
         run: |
           if [ '${{ inputs.profile }}' = 'handoff-verify-v1' ]; then
@@ -126,6 +129,8 @@ jobs:
             python3 executor/risk_v2_calibration_diagnostic_broker.py compute risk-v2-phase1-calibration-diagnostic-20260914
           elif [ '${{ inputs.profile }}' = 'risk-v2-phase1b-ordering-calibration-v1' ]; then
             python3 executor/risk_phase1b_release_broker.py compute risk-v2-phase1b-ordering-calibration-v1
+          elif [ '${{ inputs.profile }}' = 'risk-v2-phase1b-carrier-inventory-v1' ]; then
+            python3 executor/risk_phase1b_carrier_inventory_broker.py compute risk-v2-phase1b-carrier-inventory-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-historical-000852-2015-2019-v1' ]; then
             python3 executor/risk_historical_000852_broker.py compute risk-v2-historical-000852-2015-2019-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-temporal-stability-2015-2025-v1' ]; then
@@ -166,6 +171,8 @@ jobs:
             python3 executor/risk_v2_calibration_diagnostic_broker.py cleanup risk-v2-phase1-calibration-diagnostic-20260914
           elif [ '${{ inputs.profile }}' = 'risk-v2-phase1b-ordering-calibration-v1' ]; then
             python3 executor/risk_phase1b_release_broker.py cleanup risk-v2-phase1b-ordering-calibration-v1
+          elif [ '${{ inputs.profile }}' = 'risk-v2-phase1b-carrier-inventory-v1' ]; then
+            python3 executor/risk_phase1b_carrier_inventory_broker.py cleanup risk-v2-phase1b-carrier-inventory-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-historical-000852-2015-2019-v1' ]; then
             python3 executor/risk_historical_000852_broker.py cleanup risk-v2-historical-000852-2015-2019-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-temporal-stability-2015-2025-v1' ]; then
@@ -209,6 +216,8 @@ jobs:
           elif [ '${{ inputs.profile }}' = 'risk-v2-phase1b-ordering-calibration-v1' ]; then
             python3 executor/risk_phase1b_release_broker.py publish risk-v2-phase1b-ordering-calibration-v1
             python3 executor/risk_phase1b_private_mirror.py
+          elif [ '${{ inputs.profile }}' = 'risk-v2-phase1b-carrier-inventory-v1' ]; then
+            python3 executor/risk_phase1b_carrier_inventory_broker.py publish risk-v2-phase1b-carrier-inventory-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-historical-000852-2015-2019-v1' ]; then
             python3 executor/risk_historical_000852_broker.py publish risk-v2-historical-000852-2015-2019-v1
             python3 executor/risk_historical_private_mirror.py
