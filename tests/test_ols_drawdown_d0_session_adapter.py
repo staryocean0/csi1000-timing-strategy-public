@@ -18,6 +18,15 @@ class OlsD0SessionAdapterTests(unittest.TestCase):
         for forbidden in ("fit_r2", "FAST_MIN_R2", "FAST_MIN_SLOPE", "path_efficiency", "EXIT_MODES"):
             self.assertNotIn(forbidden, text)
 
+    def test_atlas_dynamic_import_registers_before_exec(self):
+        text = (ROOT / "executor/ols_drawdown_d0_session_adapter.py").read_text()
+        registration = 'sys.modules[name] = module'
+        execution = 'spec.loader.exec_module(module)'
+        self.assertIn(registration, text)
+        self.assertIn(execution, text)
+        self.assertLess(text.index(registration), text.index(execution))
+        self.assertIn('d0._atlas_module = _atlas_module_registered', text)
+
     def test_broker_stages_adapter_without_changing_frozen_profile_identity(self):
         text = (ROOT / "executor/ols_drawdown_d0_broker.py").read_text()
         self.assertIn('"d0/ols_drawdown_d0_session_adapter.py"', text)

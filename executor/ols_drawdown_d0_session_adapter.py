@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import importlib.util
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -70,6 +71,28 @@ def _load_5m_by_verified_order(inputs: Path) -> tuple[pd.DataFrame, dict[str, ob
     return pd.concat(frames, ignore_index=True), receipt
 
 
+def _atlas_module_registered(path: Path):
+    # `ols_drawdown_atlas.py` uses postponed annotations on a dataclass. Python 3.11
+    # resolves those annotations through sys.modules while the dataclass decorator
+    # executes, so the dynamic module must be registered before exec_module().
+    name = "ols_drawdown_atlas"
+    spec = importlib.util.spec_from_file_location(name, path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("ols_d0_atlas_module_unavailable")
+    module = importlib.util.module_from_spec(spec)
+    prior = sys.modules.get(name)
+    sys.modules[name] = module
+    try:
+        spec.loader.exec_module(module)
+    except Exception:
+        if prior is None:
+            sys.modules.pop(name, None)
+        else:
+            sys.modules[name] = prior
+        raise
+    return module
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--inputs", required=True, type=Path)
@@ -77,6 +100,7 @@ def main() -> None:
     parser.add_argument("--atlas-script", required=True, type=Path)
     args = parser.parse_args()
     d0._load_5m = _load_5m_by_verified_order
+    d0._atlas_module = _atlas_module_registered
     d0.run(args.inputs, args.out, args.atlas_script)
 
 
