@@ -11,6 +11,10 @@ PRODUCER = ROOT / "executor/two_wave_v0800_b1_strict_continuity.py"
 VERIFIER = ROOT / "executor/two_wave_v0800_b1_strict_continuity_verifier.py"
 BROKER = ROOT / "executor/two_wave_v0800_b1_strict_continuity_broker.py"
 MIRROR = ROOT / "executor/two_wave_v0800_b1_strict_continuity_private_mirror.py"
+WORKFLOW = ROOT / ".github/workflows/public-compute.yml"
+CONTROLLER = ROOT / ".github/workflows/controller-dispatch.yml"
+PROFILE = "two-wave-v0800-b1-strict-continuity-v1"
+CONTROLLER_TITLE = "controller: two-wave-v0800-b1-strict-continuity-v1"
 
 
 class TwoWaveV0800B1StrictContinuityTest(unittest.TestCase):
@@ -53,7 +57,7 @@ class TwoWaveV0800B1StrictContinuityTest(unittest.TestCase):
 
     def test_broker_pins_same_consumed_development_data(self):
         text = BROKER.read_text(encoding="utf-8")
-        self.assertIn("two-wave-v0800-b1-strict-continuity-v1", text)
+        self.assertIn(PROFILE, text)
         self.assertIn("152ae1ef11a04bb3b434da25025794db7a706c81", text)
         self.assertIn("bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48", text)
         self.assertIn("DATA_BYTES = 3351411", text)
@@ -75,6 +79,28 @@ class TwoWaveV0800B1StrictContinuityTest(unittest.TestCase):
         self.assertIn("single-scale", text)
         self.assertIn("shared-anchor", text)
         self.assertIn("No 2026 data", text)
+
+    def test_standard_workflow_routes_exact_b1_profile_through_all_phases(self):
+        text = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("workflow_dispatch:", text)
+        self.assertNotIn("pull_request_target:", text)
+        self.assertIn(f"- {PROFILE}", text)
+        broker = "executor/two_wave_v0800_b1_strict_continuity_broker.py"
+        for phase in ("prepare", "compute", "cleanup", "publish"):
+            self.assertIn(f"python3 {broker} {phase} {PROFILE}", text)
+        self.assertIn("python3 executor/two_wave_v0800_b1_strict_continuity_private_mirror.py", text)
+        self.assertEqual(text.count(f"python3 {broker} prepare {PROFILE}"), 1)
+        self.assertEqual(text.count(f"python3 {broker} compute {PROFILE}"), 1)
+        self.assertEqual(text.count(f"python3 {broker} cleanup {PROFILE}"), 1)
+        self.assertEqual(text.count(f"python3 {broker} publish {PROFILE}"), 1)
+
+    def test_controller_accepts_only_exact_b1_title_and_dispatches_standard_workflow(self):
+        text = CONTROLLER.read_text(encoding="utf-8")
+        self.assertIn(CONTROLLER_TITLE, text)
+        self.assertIn(f"profile='{PROFILE}'", text)
+        self.assertIn("actions/workflows/public-compute.yml/dispatches", text)
+        self.assertIn("-f ref='cloud-workspace-v1'", text)
+        self.assertNotIn("pull_request_target:", text)
 
 
 if __name__ == "__main__":
