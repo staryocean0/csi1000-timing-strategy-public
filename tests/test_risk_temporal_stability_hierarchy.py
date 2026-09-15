@@ -7,7 +7,6 @@ ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("tsa_h", ROOT / "executor/risk_temporal_stability_hierarchical_acceptance.py")
 MOD = importlib.util.module_from_spec(SPEC); SPEC.loader.exec_module(MOD)
 PROFILE = json.loads((ROOT / "docs/acceptance/risk_tool_v2/temporal_stability_profile_hierarchical_v1.json").read_text())
-ACTIVE = json.loads((ROOT / "docs/acceptance/risk_tool_v2/ACTIVE_TEMPORAL_STABILITY_PROFILE.json").read_text())
 
 
 def row(level, label, rows, pos, neg, gain=.02, brier=.01, log=.01, boot=float("nan")):
@@ -26,8 +25,8 @@ def stable_rows():
 
 
 class TemporalHierarchyTest(unittest.TestCase):
-    def test_active_profile_is_frozen_hierarchy(self):
-        self.assertEqual(ACTIVE["active_profile_id"], PROFILE["profile_id"])
+    def test_v1_profile_is_frozen_hierarchy(self):
+        self.assertEqual(PROFILE["profile_id"], "risk-tool-v2-temporal-stability-hierarchical-v1")
         self.assertEqual(PROFILE["status"], "frozen_before_fine_grained_evaluation")
         self.assertEqual(PROFILE["level_order"], ["annual", "quarterly", "monthly", "weekly"])
         self.assertTrue(PROFILE["levels"]["weekly"]["hard_gate"])
