@@ -1,0 +1,36 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_temporal_v3_adjudication_prereg@1.0",
+  "task_id": "CSI1000-RISK-V2-TEMPORAL-V3-ADJUDICATION-20260915",
+  "purpose": "apply frozen hierarchical-v3 acceptance to the exact already-verified metrics from v2 authority run without recomputing market data or model outputs",
+  "parent_metrics_authority_run": "34926868278-1",
+  "parent_metrics": {
+    "private_ref": "runs/public-research/34926868278-1",
+    "path": "research/public-runs/34926868278-1-results/TEMPORAL_METRICS_2W_V2.csv",
+    "bytes": 170908,
+    "git_blob_sha1": "478f73c1fb9ac9c91d670e67733623e1450da953",
+    "sha256": "455a0f0d61993a933016e111aa1386eaf4ddf3ec6aeb9e28c109f08a559fd060"
+  },
+  "acceptance_profile": {
+    "profile_id": "risk-tool-v2-temporal-stability-hierarchical-v3",
+    "path": "docs/acceptance/risk_tool_v2/temporal_stability_profile_hierarchical_v3.json",
+    "semantic_change_only": true,
+    "ordering_negative_streak_condition": "ordering_gain < 0",
+    "ordering_zero_gain_role": "neutral_breaks_negative_streak"
+  },
+  "adjudication_rules": {
+    "metrics_recomputed": false,
+    "market_data_read": false,
+    "model_outputs_recomputed": false,
+    "model_or_calibration_change": false,
+    "numeric_threshold_change": false,
+    "v2_result_34926868278_1_remains_immutable": true,
+    "result_is_consumed_data_proxy_not_fresh_oos": true
+  },
+  "scope": {
+    "year_2026_read": false,
+    "pnl": false,
+    "strategy_threshold_search": false,
+    "new_training": false,
+    "production_authority": false
+  }
+}
