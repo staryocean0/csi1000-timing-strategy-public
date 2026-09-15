@@ -1,0 +1,94 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_b1_strict_continuity@1.0",
+  "status": "PUBLIC_PREREGISTRATION_CANDIDATE_NOT_PRIVATE_AUTHORITY",
+  "layer": "Layer2",
+  "instrument": "000852.SH",
+  "parent": {
+    "protocol": "csi1000.two_wave_backward_same_scale_a_channel_v0800@1.0",
+    "preflight_amendment": "csi1000.two_wave_v0800_preflight_amendment_a@1.0",
+    "accepted_development_evidence_run": "34951777247-1",
+    "parent_rho_winner": null,
+    "parent_morphology_acceptance": false
+  },
+  "question": "Among literal consecutive A-waves sharing the middle low anchor, does closer temporal scale correspond to closer morphology, and how much additional association is carried by amplitude mismatch?",
+  "continuity_policy": {
+    "direction_eligible_pair_semantic": "shared_anchor_strict_L-H-L-H-L",
+    "same_scale_ledger_nearest_role": "diagnostic_only",
+    "skip_based_pair_direction_authority": false,
+    "reason": "the current single-scale pivot engine has no hierarchical label proving intervening A-waves are lower-scale nested objects"
+  },
+  "data": {
+    "role": "already_consumed_semantic_development_not_fresh_oos",
+    "view": "5m_offset_0",
+    "start": "2015-01-05",
+    "end": "2020-12-31",
+    "source_repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "source_ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "path": "data/development/5m_offset_0.parquet",
+    "bytes": 3351411,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "year_2026_allowed": false
+  },
+  "frozen_pivot_kernel": {
+    "name": "v0.4.3_opposite_extremum_min_leg_maturity",
+    "min_leg": 4,
+    "max_unfinished_leg": 48
+  },
+  "duration": {
+    "formula": "end_low_occurrence_bar - start_low_occurrence_bar",
+    "unit": "bar_intervals_between_pivot_occurrence_bars",
+    "inclusive_observation_count": "duration + 1"
+  },
+  "rho": {
+    "candidate": [1.25, 1.3333333333333333, 1.4142135623730951, 1.5],
+    "legacy_control": 2.0,
+    "winner_selection_allowed": false
+  },
+  "strict_pair_metrics": {
+    "duration_ratio": "max(d_prev,d_cur)/min(d_prev,d_cur)",
+    "path_distance": "RMS of the same frozen 21-point bottom-channel-normalized close paths used in V0800-B",
+    "amplitude_ratio": "max(channel_height_prev,channel_height_cur)/min(channel_height_prev,channel_height_cur)",
+    "rank_associations": [
+      "spearman(log(duration_ratio), path_rms_21)",
+      "spearman(log(amplitude_ratio), path_rms_21)"
+    ],
+    "duration_ratio_bins": [
+      "[1,1.25]",
+      "(1.25,4/3]",
+      "(4/3,sqrt(2)]",
+      "(sqrt(2),1.5]",
+      "(1.5,2.0]",
+      "(2.0,infinity)"
+    ]
+  },
+  "required_reports": [
+    "strict_pair_count_and_fraction",
+    "per_year_strict_pair_support",
+    "candidate_and_legacy_same_scale_coverage_within_strict_pairs",
+    "path_distance_quantiles_inside_and_outside_each_rho_gate",
+    "duration_ratio_bin_path_and_amplitude_quantiles",
+    "duration_vs_path_rank_association",
+    "amplitude_vs_path_rank_association"
+  ],
+  "forbidden": [
+    "rho_winner",
+    "new_scale_threshold",
+    "future_return",
+    "pnl",
+    "position",
+    "buy_signal",
+    "sell_signal",
+    "transaction_cost_optimization",
+    "direction_authority",
+    "trade_authority",
+    "production_authority"
+  ],
+  "authority": {
+    "rho_winner": null,
+    "morphology_acceptance": false,
+    "direction_authority": false,
+    "trade_authority": false,
+    "production_authority": false
+  },
+  "next_gate": "Do not dispatch V0800-C until B1 is reviewed and the continuity semantic is explicitly adjudicated."
+}
