@@ -25,6 +25,7 @@ class FreshOosActivationContractTest(unittest.TestCase):
             "risk_phase1b_fresh_oos_eval.py",
             "risk_phase1b_fresh_oos_verifier.py",
             "risk_phase1b_fresh_oos_broker.py",
+            "risk_phase1b_fresh_oos_failure_mirror.py",
         ):
             ast.parse((EXECUTOR / name).read_text(), filename=name)
 
@@ -71,12 +72,26 @@ class FreshOosActivationContractTest(unittest.TestCase):
         self.assertIn('"user_authorized_same_source_and_valid": True', text)
         self.assertIn('"provenance_recheck_required": False', text)
 
-    def test_publish_records_failure_before_success_only_mirror(self):
+    def test_failure_code_mirror_is_bounded_and_nonsemantic(self):
+        text = (EXECUTOR / "risk_phase1b_fresh_oos_failure_mirror.py").read_text()
+        self.assertIn("MAX_LOG_BYTES = 8192", text)
+        self.assertIn('SAFE_MESSAGE = re.compile(r"[A-Za-z0-9_.:/-]{1,240}")', text)
+        self.assertIn('"market_values_exported": False', text)
+        self.assertIn('"row_level_data_exported": False', text)
+        self.assertIn('"model_outputs_exported": False', text)
+        self.assertNotIn("read_parquet", text)
+        self.assertNotIn("pandas", text)
+        self.assertNotIn("/work/inputs", text)
+
+    def test_publish_mirrors_failure_code_before_generic_archive(self):
         broker = (EXECUTOR / "risk_phase1b_fresh_oos_broker.py").read_text()
         workflow = WORKFLOW.read_text()
+        self.assertIn("risk_phase1b_fresh_oos_failure_mirror as failure_mirror", broker)
+        self.assertIn("failure_mirror.main()", broker)
+        self.assertIn("rb.publish(PROFILE)", broker)
+        self.assertLess(broker.index("failure_mirror.main()"), broker.index("rb.publish(PROFILE)"))
         self.assertNotIn("risk_phase1b_fresh_oos_private_mirror as fresh_mirror", broker)
         self.assertNotIn("fresh_mirror.main()", broker)
-        self.assertIn("rb.publish(PROFILE)", broker)
         publish = "python3 executor/risk_phase1b_fresh_oos_broker.py publish risk-v2-phase1b-fresh-oos-v1"
         mirror = "python3 executor/risk_phase1b_fresh_oos_private_mirror.py"
         self.assertIn(publish, workflow)
