@@ -11,7 +11,10 @@ PRODUCER = ROOT / "executor/two_wave_v0800_c_prefix_replay.py"
 VERIFIER = ROOT / "executor/two_wave_v0800_c_prefix_replay_verifier.py"
 BROKER = ROOT / "executor/two_wave_v0800_c_prefix_replay_broker.py"
 MIRROR = ROOT / "executor/two_wave_v0800_c_prefix_replay_private_mirror.py"
+WORKFLOW = ROOT / ".github/workflows/public-compute.yml"
+CONTROLLER = ROOT / ".github/workflows/controller-dispatch.yml"
 PROFILE = "two-wave-v0800-c-causal-prefix-replay-v1"
+CONTROLLER_TITLE = "controller: two-wave-v0800-c-causal-prefix-replay-v1"
 
 
 class TwoWaveV0800CPrefixReplayTest(unittest.TestCase):
@@ -79,6 +82,30 @@ class TwoWaveV0800CPrefixReplayTest(unittest.TestCase):
         for row_level in ("PIVOT_EVENTS.csv", "RESET_EVENTS.csv", "WAVE_EVENTS.csv", "STRICT_PAIR_EVENTS.csv"):
             self.assertNotIn(row_level, text)
         self.assertIn("v0800_d_authorized", text)
+
+    def test_standard_workflow_routes_exact_profile_through_all_phases(self):
+        text = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn(f"- {PROFILE}", text)
+        for phase in ("prepare", "compute", "cleanup", "publish"):
+            self.assertIn(
+                f"python3 executor/two_wave_v0800_c_prefix_replay_broker.py {phase} {PROFILE}",
+                text,
+            )
+        self.assertIn("python3 executor/two_wave_v0800_c_prefix_replay_private_mirror.py", text)
+        self.assertEqual(text.count("secrets.FACTORLAB_PRIVATE_TOKEN"), 2)
+        self.assertIn("workflow_dispatch:", text)
+        self.assertNotIn("pull_request:", text)
+        self.assertNotIn("push:\n", text)
+
+    def test_controller_is_exact_owner_only_dispatch_not_compute(self):
+        text = CONTROLLER.read_text(encoding="utf-8")
+        self.assertIn(f"github.event.issue.title == '{CONTROLLER_TITLE}'", text)
+        self.assertIn(f"'{CONTROLLER_TITLE}')", text)
+        self.assertIn(f"profile='{PROFILE}'", text)
+        self.assertIn("github.event.issue.user.login == github.repository_owner", text)
+        self.assertIn("actions/workflows/public-compute.yml/dispatches", text)
+        self.assertNotIn("two_wave_v0800_c_prefix_replay.py", text)
+        self.assertNotIn("two_wave_v0800_c_prefix_replay_broker.py", text)
 
     def test_human_protocol_explains_event_delta_prefix_proof(self):
         text = PROTOCOL_MD.read_text(encoding="utf-8")
