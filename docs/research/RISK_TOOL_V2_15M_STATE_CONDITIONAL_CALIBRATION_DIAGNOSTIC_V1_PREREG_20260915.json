@@ -1,0 +1,95 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_15m_state_conditional_calibration_diagnostic_prereg@1.0",
+  "task_id": "CSI1000-RISK-V2-15M-STATE-CONDITIONAL-CALIBRATION-DIAGNOSTIC-V1-20260915",
+  "profile": "risk-v2-15m-state-conditional-calibration-diagnostic-v1",
+  "status": "frozen_before_execution",
+  "target": {
+    "horizon_minutes": 15,
+    "current_bottleneck": "weekly.calibration",
+    "streak_start": "2023-W21",
+    "streak_end": "2023-W32",
+    "streak_length": 12,
+    "parent_diagnostic_authority_run": "34932495109-1"
+  },
+  "authority_chain": {
+    "parent_summary": {
+      "branch": "runs/public-research/34932495109-1",
+      "path": "research/public-runs/34932495109-1-results/SUMMARY.json",
+      "git_blob_sha1": "ba8be4a8655283eda1e0534d3d26770b2662a3e9",
+      "bytes": 1243,
+      "sha256": "80e1a57e2d4585421ae1be434272a62b9489563503a1cb3009b2040c62990b42"
+    },
+    "parent_streak": {
+      "branch": "runs/public-research/34932495109-1",
+      "path": "research/public-runs/34932495109-1-results/LONGEST_CALIBRATION_STREAK.csv",
+      "git_blob_sha1": "12106d5440fd6869ffa5c8a31a51766380bc0f76",
+      "bytes": 1219,
+      "sha256": "a4e19559dd3f9a03ca97887209cc2974db1fc96981a83de441232a15c55b44d6"
+    },
+    "two_week_metrics_authority_run": "34926868278-1",
+    "v3_adjudication_authority_run": "34930354449-1"
+  },
+  "data_scope": {
+    "symbol": "000852.SH",
+    "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],
+    "hard_years": [2015,2016,2017,2018,2019,2021,2022,2023,2024,2025],
+    "year_2026_read": false,
+    "weekly_measurement": "trailing_2_market_weeks_each_week_end",
+    "streak_labels": ["2023-W21","2023-W22","2023-W23","2023-W24","2023-W25","2023-W26","2023-W27","2023-W28","2023-W29","2023-W30","2023-W31","2023-W32"]
+  },
+  "comparison_groups": {
+    "STREAK": "the exact 12 authority-confirmed labels above",
+    "OTHER_PASS": "all other hard-year supported 2-week endpoints for which final frozen 15m C beats B on both Brier and LogLoss"
+  },
+  "frozen_representation": {
+    "model": "existing frozen B/C 15m model",
+    "calibration_B": "existing frozen repeat-audit Platt B",
+    "calibration_C_pre_tail": "existing frozen repeat-audit Platt C",
+    "calibration_C_post_tail": "existing authority tail transform anchor=0.2312353159391616, L=4.0",
+    "descriptive_unit": "endpoint-row weighted; overlapping 2-week windows are intentionally represented at each evaluable endpoint",
+    "dimensions": ["current_state","current_state_x_age_bucket"],
+    "current_state_categories": ["UNSAFE","RECOVERING"],
+    "age_bucket_categories": ["LT15","M15_25","M30_40","GE45"]
+  },
+  "metrics": [
+    "endpoint_count","rows","positive","event_rate",
+    "mean_cal_B","mean_pre_tail_C","mean_post_tail_C",
+    "signed_residual_B","signed_residual_pre_tail_C","signed_residual_post_tail_C",
+    "brier_B","brier_pre_tail_C","brier_post_tail_C","brier_gain_post_tail",
+    "logloss_B","logloss_pre_tail_C","logloss_post_tail_C","logloss_gain_post_tail"
+  ],
+  "comparison_outputs": [
+    "STREAK minus OTHER_PASS signed residual by state",
+    "STREAK minus OTHER_PASS Brier gain by state",
+    "STREAK minus OTHER_PASS LogLoss gain by state",
+    "same comparisons within state x age_bucket"
+  ],
+  "interpretation": {
+    "diagnostic_only": true,
+    "no_new_acceptance_gate": true,
+    "state_conditional_representation_is_only_a_future_hypothesis": true,
+    "v3_verdict_remains_immutable": true,
+    "diagnostic_cannot_promote_15m_to_complete": true
+  },
+  "prohibitions": {
+    "candidate_search": true,
+    "calibration_refit": true,
+    "tail_parameter_search": true,
+    "numeric_threshold_change": true,
+    "model_change": true,
+    "market_data_substitution": true,
+    "year_2026_read": true,
+    "pnl": true,
+    "strategy_routing": true,
+    "production_authority": true
+  },
+  "outputs": [
+    "STATE_ENDPOINT_METRICS.csv",
+    "STATE_GROUP_SUMMARY.csv",
+    "STATE_COMPARISON.csv",
+    "SUMMARY.json",
+    "INPUT_DATA_RECEIPT.json",
+    "MODEL_INPUT_RECEIPT.json"
+  ],
+  "production_authority": false
+}
