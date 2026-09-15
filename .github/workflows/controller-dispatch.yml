@@ -24,6 +24,7 @@ jobs:
        github.event.issue.title == 'controller: handoff-verify-v1' ||
        github.event.issue.title == 'controller: risk-v2-severity-persistence-v1' ||
        github.event.issue.title == 'controller: risk-v2-phase1b-ordering-calibration-v1' ||
+       github.event.issue.title == 'controller: risk-v2-phase1b-carrier-inventory-v1' ||
        github.event.issue.title == 'controller: overnight-carrier-materialization-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-dev-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-blackbox-v1')
@@ -49,6 +50,9 @@ jobs:
               ;;
             'controller: risk-v2-phase1b-ordering-calibration-v1')
               profile='risk-v2-phase1b-ordering-calibration-v1'
+              ;;
+            'controller: risk-v2-phase1b-carrier-inventory-v1')
+              profile='risk-v2-phase1b-carrier-inventory-v1'
               ;;
             'controller: overnight-carrier-materialization-v1')
               profile='overnight-carrier-materialization-v1'
