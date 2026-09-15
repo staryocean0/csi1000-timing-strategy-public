@@ -150,7 +150,7 @@ def validate_authority_inputs(inputs: Path) -> tuple[dict, dict]:
         raise RuntimeError("calibration_freeze_2026_flag_invalid")
     for horizon in HORIZONS:
         models = model.get("models", {}).get(str(horizon))
-        fits = cal.get("fits", {}).get(str(horizon), {}).get("audit")
+        fits = cal.get("fits", {}).get(str(horizon), {}).get("repeat_audit")
         if not isinstance(models, dict) or set(models) != {"B", "C"}:
             raise RuntimeError(f"model_freeze_horizon_missing:{horizon}")
         if not isinstance(fits, dict) or set(fits) != {"B", "C"}:
@@ -436,7 +436,7 @@ def score_cohort(cohort: pd.DataFrame, model_freeze: dict, calibration_freeze: d
     scored = cohort.copy()
     for horizon in HORIZONS:
         models = model_freeze["models"][str(horizon)]
-        fits = calibration_freeze["fits"][str(horizon)]["audit"]
+        fits = calibration_freeze["fits"][str(horizon)]["repeat_audit"]
         scored[f"p_B_raw_{horizon}m"] = predict_frozen(models["B"], scored)
         scored[f"p_C_raw_{horizon}m"] = predict_frozen(models["C"], scored)
         scored[f"p_B_cal_{horizon}m"] = apply_platt(fits["B"], scored[f"p_B_raw_{horizon}m"].to_numpy())
