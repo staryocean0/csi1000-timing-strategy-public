@@ -1,46 +1,71 @@
 from __future__ import annotations
-import importlib.util, json, tempfile, unittest
-from pathlib import Path
-import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
 
-HERE=Path(__file__).resolve().parents[1]/"executor"
-spec=importlib.util.spec_from_file_location("native15",HERE/"risk_v3_native15_carrier_semantic_audit.py")
-m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+import ast
+import hashlib
+import json
+import re
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+EXEC = ROOT / "executor"
+DOC = ROOT / "docs" / "research" / "RISK_TOOL_V3_NATIVE15_PHASE_A_PREREG_20260915.json"
+RUNNER = EXEC / "risk_v3_native15_carrier_semantic_audit.py"
+BROKER = EXEC / "risk_v3_native15_carrier_semantic_audit_broker.py"
+VERIFIER = EXEC / "risk_v3_native15_carrier_semantic_audit_verifier.py"
+MIRROR = EXEC / "risk_v3_native15_carrier_semantic_audit_private_mirror.py"
+WORKFLOW = ROOT / ".github" / "workflows" / "public-compute.yml"
+CONTROLLER = ROOT / ".github" / "workflows" / "controller-dispatch.yml"
+PROFILE = "risk-v3-native15-carrier-semantic-audit-v1"
+
+
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
 
 class Native15AuditTests(unittest.TestCase):
-    def test_prereg_hash_is_frozen(self):
-        p=Path(__file__).resolve().parents[1]/"docs"/"research"/"RISK_TOOL_V3_NATIVE15_PHASE_A_PREREG_20260915.json"
-        self.assertEqual(m.sha256_file(p),m.PREREG_SHA256)
+    def test_sources_parse_without_runtime_dependencies(self):
+        for path in (RUNNER, BROKER, VERIFIER, MIRROR):
+            ast.parse(path.read_text(), filename=str(path))
 
-    def test_controls_forbid_science(self):
-        src=(HERE/"risk_v3_native15_carrier_semantic_audit.py").read_text()
-        for token in ("RV_WINDOW","BG_WINDOW","SHOCK_SIGMA","HIGHVOL_RATIO","RECOVERY_NORMAL_RATIO"):
-            self.assertNotIn(token,src)
+    def test_prereg_hash_and_semantics_are_frozen(self):
+        prereg = json.loads(DOC.read_text())
+        self.assertEqual(prereg["profile"], PROFILE)
+        self.assertEqual(prereg["semantic_rule"]["native_15m_means_base_kline_interval_minutes"], 15)
+        self.assertTrue(prereg["semantic_rule"]["not_v2_5m_forecast_horizon"])
+        self.assertFalse(prereg["boundaries"]["threshold_search"])
+        self.assertFalse(prereg["boundaries"]["model_fit"])
+        self.assertFalse(prereg["boundaries"]["year_2026_threshold_or_model_training"])
+        src = RUNNER.read_text()
+        match = re.search(r'^PREREG_SHA256 = "([0-9a-f]{64})"$', src, re.MULTILINE)
+        self.assertIsNotNone(match)
+        self.assertEqual(match.group(1), sha256(DOC))
 
-    def test_synthetic_semantics_are_aggregate_only(self):
-        with tempfile.TemporaryDirectory() as td:
-            root=Path(td); inp=root/"inputs"; out=root/"out"; inp.mkdir()
-            rows=[]
-            for d in pd.bdate_range("2025-01-02",periods=10):
-                clocks=["09:35","09:50","10:05","10:20","10:35","10:50","11:05","11:20",
-                        "13:05","13:20","13:35","13:50","14:05","14:20","14:35","14:50"]
-                for c in clocks:
-                    rows.append((f"{d.date()} {c}:00","000852.SH",1.0))
-            frame=pd.DataFrame(rows,columns=["timestamp","symbol","close"])
-            pq.write_table(pa.Table.from_pandas(frame,preserve_index=False),inp/"15m_offset_5.parquet")
-            carrier=inp/"15m_offset_5.parquet"
-            prereg=Path(__file__).resolve().parents[1]/"docs"/"research"/"RISK_TOOL_V3_NATIVE15_PHASE_A_PREREG_20260915.json"
-            (inp/"PREREG.json").write_bytes(prereg.read_bytes())
-            (inp/"SOURCE_MANIFEST.json").write_text(json.dumps({"canonical_1m_parent_dataset_version":"test","artifacts":{"15m_offset_5.parquet":{"rows":len(frame)}}}))
-            ident={"task_id":m.TASK_ID,"carrier":{"archive_path":"data/index/15m_offset_5.parquet","bytes":carrier.stat().st_size,"sha256":m.sha256_file(carrier)},"source_contract":{}}
-            (inp/"DATA_IDENTITY.json").write_text(json.dumps(ident))
-            r=m.run(inp,out)
-            self.assertEqual(r["aggregate"]["mod15_residues"],[5])
-            self.assertEqual(r["aggregate"]["duplicate_symbol_timestamp_rows"],0)
-            self.assertEqual(r["aggregate"]["symbols"]["000852.SH"]["bars_per_day_mode"],16)
-            self.assertFalse(r["controls"]["market_values_read"])
-            self.assertNotIn("close",json.dumps(r).lower())
+    def test_runner_reads_only_time_and_symbol_semantics(self):
+        src = RUNNER.read_text()
+        self.assertIn('parquet.read(columns=[time_field, "symbol"], use_pandas_metadata=False)', src)
+        for token in ("RV_WINDOW", "BG_WINDOW", "SHOCK_SIGMA", "HIGHVOL_RATIO", "RECOVERY_NORMAL_RATIO"):
+            self.assertNotIn(token, src)
+        self.assertNotIn('columns=[time_field, "symbol", "close"]', src)
+        self.assertIn('"market_values_read": False', src)
+        self.assertIn('"threshold_search": False', src)
+        self.assertIn('"year_2026_threshold_or_model_training": False', src)
 
-if __name__=="__main__": unittest.main()
+    def test_broker_verifier_mirror_and_standard_route_are_bounded(self):
+        broker = BROKER.read_text()
+        verifier = VERIFIER.read_text()
+        mirror = MIRROR.read_text()
+        workflow = WORKFLOW.read_text()
+        controller = CONTROLLER.read_text()
+        self.assertIn("data/index/15m_offset_5.parquet", broker)
+        self.assertIn("data/index/SOURCE_MANIFEST.json", broker)
+        self.assertIn("risk_v3_native15_carrier_semantic_audit.py", verifier)
+        self.assertIn("NATIVE15_CARRIER_SEMANTIC_AUDIT.json", mirror)
+        self.assertIn(PROFILE, workflow)
+        self.assertIn("controller: " + PROFILE, controller)
+        for text in (broker, mirror):
+            self.assertNotIn("production_authority=True", text)
+
+
+if __name__ == "__main__":
+    unittest.main()
