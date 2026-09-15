@@ -220,7 +220,7 @@ jobs:
           elif [ '${{ inputs.profile }}' = 'risk-v2-weekly-support-diagnostic-v1' ]; then
             python3 executor/risk_weekly_support_diagnostic_broker.py compute risk-v2-weekly-support-diagnostic-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-weekly-window-feasibility-v1' ]; then
-            python3 executor/risk_weekly_window_feasibility_broker.py compute risk-v2-weekly-window_feasibility-v1
+            python3 executor/risk_weekly_window_feasibility_broker.py compute risk-v2-weekly-window-feasibility-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-temporal-stability-2week-v2' ]; then
             python3 executor/risk_temporal_stability_2week_v2_broker.py compute risk-v2-temporal-stability-2week-v2
           elif [ '${{ inputs.profile }}' = 'risk-v2-weekly-ordering-diagnostic-v1' ]; then
