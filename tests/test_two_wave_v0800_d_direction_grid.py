@@ -12,7 +12,10 @@ PRODUCER = ROOT / "executor/two_wave_v0800_d_direction_grid.py"
 VERIFIER = ROOT / "executor/two_wave_v0800_d_direction_grid_verifier.py"
 BROKER = ROOT / "executor/two_wave_v0800_d_direction_grid_broker.py"
 MIRROR = ROOT / "executor/two_wave_v0800_d_direction_grid_private_mirror.py"
+WORKFLOW = ROOT / ".github/workflows/public-compute.yml"
+CONTROLLER = ROOT / ".github/workflows/controller-dispatch.yml"
 PROFILE = "two-wave-v0800-d-direction-grid-v1"
+CONTROLLER_TITLE = "controller: two-wave-v0800-d-direction-grid-v1"
 
 
 class TwoWaveV0800DDirectionGridTest(unittest.TestCase):
@@ -88,6 +91,30 @@ class TwoWaveV0800DDirectionGridTest(unittest.TestCase):
         self.assertFalse(authority["state_publication_authority"])
         self.assertFalse(authority["trade_authority"])
         self.assertFalse(authority["production_authority"])
+
+    def test_standard_workflow_routes_exact_profile_through_all_phases(self):
+        text = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn(f"- {PROFILE}", text)
+        for phase in ("prepare", "compute", "cleanup", "publish"):
+            self.assertIn(
+                f"python3 executor/two_wave_v0800_d_direction_grid_broker.py {phase} {PROFILE}",
+                text,
+            )
+        self.assertIn("python3 executor/two_wave_v0800_d_direction_grid_private_mirror.py", text)
+        self.assertEqual(text.count("secrets.FACTORLAB_PRIVATE_TOKEN"), 2)
+        self.assertIn("workflow_dispatch:", text)
+        self.assertNotIn("pull_request:", text)
+        self.assertNotIn("push:\n", text)
+
+    def test_controller_is_exact_owner_only_dispatch_not_compute(self):
+        text = CONTROLLER.read_text(encoding="utf-8")
+        self.assertIn(f"github.event.issue.title == '{CONTROLLER_TITLE}'", text)
+        self.assertIn(f"'{CONTROLLER_TITLE}')", text)
+        self.assertIn(f"profile='{PROFILE}'", text)
+        self.assertIn("github.event.issue.user.login == github.repository_owner", text)
+        self.assertIn("actions/workflows/public-compute.yml/dispatches", text)
+        self.assertNotIn("two_wave_v0800_d_direction_grid.py", text)
+        self.assertNotIn("two_wave_v0800_d_direction_grid_broker.py", text)
 
     def test_human_protocol_keeps_first_d_run_morphology_only(self):
         text = NOTE.read_text(encoding="utf-8")
