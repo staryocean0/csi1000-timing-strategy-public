@@ -1,0 +1,43 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_weekly_support_diagnostic_v1_prereg@1.0",
+  "task_id": "CSI1000-RISK-V2-WEEKLY-SUPPORT-DIAGNOSTIC-V1-20260915",
+  "parent_authority_run": "34920654435-1",
+  "parent_tool_version": "risk-tool-v2-15m-tail-robust-calibration-v2",
+  "target_bottleneck": "weekly.support",
+  "symbols": ["000852.SH"],
+  "years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+  "warmup_year": 2020,
+  "horizons_minutes": [15, 30],
+  "frozen_weekly_support_gate": {
+    "rows_min": 20,
+    "positive_min": 4,
+    "negative_min": 4,
+    "coverage_min": 0.60
+  },
+  "diagnostic_questions": [
+    "How many hard-gate weeks fail rows_min, positive_min, negative_min, and each overlap pattern?",
+    "How does support coverage vary by year and by number of trading days in the calendar week?",
+    "What are the empirical distributions of weekly rows, positives, and negatives?",
+    "Is weekly.support failure primarily a sparse-measurement problem rather than a model-performance failure?"
+  ],
+  "outputs": [
+    "WEEKLY_SUPPORT_BUCKETS.csv",
+    "YEARLY_WEEKLY_SUPPORT.csv",
+    "SUPPORT_SUMMARY.json",
+    "INPUT_DATA_RECEIPT.json"
+  ],
+  "interpretation_boundary": {
+    "acceptance_threshold_change": false,
+    "this_run_cannot_rescue_parent_acceptance": true,
+    "model_or_calibration_change": false,
+    "ordering_or_calibration_metrics_not_used_for_optimization": true,
+    "future_threshold_or_bucket_definition_change_requires_new_acceptance_profile": true
+  },
+  "scope": {
+    "year_2026_read": false,
+    "pnl": false,
+    "strategy_threshold_search": false,
+    "new_training": false,
+    "production_authority": false
+  }
+}
