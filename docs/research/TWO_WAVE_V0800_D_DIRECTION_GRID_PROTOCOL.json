@@ -1,0 +1,94 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_d_direction_grid_protocol@1.0",
+  "status": "preregistered_before_v0800_d_execution",
+  "study": "V0800-D_TWO_WAVE_DIRECTION_GRID",
+  "layer": "Layer2_morphology_only",
+  "parents": {
+    "c_adjudication": "TWO_WAVE_V0800_C_ADJUDICATION_20260915.json",
+    "c2_rho_semantic": "TWO_WAVE_V0800_C2_RHO_SEMANTIC_ADJUDICATION_20260915.json"
+  },
+  "input": {
+    "symbol": "000852.SH",
+    "timeframe": "5m_offset_0",
+    "source_repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "source_ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "file": "data/development/5m_offset_0.parquet",
+    "bytes": 3351411,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "allowed_start": "2015-01-05",
+    "allowed_end": "2020-12-31",
+    "fresh_oos": false,
+    "year_2026_read": false
+  },
+  "causal_pair_universe": {
+    "producer": "PrefixReplayAEngine",
+    "knowledge_time": "current_A_wave_confirmation_bar",
+    "continuity": "shared_anchor_strict_L-H-L-H-L",
+    "same_scale_rho": 1.4142135623730951,
+    "same_scale_rho_symbolic": "sqrt(2)",
+    "skip_based_pairs_allowed": false,
+    "legacy_rho_2_evaluated": false
+  },
+  "wave_direction_coordinate": {
+    "name": "normalized_bottom_migration_g",
+    "formula": "g=(log(L1)-log(L0))/channel_height_log",
+    "bottom_authoritative": true,
+    "single_wave_descriptor_is_market_state": false,
+    "descriptor": {
+      "Range": "abs(g) <= tau",
+      "Up": "g > tau",
+      "Down": "g < -tau"
+    }
+  },
+  "frozen_grid": {
+    "taus": [0.05, 0.10, 0.15, 0.20],
+    "kappas": [1.25, 1.50, 2.00],
+    "combinations": 12
+  },
+  "pair_state_rule": {
+    "Range": "previous_descriptor == Range and current_descriptor == Range",
+    "UpTrend": "both descriptors == Up and max(abs(g_prev),abs(g_cur))/min(abs(g_prev),abs(g_cur)) <= kappa",
+    "DownTrend": "both descriptors == Down and max(abs(g_prev),abs(g_cur))/min(abs(g_prev),abs(g_cur)) <= kappa",
+    "Uncertain": "all other cases",
+    "single_wave_can_publish_pair_state": false
+  },
+  "outputs": {
+    "row_level": ["DIRECTION_GRID_EVENTS.csv"],
+    "aggregate": ["SUMMARY.json", "INPUT_RECEIPT.json"],
+    "required_grid_metrics": [
+      "eligible_pair_count",
+      "Range_count",
+      "UpTrend_count",
+      "DownTrend_count",
+      "Uncertain_count",
+      "decisive_fraction",
+      "annual_state_counts"
+    ]
+  },
+  "selection_policy": {
+    "tau_winner": null,
+    "kappa_winner": null,
+    "automatic_selection_by_max_coverage": false,
+    "automatic_selection_by_min_uncertain": false,
+    "automatic_selection_by_state_balance": false,
+    "automatic_selection_by_returns_or_pnl": false,
+    "separate_post_run_adjudication_required": true
+  },
+  "forbidden": {
+    "future_outcomes": true,
+    "returns": true,
+    "pnl": true,
+    "positions": true,
+    "transaction_costs": true,
+    "execution_signals": true,
+    "2026": true,
+    "trade_authority": true,
+    "production_authority": true
+  },
+  "authority": {
+    "direction_acceptance": false,
+    "state_publication_authority": false,
+    "trade_authority": false,
+    "production_authority": false
+  }
+}
