@@ -1,0 +1,8 @@
+{
+  "schema_id": "csi1000.risk_tool_temporal_stability_active_profile@1.0",
+  "active_profile_id": "risk-tool-v2-temporal-stability-hierarchical-v1",
+  "active_profile_path": "docs/acceptance/risk_tool_v2/temporal_stability_profile_hierarchical_v1.json",
+  "freeze_reason": "User approved top-down optimization: annual first, then quarterly, monthly, weekly; thresholds frozen before fine-grained 2015-2025 evaluation.",
+  "post_result_switching_allowed": false,
+  "production_authority": false
+}

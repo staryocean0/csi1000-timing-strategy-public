@@ -1,0 +1,57 @@
+{
+  "schema_id": "csi1000.risk_tool_temporal_stability_profile@1.1",
+  "profile_id": "risk-tool-v2-temporal-stability-hierarchical-v1",
+  "status": "frozen_before_fine_grained_evaluation",
+  "tool_id": "risk-tool-v2-severity-persistence",
+  "comparison": "frozen_C_minus_frozen_B",
+  "horizons_minutes": [15, 30],
+  "production_authority": false,
+  "pnl": false,
+  "strategy_threshold_search": false,
+  "optimization_policy": "top_down_first_unresolved_bottleneck",
+  "level_order": ["annual", "quarterly", "monthly", "weekly"],
+  "within_level_order": ["support", "ordering", "calibration"],
+  "completion_requires_all_levels": true,
+  "post_result_profile_switching_allowed": false,
+  "global_support": {"rows_min": 4000, "positive_min": 500, "negative_min": 500},
+  "global_ordering": {"pooled_auroc_gain_gt": 0.0, "cluster_bootstrap_lower_gt": 0.0},
+  "global_calibration": {"pooled_brier_gain_gt": 0.0, "pooled_logloss_gain_gt": 0.0},
+  "levels": {
+    "annual": {
+      "hard_gate": true,
+      "support": {"rows_min": 500, "positive_min": 50, "negative_min": 50, "coverage_min": 0.90},
+      "ordering": {"positive_fraction_min": 0.80, "median_gain_gt": 0.0, "weighted_mean_gain_gt": 0.0, "max_negative_streak": 1},
+      "calibration": {"joint_positive_fraction_min": 0.70, "median_brier_gain_gt": 0.0, "median_logloss_gain_gt": 0.0, "max_negative_streak": 1}
+    },
+    "quarterly": {
+      "hard_gate": true,
+      "support": {"rows_min": 150, "positive_min": 20, "negative_min": 20, "coverage_min": 0.85},
+      "ordering": {"positive_fraction_min": 0.70, "median_gain_gt": 0.0, "weighted_mean_gain_gt": 0.0, "max_negative_streak": 2},
+      "calibration": {"joint_positive_fraction_min": 0.60, "median_brier_gain_gt": 0.0, "median_logloss_gain_gt": 0.0, "max_negative_streak": 2}
+    },
+    "monthly": {
+      "hard_gate": true,
+      "support": {"rows_min": 50, "positive_min": 8, "negative_min": 8, "coverage_min": 0.75},
+      "ordering": {"positive_fraction_min": 0.60, "median_gain_gt": 0.0, "weighted_mean_gain_gt": 0.0, "max_negative_streak": 3},
+      "calibration": {"joint_positive_fraction_min": 0.55, "median_brier_gain_gt": 0.0, "median_logloss_gain_gt": 0.0, "max_negative_streak": 4}
+    },
+    "weekly": {
+      "hard_gate": true,
+      "support": {"rows_min": 20, "positive_min": 4, "negative_min": 4, "coverage_min": 0.60},
+      "ordering": {"positive_fraction_min": 0.55, "median_gain_gt": 0.0, "weighted_mean_gain_gt": 0.0, "max_negative_streak": 6},
+      "calibration": {"joint_positive_fraction_min": 0.50, "median_brier_gain_gt": 0.0, "median_logloss_gain_gt": 0.0, "max_negative_streak": 8}
+    }
+  },
+  "acceptance": {
+    "COMPLETE": "global gates and every annual-to-weekly support, ordering and calibration gate pass",
+    "IN_PROGRESS": "one supported hierarchical gate remains unresolved; optimize only the first unresolved bottleneck",
+    "INSUFFICIENT_SUPPORT": "the first unresolved gate is support; do not reinterpret it as model failure"
+  },
+  "change_control": {
+    "threshold_change_requires_new_profile_id": true,
+    "freeze_before_new_breakdown_read": true,
+    "failed_run_rescue_retuning_forbidden": true,
+    "previous_results_keep_original_profile": true,
+    "single_active_profile_per_evaluation": true
+  }
+}
