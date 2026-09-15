@@ -53,9 +53,12 @@ class TemporalAcceptanceTest(unittest.TestCase):
         got=MOD.evaluate_horizon(rows,PROFILE,15)
         self.assertEqual(got["grade"],"TS-I_INSUFFICIENT_SUPPORT")
 
-    def test_no_pnl_or_production_authority(self):
+    def test_evaluator_is_metric_only_and_non_authoritative(self):
         src=(ROOT/"executor/risk_temporal_stability_acceptance.py").read_text()
-        self.assertNotIn("pnl",src.lower())
+        self.assertNotIn("fit_ridge(",src)
+        self.assertNotIn("fit_platt(",src)
+        self.assertNotIn("data/market/",src)
+        self.assertNotIn("strategy_threshold",src)
         self.assertIn('"production_authority": False',src)
 
 
