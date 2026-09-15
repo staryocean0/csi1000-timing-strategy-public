@@ -1,0 +1,98 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_f_operational_state_stream_audit_protocol@1.0",
+  "study": "V0800-F_OPERATIONAL_STATE_STREAM_AUDIT",
+  "status": "preregistered_candidate_not_scientific_authority",
+  "parent_adjudication": {
+    "file": "docs/research/TWO_WAVE_V0800_E_ADJUDICATION_20260915.json",
+    "merge_commit": "f940819c9a4164ed806377e8ec44718c7e1ba5be",
+    "verified_e_run": "34971340135-1",
+    "audit_manifest_sha256": "c3260be7f72a12a5da0b33d1fb23deacd32d967d83e45f480d0363ca2e836ab5"
+  },
+  "input": {
+    "role": "already_consumed_development_not_fresh_oos",
+    "symbol": "000852.SH",
+    "timeframe": "5m_offset_0",
+    "source_repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "source_ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "file": "data/development/5m_offset_0.parquet",
+    "rows": 70114,
+    "bytes": 3351411,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "allowed_start": "2015-01-05",
+    "allowed_end": "2020-12-31",
+    "year_2026_allowed": false,
+    "substitute_data_allowed": false
+  },
+  "frozen_semantics": {
+    "pivot_kernel": "v0.4.3_causal_temporal_maturity_A_engine",
+    "continuity": "shared_anchor_strict_L-H-L-H-L",
+    "knowledge_time": "current_A_wave_confirmation_bar",
+    "bottom_authoritative_channel": true,
+    "rho_symbolic": "sqrt(2)",
+    "rho": 1.4142135623730951,
+    "tau": 0.2,
+    "kappa": 2.0,
+    "parameter_search_allowed": false
+  },
+  "event_stream_contract": {
+    "primary_stream": "all_strict_pair_confirmation_events",
+    "expected_strict_pair_count": 2358,
+    "expected_eligible_same_scale_pair_count": 924,
+    "ordered_by": ["epoch", "confirmation_bar", "pair_id"],
+    "epoch_boundary_breaks_sequence": true,
+    "same_scale_event_states": ["Range", "UpTrend", "DownTrend", "Uncertain"],
+    "scale_mismatch_state": "NoStateScaleMismatch",
+    "scale_mismatch_is_not_uncertain": true,
+    "bar_time_carry_forward": false,
+    "between_event_state": "undefined",
+    "eligible_only_stream": "secondary_diagnostic_only",
+    "eligible_only_stream_must_report_intervening_strict_events": true
+  },
+  "state_rule": {
+    "descriptor": "RANGE iff abs(g)<=tau; otherwise UP iff g>0 else DOWN",
+    "range": "previous_descriptor==current_descriptor==RANGE",
+    "uptrend": "both descriptors UP and slope_magnitude_ratio<=kappa",
+    "downtrend": "both descriptors DOWN and slope_magnitude_ratio<=kappa",
+    "uncertain": "all remaining eligible cases",
+    "no_state_scale_mismatch": "duration_ratio>rho"
+  },
+  "audit_outputs": {
+    "row_level_private_output": "STATE_STREAM_EVENTS.csv",
+    "aggregate_outputs": ["SUMMARY.json", "INPUT_RECEIPT.json"],
+    "primary_counts": ["strict_event_count", "eligible_event_count", "scale_mismatch_count", "eligible_state_counts", "annual_counts"],
+    "sequence_diagnostics": [
+      "within_epoch_all_event_transition_matrix",
+      "within_epoch_eligible_only_transition_matrix",
+      "within_epoch_run_length_summary_by_label",
+      "eligible_event_confirmation_gap_bars_quantiles",
+      "intervening_strict_event_count_between_eligible_events",
+      "direct_up_down_reversal_counts"
+    ],
+    "automatic_acceptance_rule": null,
+    "post_run_adjudication_required": true
+  },
+  "invariants": {
+    "no_transition_across_epoch_reset": true,
+    "each_strict_pair_exactly_one_primary_event": true,
+    "eligible_event_exactly_one_four_state_label": true,
+    "ineligible_event_exactly_NoStateScaleMismatch": true,
+    "Range_requires_both_RANGE_descriptors": true,
+    "trend_requires_same_direction_descriptors_and_ratio_within_kappa": true,
+    "opposite_direction_descriptors_require_Uncertain": true,
+    "no_future_bar_or_outcome_dependency": true
+  },
+  "forbidden": {
+    "future_returns": true,
+    "pnl": true,
+    "positions": true,
+    "costs": true,
+    "trade_simulation": true,
+    "parameter_tuning": true,
+    "bar_time_state_holding": true,
+    "direction_acceptance": true,
+    "state_publication_authority": true,
+    "trade_authority": true,
+    "production_authority": true
+  },
+  "next_decision": "Review event-time persistence, transitions, scale-mismatch gaps, direct reversals, and abstention behavior. Only a separate adjudication may define any later bar-time carry-forward or outcome-bearing validation."
+}
