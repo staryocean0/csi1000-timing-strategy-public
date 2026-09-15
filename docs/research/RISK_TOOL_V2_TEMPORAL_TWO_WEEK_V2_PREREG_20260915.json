@@ -1,0 +1,67 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_temporal_two_week_v2_prereg@1.0",
+  "task_id": "CSI1000-RISK-V2-TEMPORAL-TWO-WEEK-V2-20260915",
+  "acceptance_profile_id": "risk-tool-v2-temporal-stability-hierarchical-v2",
+  "acceptance_profile_freeze_commit": "845f2f18eb31667f1e3aa51cafcf6d801b355dd8",
+  "profile_selection_authority_run": "34925874662-1",
+  "calibration_v2_authority_run": "34920654435-1",
+  "primary_symbol": "000852.SH",
+  "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],
+  "warmup_year": 2020,
+  "hard_gate_years": [2015,2016,2017,2018,2019,2021,2022,2023,2024,2025],
+  "horizons_minutes": [15,30],
+  "frozen_tool_application": {
+    "phase1_model_freeze_sha256": "b81cae6208d96890c0fd83d47e4ea8c8a81ba55b41c78f58db29e9160f173551",
+    "phase1b_calibration_freeze_sha256": "74ecd25790123f026e29cba7bb84322aad8a385c10fe3d60ef0d75d52d1b1909",
+    "15m_second_stage_calibration": {
+      "candidate_id": "tail_L_4",
+      "tail_limit": 4.0,
+      "anchor_event_rate": 0.2312353159391616,
+      "formula": "z2 = a + 4*tanh((z-a)/4), z=logit(frozen_cal_C), a=logit(anchor_event_rate)",
+      "raw_ordering_scores_changed": false
+    },
+    "30m_second_stage_calibration": "none_parent_frozen_platt_only",
+    "new_training": false,
+    "calibration_refit": false
+  },
+  "temporal_measurement": {
+    "global_annual_quarterly_monthly": "same definitions as v1",
+    "weekly_evaluation_cadence_market_weeks": 1,
+    "weekly_trailing_measurement_window_market_weeks": 2,
+    "weekly_window_is_trailing_only": true,
+    "weekly_windows_overlap": true,
+    "first_incomplete_history_window_is_expected_but_unsupported": true
+  },
+  "weekly_support": {
+    "rows_min": 20,
+    "positive_min": 4,
+    "negative_min": 4,
+    "overall_coverage_min": 0.80,
+    "minimum_hard_year_coverage_min": 0.60
+  },
+  "weekly_performance_gates_unchanged_from_v1": {
+    "ordering_positive_fraction_min": 0.55,
+    "ordering_median_gain_gt": 0.0,
+    "ordering_weighted_mean_gain_gt": 0.0,
+    "ordering_max_negative_streak": 6,
+    "calibration_joint_positive_fraction_min": 0.50,
+    "calibration_median_brier_gain_gt": 0.0,
+    "calibration_median_logloss_gain_gt": 0.0,
+    "calibration_max_negative_streak": 8
+  },
+  "adjudication": {
+    "use_frozen_hierarchical_v2": true,
+    "first_unresolved_gate_only": true,
+    "lower_level_rescue_forbidden": true,
+    "threshold_change_during_run": false,
+    "profile_switch_after_reveal": false
+  },
+  "scope": {
+    "year_2026_read": false,
+    "fresh_oos_claim": false,
+    "pnl": false,
+    "strategy_threshold_search": false,
+    "cross_symbol_claim": false,
+    "production_authority": false
+  }
+}
