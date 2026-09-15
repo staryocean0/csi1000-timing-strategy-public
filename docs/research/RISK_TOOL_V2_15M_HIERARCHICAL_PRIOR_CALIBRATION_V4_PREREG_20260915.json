@@ -1,0 +1,69 @@
+{
+  "schema_id": "risk_tool_v2_15m_hierarchical_prior_calibration_v4_prereg@1.0",
+  "profile": "risk-v2-15m-hierarchical-prior-calibration-v4",
+  "frozen_at": "2026-09-15",
+  "target": "15m.weekly.calibration",
+  "purpose": "Test whether point-in-time hierarchical prior/intercept adaptation fixes the remaining 15m weekly calibration instability without changing the frozen B/C models, Severity representation, tail transform, acceptance thresholds, or 30m.",
+  "authority_chain": {
+    "v3_adjudication_run": "34930354449-1",
+    "online_global_prior_run": "34938342941-1",
+    "within_cell_carrier_diagnostic_run": "34937379667-1"
+  },
+  "scope": {
+    "symbol": "000852.SH",
+    "horizon_minutes": 15,
+    "hard_years": [2015,2016,2017,2018,2019,2021,2022,2023,2024,2025],
+    "year_2020_role": "warmup_not_validation",
+    "year_2026_read": false,
+    "weekly_measurement": "trailing_2_market_weeks_at_each_market_week_endpoint",
+    "history_market_weeks": 8
+  },
+  "candidate": {
+    "id": "hier8",
+    "probability_input": "frozen 15m post-tail C probability",
+    "update": "add one logit intercept estimated from prior completed market weeks only",
+    "fallback_order": ["current_state_x_age_bucket","current_state","global","identity"],
+    "state_age_support": {"rows_min": 40, "positive_min": 8, "negative_min": 8},
+    "state_support": {"rows_min": 80, "positive_min": 16, "negative_min": 16},
+    "global_support": {"rows_min": 80, "positive_min": 16, "negative_min": 16},
+    "delta_bounds": [-6.0,6.0],
+    "no_window_search": true,
+    "no_support_threshold_search": true,
+    "no_candidate_selection": true
+  },
+  "point_in_time": {
+    "current_week_labels_forbidden": true,
+    "future_week_labels_forbidden": true,
+    "history_must_be_completed_before_current_week": true,
+    "same_rule_all_years": true
+  },
+  "evaluation": {
+    "acceptance_profile": "hierarchical-v3-unchanged",
+    "full_levels": ["global","annual","quarterly","monthly","weekly"],
+    "repeat_audit_years": [2024,2025],
+    "success_definition": "15m reaches COMPLETE / TS-A under unchanged hierarchical-v3 acceptance; otherwise preserve prior tool and record the new candidate as not accepted.",
+    "ordering_may_not_be_rescued": true,
+    "lower_level_success_cannot_override_higher_level_failure": true
+  },
+  "outputs": ["HIERARCHICAL_WEEKLY_DELTAS.csv","TEMPORAL_METRICS_HIERARCHICAL_V4.csv","ACCEPTANCE_RESULT_HIERARCHICAL_V4.json","SUMMARY.json","INPUT_DATA_RECEIPT.json","MODEL_INPUT_RECEIPT.json"],
+  "prohibitions": {
+    "model_refit": true,
+    "severity_change": true,
+    "platt_refit": true,
+    "tail_parameter_search": true,
+    "history_window_search": true,
+    "support_threshold_search": true,
+    "numeric_acceptance_threshold_change": true,
+    "data_substitution": true,
+    "year_2026_read": true,
+    "pnl": true,
+    "strategy_routing": true,
+    "production_authority": true
+  },
+  "interpretation": {
+    "development_proxy_on_consumed_2015_2025": true,
+    "fresh_oos": false,
+    "prior_authority_results_immutable": true,
+    "failed_candidate_cannot_replace_current_tool": true
+  }
+}
