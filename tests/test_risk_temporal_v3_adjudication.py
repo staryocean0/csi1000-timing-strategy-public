@@ -1,10 +1,21 @@
+import importlib.util
 import json
+import math
+import tempfile
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PREREG = json.loads((ROOT / "docs/research/RISK_TOOL_V2_TEMPORAL_V3_ADJUDICATION_PREREG_20260915.json").read_text())
 PROFILE = "risk-v2-temporal-stability-v3-adjudication"
+
+
+def load_acceptance():
+    path = ROOT / "executor/risk_temporal_stability_acceptance.py"
+    spec = importlib.util.spec_from_file_location("temporal_acceptance_v3_regression", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 class TemporalV3AdjudicationTest(unittest.TestCase):
@@ -43,6 +54,21 @@ class TemporalV3AdjudicationTest(unittest.TestCase):
         for forbidden in ("parquet", "build_state_rows", "build_primary_cohort", "predict(", "platt(", "bootstrap("):
             self.assertNotIn(forbidden, src)
         self.assertIn("metrics_recomputed", src)
+
+    def test_empty_metrics_are_allowed_only_for_mathematically_unevaluable_buckets(self):
+        acceptance = load_acceptance()
+        header = "horizon_minutes,period_level,period_label,rows,positive,negative,ordering_gain,cal_brier_gain,cal_logloss_gain,bootstrap_lower,role,expected\n"
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "metrics.csv"
+            path.write_text(header + "15,weekly,2015-W01,0,0,0,,,,,historical,True\n", encoding="utf-8")
+            row = acceptance.load_rows(path)[0]
+            self.assertTrue(math.isnan(row["ordering_gain"]))
+            self.assertTrue(math.isnan(row["brier_gain"]))
+            self.assertTrue(math.isnan(row["logloss_gain"]))
+
+            path.write_text(header + "15,weekly,2015-W02,20,4,16,,,,historical,True\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "metric_value_missing_for_evaluable_row"):
+                acceptance.load_rows(path)
 
     def test_private_mirror_is_text_only(self):
         mirror = (ROOT / "executor/risk_temporal_v3_adjudication_private_mirror.py").read_text()
