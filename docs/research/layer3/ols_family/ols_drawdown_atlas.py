@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
 """D0-only OLS drawdown episode atlas.
 
-This diagnostic intentionally does not change any entry, exit, routing, sizing,
-or leverage rule.  It consumes an already-causal per-bar strategy trace and
-builds a maximum-drawdown atlas around the existing OLS lifecycle.
+The diagnostic changes no entry, exit, routing, sizing, leverage, or production
+rule.  It consumes an already-causal per-bar OLS strategy trace and describes
+where drawdowns occur and whether OLS fit quality deteriorates before them.
 
 Required CSV columns
 --------------------
 timestamp,strategy_return,executable_position,fit_r2
 
-`strategy_return` must already reflect the intended execution convention.  The
-diagnostic does not infer PnL from prices because doing so could silently change
-close_t -> open_t+1 semantics or transaction-cost treatment.
+`strategy_return` must already reflect the frozen execution/cost convention.
+The diagnostic deliberately does not infer PnL from prices.
+
+`fit_r2` must be present for every non-flat executable-position bar.  It may be
+blank while flat because there is then no active side/window whose fit quality
+has trading authority.  R2 deterioration counters reset whenever the strategy
+is flat or reverses direction, so no decline is spuriously carried across two
+separate trades.
 
 Recommended optional columns
 ----------------------------
@@ -20,9 +25,9 @@ qualified,direction_conflict,exit_trigger,ols_midline,slow_state,slow_fit_r2
 
 Outputs
 -------
-- drawdown_atlas.csv: material/worst drawdown episodes with signal diagnostics
-- drawdown_timeseries.csv: causal per-bar equity/drawdown/R2 deterioration panel
-- drawdown_summary.json: baseline statistics and worst-episode summary
+- drawdown_atlas.csv
+- drawdown_timeseries.csv
+- drawdown_summary.json
 
 Research authority only.  No production or strategy-selection authority.
 """
@@ -36,15 +41,9 @@ import math
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
-REQUIRED_COLUMNS = (
-    "timestamp",
-    "strategy_return",
-    "executable_position",
-    "fit_r2",
-)
-
+REQUIRED_COLUMNS = ("timestamp", "strategy_return", "executable_position", "fit_r2")
 OPTIONAL_COLUMNS = (
     "close",
     "path_efficiency",
@@ -58,6 +57,8 @@ OPTIONAL_COLUMNS = (
     "slow_state",
     "slow_fit_r2",
 )
+BOOL_COLUMNS = {"qualified", "direction_conflict", "exit_trigger"}
+TEXT_COLUMNS = {"slow_state"}
 
 
 @dataclass(frozen=True)
@@ -76,12 +77,13 @@ class DrawdownEpisode:
     authority_window_at_start: float | None
     authority_window_at_trough: float | None
     window_switches_to_trough: int
-    fit_r2_at_start: float
-    fit_r2_at_trough: float
-    fit_r2_min_to_trough: float
-    fit_r2_max_to_trough: float
-    fit_r2_change_start_to_trough: float
-    fit_r2_peak_to_trough: float
+    active_r2_observation_count: int
+    fit_r2_at_start: float | None
+    fit_r2_at_trough: float | None
+    fit_r2_min_to_trough: float | None
+    fit_r2_max_to_trough: float | None
+    fit_r2_change_start_to_trough: float | None
+    fit_r2_peak_to_trough: float | None
     first_r2_down_timestamp: str | None
     first_two_consecutive_r2_down_timestamp: str | None
     r2_first_down_lead_bars_to_trough: int | None
@@ -98,20 +100,20 @@ class DrawdownEpisode:
     slow_fit_r2_at_trough: float | None
 
 
-def _finite_float(value: Any, *, allow_none: bool = False) -> float | None:
+def _float(value: Any, *, optional: bool = False) -> float | None:
     if value is None or value == "":
-        if allow_none:
+        if optional:
             return None
         raise ValueError("missing required numeric value")
     parsed = float(value)
     if not math.isfinite(parsed):
-        if allow_none:
+        if optional:
             return None
         raise ValueError(f"non-finite required numeric value: {value!r}")
     return parsed
 
 
-def _truthy(value: Any) -> bool:
+def _bool(value: Any) -> bool:
     if value is None or value == "":
         return False
     text = str(value).strip().lower()
@@ -122,14 +124,14 @@ def _truthy(value: Any) -> bool:
     raise ValueError(f"invalid boolean value: {value!r}")
 
 
-def _parse_timestamp(value: str) -> datetime:
+def _timestamp(value: str) -> datetime:
     parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     if parsed.tzinfo is None or parsed.utcoffset() is None:
         raise ValueError(f"timestamp must be timezone-aware: {value!r}")
     return parsed
 
 
-def _read_rows(path: Path) -> list[dict[str, Any]]:
+def _read(path: Path) -> list[dict[str, Any]]:
     with path.open("r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.DictReader(handle)
         columns = tuple(reader.fieldnames or ())
@@ -137,178 +139,193 @@ def _read_rows(path: Path) -> list[dict[str, Any]]:
         if missing:
             raise ValueError(f"input missing required columns: {missing}")
         rows: list[dict[str, Any]] = []
-        previous_time: datetime | None = None
+        previous: datetime | None = None
         for line_no, raw in enumerate(reader, start=2):
-            timestamp = _parse_timestamp(str(raw["timestamp"]))
-            if previous_time is not None and timestamp <= previous_time:
-                raise ValueError(
-                    f"timestamps must be unique and increasing; violation at line {line_no}"
-                )
-            previous_time = timestamp
-            strategy_return = _finite_float(raw["strategy_return"])
-            position = _finite_float(raw["executable_position"])
-            fit_r2 = _finite_float(raw["fit_r2"])
-            assert strategy_return is not None and position is not None and fit_r2 is not None
-            if strategy_return <= -1.0:
+            ts = _timestamp(str(raw["timestamp"]))
+            if previous is not None and ts <= previous:
+                raise ValueError(f"timestamps must be unique/increasing; line {line_no}")
+            previous = ts
+            ret = _float(raw["strategy_return"])
+            pos = _float(raw["executable_position"])
+            assert ret is not None and pos is not None
+            if ret <= -1.0:
                 raise ValueError(f"strategy_return <= -100% at line {line_no}")
-            if not 0.0 <= fit_r2 <= 1.0:
+            r2 = _float(raw["fit_r2"], optional=True)
+            if pos != 0.0 and r2 is None:
+                raise ValueError(f"non-flat bar requires fit_r2 at line {line_no}")
+            if r2 is not None and not 0.0 <= r2 <= 1.0:
                 raise ValueError(f"fit_r2 outside [0,1] at line {line_no}")
             row: dict[str, Any] = {
-                "timestamp": timestamp,
-                "strategy_return": strategy_return,
-                "executable_position": position,
-                "fit_r2": fit_r2,
+                "timestamp": ts,
+                "strategy_return": ret,
+                "executable_position": pos,
+                "fit_r2": r2,
             }
             for name in OPTIONAL_COLUMNS:
-                if name not in raw:
-                    row[name] = None
-                elif name in {"qualified", "direction_conflict", "exit_trigger"}:
-                    row[name] = _truthy(raw[name]) if raw[name] not in {None, ""} else None
-                elif name in {"slow_state"}:
-                    row[name] = str(raw[name]).strip() or None
+                raw_value = raw.get(name)
+                if name in BOOL_COLUMNS:
+                    row[name] = _bool(raw_value) if raw_value not in {None, ""} else None
+                elif name in TEXT_COLUMNS:
+                    row[name] = str(raw_value).strip() if raw_value not in {None, ""} else None
                 else:
-                    row[name] = _finite_float(raw[name], allow_none=True)
+                    row[name] = _float(raw_value, optional=True)
             rows.append(row)
     if len(rows) < 2:
         raise ValueError("drawdown atlas requires at least two rows")
     return rows
 
 
-def _ols_slope(values: list[float]) -> float | None:
+def _slope(values: list[float]) -> float | None:
     if len(values) < 2:
         return None
     n = len(values)
-    x_mean = (n - 1) / 2.0
-    y_mean = sum(values) / n
-    xss = sum((i - x_mean) ** 2 for i in range(n))
-    if xss <= 0.0:
-        return None
-    return sum((i - x_mean) * (value - y_mean) for i, value in enumerate(values)) / xss
+    xm = (n - 1) / 2.0
+    ym = sum(values) / n
+    xss = sum((i - xm) ** 2 for i in range(n))
+    return sum((i - xm) * (v - ym) for i, v in enumerate(values)) / xss
 
 
 def _decorate(rows: list[dict[str, Any]]) -> None:
     equity = 1.0
     peak = 1.0
-    previous_r2: float | None = None
+    prior_pos = 0.0
+    prior_r2: float | None = None
     decline_run = 0
     trade_entry_r2: float | None = None
-    previous_position = 0.0
-    for idx, row in enumerate(rows):
-        strategy_return = float(row["strategy_return"])
-        equity *= 1.0 + strategy_return
+    trade_r2_history: list[float] = []
+    trade_id = 0
+    for row in rows:
+        ret = float(row["strategy_return"])
+        equity *= 1.0 + ret
         peak = max(peak, equity)
-        drawdown = equity / peak - 1.0
-        fit_r2 = float(row["fit_r2"])
-        delta1 = None if previous_r2 is None else fit_r2 - previous_r2
-        if delta1 is not None and delta1 < 0.0:
-            decline_run += 1
-        else:
+        row["equity"] = equity
+        row["peak_equity"] = peak
+        row["drawdown"] = equity / peak - 1.0
+
+        pos = float(row["executable_position"])
+        r2 = row["fit_r2"]
+        new_segment = pos != 0.0 and (prior_pos == 0.0 or pos * prior_pos < 0.0)
+        if pos == 0.0:
+            prior_r2 = None
             decline_run = 0
-        position = float(row["executable_position"])
-        if position == 0.0:
             trade_entry_r2 = None
-        elif previous_position == 0.0 or position * previous_position < 0.0:
-            trade_entry_r2 = fit_r2
-        ratio = None
-        if trade_entry_r2 is not None and trade_entry_r2 > 0.0:
-            ratio = fit_r2 / trade_entry_r2
-        recent = [float(item["fit_r2"]) for item in rows[max(0, idx - 3) : idx + 1]]
-        row.update(
-            {
-                "equity": equity,
-                "peak_equity": peak,
-                "drawdown": drawdown,
-                "fit_r2_delta_1": delta1,
-                "fit_r2_delta_2": None
-                if idx < 2
-                else fit_r2 - float(rows[idx - 2]["fit_r2"]),
-                "fit_r2_delta_4": None
-                if idx < 4
-                else fit_r2 - float(rows[idx - 4]["fit_r2"]),
-                "fit_r2_slope_4": _ols_slope(recent),
-                "fit_r2_consecutive_declines": decline_run,
-                "fit_r2_entry": trade_entry_r2,
-                "fit_r2_ratio_to_entry": ratio,
-            }
-        )
-        previous_r2 = fit_r2
-        previous_position = position
+            trade_r2_history = []
+            row["trade_id"] = None
+            row["fit_r2_delta_1"] = None
+            row["fit_r2_delta_2"] = None
+            row["fit_r2_delta_4"] = None
+            row["fit_r2_slope_4"] = None
+            row["fit_r2_consecutive_declines"] = 0
+            row["fit_r2_entry"] = None
+            row["fit_r2_ratio_to_entry"] = None
+        else:
+            assert isinstance(r2, float)
+            if new_segment:
+                trade_id += 1
+                prior_r2 = None
+                decline_run = 0
+                trade_entry_r2 = r2
+                trade_r2_history = []
+            trade_r2_history.append(r2)
+            delta1 = None if prior_r2 is None else r2 - prior_r2
+            if delta1 is not None and delta1 < 0.0:
+                decline_run += 1
+            else:
+                decline_run = 0
+            row["trade_id"] = trade_id
+            row["fit_r2_delta_1"] = delta1
+            row["fit_r2_delta_2"] = None if len(trade_r2_history) < 3 else r2 - trade_r2_history[-3]
+            row["fit_r2_delta_4"] = None if len(trade_r2_history) < 5 else r2 - trade_r2_history[-5]
+            row["fit_r2_slope_4"] = _slope(trade_r2_history[-4:])
+            row["fit_r2_consecutive_declines"] = decline_run
+            row["fit_r2_entry"] = trade_entry_r2
+            row["fit_r2_ratio_to_entry"] = (
+                None if trade_entry_r2 is None or trade_entry_r2 <= 0.0 else r2 / trade_entry_r2
+            )
+            prior_r2 = r2
+        prior_pos = pos
 
 
-def _episode_ranges(rows: list[dict[str, Any]]) -> list[tuple[int, int, int, int | None]]:
-    episodes: list[tuple[int, int, int, int | None]] = []
+def _episodes(rows: list[dict[str, Any]]) -> list[tuple[int, int, int, int | None]]:
+    result: list[tuple[int, int, int, int | None]] = []
     peak_idx = 0
-    in_drawdown = False
+    active = False
     start_idx = 0
     trough_idx = 0
     for idx, row in enumerate(rows):
-        drawdown = float(row["drawdown"])
-        if drawdown >= -1e-15:
-            if in_drawdown:
-                episodes.append((peak_idx, start_idx, trough_idx, idx))
-                in_drawdown = False
+        dd = float(row["drawdown"])
+        if dd >= -1e-15:
+            if active:
+                result.append((peak_idx, start_idx, trough_idx, idx))
+                active = False
             peak_idx = idx
-            continue
-        if not in_drawdown:
-            in_drawdown = True
+        elif not active:
+            active = True
             start_idx = idx
             trough_idx = idx
-        elif float(row["drawdown"]) < float(rows[trough_idx]["drawdown"]):
+        elif dd < float(rows[trough_idx]["drawdown"]):
             trough_idx = idx
-    if in_drawdown:
-        episodes.append((peak_idx, start_idx, trough_idx, None))
-    return episodes
+    if active:
+        result.append((peak_idx, start_idx, trough_idx, None))
+    return result
 
 
-def _optional_float(row: dict[str, Any], name: str) -> float | None:
-    value = row.get(name)
+def _opt(row: dict[str, Any], key: str) -> float | None:
+    value = row.get(key)
     return float(value) if isinstance(value, (int, float)) and math.isfinite(float(value)) else None
 
 
-def _window_switches(rows: list[dict[str, Any]], start: int, end: int) -> int:
-    values = [_optional_float(row, "authority_window_bars") for row in rows[start : end + 1]]
+def _switches(rows: list[dict[str, Any]], start: int, end: int) -> int:
     previous: float | None = None
-    switches = 0
-    for value in values:
+    count = 0
+    for row in rows[start : end + 1]:
+        value = _opt(row, "authority_window_bars")
         if value is None:
             continue
         if previous is not None and value != previous:
-            switches += 1
+            count += 1
         previous = value
-    return switches
+    return count
 
 
-def _first_index(rows: list[dict[str, Any]], start: int, end: int, predicate) -> int | None:
+def _first(
+    rows: list[dict[str, Any]], start: int, end: int, predicate: Callable[[dict[str, Any]], bool]
+) -> int | None:
     for idx in range(start, end + 1):
         if predicate(rows[idx]):
             return idx
     return None
 
 
-def _make_episode(
-    rows: list[dict[str, Any]],
-    span: tuple[int, int, int, int | None],
-    rank: int,
+def _r2_values(rows: list[dict[str, Any]], start: int, end: int) -> list[float]:
+    return [float(row["fit_r2"]) for row in rows[start : end + 1] if row.get("fit_r2") is not None]
+
+
+def _change(first: float | None, last: float | None) -> float | None:
+    return None if first is None or last is None else last - first
+
+
+def _episode(
+    rows: list[dict[str, Any]], span: tuple[int, int, int, int | None], rank: int
 ) -> DrawdownEpisode:
     peak_idx, start_idx, trough_idx, recovery_idx = span
-    start = rows[start_idx]
-    trough = rows[trough_idx]
+    start, trough = rows[start_idx], rows[trough_idx]
     segment = rows[start_idx : trough_idx + 1]
-    r2_values = [float(row["fit_r2"]) for row in segment]
-    first_down = _first_index(
+    r2s = _r2_values(rows, start_idx, trough_idx)
+    first_down = _first(
         rows,
         start_idx,
         trough_idx,
         lambda row: row.get("fit_r2_delta_1") is not None and float(row["fit_r2_delta_1"]) < 0.0,
     )
-    first_two_down = _first_index(
+    first_two = _first(
         rows,
         start_idx,
         trough_idx,
         lambda row: int(row.get("fit_r2_consecutive_declines") or 0) >= 2,
     )
-    conflicts = sum(bool(row.get("direction_conflict")) for row in segment)
-    exits = sum(bool(row.get("exit_trigger")) for row in segment)
+    start_r2 = _opt(start, "fit_r2")
+    trough_r2 = _opt(trough, "fit_r2")
     return DrawdownEpisode(
         rank=rank,
         peak_timestamp=rows[peak_idx]["timestamp"].isoformat(),
@@ -321,31 +338,30 @@ def _make_episode(
         trough_equity=float(trough["equity"]),
         position_at_start=float(start["executable_position"]),
         position_at_trough=float(trough["executable_position"]),
-        authority_window_at_start=_optional_float(start, "authority_window_bars"),
-        authority_window_at_trough=_optional_float(trough, "authority_window_bars"),
-        window_switches_to_trough=_window_switches(rows, start_idx, trough_idx),
-        fit_r2_at_start=float(start["fit_r2"]),
-        fit_r2_at_trough=float(trough["fit_r2"]),
-        fit_r2_min_to_trough=min(r2_values),
-        fit_r2_max_to_trough=max(r2_values),
-        fit_r2_change_start_to_trough=float(trough["fit_r2"]) - float(start["fit_r2"]),
-        fit_r2_peak_to_trough=max(r2_values) - float(trough["fit_r2"]),
+        authority_window_at_start=_opt(start, "authority_window_bars"),
+        authority_window_at_trough=_opt(trough, "authority_window_bars"),
+        window_switches_to_trough=_switches(rows, start_idx, trough_idx),
+        active_r2_observation_count=len(r2s),
+        fit_r2_at_start=start_r2,
+        fit_r2_at_trough=trough_r2,
+        fit_r2_min_to_trough=min(r2s) if r2s else None,
+        fit_r2_max_to_trough=max(r2s) if r2s else None,
+        fit_r2_change_start_to_trough=_change(start_r2, trough_r2),
+        fit_r2_peak_to_trough=(None if not r2s or trough_r2 is None else max(r2s) - trough_r2),
         first_r2_down_timestamp=None if first_down is None else rows[first_down]["timestamp"].isoformat(),
-        first_two_consecutive_r2_down_timestamp=None
-        if first_two_down is None
-        else rows[first_two_down]["timestamp"].isoformat(),
+        first_two_consecutive_r2_down_timestamp=None if first_two is None else rows[first_two]["timestamp"].isoformat(),
         r2_first_down_lead_bars_to_trough=None if first_down is None else trough_idx - first_down,
-        r2_two_down_lead_bars_to_trough=None if first_two_down is None else trough_idx - first_two_down,
-        path_efficiency_at_start=_optional_float(start, "path_efficiency"),
-        path_efficiency_at_trough=_optional_float(trough, "path_efficiency"),
-        slope_t_at_start=_optional_float(start, "slope_t"),
-        slope_t_at_trough=_optional_float(trough, "slope_t"),
-        direction_conflict_count_to_trough=conflicts,
-        exit_trigger_count_to_trough=exits,
+        r2_two_down_lead_bars_to_trough=None if first_two is None else trough_idx - first_two,
+        path_efficiency_at_start=_opt(start, "path_efficiency"),
+        path_efficiency_at_trough=_opt(trough, "path_efficiency"),
+        slope_t_at_start=_opt(start, "slope_t"),
+        slope_t_at_trough=_opt(trough, "slope_t"),
+        direction_conflict_count_to_trough=sum(bool(row.get("direction_conflict")) for row in segment),
+        exit_trigger_count_to_trough=sum(bool(row.get("exit_trigger")) for row in segment),
         slow_state_at_start=start.get("slow_state") if isinstance(start.get("slow_state"), str) else None,
         slow_state_at_trough=trough.get("slow_state") if isinstance(trough.get("slow_state"), str) else None,
-        slow_fit_r2_at_start=_optional_float(start, "slow_fit_r2"),
-        slow_fit_r2_at_trough=_optional_float(trough, "slow_fit_r2"),
+        slow_fit_r2_at_start=_opt(start, "slow_fit_r2"),
+        slow_fit_r2_at_trough=_opt(trough, "slow_fit_r2"),
     )
 
 
@@ -358,41 +374,38 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         for row in rows:
-            encoded = {
-                key: value.isoformat() if isinstance(value, datetime) else value
-                for key, value in row.items()
-            }
-            writer.writerow(encoded)
+            writer.writerow(
+                {key: value.isoformat() if isinstance(value, datetime) else value for key, value in row.items()}
+            )
 
 
 def run(input_path: Path, out_dir: Path, *, top_n: int) -> dict[str, Any]:
     if top_n < 1:
         raise ValueError("top_n must be positive")
-    rows = _read_rows(input_path)
+    rows = _read(input_path)
     _decorate(rows)
-    spans = _episode_ranges(rows)
-    spans_sorted = sorted(spans, key=lambda span: float(rows[span[2]]["drawdown"]))
-    selected = spans_sorted[:top_n]
-    episodes = [_make_episode(rows, span, rank + 1) for rank, span in enumerate(selected)]
+    spans = _episodes(rows)
+    worst_first = sorted(spans, key=lambda span: float(rows[span[2]]["drawdown"]))
+    atlas = [_episode(rows, span, rank + 1) for rank, span in enumerate(worst_first[:top_n])]
     out_dir.mkdir(parents=True, exist_ok=True)
     _write_csv(out_dir / "drawdown_timeseries.csv", rows)
-    episode_rows = [asdict(episode) for episode in episodes]
-    _write_csv(out_dir / "drawdown_atlas.csv", episode_rows)
-    worst = min((float(row["drawdown"]) for row in rows), default=0.0)
-    total_return = float(rows[-1]["equity"]) - 1.0
+    atlas_rows = [asdict(item) for item in atlas]
+    _write_csv(out_dir / "drawdown_atlas.csv", atlas_rows)
     summary = {
-        "schema_id": "ols_drawdown_atlas_d0@1.0",
+        "schema_id": "ols_drawdown_atlas_d0@1.1",
         "input": str(input_path),
         "row_count": len(rows),
         "episode_count": len(spans),
-        "reported_episode_count": len(episodes),
-        "total_return": total_return,
-        "maximum_drawdown": worst,
+        "reported_episode_count": len(atlas),
+        "total_return": float(rows[-1]["equity"]) - 1.0,
+        "maximum_drawdown": min(float(row["drawdown"]) for row in rows),
         "final_equity": float(rows[-1]["equity"]),
-        "required_return_semantics": "strategy_return is externally supplied and already reflects frozen execution/cost convention",
+        "r2_semantics": "active-side active-authority-window current fit; blank while flat",
+        "r2_deterioration_resets": "flat_or_direction_reversal",
+        "required_return_semantics": "externally supplied frozen execution/cost convention",
         "diagnostic_only": True,
         "changes_entry_exit_routing_sizing_or_leverage": False,
-        "worst_episodes": episode_rows,
+        "worst_episodes": atlas_rows,
     }
     (out_dir / "drawdown_summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
@@ -403,12 +416,11 @@ def run(input_path: Path, out_dir: Path, *, top_n: int) -> dict[str, Any]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--input", required=True, type=Path, help="causal per-bar OLS trace CSV")
-    parser.add_argument("--out-dir", required=True, type=Path, help="output directory")
-    parser.add_argument("--top-n", type=int, default=10, help="number of worst episodes to report")
+    parser.add_argument("--input", required=True, type=Path)
+    parser.add_argument("--out-dir", required=True, type=Path)
+    parser.add_argument("--top-n", type=int, default=10)
     args = parser.parse_args()
-    summary = run(args.input, args.out_dir, top_n=args.top_n)
-    print(json.dumps(summary, ensure_ascii=False, sort_keys=True))
+    print(json.dumps(run(args.input, args.out_dir, top_n=args.top_n), ensure_ascii=False, sort_keys=True))
 
 
 if __name__ == "__main__":
