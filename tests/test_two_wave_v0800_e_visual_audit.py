@@ -90,9 +90,26 @@ class TwoWaveV0800EVisualAuditTest(unittest.TestCase):
         self.assertIn("Cherry-picking is prohibited", text)
         self.assertIn("separate post-audit adjudication", text)
 
-    def test_source_only_stage_has_no_execution_route_yet(self):
-        self.assertNotIn(PROFILE, WORKFLOW.read_text(encoding="utf-8"))
-        self.assertNotIn(f"controller: {PROFILE}", CONTROLLER.read_text(encoding="utf-8"))
+    def test_standard_workflow_routes_exact_profile_through_all_phases(self):
+        text = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("workflow_dispatch:", text)
+        self.assertNotIn("pull_request:", text)
+        self.assertNotIn("push:", text)
+        self.assertIn(f"- {PROFILE}", text)
+        for phase in ("prepare", "compute", "cleanup", "publish"):
+            self.assertIn(f"python3 executor/two_wave_v0800_e_visual_audit_broker.py {phase} {PROFILE}", text)
+        self.assertIn("python3 executor/two_wave_v0800_e_visual_audit_private_mirror.py", text)
+        self.assertEqual(text.count("secrets.FACTORLAB_PRIVATE_TOKEN"), 2)
+
+    def test_controller_is_exact_owner_only_dispatch_not_compute(self):
+        text = CONTROLLER.read_text(encoding="utf-8")
+        title = f"controller: {PROFILE}"
+        self.assertEqual(text.count(title), 2)
+        self.assertEqual(text.count(f"profile='{PROFILE}'"), 1)
+        self.assertIn("github.event.issue.user.login == github.repository_owner", text)
+        self.assertIn("actions/workflows/public-compute.yml/dispatches", text)
+        self.assertNotIn("two_wave_v0800_e_visual_audit.py", text)
+        self.assertNotIn("two_wave_v0800_e_visual_audit_broker.py", text)
 
 
 if __name__ == "__main__":
