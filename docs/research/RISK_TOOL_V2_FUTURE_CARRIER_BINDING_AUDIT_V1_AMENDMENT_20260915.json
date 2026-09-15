@@ -1,0 +1,74 @@
+{
+  "controls": {
+    "calibration_execution": false,
+    "market_values_read": false,
+    "model_execution": false,
+    "new_training": false,
+    "parent_verdict_changed": false,
+    "production_authority": false,
+    "returns_or_labels_read": false,
+    "strategy_authority": false
+  },
+  "corrected_binding": {
+    "binding_semantics": "Both target symbols are bound as separate entries within one immutable unified 5m_offset_0 source family; no per-symbol parquet member is required or assumed.",
+    "canonical_1m_parent_dataset_version": "bars_cn_index_1m_raw_canonical_market_index_baidu_3s_20000714_20260821_factorlab_unified_missing_day_repaired_v8_20260824",
+    "source_artifact": {
+      "name": "5m_offset_0.parquet",
+      "rows": 749259,
+      "sha256": "d3101e6adf7a3e85b11f7c3503a6161f3ab363f7edd90ac8cba451ffe409c46a"
+    },
+    "source_contract": {
+      "bytes": 52711,
+      "path": "data/index/SOURCE_MANIFEST.json",
+      "sha256": "c46f2da6c3df016ca054e183e37267dc472097450fcdd6644c22aa0084c15749"
+    },
+    "target_symbols": {
+      "000688.SH": {
+        "day_count_ready": true,
+        "expected_trading_day_count": 1476,
+        "first_trading_day": "2020-07-23",
+        "last_trading_day": "2026-08-21",
+        "rows": 70848,
+        "trading_day_count": 1476
+      },
+      "000852.SH": {
+        "day_count_ready": true,
+        "expected_trading_day_count": 2828,
+        "first_trading_day": "2015-01-05",
+        "last_trading_day": "2026-08-21",
+        "rows": 135682,
+        "trading_day_count": 2828
+      }
+    }
+  },
+  "date": "2026-09-15",
+  "future_oos_anchor": {
+    "activation_requires_new_snapshot_covering_full_window_for_both_symbols": true,
+    "consumed_parent_cutoff_inclusive": "2026-09-11",
+    "current_snapshot_is_not_future_oos_evidence": true,
+    "proposed_new_window_end_inclusive": "2027-03-31",
+    "proposed_new_window_start_inclusive": "2026-09-14"
+  },
+  "original_preregistration": {
+    "path": "docs/research/RISK_TOOL_V2_FUTURE_CARRIER_BINDING_AUDIT_V1_PREREG_20260915.json",
+    "preserved": true,
+    "sha256": "6158bfb13dafe8a6ffee255455320c6598d17c932115985070994cade0030540"
+  },
+  "prior_authoritative_inventory": {
+    "canonical_000688_2026_5m_members": 0,
+    "canonical_000852_2026_5m_members": 0,
+    "private_branch": "runs/risk-v2-carrier-inventory/34940131490-1",
+    "status": "INVENTORY_COMPLETE_BINDING_UNRESOLVED",
+    "working_lead_offset_members": 1
+  },
+  "schema_id": "risk_tool_v2_future_carrier_binding_audit_amendment@1.0",
+  "supersedes_only": "physical input-binding assumption in the original preregistration; all no-rescue, future-window, no-training and no-authority rules remain unchanged",
+  "task_id": "CSI1000-RISK-V2-FUTURE-CARRIER-BINDING-AUDIT-V1-20260915",
+  "triggering_failed_run": {
+    "failure_code": "future_binding_member_not_unique:000688.SH",
+    "phase": "prepare",
+    "public_run_id": "34968368325-1",
+    "scientific_oos_consumed": false,
+    "semantic_market_read_occurred": false
+  }
+}
