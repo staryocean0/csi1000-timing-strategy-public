@@ -1,0 +1,108 @@
+{
+  "schema_id": "csi1000.two_wave_backward_same_scale_a_channel_v0800@1.0",
+  "status": "PUBLIC_PREREGISTRATION_CANDIDATE_NOT_PRIVATE_AUTHORITY",
+  "layer": "Layer2",
+  "instrument": "000852.SH",
+  "lineage": {
+    "historical_two_wave_snapshot_path": "runtime/research/cloud_imports/two_wave_morphology/152ae1ef11a04bb3b434da25025794db7a706c81",
+    "historical_two_wave_tree_sha": "49e860a692382f02bfb2803243e81cc2c077040b",
+    "historical_authority_schema": "two_wave_m0_authority@1.33",
+    "historical_morphology_acceptance": false,
+    "historical_direction_winner": null,
+    "ols_trend_regime_family_in_scope": false
+  },
+  "control_plane": {
+    "public_repository": "staryocean0/csi1000-timing-strategy-public",
+    "public_base_branch": "cloud-workspace-v1",
+    "public_base_commit_at_reboot": "e787744eb67fc08fba35d8a1fbc290fe3e2d775d",
+    "development_branch": "research/two-wave-v0800-backward-scale",
+    "private_repository": "staryocean0/csi1000-timing-strategy-private",
+    "private_source_commit_at_reboot": "67effb80f51228f6129dca5c4f7971a0bb6c7f15",
+    "private_direct_chat_mutation_allowed": false,
+    "real_research_event": "workflow_dispatch"
+  },
+  "primary_view": {
+    "name": "5m_offset_0",
+    "source_role": "DataHub_provided_view_not_local_resample",
+    "cloud_inventory_target": "data/index/5m_offset_0.parquet",
+    "cloud_inventory_sha256": "211448c914b547232bc536da7df94dc5ae279b8265a5cafe58409238485217d7",
+    "cloud_inventory_rows": 135682,
+    "cloud_inventory_min_day": "2015-01-05",
+    "cloud_inventory_max_day": "2026-08-21",
+    "historical_two_wave_development_identity": {
+      "path": "data/development/5m_offset_0.parquet",
+      "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+      "bytes": 3351411,
+      "start": "2015-01-05",
+      "end": "2020-12-31"
+    },
+    "phase1_allowed_interval": {
+      "start": "2015-01-05",
+      "end": "2020-12-31",
+      "role": "already_consumed_semantic_development",
+      "fresh_oos": false
+    },
+    "open_2026_for_parameter_rescue": false
+  },
+  "semantic_object": {
+    "phase": "A_low_high_low_only",
+    "wave_duration": "end_low_occurrence_bar - start_low_occurrence_bar",
+    "terminal_low_requires_causal_confirmation": true,
+    "current_first_backward_search": true,
+    "single_wave_market_state_publication_allowed": false,
+    "bottom_boundary_authoritative": true,
+    "top_boundary_rule": "exact_parallel_translation_of_bottom_boundary",
+    "separate_top_regression_allowed": false
+  },
+  "same_scale": {
+    "relation": "max(d_prev,d_cur)/min(d_prev,d_cur) <= rho",
+    "current_anchor_integer_band": "ceil(N/rho) <= d_prev <= floor(rho*N)",
+    "candidate_rho": [1.25, 1.3333333333333333, 1.4142135623730951, 1.5],
+    "legacy_control_rho": 2.0,
+    "legacy_control_can_win_phase1": false
+  },
+  "geometry": {
+    "price_space": "log",
+    "bottom_slope": "(log(L1)-log(L0))/duration",
+    "channel_height": "log(H0)-bottom_line(tH)",
+    "normalized_migration_g": "(log(L1)-log(L0))/channel_height",
+    "channel_height_must_be_positive": true,
+    "amplitude_ratio_phase1_role": "diagnostic_only"
+  },
+  "direction_grid": {
+    "tau": [0.05, 0.1, 0.15, 0.2],
+    "kappa": [1.25, 1.5, 2.0],
+    "pair_consensus_required": true,
+    "states": ["Range", "UpTrend", "DownTrend", "Uncertain"],
+    "historical_D1_role": "diagnostic_comparator_not_target_label"
+  },
+  "predecessor_semantics": {
+    "nearest_eligible_same_scale_predecessor": true,
+    "may_skip_out_of_scale_micro_or_macro_candidates": true,
+    "may_skip_nearer_eligible_same_scale_for_older_match": false,
+    "shared_anchor_strict_reported_separately": true,
+    "same_scale_ledger_nearest_reported_separately": true
+  },
+  "validation_chain": [
+    "V0800-A_SYNTHETIC_SEMANTIC_INVARIANTS",
+    "V0800-B_DURATION_SCALE_BAND_MAP",
+    "V0800-C_CAUSAL_PREFIX_REPLAY",
+    "V0800-D_TWO_WAVE_DIRECTION_GRID_DIAGNOSTIC",
+    "V0800-E_PRIVATE_VISUAL_AUDIT_PACK"
+  ],
+  "forbidden_outputs": [
+    "position",
+    "buy_signal",
+    "sell_signal",
+    "pnl",
+    "cost_optimized_parameter",
+    "execution_route",
+    "production_authority"
+  ],
+  "authority": {
+    "morphology_acceptance": false,
+    "direction_winner": null,
+    "trade_authority": false,
+    "production_authority": false
+  }
+}
