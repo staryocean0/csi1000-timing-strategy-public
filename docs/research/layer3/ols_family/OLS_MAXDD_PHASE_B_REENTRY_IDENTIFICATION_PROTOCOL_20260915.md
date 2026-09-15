@@ -73,9 +73,11 @@ The 20% outcome tail is an evaluation label only. It is not a proposed trading t
 
 ## 7. Frozen Phase-C promotion gate
 
+For gate conditions 1–4, the **primary eligible universe is underwater re-entry rows**: `lagged_drawdown_abs_at_decision > 0` and `reentry_ordinal_since_hwm >= 1`, with the candidate itself finite. This prevents the gate from being passed merely by contrasting ordinary first participation with already-underwater repeated participation.
+
 A candidate mechanism becomes `PHASE_C_ELIGIBLE` only if all conditions hold:
 
-1. expected-risk-direction Spearman `rho >= 0.25` in at least 3 of 5 exit families on the candidate's primary eligible universe;
+1. expected-risk-direction Spearman `rho >= 0.25` in at least 3 of 5 exit families on the primary eligible universe;
 2. the association has the expected positive sign in at least 4 of 5 exit families;
 3. median direction-adjusted family AUC for the worst-20%-extension label is at least `0.60` across families with sufficient observations;
 4. among sufficient family-year cells, at least `70%` have the expected positive association;
