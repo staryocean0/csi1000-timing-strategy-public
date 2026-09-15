@@ -26,10 +26,13 @@ DATA_PATH = "data/development/5m_offset_0.parquet"
 DATA_BYTES = 3351411
 DATA_SHA256 = "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48"
 PROTOCOL = HERE.parent / "docs" / "research" / "TWO_WAVE_BACKWARD_SAME_SCALE_A_CHANNEL_V0800_PROTOCOL.json"
+AMENDMENT = HERE.parent / "docs" / "research" / "TWO_WAVE_V0800_PREFLIGHT_AMENDMENT_A.json"
 SCRIPT_NAMES = (
     "two_wave_v0800_semantics.py",
     "two_wave_v0800_scale_map.py",
     "two_wave_v0800_scale_map_verifier.py",
+    "two_wave_v0800_scale_map_entry.py",
+    "two_wave_v0800_scale_map_verifier_entry.py",
 )
 
 
@@ -41,11 +44,15 @@ def sha256(path: Path) -> str:
 def profile() -> dict:
     if not PROTOCOL.is_file():
         raise GateError("two_wave_v0800_protocol_missing")
+    if not AMENDMENT.is_file():
+        raise GateError("two_wave_v0800_preflight_amendment_missing")
     return {
         "private_ref": PRIVATE_REF,
-        "manifest_sha256": sha256(PROTOCOL),
-        "command": ["two_wave/two_wave_v0800_scale_map.py", "--inputs", "/work/inputs", "--out", "/results/study"],
-        "verify_command": ["two_wave/two_wave_v0800_scale_map_verifier.py", "--inputs", "/work/inputs", "--results", "/results/study"],
+        "manifest_sha256": sha256(AMENDMENT),
+        "protocol_sha256": sha256(PROTOCOL),
+        "amendment_schema": "csi1000.two_wave_v0800_preflight_amendment_a@1.0",
+        "command": ["two_wave/two_wave_v0800_scale_map_entry.py", "--inputs", "/work/inputs", "--out", "/results/study"],
+        "verify_command": ["two_wave/two_wave_v0800_scale_map_verifier_entry.py", "--inputs", "/work/inputs", "--results", "/results/study"],
         "command_timeout_seconds": 900,
         "verification_timeout_seconds": 300,
         "new_training": False,
@@ -92,7 +99,7 @@ def download_public_data(target: Path) -> None:
 
 
 def prepare_inputs(api, root: Path, fixed_profile: dict) -> Path:
-    del api, fixed_profile
+    del api
     work = root / "work"
     work.mkdir()
     inputs = work / "inputs"
@@ -105,10 +112,16 @@ def prepare_inputs(api, root: Path, fixed_profile: dict) -> Path:
             raise GateError("two_wave_v0800_public_source_missing")
         shutil.copy2(source, scripts / name)
     protocol_target = scripts / "PROTOCOL.json"
+    amendment_target = scripts / "PREFLIGHT_AMENDMENT_A.json"
     shutil.copy2(PROTOCOL, protocol_target)
-    expected_protocol = profile()["manifest_sha256"]
-    if sha256(protocol_target) != expected_protocol:
+    shutil.copy2(AMENDMENT, amendment_target)
+    if sha256(protocol_target) != fixed_profile["protocol_sha256"]:
         raise GateError("two_wave_v0800_protocol_identity_failed")
+    if sha256(amendment_target) != fixed_profile["manifest_sha256"]:
+        raise GateError("two_wave_v0800_preflight_amendment_identity_failed")
+    amendment_value = __import__("json").loads(amendment_target.read_text())
+    if amendment_value.get("schema_id") != fixed_profile["amendment_schema"]:
+        raise GateError("two_wave_v0800_preflight_amendment_schema_failed")
     download_public_data(inputs / "5m_offset_0.parquet")
     return work
 
