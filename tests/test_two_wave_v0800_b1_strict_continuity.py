@@ -98,6 +98,8 @@ class TwoWaveV0800B1StrictContinuityTest(unittest.TestCase):
         text = CONTROLLER.read_text(encoding="utf-8")
         self.assertIn(CONTROLLER_TITLE, text)
         self.assertIn(f"profile='{PROFILE}'", text)
+        self.assertEqual(text.count(CONTROLLER_TITLE), 2)
+        self.assertEqual(text.count(f"profile='{PROFILE}'"), 1)
         self.assertIn("actions/workflows/public-compute.yml/dispatches", text)
         self.assertIn("-f ref='cloud-workspace-v1'", text)
         self.assertNotIn("pull_request_target:", text)
