@@ -100,11 +100,16 @@ def build(inputs:Path):
     return pd.DataFrame(endpoint),sdf,pd.DataFrame(comparison),receipt,excluded
 
 
+def state_comparison_payload(frame:pd.DataFrame):
+    if frame.empty: return {}
+    current=frame[frame.dimension.eq("current_state")].set_index("category")
+    return {str(k):{str(col):float(v) for col,v in current.loc[k].items() if str(col).startswith("delta_")} for k in current.index}
+
+
 def run(inputs:Path,out:Path):
     e,s,c,receipt,excluded=build(inputs);out.mkdir(parents=True,exist_ok=False)
     e.to_csv(out/"STATE_ENDPOINT_METRICS.csv",index=False);s.to_csv(out/"STATE_GROUP_SUMMARY.csv",index=False);c.to_csv(out/"STATE_COMPARISON.csv",index=False)
-    state_comp=c[c.dimension.eq("current_state")].set_index("category") if len(c) else pd.DataFrame()
-    summary={"schema_id":"risk_tool_v2_15m_state_conditional_calibration_diagnostic_summary@1.0","profile":"risk-v2-15m-state-conditional-calibration-diagnostic-v1","target":"15m.weekly.calibration","streak_labels":list(STREAK),"other_pass_endpoint_count":int(e[e.cohort_group.eq("OTHER_PASS")].period_label.nunique()),"state_comparison":{k:{col:float(v) for col,v in state_comp.loc[k].items() if col not in ("streak_rows","other_pass_rows")} for k in state_comp.index} if len(state_comp) else {},"diagnostic_only":True,"candidate_search":False,"calibration_refit":False,"numeric_threshold_change":False,"year_2026_read":False,"pnl":False,"production_authority":False}
+    summary={"schema_id":"risk_tool_v2_15m_state_conditional_calibration_diagnostic_summary@1.0","profile":"risk-v2-15m-state-conditional-calibration-diagnostic-v1","target":"15m.weekly.calibration","streak_labels":list(STREAK),"other_pass_endpoint_count":int(e[e.cohort_group.eq("OTHER_PASS")].period_label.nunique()),"state_comparison":state_comparison_payload(c),"diagnostic_only":True,"candidate_search":False,"calibration_refit":False,"numeric_threshold_change":False,"year_2026_read":False,"pnl":False,"production_authority":False}
     (out/"SUMMARY.json").write_text(json.dumps(summary,indent=2,sort_keys=True)+"\n")
     (out/"INPUT_DATA_RECEIPT.json").write_text(json.dumps({"source_receipt":receipt,"excluded_incomplete_days":excluded,"parent_diagnostic_authority_run":"34932495109-1","year_2026_read":False},indent=2,sort_keys=True)+"\n")
     (out/"MODEL_INPUT_RECEIPT.json").write_text(json.dumps({"horizon_minutes":15,"tail_anchor":TAIL_ANCHOR,"tail_limit":TAIL_LIMIT,"new_training":False,"calibration_refit":False,"production_authority":False},indent=2,sort_keys=True)+"\n")
