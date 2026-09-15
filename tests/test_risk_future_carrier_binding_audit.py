@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import hashlib
 import importlib.util
 import json
 import unittest
@@ -14,6 +15,7 @@ BROKER = EXECUTOR / "risk_future_carrier_binding_audit_broker.py"
 MIRROR = EXECUTOR / "risk_future_carrier_binding_audit_private_mirror.py"
 PREREG = ROOT / "docs" / "research" / "RISK_TOOL_V2_FUTURE_CARRIER_BINDING_AUDIT_V1_PREREG_20260915.json"
 AMEND = ROOT / "docs" / "research" / "RISK_TOOL_V2_FUTURE_CARRIER_BINDING_AUDIT_V1_AMENDMENT_20260915.json"
+AMEND_SHA = "7972fbc0a13671cf182cdb0c7c3b4ce6d10588c63cbe34c9e6871f300626f371"
 
 
 def load_module(path: Path, name: str):
@@ -31,6 +33,7 @@ class FutureCarrierBindingAuditStaticTest(unittest.TestCase):
     def test_original_prereg_is_preserved_and_amendment_records_failed_assumption(self):
         original = json.loads(PREREG.read_text())
         amendment = json.loads(AMEND.read_text())
+        self.assertEqual(hashlib.sha256(AMEND.read_bytes()).hexdigest(), AMEND_SHA)
         self.assertEqual(original["source"]["members"]["000688.SH"], "data/market/5m/000688.SH/2026.parquet")
         self.assertEqual(amendment["triggering_failed_run"]["public_run_id"], "34968368325-1")
         self.assertEqual(amendment["triggering_failed_run"]["failure_code"], "future_binding_member_not_unique:000688.SH")
