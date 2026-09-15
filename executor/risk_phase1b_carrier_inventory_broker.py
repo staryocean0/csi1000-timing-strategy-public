@@ -1,13 +1,14 @@
-"""Bounded carrier-inventory broker for Risk Tool 2.0 Phase-1b.
+"""Append-only reconciliation wrapper for the Phase-1b carrier inventory.
 
-This profile may read archive metadata and raw candidate bytes only for identity hashing.
-It must never deserialize parquet, inspect prices/returns/labels, fit models, or score 2026.
+The legacy v1 inventory implementation is preserved byte-for-byte in
+risk_phase1b_carrier_inventory_core_v1.py.  This wrapper leaves the v1 result
+unchanged and adds a second, identity-only sidecar by reading the fixed
+DataHub SOURCE_MANIFEST.json from the already frozen handoff bundle.
 """
 
 from __future__ import annotations
 
 import argparse
-import base64
 import hashlib
 import importlib.util
 import json
@@ -15,446 +16,361 @@ import os
 import re
 import sys
 import tarfile
-import tempfile
-import urllib.parse
 from pathlib import Path, PurePosixPath
 
 HERE = Path(__file__).resolve().parent
-_spec = importlib.util.spec_from_file_location("_factorlab_broker", HERE / "broker.py")
-broker = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(broker)
-
-GateError = broker.GateError
-PRIVATE_REPO = broker.PRIVATE_REPO
-sha = broker.sha
-safe_path = broker.safe_path
-unpack = broker.unpack
-require_context = broker.require_context
-collect_result_files = broker.collect_result_files
-upload_result = broker.upload_result
-require_private_api = broker.require_private_api
-
-PROFILE_NAME = "risk-v2-phase1b-carrier-inventory-v1"
-PROFILE_PATH = HERE / "risk_phase1b_carrier_inventory_profile.json"
-PROFILE_SCHEMA = "risk_tool_v2_phase1b_carrier_inventory_profile@1.0"
-RESULT_SCHEMA = "risk_tool_v2_phase1b_carrier_inventory@1.0"
-RECEIPT_SCHEMA = "risk_tool_v2_phase1b_carrier_inventory_runner_receipt@1.0"
-TASK_ID = "CSI1000-RISK-V2-PHASE1B-CARRIER-BINDING-20260915"
-DATA_RELEASE_TAG = "csi1000-handoff-v1-20260913"
-DATA_ASSET_NAME = "csi1000-handoff.tar.gz"
-EXPECTED_SUFFIXES = (
-    "data/market/5m/000688.SH/2026.parquet",
-    "data/market/5m/000852.SH/2026.parquet",
-    "bar_receipts.csv",
-    "5m_offset_0.parquet",
-    "5m_offset_1.parquet",
-    "5m_offset_2.parquet",
-    "5m_offset_3.parquet",
-    "5m_offset_4.parquet",
+_spec = importlib.util.spec_from_file_location(
+    "_carrier_inventory_core_v1", HERE / "risk_phase1b_carrier_inventory_core_v1.py"
 )
-PROFILE_KEYS = {
-    "schema_id",
-    "task_id",
-    "private_ref",
-    "data_release_tag",
-    "data_asset_name",
-    "data_asset_sha256",
-    "data_asset_bytes",
-    "bundle_member",
-    "candidate_suffixes",
-    "asset_parts",
+core = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(core)
+
+# Re-export the legacy public surface so existing tests and the strict mirror
+# continue to validate the original v1 result without reinterpretation.
+GateError = core.GateError
+PRIVATE_REPO = core.PRIVATE_REPO
+PROFILE_NAME = core.PROFILE_NAME
+PROFILE_PATH = core.PROFILE_PATH
+PROFILE_SCHEMA = core.PROFILE_SCHEMA
+RESULT_SCHEMA = core.RESULT_SCHEMA
+RECEIPT_SCHEMA = core.RECEIPT_SCHEMA
+TASK_ID = core.TASK_ID
+DATA_RELEASE_TAG = core.DATA_RELEASE_TAG
+DATA_ASSET_NAME = core.DATA_ASSET_NAME
+EXPECTED_SUFFIXES = core.EXPECTED_SUFFIXES
+MAX_ARCHIVE_BYTES = core.MAX_ARCHIVE_BYTES
+MAX_MANIFEST_BYTES = core.MAX_MANIFEST_BYTES
+sha = core.sha
+safe_path = core.safe_path
+unpack = core.unpack
+require_context = core.require_context
+collect_result_files = core.collect_result_files
+upload_result = core.upload_result
+require_private_api = core.require_private_api
+validate_profile = core.validate_profile
+load_profile = core.load_profile
+state_path = core.state_path
+write_state = core.write_state
+load_state = core.load_state
+prepare = core.prepare
+cleanup = core.cleanup
+publish = core.publish
+inventory_bundle = core.inventory_bundle
+
+RECONCILIATION_SCHEMA = "risk_tool_v2_phase1b_carrier_reconciliation@1.0"
+SOURCE_CONTRACT_SUFFIX = "data/index/SOURCE_MANIFEST.json"
+SOURCE_CONTRACT_BYTES = 52711
+SOURCE_CONTRACT_SHA256 = "c46f2da6c3df016ca054e183e37267dc472097450fcdd6644c22aa0084c15749"
+FROZEN_CANDIDATE = {
+    "path": "data/index/5m_offset_0.parquet",
+    "bytes": 3615731,
+    "sha256": "211448c914b547232bc536da7df94dc5ae279b8265a5cafe58409238485217d7",
+    "git_blob_sha1": "1005a95563795ff836d21efa29e417adfa9b3f65",
+    "source_sha256": "d3101e6adf7a3e85b11f7c3503a6161f3ab363f7edd90ac8cba451ffe409c46a",
+    "frozen_rows": 135682,
+    "frozen_min_day": "2015-01-05",
+    "frozen_max_day": "2026-08-21",
+    "transformation": "symbol filter only; original fields and legacy wallclock labels preserved",
+}
+RECEIPT_CONSTRAINTS = {
+    "000688.SH": {
+        "scale_min": 5,
+        "rows": 70848,
+        "valid": 66373,
+        "first_day": "2020-07-23",
+        "last_day": "2026-08-21",
+    },
+    "000852.SH": {
+        "scale_min": 5,
+        "rows": 77232,
+        "valid": 72358,
+        "first_day": "2020-01-02",
+        "last_day": "2026-08-21",
+    },
+    "rows_total": 148080,
+}
+CONTROL_KEYS = {
     "year_2026_semantic_read",
     "parquet_deserialization",
+    "price_return_label_columns_read",
+    "model_fit",
+    "confirmatory_scoring",
     "new_training",
     "production_authority",
 }
-MAX_ARCHIVE_BYTES = 1024**3
-MAX_MANIFEST_BYTES = 4 * 1024**2
+FORBIDDEN_KEY_TOKENS = {
+    "open", "high", "low", "close", "price", "return", "label", "volume",
+    "amount", "turnover", "vwap", "pnl", "prediction", "probability", "score",
+}
+SAFE_KEY_TOKENS = {
+    "name", "path", "file", "source", "target", "dataset", "symbol", "universe",
+    "scale", "frequency", "freq", "interval", "timeframe", "row", "count", "valid",
+    "first", "last", "min_day", "max_day", "start", "end", "date", "day", "bytes",
+    "size", "sha", "hash", "schema", "timezone", "clock", "timestamp", "session",
+    "duplicate", "dedup", "transform", "fresh", "offset", "identity", "provenance",
+    "metadata", "stats", "coverage", "range", "contract", "format", "version",
+}
+TARGET_MARKERS = (
+    "5m_offset_0.parquet",
+    FROZEN_CANDIDATE["path"],
+    FROZEN_CANDIDATE["sha256"],
+    FROZEN_CANDIDATE["source_sha256"],
+)
 
 
-def _digest(value, max_bytes=MAX_ARCHIVE_BYTES):
-    if not isinstance(value, dict) or set(value) != {"bytes", "sha256"}:
-        raise GateError("profile_digest_shape_invalid")
-    if type(value["bytes"]) is not int or not 1 <= value["bytes"] <= max_bytes:
-        raise GateError("profile_file_size_invalid")
-    if not isinstance(value["sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", value["sha256"]):
-        raise GateError("profile_digest_invalid")
-
-
-def validate_profile(value):
-    if not isinstance(value, dict) or set(value) != PROFILE_KEYS:
-        raise GateError("unknown_profile_field")
-    if value.get("schema_id") != PROFILE_SCHEMA or value.get("task_id") != TASK_ID:
-        raise GateError("profile_schema_or_task_mismatch")
-    if not re.fullmatch(r"[0-9a-f]{40}", value.get("private_ref", "")):
-        raise GateError("profile_private_ref_invalid")
-    if value.get("data_release_tag") != DATA_RELEASE_TAG or value.get("data_asset_name") != DATA_ASSET_NAME:
-        raise GateError("unapproved_data_identity")
-    if type(value.get("data_asset_bytes")) is not int or not 1 <= value["data_asset_bytes"] <= MAX_ARCHIVE_BYTES:
-        raise GateError("profile_file_size_invalid")
-    if not re.fullmatch(r"[0-9a-f]{64}", value.get("data_asset_sha256", "")):
-        raise GateError("profile_digest_invalid")
-    bundle = value.get("bundle_member")
-    if not isinstance(bundle, dict) or set(bundle) != {"name", "bytes", "sha256"} or bundle["name"] != "bundle.tar":
-        raise GateError("bundle_identity_invalid")
-    _digest({"bytes": bundle["bytes"], "sha256": bundle["sha256"]})
-    if tuple(value.get("candidate_suffixes") or ()) != EXPECTED_SUFFIXES:
-        raise GateError("candidate_scope_changed")
-    if value.get("year_2026_semantic_read") is not False or value.get("parquet_deserialization") is not False:
-        raise GateError("semantic_read_not_authorized")
-    if value.get("new_training") is not False or value.get("production_authority") is not False:
-        raise GateError("scope_not_authorized")
-    parts = value.get("asset_parts")
-    if not isinstance(parts, list) or not 1 <= len(parts) <= 64:
-        raise GateError("invalid_transport_parts")
-    for index, part in enumerate(parts):
-        if not isinstance(part, dict) or set(part) != {"name", "bytes", "sha256"}:
-            raise GateError("invalid_transport_parts")
-        if part["name"] != DATA_ASSET_NAME + f".part-{index:03d}":
-            raise GateError("unapproved_part_identity")
-        _digest({"bytes": part["bytes"], "sha256": part["sha256"]}, max_bytes=32 * 1024**2)
-    if sum(part["bytes"] for part in parts) != value["data_asset_bytes"]:
-        raise GateError("transport_parts_size_mismatch")
-    return value
-
-
-def load_profile():
-    try:
-        value = json.loads(PROFILE_PATH.read_text())
-    except Exception:
-        raise GateError("profile_unreadable") from None
-    return validate_profile(value)
-
-
-def state_path():
-    return Path(os.environ["RUNNER_TEMP"]) / "factorlab-carrier-inventory-state.json"
-
-
-def write_state(state):
-    path = state_path()
-    if path.is_symlink():
-        raise GateError("state_path_is_link")
-    pending = path.with_suffix(".pending")
-    pending.write_text(json.dumps(state, indent=2))
-    pending.replace(path)
-
-
-def load_state():
-    state = json.loads(state_path().read_text())
-    root = Path(state["root"]).resolve()
-    runner_temp = Path(os.environ["RUNNER_TEMP"]).resolve()
-    if not root.is_relative_to(runner_temp) or not root.name.startswith("fl-carrier-"):
-        raise GateError("invalid_state_root")
-    if state.get("run_id") != os.environ["GITHUB_RUN_ID"] + "-" + os.environ["GITHUB_RUN_ATTEMPT"]:
-        raise GateError("state_run_identity_mismatch")
-    if state.get("profile_sha256") != sha(PROFILE_PATH):
-        raise GateError("profile_changed_between_phases")
-    if state.get("profile_name") != PROFILE_NAME:
-        raise GateError("profile_name_mismatch")
-    return state, root
-
-
-def prepare(profile):
-    api = require_private_api()
-    if state_path().exists():
-        raise GateError("existing_run_state")
-    run_id = os.environ["GITHUB_RUN_ID"] + "-" + os.environ["GITHUB_RUN_ATTEMPT"]
-    branch = "runs/risk-v2-carrier-inventory/" + run_id
-    api.request(
-        f"repos/{PRIVATE_REPO}/git/refs",
-        {"ref": "refs/heads/" + branch, "sha": profile["private_ref"]},
-        method="POST",
-    )
-    root = Path(tempfile.mkdtemp(prefix="fl-carrier-", dir=os.environ["RUNNER_TEMP"]))
-    (root / "results").mkdir()
-    work = root / "work"
-    inputs = work / "inputs"
-    inputs.mkdir(parents=True)
-
-    release = api.request(f"repos/{PRIVATE_REPO}/releases/tags/{profile['data_release_tag']}")
-    if release.get("draft") is not False:
-        raise GateError("private_data_release_not_published")
-    assets = {item["name"]: item for item in release.get("assets") or []}
-    compressed = root / profile["data_asset_name"]
-    with compressed.open("xb") as combined:
-        for index, part in enumerate(profile["asset_parts"]):
-            asset = assets.get(part["name"])
-            if (
-                not asset
-                or asset.get("state") != "uploaded"
-                or asset.get("size") != part["bytes"]
-                or asset.get("digest") != "sha256:" + part["sha256"]
-            ):
-                raise GateError("remote_asset_identity_failed")
-            target = root / f"transport-{index:03d}.bin"
-            api.request(
-                f"repos/{PRIVATE_REPO}/releases/assets/{asset['id']}",
-                binary_path=target,
-                max_bytes=part["bytes"],
-            )
-            if target.stat().st_size != part["bytes"] or sha(target) != part["sha256"]:
-                raise GateError("downloaded_part_digest_failed")
-            with target.open("rb") as source:
-                broker.shutil.copyfileobj(source, combined)
-            target.unlink()
-    if compressed.stat().st_size != profile["data_asset_bytes"] or sha(compressed) != profile["data_asset_sha256"]:
-        raise GateError("downloaded_asset_digest_failed")
-
-    bundle = profile["bundle_member"]
-    unpack(
-        compressed,
-        inputs,
-        expected={bundle["name"]: {"bytes": bundle["bytes"], "sha256": bundle["sha256"]}},
-    )
-    compressed.unlink()
-    write_state(
-        {
-            "run_id": run_id,
-            "root": str(root),
-            "branch": branch,
-            "profile_name": PROFILE_NAME,
-            "profile_sha256": sha(PROFILE_PATH),
-            "prepare_ready": True,
-            "compute_success": False,
-        }
-    )
-    print("Fixed handoff bundle identity verified; carrier inventory prepare complete.")
-
-
-def _safe_member_name(name):
+def _safe_member_name(name: str) -> bool:
     path = PurePosixPath(name)
     return bool(path.parts) and not path.is_absolute() and ".." not in path.parts and "\\" not in name
 
 
-def _role_for(name):
-    matched = [suffix for suffix in EXPECTED_SUFFIXES if name == suffix or name.endswith("/" + suffix)]
-    if not matched:
-        return None, None
-    suffix = matched[0]
-    if suffix == "data/market/5m/000688.SH/2026.parquet":
-        return "canonical_000688_2026_5m", suffix
-    if suffix == "data/market/5m/000852.SH/2026.parquet":
-        return "canonical_000852_2026_5m", suffix
-    if suffix == "bar_receipts.csv":
-        return "bar_receipt_metadata", suffix
-    return "working_lead_offset", suffix
+def _safe_key(key: object) -> bool:
+    if not isinstance(key, str) or not key or len(key) > 160:
+        return False
+    lowered = key.lower()
+    if any(token in lowered for token in FORBIDDEN_KEY_TOKENS):
+        return False
+    if re.fullmatch(r"\d{6}\.(?:SH|SZ)", key):
+        return True
+    return any(token in lowered for token in SAFE_KEY_TOKENS)
 
 
-def _hash_member(stream, size):
-    sha256 = hashlib.sha256()
-    git_sha1 = hashlib.sha1()
-    git_sha1.update(f"blob {size}\0".encode())
-    total = 0
-    while True:
-        block = stream.read(1024 * 1024)
-        if not block:
-            break
-        total += len(block)
-        sha256.update(block)
-        git_sha1.update(block)
-    if total != size:
-        raise GateError("candidate_member_size_mismatch")
-    return sha256.hexdigest(), git_sha1.hexdigest()
+def _contains_marker(value: object) -> bool:
+    if isinstance(value, str):
+        return any(marker in value for marker in TARGET_MARKERS)
+    if isinstance(value, dict):
+        return any(_contains_marker(key) or _contains_marker(child) for key, child in value.items())
+    if isinstance(value, list):
+        return any(_contains_marker(child) for child in value)
+    return False
 
 
-def inventory_bundle(bundle_path, profile):
+def _sanitize(value: object, depth: int = 0) -> object:
+    if depth > 8:
+        return None
+    if value is None or isinstance(value, (str, bool, int)):
+        return value
+    if isinstance(value, list):
+        output = []
+        for child in value[:128]:
+            clean = _sanitize(child, depth + 1)
+            if clean not in (None, {}, []):
+                output.append(clean)
+        return output
+    if isinstance(value, dict):
+        output = {}
+        for key, child in value.items():
+            if not _safe_key(key):
+                continue
+            clean = _sanitize(child, depth + 1)
+            if clean not in (None, {}, []):
+                output[key] = clean
+        return output
+    return None
+
+
+def _pointer(parts: list[object]) -> str:
+    def escape(piece: object) -> str:
+        return str(piece).replace("~", "~0").replace("/", "~1")
+    return "/" + "/".join(escape(part) for part in parts)
+
+
+def _collect_evidence(value: object, parts: list[object] | None = None, output: list[dict] | None = None) -> list[dict]:
+    parts = [] if parts is None else parts
+    output = [] if output is None else output
+    if len(output) >= 64:
+        return output
+    if isinstance(value, dict):
+        if _contains_marker(value):
+            clean = _sanitize(value)
+            if isinstance(clean, dict) and clean:
+                output.append({"json_pointer": _pointer(parts), "fields": clean})
+        for key, child in value.items():
+            _collect_evidence(child, parts + [key], output)
+            if len(output) >= 64:
+                break
+    elif isinstance(value, list):
+        for index, child in enumerate(value[:256]):
+            _collect_evidence(child, parts + [index], output)
+            if len(output) >= 64:
+                break
+    return output
+
+
+def _git_blob_sha1(raw: bytes) -> str:
+    digest = hashlib.sha1()
+    digest.update(f"blob {len(raw)}\0".encode())
+    digest.update(raw)
+    return digest.hexdigest()
+
+
+def extract_source_contract(
+    bundle_path: Path,
+    profile: dict,
+    *,
+    expected_bytes: int = SOURCE_CONTRACT_BYTES,
+    expected_sha256: str = SOURCE_CONTRACT_SHA256,
+) -> dict:
     if bundle_path.stat().st_size != profile["bundle_member"]["bytes"] or sha(bundle_path) != profile["bundle_member"]["sha256"]:
-        raise GateError("bundle_identity_mismatch")
+        raise GateError("reconciliation_bundle_identity_mismatch")
     with tarfile.open(bundle_path, "r:") as archive:
-        members = archive.getmembers()
-        names = []
-        by_name = {}
-        total = 0
+        members = [member for member in archive.getmembers() if member.isfile()]
         for member in members:
-            if not member.isfile() or not _safe_member_name(member.name) or member.name in by_name:
-                raise GateError("invalid_bundle_member")
-            names.append(member.name)
-            by_name[member.name] = member
-            total += member.size
-        if total > MAX_ARCHIVE_BYTES:
-            raise GateError("bundle_member_budget_exceeded")
+            if not _safe_member_name(member.name):
+                raise GateError("reconciliation_invalid_bundle_member")
+        by_name = {member.name: member for member in members}
+        if len(by_name) != len(members):
+            raise GateError("reconciliation_duplicate_bundle_member")
+        contract_names = [
+            name for name in by_name
+            if name == SOURCE_CONTRACT_SUFFIX or name.endswith("/" + SOURCE_CONTRACT_SUFFIX)
+        ]
+        if len(contract_names) != 1:
+            raise GateError("source_contract_not_unique")
+        contract_name = contract_names[0]
+        contract_member = by_name[contract_name]
+        if contract_member.size != expected_bytes:
+            raise GateError("source_contract_size_mismatch")
+
         manifest_member = by_name.get("BUNDLE_MANIFEST.json")
         if manifest_member is None or manifest_member.size > MAX_MANIFEST_BYTES:
-            raise GateError("bundle_manifest_missing_or_too_large")
+            raise GateError("reconciliation_bundle_manifest_missing")
         manifest_stream = archive.extractfile(manifest_member)
         if manifest_stream is None:
-            raise GateError("bundle_manifest_unreadable")
+            raise GateError("reconciliation_bundle_manifest_unreadable")
         manifest_raw = manifest_stream.read(MAX_MANIFEST_BYTES + 1)
         if len(manifest_raw) != manifest_member.size:
-            raise GateError("bundle_manifest_size_mismatch")
+            raise GateError("reconciliation_bundle_manifest_size_mismatch")
         try:
-            manifest = json.loads(manifest_raw)
+            bundle_manifest = json.loads(manifest_raw)
         except Exception:
-            raise GateError("bundle_manifest_invalid_json") from None
-        if not isinstance(manifest, dict) or manifest.get("schema") != "csi1000_handoff_bundle@1":
-            raise GateError("bundle_manifest_schema_mismatch")
-        expected = manifest.get("files")
-        if not isinstance(expected, dict) or set(names) != set(expected) | {"BUNDLE_MANIFEST.json"}:
-            raise GateError("bundle_manifest_member_set_mismatch")
+            raise GateError("reconciliation_bundle_manifest_invalid") from None
+        expected = bundle_manifest.get("files") if isinstance(bundle_manifest, dict) else None
+        meta = expected.get(contract_name) if isinstance(expected, dict) else None
+        if not isinstance(meta, dict) or set(meta) != {"bytes", "sha256"}:
+            raise GateError("source_contract_manifest_identity_missing")
+        if meta.get("bytes") != expected_bytes or meta.get("sha256") != expected_sha256:
+            raise GateError("source_contract_manifest_identity_mismatch")
 
-        candidates = []
-        for name in sorted(expected):
-            role, suffix = _role_for(name)
-            if role is None:
-                continue
-            meta = expected[name]
-            if not isinstance(meta, dict) or set(meta) != {"bytes", "sha256"}:
-                raise GateError("candidate_manifest_shape_invalid")
-            member = by_name[name]
-            if member.size != meta["bytes"] or not re.fullmatch(r"[0-9a-f]{64}", str(meta["sha256"])):
-                raise GateError("candidate_manifest_identity_invalid")
-            stream = archive.extractfile(member)
-            if stream is None:
-                raise GateError("candidate_member_unreadable")
-            actual_sha256, git_blob_sha1 = _hash_member(stream, member.size)
-            if actual_sha256 != meta["sha256"]:
-                raise GateError("candidate_sha256_mismatch")
-            candidates.append(
-                {
-                    "role": role,
-                    "matched_suffix": suffix,
-                    "archive_path": name,
-                    "bytes": member.size,
-                    "sha256": actual_sha256,
-                    "git_blob_sha1": git_blob_sha1,
-                }
-            )
+        stream = archive.extractfile(contract_member)
+        if stream is None:
+            raise GateError("source_contract_unreadable")
+        raw = stream.read(expected_bytes + 1)
+        if len(raw) != expected_bytes or hashlib.sha256(raw).hexdigest() != expected_sha256:
+            raise GateError("source_contract_digest_mismatch")
+    try:
+        contract = json.loads(raw)
+    except Exception:
+        raise GateError("source_contract_invalid_json") from None
+    if not isinstance(contract, (dict, list)):
+        raise GateError("source_contract_root_invalid")
 
-    counts = {
-        role: sum(1 for row in candidates if row["role"] == role)
-        for role in ("canonical_000688_2026_5m", "canonical_000852_2026_5m", "bar_receipt_metadata", "working_lead_offset")
-    }
-    exact_pair = counts["canonical_000688_2026_5m"] == 1 and counts["canonical_000852_2026_5m"] == 1
-    return {
-        "schema_id": RESULT_SCHEMA,
+    raw_text = raw.decode("utf-8")
+    result = {
+        "schema_id": RECONCILIATION_SCHEMA,
         "task_id": TASK_ID,
-        "status": "BYTE_CANDIDATES_IDENTIFIED" if exact_pair else "INVENTORY_COMPLETE_BINDING_UNRESOLVED",
-        "source_release": {
-            "tag": profile["data_release_tag"],
-            "asset": profile["data_asset_name"],
-            "asset_sha256": profile["data_asset_sha256"],
-            "asset_bytes": profile["data_asset_bytes"],
+        "status": "SOURCE_CONTRACT_EVIDENCE_EXTRACTED",
+        "source_contract": {
+            "archive_path": contract_name,
+            "bytes": expected_bytes,
+            "sha256": expected_sha256,
+            "git_blob_sha1": _git_blob_sha1(raw),
         },
-        "bundle": {
-            "bytes": profile["bundle_member"]["bytes"],
-            "sha256": profile["bundle_member"]["sha256"],
-            "manifest_sha256": hashlib.sha256(manifest_raw).hexdigest(),
+        "frozen_candidate": dict(FROZEN_CANDIDATE),
+        "user_receipt_constraints": json.loads(json.dumps(RECEIPT_CONSTRAINTS)),
+        "match_flags": {
+            "target_path_present": FROZEN_CANDIDATE["path"] in raw_text or "5m_offset_0.parquet" in raw_text,
+            "target_sha256_present": FROZEN_CANDIDATE["sha256"] in raw_text,
+            "source_sha256_present": FROZEN_CANDIDATE["source_sha256"] in raw_text,
         },
-        "candidate_counts": counts,
-        "candidates": candidates,
-        "controls": {
-            "year_2026_semantic_read": False,
-            "parquet_deserialization": False,
-            "price_return_label_columns_read": False,
-            "model_fit": False,
-            "confirmatory_scoring": False,
-            "new_training": False,
-            "production_authority": False,
-        },
+        "evidence": _collect_evidence(contract),
+        "controls": {key: False for key in CONTROL_KEYS},
     }
+    return validate_reconciliation(result)
 
 
-def compute(profile):
-    if os.environ.get("FACTORLAB_PRIVATE_TOKEN"):
-        raise GateError("private_token_must_not_reach_compute_step")
+def _validate_sanitized(value: object, depth: int = 0) -> None:
+    if depth > 8:
+        raise GateError("reconciliation_evidence_too_deep")
+    if value is None or isinstance(value, (str, bool, int)):
+        return
+    if isinstance(value, list):
+        if len(value) > 128:
+            raise GateError("reconciliation_evidence_list_too_large")
+        for child in value:
+            _validate_sanitized(child, depth + 1)
+        return
+    if isinstance(value, dict):
+        for key, child in value.items():
+            if not _safe_key(key):
+                raise GateError("reconciliation_unsafe_evidence_key")
+            _validate_sanitized(child, depth + 1)
+        return
+    raise GateError("reconciliation_unsafe_evidence_value")
+
+
+def validate_reconciliation(value: dict) -> dict:
+    keys = {
+        "schema_id", "task_id", "status", "source_contract", "frozen_candidate",
+        "user_receipt_constraints", "match_flags", "evidence", "controls",
+    }
+    if not isinstance(value, dict) or set(value) != keys:
+        raise GateError("reconciliation_result_shape_invalid")
+    if value.get("schema_id") != RECONCILIATION_SCHEMA or value.get("task_id") != TASK_ID:
+        raise GateError("reconciliation_schema_or_task_mismatch")
+    if value.get("status") != "SOURCE_CONTRACT_EVIDENCE_EXTRACTED":
+        raise GateError("reconciliation_status_invalid")
+    source = value.get("source_contract")
+    if not isinstance(source, dict) or set(source) != {"archive_path", "bytes", "sha256", "git_blob_sha1"}:
+        raise GateError("reconciliation_source_contract_shape_invalid")
+    if not isinstance(source["archive_path"], str) or not (
+        source["archive_path"] == SOURCE_CONTRACT_SUFFIX or source["archive_path"].endswith("/" + SOURCE_CONTRACT_SUFFIX)
+    ):
+        raise GateError("reconciliation_source_contract_path_invalid")
+    if source["bytes"] != SOURCE_CONTRACT_BYTES or source["sha256"] != SOURCE_CONTRACT_SHA256:
+        # Synthetic unit tests can validate extraction separately, but anything
+        # eligible for private mirroring must match the frozen source contract.
+        raise GateError("reconciliation_source_contract_identity_invalid")
+    if not re.fullmatch(r"[0-9a-f]{40}", str(source.get("git_blob_sha1", ""))):
+        raise GateError("reconciliation_source_contract_git_sha1_invalid")
+    if value.get("frozen_candidate") != FROZEN_CANDIDATE:
+        raise GateError("reconciliation_candidate_identity_changed")
+    if value.get("user_receipt_constraints") != RECEIPT_CONSTRAINTS:
+        raise GateError("reconciliation_receipt_constraints_changed")
+    flags = value.get("match_flags")
+    if not isinstance(flags, dict) or set(flags) != {"target_path_present", "target_sha256_present", "source_sha256_present"}:
+        raise GateError("reconciliation_match_flags_invalid")
+    if any(type(flag) is not bool for flag in flags.values()):
+        raise GateError("reconciliation_match_flags_invalid")
+    controls = value.get("controls")
+    if not isinstance(controls, dict) or set(controls) != CONTROL_KEYS or any(controls[key] is not False for key in CONTROL_KEYS):
+        raise GateError("reconciliation_semantic_or_authority_flag")
+    evidence = value.get("evidence")
+    if not isinstance(evidence, list) or len(evidence) > 64:
+        raise GateError("reconciliation_evidence_shape_invalid")
+    for row in evidence:
+        if not isinstance(row, dict) or set(row) != {"json_pointer", "fields"}:
+            raise GateError("reconciliation_evidence_row_invalid")
+        if not isinstance(row["json_pointer"], str) or not row["json_pointer"].startswith("/"):
+            raise GateError("reconciliation_evidence_pointer_invalid")
+        if not isinstance(row["fields"], dict) or not row["fields"]:
+            raise GateError("reconciliation_evidence_fields_invalid")
+        _validate_sanitized(row["fields"])
+    return value
+
+
+def compute(profile: dict) -> None:
+    core.compute(profile)
     state, root = load_state()
-    result = inventory_bundle(root / "work" / "inputs" / "bundle.tar", profile)
-    output = root / "results" / "risk_phase1b_carrier_inventory.json"
+    result = extract_source_contract(root / "work" / "inputs" / "bundle.tar", profile)
+    output = root / "results" / "risk_phase1b_carrier_reconciliation.json"
     output.write_text(json.dumps(result, indent=2) + "\n")
     collect_result_files(root / "results")
-    state.update(compute_success=True, inventory_status=result["status"])
+    state["reconciliation_sidecar"] = True
     write_state(state)
-    print("Carrier byte inventory completed without parquet deserialization; result remains private.")
+    print("Frozen DataHub source contract reconciled as identity metadata only; no evaluator was activated.")
 
 
-def cleanup():
-    if os.environ.get("FACTORLAB_PRIVATE_TOKEN"):
-        raise GateError("cleanup_step_must_not_have_private_token")
-    state, _ = load_state()
-    state["cleanup_complete"] = True
-    write_state(state)
-    print("Carrier inventory cleanup complete; no compute container or credential remains active.")
-
-
-def publish(profile):
-    state, root = load_state()
-    if not state.get("cleanup_complete"):
-        raise GateError("cleanup_must_complete_before_private_publish")
-    api = require_private_api()
-    results = root / "results"
-    files = collect_result_files(results)
-    archive_path = root / "carrier-inventory-results.tar.gz"
-    with tarfile.open(archive_path, "w:gz") as archive:
-        for name in files:
-            archive.add(results / name, arcname=name, recursive=False)
-    if archive_path.stat().st_size > 16 * 1024 * 1024:
-        raise GateError("private_result_archive_too_large")
-    tag = "public-carrier-inventory-run-" + state["run_id"]
-    release = api.request(
-        f"repos/{PRIVATE_REPO}/releases",
-        {
-            "tag_name": tag,
-            "target_commitish": profile["private_ref"],
-            "draft": True,
-            "prerelease": True,
-            "name": "Risk Phase-1b carrier inventory " + state["run_id"],
-            "body": "Non-semantic byte-identity inventory; no 2026 parquet deserialization or scoring.",
-        },
-        method="POST",
-    )
-    uploaded = upload_result(api, release["id"], archive_path)
-    expected_digest = "sha256:" + sha(archive_path)
-    release = api.request(f"repos/{PRIVATE_REPO}/releases/{release['id']}")
-    if (
-        len(release.get("assets") or []) != 1
-        or uploaded.get("digest") != expected_digest
-        or release["assets"][0].get("digest") != expected_digest
-        or release["assets"][0].get("size") != archive_path.stat().st_size
-        or release["assets"][0].get("state") != "uploaded"
-    ):
-        raise GateError("private_writeback_digest_failed")
-    api.request(f"repos/{PRIVATE_REPO}/releases/{release['id']}", {"draft": False}, method="PATCH")
-
-    receipt = {
-        "schema_id": RECEIPT_SCHEMA,
-        "status": "passed" if state.get("compute_success") else "failed",
-        "delivery_status": "archive_uploaded_and_verified",
-        "public_run_id": state["run_id"],
-        "public_source_sha": os.environ["GITHUB_SHA"],
-        "private_source_ref": profile["private_ref"],
-        "profile": PROFILE_NAME,
-        "profile_sha256": sha(PROFILE_PATH),
-        "inventory_status": state.get("inventory_status"),
-        "files": files,
-        "archive": {
-            "release_id": release["id"],
-            "tag": tag,
-            "sha256": sha(archive_path),
-            "bytes": archive_path.stat().st_size,
-        },
-        "year_2026_semantic_read": False,
-        "parquet_deserialization": False,
-        "new_training": False,
-        "production_authority": False,
-    }
-    payload = (json.dumps(receipt, indent=2) + "\n").encode()
-    target = f"repos/{PRIVATE_REPO}/contents/research/public-runs/{state['run_id']}.json"
-    api.request(
-        target,
-        {
-            "message": "Record Risk Phase-1b carrier inventory receipt [skip ci]",
-            "branch": state["branch"],
-            "content": base64.b64encode(payload).decode(),
-        },
-        method="PUT",
-    )
-    returned = api.request(target + "?ref=" + urllib.parse.quote(state["branch"], safe=""))
-    if base64.b64decode(returned["content"]) != payload:
-        raise GateError("private_receipt_readback_failed")
-    print("Private carrier inventory archive and receipt verified for public run " + state["run_id"] + ".")
-
-
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("phase", choices=["prepare", "compute", "cleanup", "publish"])
     parser.add_argument("profile", nargs="?", default=PROFILE_NAME)
@@ -474,7 +390,7 @@ def main():
         publish(profile)
 
 
-def run():
+def run() -> None:
     try:
         main()
     except GateError as error:
