@@ -1,0 +1,217 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_future_oos_v2_prereg@1.0",
+  "task_id": "CSI1000-RISK-V2-FUTURE-OOS-V2-20260915",
+  "purpose": "A new one-time confirmatory out-of-sample test of the already-frozen Risk Tool V2 15m/30m Severity ordering plus symmetric Platt calibration, using a post-preregistration window and the independently verified paired-symbol source family. This is a new scientific question and is not an extension or rescue of the revealed 2026 fresh-OOS test.",
+  "preregistration_date": "2026-09-15",
+  "prior_revealed_test": {
+    "task_id": "CSI1000-RISK-V2-2026-FRESH-OOS-V1-20260914",
+    "public_run_id": "34956326542-1",
+    "cutoff_trading_day_inclusive": "2026-09-11",
+    "overall_status": "INSUFFICIENT_2026_SUPPORT",
+    "scientific_acceptance_metrics_reached": false,
+    "revealed_data_may_be_reused_as_new_oos": false,
+    "old_contract_may_be_extended": false,
+    "old_result_changed_by_this_contract": false
+  },
+  "scientific_contract_inheritance": {
+    "source_path": "docs/research/RISK_TOOL_V2_2026_FRESH_OOS_PREREG_20260914.json",
+    "source_sha256": "c05bdf09c54626861f2a86abbcadb514fa90918320e2ab4be45e1e3217b7c9d7",
+    "unchanged": [
+      "frozen Phase-1 model identity and ridge lambda",
+      "frozen Phase-1B Platt calibration parameters",
+      "15m and 30m horizons",
+      "same continuous AM/PM session and no lunch crossing",
+      "support gates",
+      "raw-score AUROC C-minus-B bootstrap metric",
+      "trading-day cluster bootstrap",
+      "5000 bootstrap repetitions",
+      "bootstrap seed 20260914",
+      "family size 2, one-sided alpha 0.05, lower quantile 0.025",
+      "per-horizon scientific acceptance gates",
+      "one-time reveal semantics",
+      "no model or calibration refit",
+      "no strategy or production authority"
+    ],
+    "changed_only": [
+      "fresh-OOS calendar window",
+      "carrier-family authority and pre-activation snapshot binding"
+    ]
+  },
+  "frozen_phase1_model_identity": {
+    "source_run_id": "34834408567-1",
+    "model_freeze_sha256": "b81cae6208d96890c0fd83d47e4ea8c8a81ba55b41c78f58db29e9160f173551",
+    "development_years": [2021, 2022, 2023],
+    "ridge_lambda": 0.01,
+    "score_refit_in_future_oos": false
+  },
+  "frozen_calibration": {
+    "calibration_freeze_sha256": "74ecd25790123f026e29cba7bb84322aad8a385c10fe3d60ef0d75d52d1b1909",
+    "method": "Platt",
+    "score_clip": 1e-6,
+    "slope_ridge_lambda": 1e-6,
+    "penalize_intercept": false,
+    "hyperparameter_search": false,
+    "parameters": {
+      "15": {
+        "B": [-0.0005783322327921923, 1.0012925611665986],
+        "C": [-0.03819573273361419, 1.0031313564853719]
+      },
+      "30": {
+        "B": [0.0048316291422488035, 1.0176058836682678],
+        "C": [-0.01552854661043555, 0.9880960138797352]
+      }
+    },
+    "calibration_refit_in_future_oos": false
+  },
+  "future_oos_window": {
+    "start_trading_day_inclusive": "2026-09-16",
+    "end_trading_day_inclusive": "2027-03-31",
+    "window_is_immutable": true,
+    "target_symbols": ["000688.SH", "000852.SH"],
+    "horizons_minutes": [15, 30],
+    "same_continuous_AM_PM_session_no_lunch_crossing": true,
+    "overnight": false,
+    "reason_for_start": "The scientific contract is frozen after the 2026-09-15 China-market session. Starting 2026-09-16 prevents any already elapsed 2026-09-14 or 2026-09-15 session from being retroactively represented as future OOS.",
+    "carrier_audit_provisional_start_was": "2026-09-14",
+    "carrier_audit_provisional_start_is_scientific_window_authority": false
+  },
+  "carrier_family_authority": {
+    "audit_task_id": "CSI1000-RISK-V2-FUTURE-CARRIER-BINDING-AUDIT-V1-20260915",
+    "audit_public_run_id": "34970778993-1",
+    "audit_public_source_sha": "0662251d87b30c7e8e7ffe6b09d179b89cd6d25a",
+    "audit_private_branch": "runs/public-research/34970778993-1",
+    "audit_result_path": "research/public-runs/34970778993-1-future-carrier-binding.json",
+    "audit_result_sha256": "5f7d13f92ea446afb22a08952b6d865f241e5d8443e0530fe24d3629a6e58c54",
+    "audit_result_git_blob_sha1": "e1c72fa52bde58d383a9df2e910f721a7622ecd9",
+    "audit_status": "SOURCE_FAMILY_BINDING_VALID",
+    "source_contract": {
+      "path": "data/index/SOURCE_MANIFEST.json",
+      "bytes": 52711,
+      "sha256": "c46f2da6c3df016ca054e183e37267dc472097450fcdd6644c22aa0084c15749"
+    },
+    "audited_source_artifact": {
+      "name": "5m_offset_0.parquet",
+      "source_sha256": "d3101e6adf7a3e85b11f7c3503a6161f3ab363f7edd90ac8cba451ffe409c46a",
+      "rows": 749259,
+      "snapshot_max_trading_day": "2026-08-21"
+    },
+    "verified_symbol_bindings": {
+      "000688.SH": {
+        "rows": 70848,
+        "first_trading_day": "2020-07-23",
+        "last_trading_day": "2026-08-21",
+        "trading_day_count": 1476
+      },
+      "000852.SH": {
+        "rows": 135682,
+        "first_trading_day": "2015-01-05",
+        "last_trading_day": "2026-08-21",
+        "trading_day_count": 2828
+      }
+    },
+    "binding_semantics": "Future scientific input must be a new immutable snapshot of the same reviewed 5m offset-0 source family with independent valid bindings for both target symbols. The future snapshot is expected to have a new content identity because it must contain later data; the exact future bytes/SHA must be frozen before any row-level semantic read or scoring.",
+    "alternate_offset_views_allowed": false,
+    "local_resampling_allowed": false,
+    "substitute_data_allowed": false
+  },
+  "activation_gate": {
+    "status_at_preregistration": "CLOSED_WAITING_FOR_FUTURE_DATA",
+    "execution_profile_registered": false,
+    "controller_route_registered": false,
+    "current_audited_snapshot_covers_full_window": false,
+    "current_audited_snapshot_is_future_oos_evidence": false,
+    "requirements_before_activation": [
+      "one immutable new snapshot is pinned before any row-level scientific read",
+      "the snapshot belongs to the verified 5m offset-0 source family",
+      "both 000688.SH and 000852.SH bindings validate independently",
+      "both symbols cover every available trading session in the immutable 2026-09-16 through 2027-03-31 window",
+      "the snapshot bytes, SHA256, source-manifest identity, symbol coverage and schema mapping are frozen in a separate pre-activation record",
+      "no outcome, model score, acceptance metric or row-level market value is inspected before that pre-activation freeze"
+    ],
+    "failure_to_meet_activation_gate": "Do not execute the scientific test and do not shorten, extend, backfill, substitute or move the window. A changed window requires a new preregistration."
+  },
+  "warmup_policy": {
+    "pre_window_rows_may_be_used_only_for_causal_state_initialization": true,
+    "pre_window_rows_may_contribute_labels_support_or_acceptance_metrics": false,
+    "post_window_rows_allowed": false
+  },
+  "support_gates_per_horizon": {
+    "fresh_rows_min": 1200,
+    "fresh_rows_each_symbol_min": 500,
+    "fresh_positive_min": 100,
+    "fresh_negative_min": 100,
+    "trading_day_clusters_min": 100
+  },
+  "future_oos_bootstrap": {
+    "metric": "raw-score AUROC(C)-AUROC(B)",
+    "cluster": "trading_day across both symbols",
+    "repetitions": 5000,
+    "seed": 20260914,
+    "family_size": 2,
+    "family_one_sided_alpha": 0.05,
+    "lower_quantile": 0.025
+  },
+  "future_oos_acceptance_gates_per_horizon": [
+    "all support gates pass",
+    "fresh pooled raw-score AUROC(C)-AUROC(B) > 0",
+    "family-adjusted trading-day bootstrap lower bound for raw-score AUROC gain > 0",
+    "each symbol raw-score AUROC gain >= 0",
+    "fresh pooled calibrated Brier gain B-minus-C > 0",
+    "fresh pooled calibrated LogLoss gain B-minus-C > 0",
+    "each symbol calibrated Brier gain >= 0 and calibrated LogLoss gain >= 0"
+  ],
+  "verdicts_per_horizon": {
+    "FUTURE_OOS_SUPPORTED": "All frozen support and scientific acceptance gates pass.",
+    "FUTURE_OOS_NOT_SUPPORTED": "Support is adequate but one or more frozen scientific acceptance gates fail.",
+    "INSUFFICIENT_FUTURE_OOS_SUPPORT": "One or more frozen support gates fail; this does not authorize changing the window, carrier family, model, calibration or gates."
+  },
+  "overall_verdict_rule": {
+    "all_horizons_supported": "FUTURE_OOS_SUPPORTED",
+    "all_horizons_not_supported": "FUTURE_OOS_NOT_SUPPORTED",
+    "all_horizons_insufficient": "INSUFFICIENT_FUTURE_OOS_SUPPORT",
+    "otherwise": "MIXED_BY_HORIZON"
+  },
+  "one_time_reveal_policy": {
+    "first_successful_scientific_run_is_authoritative": true,
+    "technical_byte_identical_rerun_allowed": true,
+    "post_reveal_retuning": false,
+    "post_reveal_horizon_selection": false,
+    "post_reveal_window_extension": false,
+    "post_reveal_carrier_substitution": false
+  },
+  "no_rescue_controls": {
+    "parent_model_refit": false,
+    "calibrator_refit": false,
+    "sensor_retuning": false,
+    "cohort_retuning": false,
+    "feature_retuning": false,
+    "threshold_retuning": false,
+    "horizon_selection": false,
+    "support_gate_changes": false,
+    "acceptance_gate_changes": false,
+    "substitute_data": false
+  },
+  "authority_after_result": {
+    "if_supported": "The result may add fresh confirmatory evidence for the frozen 15m/30m Risk Tool V2 probability component. Any Layer3 strategy integration remains a separate research question and production_authority remains false.",
+    "if_not_supported": "The frozen component is not supported by this future OOS window; no rescue retuning on revealed future-OOS data is allowed.",
+    "if_insufficient_support": "The full window is considered revealed once evaluated; insufficient support does not authorize extending or moving the window. Another test requires another preregistration."
+  },
+  "historical_authority_preservation": {
+    "30m_TS_A_COMPLETE_unchanged": true,
+    "15m_TS_B_calibration_guarded_unchanged": true,
+    "reliability_contract_unchanged": true,
+    "consumer_contract_unchanged": true,
+    "prior_2026_fresh_oos_result_unchanged": true
+  },
+  "scope": {
+    "pnl": false,
+    "strategy_threshold_search": false,
+    "routing_authority": false,
+    "sizing_authority": false,
+    "production_authority": false,
+    "new_training": false
+  },
+  "execution_route_registered": false,
+  "scientific_window_read": false,
+  "production_authority": false
+}
