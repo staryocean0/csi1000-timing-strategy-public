@@ -32,6 +32,22 @@ def _b(v: str | None, default: bool = True) -> bool:
     return v.strip().lower() in {"1", "true", "yes", "y"}
 
 
+def _metric(v: str | None, *, rows: int, positive: int, negative: int) -> float:
+    """Parse a metric while preserving legitimate unevaluable CSV buckets.
+
+    Frozen metric CSVs serialize mathematically undefined metrics as empty fields for
+    buckets with no observations or only one outcome class. Those buckets cannot pass
+    any support gate and are ignored by level scoring, so they are represented as NaN.
+    Missing metrics on a bucket with both outcome classes are not legitimate and fail
+    closed instead of silently becoming unevaluable.
+    """
+    if v is None or v.strip() == "":
+        if rows == 0 or positive == 0 or negative == 0:
+            return float("nan")
+        raise ValueError("metric_value_missing_for_evaluable_row")
+    return float(v)
+
+
 def load_rows(path: Path) -> list[dict]:
     with path.open(newline="", encoding="utf-8") as fh:
         reader = csv.DictReader(fh)
@@ -42,16 +58,19 @@ def load_rows(path: Path) -> list[dict]:
             level = r["period_level"]
             if level not in set(LEVELS) | {"global"}:
                 raise ValueError("period_level_invalid")
+            rows = _i(r["rows"])
+            positive = _i(r["positive"])
+            negative = _i(r["negative"])
             out.append({
                 "horizon": _i(r["horizon_minutes"]),
                 "level": level,
                 "label": r["period_label"],
-                "rows": _i(r["rows"]),
-                "positive": _i(r["positive"]),
-                "negative": _i(r["negative"]),
-                "ordering_gain": _f(r["ordering_gain"]),
-                "brier_gain": _f(r["cal_brier_gain"]),
-                "logloss_gain": _f(r["cal_logloss_gain"]),
+                "rows": rows,
+                "positive": positive,
+                "negative": negative,
+                "ordering_gain": _metric(r["ordering_gain"], rows=rows, positive=positive, negative=negative),
+                "brier_gain": _metric(r["cal_brier_gain"], rows=rows, positive=positive, negative=negative),
+                "logloss_gain": _metric(r["cal_logloss_gain"], rows=rows, positive=positive, negative=negative),
                 "bootstrap_lower": _f(r.get("bootstrap_lower") or "nan"),
                 "role": (r.get("role") or "unspecified").strip(),
                 "expected": _b(r.get("expected"), True),
