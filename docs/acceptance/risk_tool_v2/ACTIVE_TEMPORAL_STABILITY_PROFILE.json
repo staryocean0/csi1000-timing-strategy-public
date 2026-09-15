@@ -1,9 +1,10 @@
 {
   "schema_id": "csi1000.risk_tool_temporal_stability_active_profile@1.0",
-  "active_profile_id": "risk-tool-v2-temporal-stability-hierarchical-v2",
-  "active_profile_path": "docs/acceptance/risk_tool_v2/temporal_stability_profile_hierarchical_v2.json",
-  "freeze_reason": "Support-only authority run 34925874662-1 selected the shortest statistically measurable weekly-cadence window: trailing 2 market weeks. Profile v2 is frozen before any ordering/calibration evaluation under that window.",
-  "support_only_selection_authority_run": "34925874662-1",
+  "active_profile_id": "risk-tool-v2-temporal-stability-hierarchical-v3",
+  "active_profile_path": "docs/acceptance/risk_tool_v2/temporal_stability_profile_hierarchical_v3.json",
+  "freeze_reason": "Authority diagnostic run 34928331342-1 showed that v2 ordering-streak implementation counted exact zero-gain ties, including AUROC ceiling ties, as deterioration. V3 corrects only the streak semantics: ordering_gain < 0 is negative and ordering_gain == 0 is neutral and breaks a negative streak. All numeric thresholds, the trailing-two-market-week measurement, support rules, calibration rules, model and calibration state remain unchanged. V2 authority result 34926868278-1 remains immutable and is not reinterpreted.",
+  "semantic_diagnostic_authority_run": "34928331342-1",
+  "previous_v2_authority_result_immutable": "34926868278-1",
   "post_result_switching_allowed": false,
   "production_authority": false
 }
