@@ -1,0 +1,83 @@
+{
+  "allowed_outputs": {
+    "aggregate_counts_only": true,
+    "files": [
+      "ATTRITION.json"
+    ],
+    "market_values": false,
+    "model_outputs": false,
+    "probabilities": false,
+    "row_level_market_data": false,
+    "timestamps": false
+  },
+  "carrier": {
+    "bytes": 3615731,
+    "logical_to_physical": {
+      "close": "close",
+      "datetime": "timestamp",
+      "symbol": "symbol"
+    },
+    "path": "data/index/5m_offset_0.parquet",
+    "same_accepted_carrier_as_parent": true,
+    "sha256": "211448c914b547232bc536da7df94dc5ae279b8265a5cafe58409238485217d7"
+  },
+  "checkpoints": [
+    "physical_projected",
+    "temporal_window_usable",
+    "normalized",
+    "state_rows",
+    "fresh_state_rows",
+    "episode_starts",
+    "fresh_cohort",
+    "horizon_15_usable",
+    "horizon_30_usable"
+  ],
+  "execution": {
+    "bounded_private_text_mirror": true,
+    "independent_verifier_required": true,
+    "results_private": true,
+    "standard_workflow_dispatch_only": true
+  },
+  "frozen_science": {
+    "calibration_execution": false,
+    "cohort_logic_modified": false,
+    "cutoff_trading_day_inclusive": "2026-09-11",
+    "fresh_year": 2026,
+    "horizons_minutes": [
+      15,
+      30
+    ],
+    "model_execution": false,
+    "new_training": false,
+    "state_logic_modified": false,
+    "state_logic_source": "executor/risk_phase1b_fresh_oos_eval.py",
+    "support_gates_modified": false,
+    "symbols": [
+      "000688.SH",
+      "000852.SH"
+    ],
+    "warmup_year": 2025
+  },
+  "interpretation": {
+    "cannot_change_parent_status": true,
+    "cannot_claim_model_support_or_failure": true,
+    "cannot_extend_cutoff": true,
+    "cannot_refit_or_retune": true,
+    "cannot_substitute_data": true,
+    "diagnostic_success": "Reports the first zero-count checkpoint per symbol and exact aggregate counts only.",
+    "production_authority": false
+  },
+  "parent_fresh_oos": {
+    "overall_status": "INSUFFICIENT_2026_SUPPORT",
+    "private_branch": "runs/public-research/34956326542-1",
+    "run_id": "34956326542-1",
+    "summary_git_blob_sha1": "f9ee8f400c77da83d0d03af136417fa076793175",
+    "summary_path": "research/public-runs/34956326542-1-fresh-oos-summary.json",
+    "task_id": "CSI1000-RISK-V2-2026-FRESH-OOS-V1-20260914",
+    "verdict_immutable": true
+  },
+  "profile": "risk-v2-phase1b-fresh-oos-attrition-v1",
+  "purpose": "Diagnostic-only aggregate cohort attrition trace for the already-frozen 2026 Phase-1b fresh-OOS run. Locate the first pipeline checkpoint at which 000688.SH has zero eligible observations without changing the parent fresh-OOS verdict.",
+  "schema_id": "csi1000.risk_tool_v2_fresh_oos_attrition_prereg@1.0",
+  "task_id": "CSI1000-RISK-V2-2026-FRESH-OOS-ATTRITION-V1-20260915"
+}
