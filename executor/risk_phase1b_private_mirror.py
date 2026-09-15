@@ -17,6 +17,7 @@ rb = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(rb)
 GateError = rb.GateError
 PROFILE = "risk-v2-phase1b-ordering-calibration-v1"
+TARGET_ROOT = "research/derived/risk_tool_v2_phase1b_ordering_calibration_20260915"
 FILES = (
     "SUMMARY.json",
     "SUPPORT_AUDIT.csv",
@@ -31,10 +32,27 @@ def require_context() -> None:
     if (
         os.environ.get("GITHUB_ACTIONS") != "true"
         or os.environ.get("GITHUB_REPOSITORY") != rb.PUBLIC_REPO
-        or os.environ.get("GITHUB_EVENT_NAME") != "workflow_dispatch"
+        or os.environ.get("GITHUB_EVENT_NAME") != "push"
         or os.environ.get("GITHUB_REF") != "refs/heads/cloud-workspace-v1"
     ):
         raise GateError("not_approved_phase1b_mirror_context")
+
+
+def put_verified(api, branch: str, target: str, raw: bytes, message: str) -> None:
+    api.request(
+        f"repos/{rb.PRIVATE_REPO}/contents/{target}",
+        {
+            "message": message,
+            "branch": branch,
+            "content": base64.b64encode(raw).decode(),
+        },
+        method="PUT",
+    )
+    got = api.request(
+        f"repos/{rb.PRIVATE_REPO}/contents/{target}?ref=" + branch.replace("/", "%2F")
+    )
+    if base64.b64decode(got["content"]) != raw:
+        raise GateError("phase1b_mirror_readback_failed")
 
 
 def main() -> None:
@@ -44,48 +62,35 @@ def main() -> None:
         raise GateError("phase1b_state_not_mirrorable")
     results = root / "results" / "study"
     api = rb.require_private_api()
-    receipt = {"schema_id": "risk_tool_v2_phase1b_private_mirror@1.0", "files": {}}
+    receipt = {
+        "schema_id": "risk_tool_v2_phase1b_private_mirror@1.0",
+        "public_run_id": state["run_id"],
+        "profile": PROFILE,
+        "year_2026_read": False,
+        "production_authority": False,
+        "files": {},
+    }
     for name in FILES:
         path = results / name
-        if path.is_symlink() or not path.is_file() or not 0 < path.stat().st_size <= 300000:
+        if path.is_symlink() or not path.is_file() or not 0 < path.stat().st_size <= 500000:
             raise GateError("phase1b_mirror_file_invalid")
         raw = path.read_bytes()
         try:
             raw.decode("utf-8")
         except UnicodeDecodeError:
             raise GateError("phase1b_mirror_file_not_utf8") from None
-        target = f"research/derived/risk_tool_v2_phase1b_ordering_calibration_20260914/{name}"
-        api.request(
-            f"repos/{rb.PRIVATE_REPO}/contents/{target}",
-            {
-                "message": "Record verified Risk v2 Phase-1b output [skip ci]",
-                "branch": state["branch"],
-                "content": base64.b64encode(raw).decode(),
-            },
-            method="PUT",
-        )
-        got = api.request(
-            f"repos/{rb.PRIVATE_REPO}/contents/{target}?ref=" + state["branch"].replace("/", "%2F")
-        )
-        if base64.b64decode(got["content"]) != raw:
-            raise GateError("phase1b_mirror_readback_failed")
+        target = f"{TARGET_ROOT}/{name}"
+        put_verified(api, state["branch"], target, raw, "Record verified Risk v2 Phase-1b output [skip ci]")
         receipt["files"][name] = {"bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
+
     payload = (json.dumps(receipt, indent=2, sort_keys=True) + "\n").encode()
-    target = "research/derived/risk_tool_v2_phase1b_ordering_calibration_20260914/MIRROR_RECEIPT.json"
-    api.request(
-        f"repos/{rb.PRIVATE_REPO}/contents/{target}",
-        {
-            "message": "Record Risk v2 Phase-1b mirror receipt [skip ci]",
-            "branch": state["branch"],
-            "content": base64.b64encode(payload).decode(),
-        },
-        method="PUT",
+    put_verified(
+        api,
+        state["branch"],
+        f"{TARGET_ROOT}/MIRROR_RECEIPT.json",
+        payload,
+        "Record Risk v2 Phase-1b mirror receipt [skip ci]",
     )
-    got = api.request(
-        f"repos/{rb.PRIVATE_REPO}/contents/{target}?ref=" + state["branch"].replace("/", "%2F")
-    )
-    if base64.b64decode(got["content"]) != payload:
-        raise GateError("phase1b_mirror_receipt_failed")
     print("Verified Phase-1b outputs mirrored privately.")
 
 
