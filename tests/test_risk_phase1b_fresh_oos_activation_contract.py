@@ -11,6 +11,7 @@ EXECUTOR = ROOT / "executor"
 WORKFLOW = ROOT / ".github" / "workflows" / "public-compute.yml"
 CONTROLLER = ROOT / ".github" / "workflows" / "controller-dispatch.yml"
 ACTIVATION = ROOT / "docs" / "research" / "RISK_TOOL_V2_2026_FRESH_OOS_CARRIER_ACTIVATION_20260915.json"
+PRODUCER = EXECUTOR / "risk_phase1b_release.py"
 
 PROFILE = "risk-v2-phase1b-fresh-oos-v1"
 CARRIER_SHA = "211448c914b547232bc536da7df94dc5ae279b8265a5cafe58409238485217d7"
@@ -52,6 +53,29 @@ class FreshOosActivationContractTest(unittest.TestCase):
         self.assertNotIn("FAMILY_SIZE = 6", text)
         self.assertNotIn("fresh_oos_rows_ge_1000", text)
         self.assertNotIn("fresh_oos_each_symbol_rows_ge_150", text)
+
+    def test_calibration_adapter_matches_authoritative_phase1b_freeze_schema(self):
+        evaluator = (EXECUTOR / "risk_phase1b_fresh_oos_eval.py").read_text()
+        producer = PRODUCER.read_text()
+        self.assertIn('"repeat_audit": {', producer)
+        self.assertIn('"fits": {str(h): freezes[h] for h in HORIZONS}', producer)
+        self.assertIn('.get("repeat_audit")', evaluator)
+        self.assertIn('["repeat_audit"]', evaluator)
+        self.assertNotIn('.get("audit")', evaluator)
+        self.assertNotIn('["audit"]', evaluator)
+        for horizon, params in {
+            "15": {
+                "B": "[-0.0005783322327921923, 1.0012925611665986]",
+                "C": "[-0.03819573273361419, 1.0031313564853719]",
+            },
+            "30": {
+                "B": "[0.0048316291422488035, 1.0176058836682678]",
+                "C": "[-0.01552854661043555, 0.9880960138797352]",
+            },
+        }.items():
+            self.assertIn(f'"{horizon}": {{', evaluator)
+            self.assertIn(params["B"], evaluator)
+            self.assertIn(params["C"], evaluator)
 
     def test_user_carrier_acceptance_does_not_change_science(self):
         activation = json.loads(ACTIVATION.read_text())
