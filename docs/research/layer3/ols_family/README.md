@@ -31,6 +31,20 @@ The migration scope includes the component/governance sequence M2–M9 and the p
 
 `MIGRATION_MANIFEST.json` freezes that boundary. The migration does not import unrelated pre-pivot R1/R2 reversal/option research and does not move the Two-Wave lineage.
 
+## Next research stage
+
+The next cloud research stage is frozen in [`NEXT_STAGE_DRAWDOWN_CONTROL.md`](NEXT_STAGE_DRAWDOWN_CONTROL.md).
+
+Its primary objective is maximum-drawdown diagnosis and reduction, not raw return maximization. The ordered research sequence is:
+
+1. D0 drawdown episode atlas and causal mechanism attribution;
+2. D1 dynamic R-squared / OLS fit-deterioration veto;
+3. D2 slow-OLS -> fast-OLS hierarchical routing;
+4. D3 joint low-freedom drawdown-control candidate;
+5. D4 leverage stress only after the unlevered mechanism survives repeat audit.
+
+A key frozen observation is that the 20-bar baseline already outputs `r_squared`, and for fixed `n=20` its `slope_t` score is a monotone transform of R-squared. Therefore the main new hypothesis is **dynamic fit deterioration / structural break**, not a redundant static R-squared floor.
+
 ## Authority
 
 This public package establishes cloud-side Layer3 placement and provenance only. It does not grant production authority, does not make the external factorlab repository current authority for CSI1000, and does not claim external historical experiment receipts as accepted CSI1000 scientific results.
