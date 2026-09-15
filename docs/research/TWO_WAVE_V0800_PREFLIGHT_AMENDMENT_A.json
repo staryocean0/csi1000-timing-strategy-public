@@ -1,0 +1,41 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_preflight_amendment_a@1.0",
+  "status": "PRERUN_CLARIFICATION_BEFORE_FIRST_REAL_V0800_B_EXECUTION",
+  "parent_protocol": "docs/research/TWO_WAVE_BACKWARD_SAME_SCALE_A_CHANNEL_V0800_PROTOCOL.json",
+  "layer": "Layer2",
+  "scientific_scope_change": false,
+  "clarifications": {
+    "primary_duration_symbol": "d",
+    "primary_duration_formula": "end_low_occurrence_bar - start_low_occurrence_bar",
+    "primary_duration_unit": "bar_intervals_between_pivot_occurrence_bars",
+    "inclusive_observation_count_relation": "span_rows = d + 1",
+    "leg_additivity": "(tH-t0)+(t1-tH)=t1-t0=d",
+    "same_scale_relation_unchanged": "max(d_prev,d_cur)/min(d_prev,d_cur) <= rho"
+  },
+  "rho_diagnostics": {
+    "candidate_rho": [1.25, 1.3333333333333333, 1.4142135623730951, 1.5],
+    "legacy_control_rho": 2.0,
+    "diagnostic_rho": [1.25, 1.3333333333333333, 1.4142135623730951, 1.5, 2.0],
+    "legacy_control_role": "historical_v04_width_reference_only",
+    "legacy_control_can_win": false,
+    "legacy_control_can_change_candidate_family": false
+  },
+  "required_v0800_b_outputs": [
+    "candidate-only support and scale statistics",
+    "legacy rho=2.0 support and scale statistics reported separately",
+    "duration histogram in primary bar-interval units",
+    "derived inclusive span-row histogram for terminology audit"
+  ],
+  "forbidden_interpretations": [
+    "treating span_rows as the primary matching variable",
+    "promoting rho=2.0 to a v0.8 candidate",
+    "selecting any rho winner in V0800-B",
+    "using returns, pnl, positions, trading labels, or future outcomes"
+  ],
+  "authority": {
+    "rho_winner": null,
+    "morphology_acceptance": false,
+    "trade_authority": false,
+    "production_authority": false
+  }
+}
