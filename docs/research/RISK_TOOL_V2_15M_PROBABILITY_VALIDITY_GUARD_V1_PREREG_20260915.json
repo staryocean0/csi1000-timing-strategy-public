@@ -1,0 +1,93 @@
+{
+  "schema_id": "risk_tool_v2_15m_probability_validity_guard_prereg@1.0",
+  "profile": "risk-v2-15m-probability-validity-guard-v1",
+  "frozen_at": "2026-09-15",
+  "target": "15m.weekly.calibration_output_mode",
+  "purpose": "Use only prior completed weekly calibration outcomes to decide whether the current 15m output may be exposed as an absolute probability or must be downgraded to ranking-only. The guard does not recalibrate probabilities or change ordering.",
+  "parent_authority": {
+    "run": "34926868278-1",
+    "path": "research/public-runs/34926868278-1-results/TEMPORAL_METRICS_2W_V2.csv",
+    "blob": "478f73c1fb9ac9c91d670e67733623e1450da953",
+    "bytes": 170908,
+    "sha256": "455a0f0d61993a933016e111aa1386eaf4ddf3ec6aeb9e28c109f08a559fd060"
+  },
+  "scope": {
+    "symbol": "000852.SH",
+    "horizon_minutes": 15,
+    "weekly_measurement": "existing trailing-2-market-week endpoint metrics",
+    "hard_years": [2015,2016,2017,2018,2019,2021,2022,2023,2024,2025],
+    "selection_years": [2015,2016,2017,2018,2019,2021,2022,2023],
+    "repeat_audit_years": [2024,2025],
+    "year_2020_role": "history_allowed_but_not_scored",
+    "year_2026_read": false
+  },
+  "candidate_family": [
+    {"id":"control","history_evaluable_endpoints":0},
+    {"id":"g4","history_evaluable_endpoints":4},
+    {"id":"g8","history_evaluable_endpoints":8},
+    {"id":"g13","history_evaluable_endpoints":13}
+  ],
+  "guard_rule": {
+    "history_uses_only_prior_completed_evaluable_endpoints": true,
+    "current_endpoint_metrics_forbidden": true,
+    "history_min_fraction": 0.75,
+    "probability_mode_requires": {
+      "history_joint_calibration_positive_fraction_gte": 0.50,
+      "history_median_brier_gain_gt": 0.0,
+      "history_median_logloss_gain_gt": 0.0
+    },
+    "insufficient_history_mode": "ranking_only",
+    "control_mode": "probability_for_every_evaluable_endpoint"
+  },
+  "anti_trivial_abstention_gate": {
+    "probability_mode_coverage_min": 0.70,
+    "minimum_hard_year_probability_mode_coverage_min": 0.50
+  },
+  "retained_probability_calibration_gate": {
+    "joint_positive_fraction_min": 0.50,
+    "median_brier_gain_gt": 0.0,
+    "median_logloss_gain_gt": 0.0,
+    "max_calibration_failure_streak": 8,
+    "ranking_only_endpoint_breaks_probability_failure_streak": true
+  },
+  "selection": {
+    "uses_only_selection_years": true,
+    "candidate_must_pass_anti_trivial_abstention_gate": true,
+    "lexicographic_objective": [
+      "minimize_probability_mode_max_calibration_failure_streak",
+      "maximize_probability_mode_joint_positive_fraction",
+      "maximize_probability_mode_median_brier_gain",
+      "maximize_probability_mode_median_logloss_gain",
+      "maximize_probability_mode_coverage",
+      "prefer_less_intervention"
+    ],
+    "less_intervention_preference": ["control","g13","g8","g4"]
+  },
+  "final_acceptance": {
+    "selected_guard_must_pass_full_hard_year_coverage_gates": true,
+    "selected_guard_must_pass_retained_probability_calibration_gate": true,
+    "repeat_audit_2024_2025_must_pass_coverage_and_calibration_gates": true,
+    "ordering_remains_current_v3_and_is_not_recomputed_or_modified": true,
+    "success_meaning": "Probability validity guard supported on consumed-data proxy; ranking-only fallback allowed. Does not replace fresh 2026 OOS."
+  },
+  "outputs": ["GUARD_CANDIDATES.csv","GUARD_ENDPOINT_MODES.csv","GUARD_RESULT.json","SUMMARY.json"],
+  "prohibitions": {
+    "probability_refit": true,
+    "tail_parameter_change": true,
+    "model_change": true,
+    "severity_change": true,
+    "ordering_change": true,
+    "coverage_threshold_search": true,
+    "guard_threshold_search": true,
+    "year_2026_read": true,
+    "pnl": true,
+    "strategy_routing": true,
+    "production_authority": true
+  },
+  "interpretation": {
+    "current_v3_authority_immutable": true,
+    "failed_guard_cannot_promote_15m": true,
+    "guard_success_does_not_claim_probability_validity_on_ranking_only_endpoints": true,
+    "production_authority": false
+  }
+}
