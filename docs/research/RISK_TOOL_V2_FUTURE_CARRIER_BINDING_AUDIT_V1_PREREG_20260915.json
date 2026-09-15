@@ -1,0 +1,51 @@
+{
+  "authorized_semantic_read": {
+    "allowed_outputs": [
+      "member bytes and SHA256",
+      "physical parquet field names/types",
+      "row count",
+      "distinct symbol codes",
+      "non-null identity-field row counts",
+      "minimum and maximum trading day",
+      "aggregate pair overlap interval"
+    ],
+    "columns": "symbol plus trading-day/timestamp identity fields only"
+  },
+  "date": "2026-09-15",
+  "decision_rule": {
+    "future_snapshot_eligible": "Separate from source-family validity; requires a later frozen snapshot whose coverage includes the full preregistered future OOS window for both symbols.",
+    "invalid_binding": "Any missing/duplicate member, digest mismatch, missing identity fields, unreadable parquet, or symbol mismatch.",
+    "source_family_valid": "Each exact frozen member is unique, digest-verified, readable as parquet, contains the expected symbol and no other symbol, and exposes a usable trading-day or timestamp identity field."
+  },
+  "future_oos_anchor": {
+    "consumed_parent_cutoff_inclusive": "2026-09-11",
+    "current_snapshot_is_not_future_oos_evidence": true,
+    "proposed_new_window_end_inclusive": "2027-03-31",
+    "proposed_new_window_start_inclusive": "2026-09-14"
+  },
+  "new_training": false,
+  "production_authority": false,
+  "profile": "risk-v2-future-carrier-binding-audit-v1",
+  "prohibitions": [
+    "read or export OHLC/price/return/volume/amount values",
+    "read labels, outcomes, predictions, scores or PnL",
+    "fit or execute the Risk Tool model or calibration",
+    "change the parent 34956326542-1 fresh-OOS verdict",
+    "reuse or substitute a carrier under the already revealed parent confirmatory claim",
+    "grant strategy routing, position sizing, PnL or production authority"
+  ],
+  "purpose": "Identify and validate the immutable paired per-symbol 5-minute carrier family for future cross-symbol Risk Tool OOS work after the revealed parent fresh-OOS carrier-binding mismatch.",
+  "schema_id": "risk_tool_v2_future_carrier_binding_audit_prereg@1.0",
+  "source": {
+    "asset_name": "csi1000-handoff.tar.gz",
+    "asset_sha256": "1976161b108346603561dac0075e435e346892f66f049a3fe194c981c3fc3282",
+    "bundle_sha256": "1c1e737e8d97d0b01bcc696e1893e70d017e926043062e913d06d64d2cc454ad",
+    "members": {
+      "000688.SH": "data/market/5m/000688.SH/2026.parquet",
+      "000852.SH": "data/market/5m/000852.SH/2026.parquet"
+    },
+    "private_ref": "7688ba57206dd29fbef88d8e57475255718471fe",
+    "release_tag": "csi1000-handoff-v1-20260913"
+  },
+  "task_id": "CSI1000-RISK-V2-FUTURE-CARRIER-BINDING-AUDIT-V1-20260915"
+}
