@@ -10,7 +10,10 @@ PRODUCER = ROOT / "executor/two_wave_v0800_f_state_stream.py"
 VERIFIER = ROOT / "executor/two_wave_v0800_f_state_stream_verifier.py"
 BROKER = ROOT / "executor/two_wave_v0800_f_state_stream_broker.py"
 MIRROR = ROOT / "executor/two_wave_v0800_f_state_stream_private_mirror.py"
+WORKFLOW = ROOT / ".github/workflows/public-compute.yml"
+CONTROLLER = ROOT / ".github/workflows/controller-dispatch.yml"
 PROFILE = "two-wave-v0800-f-operational-state-stream-audit-v1"
+CONTROLLER_TITLE = "controller: two-wave-v0800-f-operational-state-stream-audit-v1"
 
 
 class TwoWaveV0800FStateStreamTest(unittest.TestCase):
@@ -80,6 +83,25 @@ class TwoWaveV0800FStateStreamTest(unittest.TestCase):
         self.assertNotIn('STATE_STREAM_EVENTS.csv', text)
         self.assertIn('bar_time_carry_forward', text)
         self.assertIn('post_run_adjudication_required', text)
+
+    def test_standard_workflow_routes_exact_profile_once_per_phase(self):
+        text = WORKFLOW.read_text(encoding="utf-8")
+        self.assertEqual(text.count(f"          - {PROFILE}\n"), 1)
+        self.assertEqual(text.count(f"inputs.profile == '{PROFILE}'"), 2)
+        self.assertEqual(text.count(f"python3 executor/two_wave_v0800_f_state_stream_broker.py prepare {PROFILE}"), 1)
+        self.assertEqual(text.count(f"python3 executor/two_wave_v0800_f_state_stream_broker.py compute {PROFILE}"), 1)
+        self.assertEqual(text.count(f"python3 executor/two_wave_v0800_f_state_stream_broker.py cleanup {PROFILE}"), 1)
+        self.assertEqual(text.count(f"python3 executor/two_wave_v0800_f_state_stream_broker.py publish {PROFILE}"), 1)
+        self.assertEqual(text.count("python3 executor/two_wave_v0800_f_state_stream_private_mirror.py"), 1)
+        self.assertIn("on:\n  workflow_dispatch:", text)
+
+    def test_controller_routes_only_exact_f_title(self):
+        text = CONTROLLER.read_text(encoding="utf-8")
+        self.assertEqual(text.count(CONTROLLER_TITLE), 2)
+        self.assertEqual(text.count(f"profile='{PROFILE}'"), 1)
+        self.assertIn("github.event.issue.user.login == github.repository_owner", text)
+        self.assertIn("public-compute.yml/dispatches", text)
+        self.assertIn("-f ref='cloud-workspace-v1'", text)
 
     def test_scope_remains_non_outcome_non_authoritative(self):
         self.assertFalse(self.protocol["input"]["year_2026_allowed"])
