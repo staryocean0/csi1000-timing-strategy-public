@@ -23,7 +23,10 @@ PROFILE_NAME = "ols-r2-d2-exit-overlay-v1"
 PRIVATE_REF = "67effb80f51228f6129dca5c4f7971a0bb6c7f15"
 DATA_REF = "1d760ea9525eb3688b70a4aa0f2b5b207af16a17"
 D1_AUTHORITATIVE_RUN = "34964393250"
-PROFILE_SHA256 = "afd71abe95d55be2f61080c9c476586e7b3dbe646f5c7d68d83b2b559ee52154"
+D1_RESULT_BRANCH = "runs/public-research/34964393250-1"
+D1_RESULT_PATH = "research/public-runs/34964393250-1/ols-d1/study/RESULTS.json"
+D1_RESULT_BLOB = "f35ae2ff402c90b54d318b49bd678c5398a60493"
+PROFILE_SHA256 = "04b7f048b32b49d804d51a5b3fbd0b787d2796465cfe939d1d22dbd7f1756ecc"
 DATA = {
     2020: (353781, "c45ef84c123ae9f4ca1843b2816a4f413742547e"),
     2021: (347162, "aba298f940c7992ec8814dd8ece197477d106fa9"),
@@ -126,6 +129,42 @@ def fetch_private_source(api, path: str, expected_blob: str, root: Path) -> dict
     return {"git_blob_sha1": expected_blob, "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
 
 
+def fetch_d1_authority(api, inputs: Path) -> dict[str, object]:
+    quoted_path = urllib.parse.quote(D1_RESULT_PATH, safe="/")
+    quoted_ref = urllib.parse.quote(D1_RESULT_BRANCH, safe="")
+    meta = api.request(f"repos/{rb.PRIVATE_REPO}/contents/{quoted_path}?ref={quoted_ref}")
+    if meta.get("type") != "file" or meta.get("encoding") != "base64" or meta.get("sha") != D1_RESULT_BLOB:
+        raise GateError("ols_d2_d1_result_identity_failed")
+    try:
+        raw = base64.b64decode(meta.get("content", "") or "")
+        payload = json.loads(raw.decode("utf-8"))
+    except Exception:
+        raise GateError("ols_d2_d1_result_decode_failed") from None
+    if blobsha(raw) != D1_RESULT_BLOB:
+        raise GateError("ols_d2_d1_result_blob_failed")
+    decision = payload.get("decision") or {}
+    if (
+        payload.get("schema_id") != "ols_r2_d1_leadlag@1.0"
+        or payload.get("d2_authority") is not True
+        or decision.get("status") != "SUPPORTED_FOR_D2_EXIT_OVERLAY_TEST"
+        or int(decision.get("coverage_gate_modes_passed", -1)) != 5
+        or int(decision.get("exit_lead_gate_modes_passed", -1)) != 5
+        or int(decision.get("same_window_guard_modes_passed", -1)) != 5
+        or payload.get("same_window_sensitivity") != "authority_window_equal_across_event_three_bars"
+    ):
+        raise GateError("ols_d2_d1_result_authority_failed")
+    target = inputs / "D1_AUTHORITY.json"
+    target.write_bytes(raw)
+    return {
+        "run": D1_AUTHORITATIVE_RUN,
+        "branch": D1_RESULT_BRANCH,
+        "path": D1_RESULT_PATH,
+        "git_blob_sha1": D1_RESULT_BLOB,
+        "sha256": hashlib.sha256(raw).hexdigest(),
+        "bytes": len(raw),
+    }
+
+
 def prepare_inputs(api, root: Path, profile: dict) -> Path:
     work = root / "work"
     work.mkdir()
@@ -153,13 +192,14 @@ def prepare_inputs(api, root: Path, profile: dict) -> Path:
     receipt = {}
     for path, expected_blob in SOURCE_BLOBS.items():
         receipt[path] = fetch_private_source(api, path, expected_blob, source_root)
+    d1_receipt = fetch_d1_authority(api, inputs)
     provenance = {
-        "schema_id": "ols_r2_d2_source_provenance@1.0",
+        "schema_id": "ols_r2_d2_source_provenance@1.1",
         "private_ref": PRIVATE_REF,
         "source_blobs": SOURCE_BLOBS,
         "source_receipt": receipt,
         "public_upstream_blobs": PUBLIC_UPSTREAM_BLOBS,
-        "d1_authoritative_run": D1_AUTHORITATIVE_RUN,
+        "d1_authority_receipt": d1_receipt,
         "production_authority": False,
     }
     (inputs / "SOURCE_PROVENANCE.json").write_text(json.dumps(provenance, indent=2, sort_keys=True) + "\n", encoding="utf-8")
