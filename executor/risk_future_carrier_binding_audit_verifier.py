@@ -5,14 +5,13 @@ import hashlib
 import json
 from pathlib import Path
 
-import pandas as pd
-import pyarrow.parquet as pq
-
 TASK_ID = "CSI1000-RISK-V2-FUTURE-CARRIER-BINDING-AUDIT-V1-20260915"
 PROFILE = "risk-v2-future-carrier-binding-audit-v1"
-SCHEMA_ID = "risk_tool_v2_future_carrier_binding_audit_result@1.0"
-PREREG_SHA256 = "6158bfb13dafe8a6ffee255455320c6598d17c932115985070994cade0030540"
-EXPECTED_SYMBOLS = ("000688.SH", "000852.SH")
+SCHEMA_ID = "risk_tool_v2_future_carrier_binding_audit_result@2.0"
+AMENDMENT_SCHEMA = "risk_tool_v2_future_carrier_binding_audit_amendment@1.0"
+AMENDMENT_SHA256 = "7972fbc0a13671cf182cdb0c7c3b4ce6d10588c63cbe34c9e6871f300626f371"
+SOURCE_CONTRACT_SHA256 = "c46f2da6c3df016ca054e183e37267dc472097450fcdd6644c22aa0084c15749"
+SOURCE_CONTRACT_BYTES = 52711
 FUTURE_START = "2026-09-14"
 FUTURE_END = "2027-03-31"
 
@@ -23,110 +22,137 @@ def sha256_file(path: Path) -> str:
 
 
 def load(path: Path) -> dict:
+    if path.is_symlink() or not path.is_file():
+        raise RuntimeError("verifier_input_missing")
     value = json.loads(path.read_text())
     if not isinstance(value, dict):
-        raise RuntimeError("json_object_required")
+        raise RuntimeError("verifier_json_object_required")
     return value
 
 
-def independently_inspect(path: Path, symbol: str, meta: dict) -> dict:
-    if path.is_symlink() or not path.is_file():
-        raise RuntimeError("audit_member_missing")
-    if path.stat().st_size != int(meta["bytes"]) or sha256_file(path) != str(meta["sha256"]):
-        raise RuntimeError("audit_member_digest_mismatch")
-    pf = pq.ParquetFile(path)
-    schema = pf.schema_arrow
-    names = list(schema.names)
-    if "symbol" not in names:
-        raise RuntimeError("audit_symbol_field_missing")
-    time_field = "trading_day" if "trading_day" in names else ("timestamp" if "timestamp" in names else None)
-    if time_field is None:
-        raise RuntimeError("audit_time_field_missing")
-    table = pq.read_table(path, columns=["symbol", time_field]).to_pandas()
-    symbols = sorted(set(table["symbol"].dropna().astype(str)))
-    if time_field == "trading_day":
-        day = pd.to_datetime(table[time_field].astype(str).str.slice(0, 10), errors="coerce").dropna()
-    else:
-        day = pd.to_datetime(table[time_field].astype(str).str.slice(0, 19), errors="coerce").dropna()
+def subset(row: object) -> dict | None:
+    if not isinstance(row, dict):
+        return None
+    keys = (
+        "rows",
+        "first_trading_day",
+        "last_trading_day",
+        "trading_day_count",
+        "expected_trading_day_count",
+        "day_count_ready",
+    )
+    if any(key not in row for key in keys):
+        return None
+    return {key: row[key] for key in keys}
+
+
+def matching_view_indexes(manifest: dict, expected: dict) -> list[int]:
+    views = manifest.get("views")
+    if not isinstance(views, list):
+        return []
+    indexes: list[int] = []
+    for index, view in enumerate(views):
+        if not isinstance(view, dict):
+            continue
+        audit = view.get("audit")
+        symbols = audit.get("symbols") if isinstance(audit, dict) else None
+        if not isinstance(symbols, dict):
+            continue
+        if all(subset(symbols.get(symbol)) == row for symbol, row in expected.items()):
+            indexes.append(index)
+    return indexes
+
+
+def independently_build(inputs: Path) -> dict:
+    amendment_path = inputs / "BINDING_AMENDMENT.json"
+    source_path = inputs / "SOURCE_MANIFEST.json"
+    identity = load(inputs / "SOURCE_CONTRACT_IDENTITY.json")
+    amendment = load(amendment_path)
+    if sha256_file(amendment_path) != AMENDMENT_SHA256:
+        raise RuntimeError("verifier_amendment_digest_mismatch")
+    if amendment.get("schema_id") != AMENDMENT_SCHEMA or amendment.get("task_id") != TASK_ID:
+        raise RuntimeError("verifier_amendment_identity_mismatch")
+    if source_path.stat().st_size != SOURCE_CONTRACT_BYTES or sha256_file(source_path) != SOURCE_CONTRACT_SHA256:
+        raise RuntimeError("verifier_source_contract_identity_mismatch")
+    if identity.get("source_contract", {}).get("sha256") != SOURCE_CONTRACT_SHA256:
+        raise RuntimeError("verifier_broker_source_identity_mismatch")
+    if identity.get("amendment_sha256") != AMENDMENT_SHA256:
+        raise RuntimeError("verifier_broker_amendment_identity_mismatch")
+
+    manifest = load(source_path)
+    corrected = amendment["corrected_binding"]
+    artifact = corrected["source_artifact"]
+    targets = corrected["target_symbols"]
+    target_names = sorted(targets)
+    declared = manifest.get("symbols")
+    root_ok = isinstance(declared, list) and all(symbol in declared for symbol in target_names)
+    artifacts = manifest.get("artifacts")
+    got_artifact = artifacts.get(artifact["name"]) if isinstance(artifacts, dict) else None
+    artifact_ok = (
+        isinstance(got_artifact, dict)
+        and got_artifact.get("sha256") == artifact["sha256"]
+        and got_artifact.get("rows") == artifact["rows"]
+    )
+    parent_ok = manifest.get("canonical_1m_parent_dataset_version") == corrected["canonical_1m_parent_dataset_version"]
+    indexes = matching_view_indexes(manifest, targets)
+    view_ok = len(indexes) == 1
+    valid = bool(root_ok and artifact_ok and parent_ok and view_ok)
+    overlap_start = max(row["first_trading_day"] for row in targets.values()) if valid else None
+    overlap_end = min(row["last_trading_day"] for row in targets.values()) if valid else None
+    covers = bool(valid and overlap_start and overlap_end and overlap_start <= FUTURE_START and overlap_end >= FUTURE_END)
     return {
-        "expected_symbol": symbol,
-        "archive_path": meta["archive_path"],
-        "bytes": int(meta["bytes"]),
-        "sha256": str(meta["sha256"]),
-        "rows": int(pf.metadata.num_rows),
-        "physical_fields": [{"name": f.name, "type": str(f.type)} for f in schema],
-        "identity_columns_read": ["symbol", time_field],
-        "distinct_symbols": symbols,
-        "symbol_binding_valid": symbols == [symbol],
-        "time_identity_field": time_field,
-        "time_identity_non_null_rows": int(len(day)),
-        "min_trading_day": day.min().strftime("%Y-%m-%d") if len(day) else None,
-        "max_trading_day": day.max().strftime("%Y-%m-%d") if len(day) else None,
-        "market_value_columns_read": False,
-        "row_level_data_exported": False,
+        "schema_id": SCHEMA_ID,
+        "task_id": TASK_ID,
+        "profile": PROFILE,
+        "amendment_sha256": AMENDMENT_SHA256,
+        "original_prereg_sha256": amendment["original_preregistration"]["sha256"],
+        "status": "SOURCE_FAMILY_BINDING_VALID" if valid else "SOURCE_FAMILY_BINDING_INVALID",
+        "source_contract": identity["source_contract"],
+        "source_artifact": {
+            "name": artifact["name"],
+            "sha256": artifact["sha256"],
+            "rows": artifact["rows"],
+            "binding_valid": bool(artifact_ok),
+        },
+        "canonical_1m_parent_dataset_version": corrected["canonical_1m_parent_dataset_version"],
+        "parent_dataset_binding_valid": bool(parent_ok),
+        "declared_target_symbols_present": bool(root_ok),
+        "target_symbols": targets,
+        "matching_view_indexes": indexes,
+        "view_binding_unique": bool(view_ok),
+        "pair_overlap": {"min_trading_day": overlap_start, "max_trading_day": overlap_end},
+        "future_oos_window": {
+            "start_inclusive": FUTURE_START,
+            "end_inclusive": FUTURE_END,
+            "current_snapshot_covers_full_window": covers,
+            "current_snapshot_is_future_oos_evidence": False,
+            "activation_requires_new_snapshot_covering_full_window_for_both_symbols": True,
+        },
+        "controls": {
+            "market_values_read": False,
+            "returns_or_labels_read": False,
+            "parquet_deserialization": False,
+            "model_execution": False,
+            "calibration_execution": False,
+            "new_training": False,
+            "parent_verdict_changed": False,
+            "strategy_authority": False,
+            "production_authority": False,
+        },
     }
 
 
 def verify(inputs: Path, results: Path) -> dict:
-    identity = load(inputs / "PAIR_INPUT_IDENTITY.json")
-    result = load(results / "BINDING_AUDIT.json")
-    if identity.get("schema_id") != "risk_tool_v2_future_carrier_binding_input@1.0":
-        raise RuntimeError("audit_input_schema_mismatch")
-    if identity.get("task_id") != TASK_ID or identity.get("prereg_sha256") != PREREG_SHA256:
-        raise RuntimeError("audit_input_identity_mismatch")
-    if result.get("schema_id") != SCHEMA_ID or result.get("task_id") != TASK_ID:
-        raise RuntimeError("audit_result_schema_mismatch")
-    if result.get("profile") != PROFILE or result.get("prereg_sha256") != PREREG_SHA256:
-        raise RuntimeError("audit_result_identity_mismatch")
-    if result.get("source") != identity.get("source"):
-        raise RuntimeError("audit_source_drift")
-
-    members = identity.get("members")
-    if not isinstance(members, dict) or set(members) != set(EXPECTED_SYMBOLS):
-        raise RuntimeError("audit_member_set_invalid")
-    expected_members = {
-        symbol: independently_inspect(inputs / "pair" / (symbol + ".parquet"), symbol, members[symbol])
-        for symbol in EXPECTED_SYMBOLS
-    }
-    if result.get("members") != expected_members:
-        raise RuntimeError("audit_member_recompute_mismatch")
-    valid = all(expected_members[s]["symbol_binding_valid"] for s in EXPECTED_SYMBOLS)
-    starts = [expected_members[s]["min_trading_day"] for s in EXPECTED_SYMBOLS if expected_members[s]["min_trading_day"]]
-    ends = [expected_members[s]["max_trading_day"] for s in EXPECTED_SYMBOLS if expected_members[s]["max_trading_day"]]
-    overlap_start = max(starts) if len(starts) == 2 else None
-    overlap_end = min(ends) if len(ends) == 2 else None
-    covers = bool(valid and overlap_start and overlap_end and overlap_start <= FUTURE_START and overlap_end >= FUTURE_END)
-    if result.get("pair_overlap") != {"min_trading_day": overlap_start, "max_trading_day": overlap_end}:
-        raise RuntimeError("audit_overlap_mismatch")
-    if result.get("status") != ("PAIR_BINDING_VALID_FOR_SOURCE_FAMILY" if valid else "PAIR_BINDING_INVALID"):
-        raise RuntimeError("audit_status_mismatch")
-    if result.get("future_oos_window") != {
-        "start_inclusive": FUTURE_START,
-        "end_inclusive": FUTURE_END,
-        "current_snapshot_covers_full_window": covers,
-        "current_snapshot_is_future_oos_evidence": False,
-    }:
-        raise RuntimeError("audit_future_window_mismatch")
-    controls = result.get("controls")
-    required_controls = {
-        "market_values_read": False,
-        "returns_or_labels_read": False,
-        "model_execution": False,
-        "calibration_execution": False,
-        "new_training": False,
-        "parent_verdict_changed": False,
-        "strategy_authority": False,
-        "production_authority": False,
-    }
-    if controls != required_controls:
-        raise RuntimeError("audit_control_violation")
-    for row in expected_members.values():
-        if row["market_value_columns_read"] is not False or row["row_level_data_exported"] is not False:
-            raise RuntimeError("audit_export_violation")
+    actual = load(results / "BINDING_AUDIT.json")
+    expected = independently_build(inputs)
+    if actual != expected:
+        raise RuntimeError("future_binding_independent_recompute_mismatch")
+    if actual["status"] != "SOURCE_FAMILY_BINDING_VALID":
+        raise RuntimeError("future_binding_source_family_invalid")
     return {
         "status": "passed",
-        "binding_status": result["status"],
-        "current_snapshot_covers_full_window": covers,
+        "binding_status": actual["status"],
+        "current_snapshot_covers_full_window": actual["future_oos_window"]["current_snapshot_covers_full_window"],
         "production_authority": False,
     }
 
