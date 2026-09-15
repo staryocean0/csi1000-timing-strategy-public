@@ -228,6 +228,21 @@ def equal_optional(got, expected, integer: bool = False) -> bool:
     return int(got) == int(expected) if integer else str(got) == str(expected)
 
 
+def ratio_matches_reported_g(row) -> bool:
+    """Check the redundant ratio against the row's already independently checked g values.
+
+    The ratio is ill-conditioned when one migration is near zero. Comparing two
+    independently recomputed ratios with a fixed absolute epsilon can therefore
+    reject numerically equivalent events even though both g values and the final
+    state agree. The state threshold remains independently recomputed and exact.
+    """
+    reported = float(row["slope_magnitude_ratio"])
+    derived = slope_ratio(float(row["g_previous"]), float(row["g_current"]))
+    if math.isinf(derived):
+        return math.isinf(reported)
+    return math.isclose(reported, derived, rel_tol=1e-12, abs_tol=1e-12)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--inputs", required=True)
@@ -244,7 +259,7 @@ def main() -> None:
         fail("input_digest_mismatch")
     bars = load_bars(data)
     expected = expected_events(bars)
-    got = pd.read_csv(results / "STATE_STREAM_EVENTS.csv", keep_default_na=True)
+    got = pd.read_csv(results / "STATE_STREAM_EVENTS.csv", keep_default_na=True, float_precision="round_trip")
     if len(got) != len(expected):
         fail("event_count_mismatch")
     if list(got.columns) != [
@@ -263,11 +278,13 @@ def main() -> None:
             if str(row[col]) != str(exp[col]): fail(f"event_{col}_mismatch")
         parsed_bool = str(row["same_scale_rho_sqrt2"]).lower() == "true"
         if parsed_bool != bool(exp["same_scale_rho_sqrt2"]): fail("event_scale_flag_mismatch")
-        for col in ("duration_ratio", "g_previous", "g_current", "slope_magnitude_ratio"):
+        for col in ("duration_ratio", "g_previous", "g_current"):
             gv, ev = float(row[col]), float(exp[col])
             if math.isinf(ev):
                 if not math.isinf(gv): fail(f"event_{col}_mismatch")
             elif abs(gv - ev) > 1e-12: fail(f"event_{col}_mismatch")
+        if not ratio_matches_reported_g(row):
+            fail("event_slope_magnitude_ratio_mismatch")
         for col in ("eligible_sequence_index", "intervening_strict_events_since_previous_eligible", "confirmation_gap_bars_since_previous_eligible"):
             if not equal_optional(row[col], exp[col], True): fail(f"event_{col}_mismatch")
         if not equal_optional(row["previous_eligible_pair_id"], exp["previous_eligible_pair_id"], False): fail("event_previous_eligible_pair_id_mismatch")
