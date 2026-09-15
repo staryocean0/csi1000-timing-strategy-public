@@ -18,10 +18,12 @@ class FreshOosPhysicalLoaderTest(unittest.TestCase):
         text = ENTRY.read_text()
         ast.parse(text, filename=ENTRY.name)
         self.assertIn('REQUIRED_CARRIER_COLUMNS = ("datetime", "symbol", "close")', text)
+        self.assertIn('LOGICAL_TO_PHYSICAL = {"datetime": "timestamp", "symbol": "symbol", "close": "close"}', text)
         self.assertIn("pq.ParquetFile(candidate)", text)
         self.assertIn("parquet.schema_arrow.names", text)
         self.assertIn("use_pandas_metadata=False", text)
         self.assertIn("to_pandas(ignore_metadata=True)", text)
+        self.assertIn('rename(columns={"timestamp": "datetime"})', text)
         self.assertIn("ev.pd.read_parquet = _read_carrier_without_pandas_metadata", text)
         self.assertIn("ev.main()", text)
         self.assertIn("ev.pd.read_parquet = _ORIGINAL_READ_PARQUET", text)
@@ -34,6 +36,14 @@ class FreshOosPhysicalLoaderTest(unittest.TestCase):
             "ridge_lambda",
         ):
             self.assertNotIn(forbidden, text)
+
+    def test_physical_projection_is_exactly_timestamp_symbol_close(self):
+        text = ENTRY.read_text()
+        self.assertIn("required_physical = tuple(LOGICAL_TO_PHYSICAL[name] for name in REQUIRED_CARRIER_COLUMNS)", text)
+        self.assertIn("columns=list(required_physical)", text)
+        self.assertNotIn('"datetime": "available_at"', text)
+        self.assertNotIn('"datetime": "ingested_at"', text)
+        self.assertNotIn('"datetime": "trading_day"', text)
 
     def test_missing_physical_projection_emits_schema_only_metadata(self):
         text = ENTRY.read_text()
