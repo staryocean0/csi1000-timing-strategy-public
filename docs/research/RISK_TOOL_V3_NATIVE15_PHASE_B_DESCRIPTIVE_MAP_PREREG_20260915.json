@@ -1,0 +1,144 @@
+{
+  "allowed_reads": {
+    "labels": false,
+    "market_ohl_only": false,
+    "model_outputs": false,
+    "parquet_columns": [
+      "timestamp",
+      "trading_day",
+      "symbol",
+      "close"
+    ],
+    "phase_a_parent_result": true,
+    "pnl": false,
+    "probabilities": false
+  },
+  "authority": {
+    "parent_phase_a": {
+      "carrier_bytes": 1669752,
+      "carrier_sha256": "d69e87662d9e525396ed776b754ff43fca58dd021df4a84f96b60a6a5e4864d6",
+      "private_ref": "runs/public-research/34982948347-1",
+      "required_status": "NATIVE15_CARRIER_SEMANTICS_VALID",
+      "result_git_blob_sha": "f92fd121990caefc97cde7037ea5dad72541981c",
+      "result_path": "research/public-runs/34982948347-1-native15-phase-a.json",
+      "source_manifest_sha256": "c46f2da6c3df016ca054e183e37267dc472097450fcdd6644c22aa0084c15749"
+    },
+    "roadmap_path": "docs/research/RISK_TOOL_V3_NATIVE_KLINE_MULTISCALE_ROADMAP_20260915.md"
+  },
+  "data_window": {
+    "development_end": "2023-12-31",
+    "development_start": "2021-01-01",
+    "development_years": [
+      2021,
+      2022,
+      2023
+    ],
+    "fresh_year_untouched": 2026,
+    "repeat_audit_years_untouched": [
+      2024,
+      2025
+    ]
+  },
+  "descriptive_grid": {
+    "absolute_return_acf_lags_native_bars": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "absolute_return_quantiles": [
+      0.5,
+      0.75,
+      0.9,
+      0.95,
+      0.975,
+      0.99,
+      0.995
+    ],
+    "post_event_horizon_native_bars": 8,
+    "recovery_below_quantile": 0.75,
+    "recovery_event_quantiles": [
+      0.95,
+      0.99
+    ],
+    "tail_episode_quantiles": [
+      0.9,
+      0.95,
+      0.99
+    ]
+  },
+  "hard_boundaries": {
+    "calibration": false,
+    "copy_v2_constants_as_native15_authority": false,
+    "model_fit": false,
+    "pnl": false,
+    "position_sizing": false,
+    "production_authority": false,
+    "state_machine_installation": false,
+    "strategy_routing": false,
+    "threshold_optimization": false,
+    "use_2024_2025_market_values": false,
+    "use_2026_market_values": false,
+    "window_search": false
+  },
+  "interpretation": {
+    "next_phase_if_complete": "native15_state_machine_candidate_research_preregister_separately",
+    "no_parameter_winner": true,
+    "status_if_complete": "NATIVE15_DESCRIPTIVE_MAP_COMPLETE",
+    "status_if_support_fails": "NATIVE15_DESCRIPTIVE_MAP_INSUFFICIENT_SUPPORT"
+  },
+  "native_scale": {
+    "base_interval_minutes": 15,
+    "meaning": "native_15m_kline_base_sequence_not_5m_forecast_horizon",
+    "primary_symbol": "000852.SH",
+    "session_offset_minutes": 5
+  },
+  "outputs": {
+    "boundary_context": [
+      "lunch-boundary and overnight-boundary absolute-return quantiles, kept separate from primary map"
+    ],
+    "frequency": [
+      "pooled tail thresholds in absolute-return bps",
+      "overall and per-year tail exceedance shares",
+      "q95 exceedance share by native bar clock"
+    ],
+    "persistence": [
+      "within-session absolute-return autocorrelation by fixed lags",
+      "tail exceedance run-length distributions at fixed quantile levels"
+    ],
+    "recovery": [
+      "post-event absolute-return/event-severity ratio profile for fixed q95/q99 event sets",
+      "time-to-below pooled q75 absolute return within 8 native bars"
+    ],
+    "severity": [
+      "pooled and per-year absolute-return quantiles in bps",
+      "daily realized-volatility quantiles in bps"
+    ]
+  },
+  "profile": "risk-v3-native15-descriptive-risk-map-v1",
+  "return_semantics": {
+    "boundary_returns": "reported_separately_only; never pooled into primary severity/frequency/persistence/recovery",
+    "close_parse": "numeric_positive_only",
+    "primary_return_pairs": "same_symbol_same_trading_day_same_session_exact_15_clock_minutes",
+    "return": "log(close_t/close_t_minus_1)",
+    "session_rule": {
+      "AM": "timestamp_hour<12",
+      "PM": "timestamp_hour>=12"
+    }
+  },
+  "schema_id": "risk_tool_v3_native15_phase_b_descriptive_map_prereg@1.0",
+  "task_id": "CSI1000-RISK-V3-NATIVE15-PHASE-B-DESCRIPTIVE-MAP-V1-20260915",
+  "technical_support_gates": {
+    "close_parse_rate_ge": 0.9999,
+    "each_development_year_primary_returns_ge": 2500,
+    "each_development_year_trading_days_ge": 200,
+    "observed_years_exactly_development_years": true,
+    "primary_pair_delta_minutes_eq": 15,
+    "primary_symbol_only": true,
+    "q99_event_count_ge": 50
+  }
+}
