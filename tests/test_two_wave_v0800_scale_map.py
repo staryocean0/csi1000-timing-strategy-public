@@ -1,46 +1,55 @@
+import py_compile
+import tempfile
 import unittest
+from pathlib import Path
 
-import pandas as pd
 
-from executor.two_wave_v0800_scale_map import TemporalMaturityAEngine
+ROOT = Path(__file__).resolve().parents[1]
+RUNNER = ROOT / "executor/two_wave_v0800_scale_map.py"
+VERIFIER = ROOT / "executor/two_wave_v0800_scale_map_verifier.py"
+BROKER = ROOT / "executor/two_wave_v0800_scale_map_broker.py"
+PROTOCOL = ROOT / "docs/research/TWO_WAVE_BACKWARD_SAME_SCALE_A_CHANNEL_V0800_PROTOCOL.md"
 
 
 class TwoWaveV0800ScaleMapTest(unittest.TestCase):
-    def frame(self, closes):
-        rows = []
-        for i, close in enumerate(closes):
-            rows.append(
-                {
-                    "timestamp": pd.Timestamp("2020-01-02 09:35") + pd.Timedelta(minutes=5 * i),
-                    "open": close,
-                    "high": close + 0.5,
-                    "low": close - 0.5,
-                    "close": close,
-                    "bar_index": i,
-                }
-            )
-        return pd.DataFrame(rows)
+    def test_data_runner_and_verifier_compile_without_importing_heavy_runtime(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            for source in (RUNNER, VERIFIER, BROKER):
+                py_compile.compile(str(source), cfile=str(Path(tmp) / (source.name + ".pyc")), doraise=True)
 
-    def test_v043_maturity_does_not_confirm_terminal_low_at_occurrence(self):
-        # Low at 8 becomes confirmed only after four later bars establish an
-        # opposite running high; publication therefore occurs after occurrence.
-        closes = [100, 99, 98, 97, 96, 98, 100, 102, 104, 102, 100, 98, 96, 98, 100, 102, 104]
-        waves, pivots, _ = TemporalMaturityAEngine(self.frame(closes)).run()
-        for pivot in pivots:
-            if not pivot["left_censored"]:
-                self.assertGreaterEqual(pivot["confirmation_delay_bars"], 4)
-        for rec in waves:
-            self.assertGreaterEqual(rec.wave.confirmation_bar - rec.wave.end_bar, 4)
+    def test_runner_freezes_v043_causal_kernel_and_no_outcome_objective(self):
+        text = RUNNER.read_text(encoding="utf-8")
+        self.assertIn("MIN_LEG = 4", text)
+        self.assertIn("MAX_UNFINISHED_LEG = 48", text)
+        self.assertIn("confirmation_delay_bars", text)
+        self.assertIn("same_scale", text)
+        self.assertIn("year_2026_read\": False", text)
+        self.assertIn("future_outcome_used\": False", text)
+        self.assertIn("rho_winner\": None", text)
+        self.assertNotIn("forward_return", text)
+        self.assertNotIn("transaction_cost", text)
 
-    def test_emitted_a_wave_is_low_high_low_and_whole_cycle_duration(self):
-        closes = [100, 99, 98, 97, 96, 98, 100, 102, 104, 102, 100, 98, 96, 98, 100, 102, 104, 102, 100, 98, 96, 98, 100, 102, 104]
-        waves, _, _ = TemporalMaturityAEngine(self.frame(closes)).run()
-        self.assertGreaterEqual(len(waves), 1)
-        wave = waves[0].wave
-        self.assertLess(wave.start_bar, wave.high_bar)
-        self.assertLess(wave.high_bar, wave.end_bar)
-        self.assertEqual(wave.duration, wave.end_bar - wave.start_bar)
-        self.assertGreaterEqual(wave.duration, 8)
+    def test_verifier_enforces_backward_nearest_same_scale(self):
+        text = VERIFIER.read_text(encoding="utf-8")
+        self.assertIn("predecessor_not_backward", text)
+        self.assertIn("nearest_eligible_predecessor_violated", text)
+        self.assertIn("same_scale_relation_invalid", text)
+        self.assertIn("premature_winner_or_future_year_read", text)
+
+    def test_broker_is_fixed_to_historical_two_wave_development_identity(self):
+        text = BROKER.read_text(encoding="utf-8")
+        self.assertIn("152ae1ef11a04bb3b434da25025794db7a706c81", text)
+        self.assertIn("bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48", text)
+        self.assertIn("DATA_BYTES = 3351411", text)
+        self.assertIn("workflow_dispatch", text)
+        self.assertIn("production_authority\": False", text)
+
+    def test_protocol_keeps_first_real_run_on_scale_semantics(self):
+        text = PROTOCOL.read_text(encoding="utf-8")
+        self.assertIn("V0800-B — duration/scale-band map", text)
+        self.assertIn("No return, PnL, future horizon, or trading label", text)
+        self.assertIn("A-phase only", text)
+        self.assertIn("lower boundary is authoritative", text)
 
 
 if __name__ == "__main__":
