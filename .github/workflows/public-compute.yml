@@ -172,7 +172,7 @@ jobs:
           elif [ '${{ inputs.profile }}' = 'risk-v2-historical-000852-2015-2019-v1' ]; then
             python3 executor/risk_historical_000852_broker.py compute risk-v2-historical-000852-2015-2019-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-temporal-stability-2015-2025-v1' ]; then
-            python3 executor/risk_temporal_stability_2015_2025_broker.py compute risk-v2-temporal-stability_2015-2025-v1
+            python3 executor/risk_temporal_stability_2015_2025_broker.py compute risk-v2-temporal-stability-2015-2025-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-15m-annual-calibration-diagnostic-v1' ]; then
             python3 executor/risk_annual_calibration_diagnostic_broker.py compute risk-v2-15m-annual-calibration-diagnostic-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-15m-tail-robust-calibration-v2' ]; then
