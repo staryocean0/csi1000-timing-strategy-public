@@ -60,6 +60,10 @@ Also report fixed duration-ratio bins: `[1,1.25]`, `(1.25,4/3]`, `(4/3,sqrt(2)]`
 
 These are descriptive diagnostics. No correlation, bin, or rho may become a winner from B1.
 
+## Reviewed execution route
+
+After the source-only B1 layer passed public regression CI, the fixed profile `two-wave-v0800-b1-strict-continuity-v1` was registered in the existing standard `public-compute.yml` prepare → compute → cleanup → publish path and the bounded issue controller. Registration itself does not execute research. A real run remains forbidden until the fully wired PR passes merge-state CI on the current `cloud-workspace-v1` base and is merged.
+
 ## Fail-closed boundary
 
 B1 reads only the already-consumed 2015-01-05 through 2020-12-31 `5m_offset_0` Development file with frozen identity SHA256 `bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48`.
