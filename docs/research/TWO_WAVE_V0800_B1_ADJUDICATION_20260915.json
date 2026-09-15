@@ -1,0 +1,79 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_b1_adjudication@1.0",
+  "status": "frozen_after_verified_b1_before_v0800_c",
+  "source_run": {
+    "public_run_id": "34957977925-1",
+    "public_source_sha": "3c6641fa976159b3528355296f33a8944d124c0f",
+    "profile": "two-wave-v0800-b1-strict-continuity-v1",
+    "receipt_status": "passed",
+    "input_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "input_rows": 70114,
+    "allowed_start": "2015-01-05",
+    "allowed_end": "2020-12-31",
+    "year_2026_read": false,
+    "fresh_oos": false
+  },
+  "verified_observations": {
+    "wave_count": 2503,
+    "strict_pair_count": 2358,
+    "strict_pair_fraction_of_all_waves": 0.9420695165801038,
+    "annual_strict_pair_count": {
+      "2015": 368,
+      "2016": 476,
+      "2017": 407,
+      "2018": 334,
+      "2019": 401,
+      "2020": 372
+    },
+    "spearman_log_duration_ratio_vs_path_rms_21": -0.015261953047538357,
+    "spearman_log_channel_height_ratio_vs_path_rms_21": 0.033830969951624594,
+    "rho_support_within_strict_pairs": {
+      "1.25": 0.24893977947413062,
+      "1.3333333333333333": 0.3273960983884648,
+      "1.4142135623730951": 0.39185750636132316,
+      "1.5": 0.45971162001696353,
+      "2.0_legacy_control": 0.7035623409669212
+    }
+  },
+  "adjudication": {
+    "strict_shared_anchor_continuity": "accepted_as_only_direction_eligible_pair_semantic_for_v0800",
+    "same_scale_ledger_nearest": "diagnostic_only",
+    "skip_based_pair_direction_authority": false,
+    "duration_remains_primary_scale_coordinate": true,
+    "normalized_path_rms_can_select_rho": false,
+    "channel_height_ratio_gate_added": false,
+    "rho_winner": null,
+    "candidate_rhos_remain_frozen": [
+      1.25,
+      1.3333333333333333,
+      1.4142135623730951,
+      1.5
+    ],
+    "legacy_rho_2_role": "historical_control_nonwinning"
+  },
+  "methodological_interpretation": {
+    "normalized_path_rms_time_normalized": true,
+    "normalized_path_rms_amplitude_normalized": true,
+    "claim": "Lack of association between duration/amplitude ratios and normalized path RMS does not invalidate duration as a scale coordinate because the diagnostic intentionally removes time and amplitude scale. It does show that normalized morphology cannot empirically choose rho or justify an amplitude gate."
+  },
+  "v0800_c_permission": {
+    "allowed": true,
+    "scope": "causal_prefix_replay_only",
+    "candidate_rhos": [
+      1.25,
+      1.3333333333333333,
+      1.4142135623730951,
+      1.5
+    ],
+    "rho_winner_selection": false,
+    "direction_thresholds": false,
+    "pair_state_publication": false,
+    "future_outcome": false,
+    "pnl": false,
+    "positions": false,
+    "trade_authority": false,
+    "production_authority": false,
+    "year_2026_read": false
+  },
+  "next_gate": "V0800-C must prove prefix-causal equivalence for pivot confirmation, strict-pair availability, channel geometry, and same-scale eligibility under every frozen candidate rho before any direction grid is allowed."
+}
