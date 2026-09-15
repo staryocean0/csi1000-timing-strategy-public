@@ -1,0 +1,63 @@
+{
+  "schema_id": "risk_tool_v2_consumer_contract@1.0",
+  "contract_id": "risk-tool-v2-consumer-contract-v1",
+  "status": "frozen_before_consumer_adjudication",
+  "parent_output_contract": {
+    "authority_run": "34945466654-1",
+    "result_path": "research/public-runs/34945466654-1-results/OUTPUT_CONTRACT_RESULT.json",
+    "result_sha256": "d7c2cd1106b8025c242ff0486e6a167be3d8669145735e634ea14ddb9977aa96"
+  },
+  "output_schema": "risk_tool_v2_output_envelope@1.0",
+  "capabilities": [
+    "read_ordering",
+    "read_probability_diagnostic",
+    "interpret_probability_guarded_research",
+    "interpret_probability_research"
+  ],
+  "forbidden_capabilities": [
+    "hard_probability_threshold",
+    "strategy_routing",
+    "position_sizing",
+    "pnl_authority",
+    "production_decision"
+  ],
+  "15m": {
+    "authority_grade": "TS-B_STABLE_RANKING_CALIBRATION_GUARDED",
+    "authority_state": "IN_PROGRESS",
+    "current_bottleneck": "weekly.calibration",
+    "reliability_required": true,
+    "band_thresholds": {
+      "low_upper_exclusive": 0.5170330932673238,
+      "high_lower_inclusive": 0.7096666848299501
+    },
+    "permissions": {
+      "UNSCORED": ["read_ordering", "read_probability_diagnostic"],
+      "LOW": ["read_ordering", "read_probability_diagnostic"],
+      "MID": ["read_ordering", "read_probability_diagnostic", "interpret_probability_guarded_research"],
+      "HIGH": ["read_ordering", "read_probability_diagnostic", "interpret_probability_guarded_research", "interpret_probability_research"]
+    }
+  },
+  "30m": {
+    "authority_grade": "TS-A_STABLE_PROBABILITY_COMPONENT",
+    "authority_state": "COMPLETE",
+    "reliability_required": false,
+    "permissions": ["read_ordering", "read_probability_diagnostic", "interpret_probability_research"]
+  },
+  "fail_closed": {
+    "unknown_horizon": true,
+    "unknown_band": true,
+    "missing_required_reliability": true,
+    "reliability_band_mismatch": true,
+    "requested_capability_not_allowlisted": true,
+    "forbidden_capability_requested": true
+  },
+  "boundaries": {
+    "probability_unmodified": true,
+    "ordering_unmodified": true,
+    "reliability_unmodified": true,
+    "no_threshold_search": true,
+    "no_strategy_logic": true,
+    "year_2026_read": false,
+    "production_authority": false
+  }
+}
