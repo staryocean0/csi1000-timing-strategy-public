@@ -1,3 +1,84 @@
 {
-  "schema_id": "csi1000.two_wave_v0800_b1_strict_continuity_protocol@1.0"
+  "schema_id": "csi1000.two_wave_v0800_b1_strict_continuity_protocol@1.0",
+  "status": "preregistered_development_diagnostic",
+  "parent_evidence": {
+    "run_id": "34951777247-1",
+    "study": "V0800-B_DURATION_SCALE_MAP",
+    "role": "verified_development_morphology_evidence_only"
+  },
+  "scope": {
+    "symbol": "000852.SH",
+    "timeframe": "5m_offset_0",
+    "development_start": "2015-01-05",
+    "development_end": "2020-12-31",
+    "input_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "fresh_oos": false,
+    "year_2026_read": false
+  },
+  "continuity_policy": {
+    "direction_eligible_pair_semantic": "shared_anchor_strict_L-H-L-H-L",
+    "same_scale_ledger_nearest_role": "diagnostic_only",
+    "skip_based_pair_direction_authority": false
+  },
+  "pivot_kernel": {
+    "source": "v0.4.3 causal temporal maturity",
+    "min_leg": 4,
+    "max_unfinished_leg": 48,
+    "changed": false
+  },
+  "duration": {
+    "definition": "end_low_occurrence_bar-start_low_occurrence_bar",
+    "unit": "bar_intervals_between_pivot_occurrence_bars",
+    "inclusive_observation_count_relation": "span_rows = duration + 1"
+  },
+  "rho": {
+    "candidate": [1.25, 1.3333333333333333, 1.4142135623730951, 1.5],
+    "legacy_control": 2.0,
+    "legacy_control_role": "historical_width_control_nonwinning",
+    "winner_selection_allowed": false
+  },
+  "measurements": {
+    "duration_ratio": "max(d_prev,d_cur)/min(d_prev,d_cur)",
+    "channel_height_ratio": "diagnostic_only",
+    "path_rms_21": "same_bottom_channel_normalized_21_point_rms_as_v0800_b",
+    "rank_associations": [
+      "spearman_log_duration_ratio_vs_path_rms_21",
+      "spearman_log_channel_height_ratio_vs_path_rms_21"
+    ],
+    "duration_ratio_bins": [
+      "[1,1.25]",
+      "(1.25,4/3]",
+      "(4/3,sqrt(2)]",
+      "(sqrt(2),1.5]",
+      "(1.5,2.0]",
+      "(2.0,infinity)"
+    ]
+  },
+  "required_outputs": [
+    "STRICT_PAIRS.csv",
+    "SUMMARY.json",
+    "INPUT_RECEIPT.json"
+  ],
+  "verification": {
+    "rerun_pivot_kernel": true,
+    "independently_reenumerate_exact_strict_pair_key_set": true,
+    "producer_pair_set_must_equal_verifier_pair_set": true,
+    "verify_aggregate_counts": true,
+    "verify_rank_associations": true
+  },
+  "authority": {
+    "rho_winner": null,
+    "morphology_acceptance": false,
+    "direction_authority": false,
+    "trade_authority": false,
+    "production_authority": false
+  },
+  "forbidden": {
+    "future_returns": true,
+    "pnl": true,
+    "positions": true,
+    "transaction_cost_optimization": true,
+    "trading_labels": true,
+    "v0800_c_auto_dispatch": true
+  }
 }
