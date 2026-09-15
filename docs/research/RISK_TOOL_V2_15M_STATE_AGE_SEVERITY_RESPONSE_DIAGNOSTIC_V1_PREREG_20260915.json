@@ -1,0 +1,107 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_15m_state_age_severity_response_diagnostic_prereg@1.0",
+  "task_id": "CSI1000-RISK-V2-15M-STATE-AGE-SEVERITY-RESPONSE-DIAGNOSTIC-V1-20260915",
+  "profile": "risk-v2-15m-state-age-severity-response-diagnostic-v1",
+  "status": "frozen_before_execution",
+  "target": {
+    "horizon_minutes": 15,
+    "current_bottleneck": "weekly.calibration",
+    "parent_state_diagnostic_authority_run": "34935354211-1",
+    "question": "Within each fixed state x age cell, does the frozen Severity challenger move probability in the same direction as the observed shift needed relative to B during the 2023-W21..W32 streak?"
+  },
+  "authority_chain": {
+    "state_summary": {
+      "branch": "runs/public-research/34935354211-1",
+      "path": "research/public-runs/34935354211-1-results/SUMMARY.json",
+      "git_blob_sha1": "c32eaba04cf9c50a1e9aaf1c6b5eef4c26da9e13",
+      "bytes": 2167,
+      "sha256": "534892118a09008657c3a742ffd6c22f285a851f1bf1763eefb0a58536169777"
+    },
+    "state_group_summary": {
+      "branch": "runs/public-research/34935354211-1",
+      "path": "research/public-runs/34935354211-1-results/STATE_GROUP_SUMMARY.csv",
+      "git_blob_sha1": "46c203874091725beee38863ee55fdc2d5611a8b",
+      "bytes": 7524,
+      "sha256": "a091876a8e0065af595a64f975fefe99eb9dbb3ff8f8eab41e6b0369bf903f35"
+    },
+    "weekly_calibration_streak_authority_run": "34932495109-1",
+    "two_week_metrics_authority_run": "34926868278-1",
+    "v3_adjudication_authority_run": "34930354449-1"
+  },
+  "data_scope": {
+    "symbol": "000852.SH",
+    "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],
+    "hard_years": [2015,2016,2017,2018,2019,2021,2022,2023,2024,2025],
+    "year_2026_read": false,
+    "weekly_measurement": "trailing_2_market_weeks_each_week_end",
+    "streak_labels": ["2023-W21","2023-W22","2023-W23","2023-W24","2023-W25","2023-W26","2023-W27","2023-W28","2023-W29","2023-W30","2023-W31","2023-W32"]
+  },
+  "comparison_groups": {
+    "STREAK": "the exact 12 authority-confirmed labels above",
+    "OTHER_PASS": "all other hard-year supported 2-week endpoints for which final frozen 15m C beats B on both Brier and LogLoss"
+  },
+  "fixed_cells": [
+    "UNSAFE|LT15","UNSAFE|M15_25","UNSAFE|M30_40","UNSAFE|GE45",
+    "RECOVERING|LT15","RECOVERING|M15_25","RECOVERING|M30_40","RECOVERING|GE45"
+  ],
+  "frozen_representation": {
+    "model_B": "existing frozen state+age baseline",
+    "model_C": "existing frozen state+age+Severity challenger",
+    "severity_raw_features": ["log1p(shock_intensity)","log(vol_ratio)","quadratics","interaction","RECOVERING interactions"],
+    "calibration_B": "existing frozen repeat-audit Platt B",
+    "calibration_C_pre_tail": "existing frozen repeat-audit Platt C",
+    "calibration_C_post_tail": "existing authority tail transform anchor=0.2312353159391616, L=4.0",
+    "descriptive_unit": "endpoint-row weighted; overlapping 2-week windows are intentionally represented at each evaluable endpoint"
+  },
+  "metrics_per_cell_and_group": [
+    "endpoint_count","rows","positive","event_rate",
+    "mean_raw_p_B","mean_raw_p_C","mean_raw_C_minus_B",
+    "mean_cal_B","mean_pre_tail_C","mean_post_tail_C",
+    "needed_shift_vs_B","pre_tail_C_minus_B","post_tail_C_minus_B",
+    "post_tail_residual","brier_gain_post_tail","logloss_gain_post_tail",
+    "shock_intensity_q25","shock_intensity_q50","shock_intensity_q75",
+    "vol_ratio_q25","vol_ratio_q50","vol_ratio_q75"
+  ],
+  "derived_descriptions": [
+    "direction_needed_vs_B",
+    "direction_raw_C_minus_B",
+    "direction_pre_tail_C_minus_B",
+    "direction_post_tail_C_minus_B",
+    "raw_direction_alignment",
+    "pre_tail_direction_alignment",
+    "post_tail_direction_alignment"
+  ],
+  "comparison_outputs": [
+    "STREAK minus OTHER_PASS for every numeric metric",
+    "alignment change between OTHER_PASS and STREAK for all 8 fixed cells"
+  ],
+  "interpretation": {
+    "diagnostic_only": true,
+    "no_new_acceptance_gate": true,
+    "all_8_cells_reported_no_cherry_pick": true,
+    "future_representation_change_requires_separate_preregistration": true,
+    "v3_verdict_remains_immutable": true,
+    "diagnostic_cannot_promote_15m_to_complete": true
+  },
+  "prohibitions": {
+    "candidate_search": true,
+    "calibration_refit": true,
+    "tail_parameter_search": true,
+    "numeric_threshold_change": true,
+    "model_change": true,
+    "feature_selection": true,
+    "market_data_substitution": true,
+    "year_2026_read": true,
+    "pnl": true,
+    "strategy_routing": true,
+    "production_authority": true
+  },
+  "outputs": [
+    "CELL_RESPONSE_SUMMARY.csv",
+    "CELL_RESPONSE_COMPARISON.csv",
+    "SUMMARY.json",
+    "INPUT_DATA_RECEIPT.json",
+    "MODEL_INPUT_RECEIPT.json"
+  ],
+  "production_authority": false
+}
