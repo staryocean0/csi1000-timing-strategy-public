@@ -12,6 +12,8 @@ class StateConditionalCalibrationDiagnosticTest(unittest.TestCase):
     def test_sources_compile_and_verifier_is_independent(self):
         for n in ("risk_state_conditional_calibration_diagnostic.py","risk_state_conditional_calibration_diagnostic_verifier.py","risk_state_conditional_calibration_diagnostic_broker.py","risk_state_conditional_calibration_diagnostic_private_mirror.py"):py_compile.compile(str(ROOT/"executor"/n),doraise=True)
         v=(ROOT/"executor/risk_state_conditional_calibration_diagnostic_verifier.py").read_text();self.assertNotIn("risk_state_conditional_calibration_diagnostic.py",v);self.assertIn("authority_metric_drift",v)
+    def test_summary_serializes_only_numeric_delta_fields(self):
+        src=(ROOT/"executor/risk_state_conditional_calibration_diagnostic.py").read_text();self.assertIn('startswith("delta_")',src);self.assertIn("state_comparison_payload",src);self.assertNotIn("if col not in (\"streak_rows\",\"other_pass_rows\")",src)
     def test_no_rescue_surface(self):
         src=(ROOT/"executor/risk_state_conditional_calibration_diagnostic.py").read_text().lower();self.assertNotIn("2026.parquet",src);self.assertNotIn("optimize",src);self.assertNotIn("grid",src);self.assertNotIn("fit(",src);self.assertIn('"pnl":false',src);self.assertNotIn("strategy_return",src);self.assertNotIn("sharpe",src)
     def test_mirror_is_text_only(self):
