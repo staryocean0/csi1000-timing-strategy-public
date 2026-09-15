@@ -10,6 +10,7 @@ EXECUTOR = ROOT / "executor"
 ENTRY = EXECUTOR / "risk_phase1b_fresh_oos_entry.py"
 BROKER = EXECUTOR / "risk_phase1b_fresh_oos_broker.py"
 EVALUATOR = EXECUTOR / "risk_phase1b_fresh_oos_eval.py"
+FAILURE_MIRROR = EXECUTOR / "risk_phase1b_fresh_oos_failure_mirror.py"
 
 
 class FreshOosPhysicalLoaderTest(unittest.TestCase):
@@ -33,6 +34,33 @@ class FreshOosPhysicalLoaderTest(unittest.TestCase):
             "ridge_lambda",
         ):
             self.assertNotIn(forbidden, text)
+
+    def test_missing_physical_projection_emits_schema_only_metadata(self):
+        text = ENTRY.read_text()
+        self.assertIn('SCHEMA_DIAGNOSTIC_NAME = "CARRIER_SCHEMA_DIAGNOSTIC.json"', text)
+        self.assertIn('SCHEMA_DIAGNOSTIC_ID = "risk_tool_v2_phase1b_carrier_schema_diagnostic@1.0"', text)
+        self.assertIn('(schema.metadata or {}).get(b"pandas")', text)
+        self.assertIn('"physical_fields": [', text)
+        self.assertIn('"pandas_index_columns": _safe_index_columns', text)
+        self.assertIn('"pandas_columns": _safe_pandas_columns', text)
+        self.assertIn('"market_values_exported": False', text)
+        self.assertIn('"row_level_data_exported": False', text)
+        self.assertIn('"model_outputs_exported": False', text)
+        self.assertNotIn("to_pylist", text)
+        self.assertNotIn("to_pydict", text)
+
+    def test_failure_mirror_whitelists_and_privately_mirrors_schema_only_diagnostic(self):
+        text = FAILURE_MIRROR.read_text()
+        ast.parse(text, filename=FAILURE_MIRROR.name)
+        self.assertIn('CARRIER_SCHEMA_FILE = "CARRIER_SCHEMA_DIAGNOSTIC.json"', text)
+        self.assertIn("MAX_SCHEMA_BYTES = 16384", text)
+        self.assertIn("def _load_carrier_schema", text)
+        self.assertIn('"market_values_exported"', text)
+        self.assertIn('"row_level_data_exported"', text)
+        self.assertIn('"model_outputs_exported"', text)
+        self.assertIn('f"{state[\'run_id\']}-fresh-oos-carrier-schema.json"', text)
+        self.assertNotIn("read_parquet", text)
+        self.assertNotIn("read_table", text)
 
     def test_broker_routes_only_compute_entry_and_stages_original_science(self):
         text = BROKER.read_text()
