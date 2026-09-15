@@ -95,8 +95,6 @@ def strict_pairs(bars: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
             if candidate.wave.end_bar == current.start_bar:
                 previous_rec = candidate
                 break
-            if candidate.wave.end_bar < current.start_bar:
-                break
         if previous_rec is None:
             continue
         previous = previous_rec.wave
