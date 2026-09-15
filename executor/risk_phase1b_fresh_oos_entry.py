@@ -1,10 +1,11 @@
 """Technical entry adapter for the frozen Risk Tool v2 Phase-1B fresh-OOS evaluator.
 
 This module changes only physical Parquet loading. It bypasses legacy pandas
-metadata when reading the already-accepted carrier, then delegates all science
-to the frozen evaluator module. If the frozen logical projection cannot be
-resolved from physical Parquet fields, it writes a bounded schema-only
-metadata diagnostic; no row values or model outputs are exported.
+metadata when reading the already-accepted carrier, deterministically maps the
+physical timestamp field to the frozen logical datetime field, then delegates
+all science to the frozen evaluator module. If the frozen logical projection
+cannot be resolved from physical Parquet fields, it writes a bounded
+schema-only metadata diagnostic; no row values or model outputs are exported.
 """
 
 from __future__ import annotations
@@ -19,6 +20,7 @@ import pyarrow.parquet as pq
 import risk_phase1b_fresh_oos_eval as ev
 
 REQUIRED_CARRIER_COLUMNS = ("datetime", "symbol", "close")
+LOGICAL_TO_PHYSICAL = {"datetime": "timestamp", "symbol": "symbol", "close": "close"}
 SCHEMA_DIAGNOSTIC_NAME = "CARRIER_SCHEMA_DIAGNOSTIC.json"
 SCHEMA_DIAGNOSTIC_ID = "risk_tool_v2_phase1b_carrier_schema_diagnostic@1.0"
 _ORIGINAL_READ_PARQUET = pd.read_parquet
@@ -108,16 +110,17 @@ def _read_carrier_without_pandas_metadata(path, columns=None, **kwargs):
 
     parquet = pq.ParquetFile(candidate)
     physical_names = set(parquet.schema_arrow.names)
-    missing = [name for name in REQUIRED_CARRIER_COLUMNS if name not in physical_names]
+    required_physical = tuple(LOGICAL_TO_PHYSICAL[name] for name in REQUIRED_CARRIER_COLUMNS)
+    missing = [name for name in required_physical if name not in physical_names]
     if missing:
         _write_schema_diagnostic(parquet, missing)
         raise RuntimeError("carrier_physical_columns_missing:" + "-".join(missing))
 
     table = parquet.read(
-        columns=list(REQUIRED_CARRIER_COLUMNS),
+        columns=list(required_physical),
         use_pandas_metadata=False,
     )
-    frame = table.to_pandas(ignore_metadata=True)
+    frame = table.to_pandas(ignore_metadata=True).rename(columns={"timestamp": "datetime"})
     if tuple(frame.columns) != REQUIRED_CARRIER_COLUMNS:
         raise RuntimeError("carrier_physical_projection_mismatch")
     return frame
