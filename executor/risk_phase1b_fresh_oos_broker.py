@@ -10,10 +10,11 @@ import re
 import shutil
 import sys
 import tarfile
-from pathlib import Path, PurePosixPath
+from pathlib import Path
 
 import research_broker as rb
 import risk_phase1b_carrier_inventory_core_v1 as carrier_core
+import risk_phase1b_fresh_oos_private_mirror as fresh_mirror
 
 GateError = rb.GateError
 
@@ -177,7 +178,6 @@ def _stage_carrier(api, root: Path, inputs: Path) -> dict:
     matching = []
     with tarfile.open(bundle_path, "r:") as tar:
         for member in tar.getmembers():
-            path = PurePosixPath(member.name)
             if member.isfile() and (member.name == CARRIER_MEMBER or member.name.endswith("/" + CARRIER_MEMBER)):
                 matching.append(member)
         if len(matching) != 1:
@@ -269,6 +269,7 @@ def main() -> None:
     elif args.phase == "cleanup":
         rb.cleanup()
     else:
+        fresh_mirror.main()
         rb.publish(PROFILE)
 
 
