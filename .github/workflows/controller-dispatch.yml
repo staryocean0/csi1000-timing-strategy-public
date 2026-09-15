@@ -2,7 +2,7 @@ name: CSI1000 bounded dispatch controller
 
 on:
   issues:
-    types: [opened]
+    types: [opened, reopened]
 
 permissions:
   contents: read
@@ -18,7 +18,10 @@ jobs:
     if: >-
       github.repository == 'staryocean0/csi1000-timing-strategy-public' &&
       github.event_name == 'issues' &&
-      github.event.action == 'opened' &&
+      (github.event.action == 'opened' ||
+       (github.event.action == 'reopened' &&
+        github.event.issue.number == 227 &&
+        github.event.issue.title == 'controller: two-wave-v0800-f-operational-state-stream-audit-v1')) &&
       github.event.issue.user.login == github.repository_owner &&
       (github.event.issue.title == 'controller: runtime-smoke' ||
        github.event.issue.title == 'controller: handoff-verify-v1' ||
