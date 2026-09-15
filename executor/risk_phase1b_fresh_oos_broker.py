@@ -14,6 +14,7 @@ from pathlib import Path
 
 import research_broker as rb
 import risk_phase1b_carrier_inventory_core_v1 as carrier_core
+import risk_phase1b_fresh_oos_failure_mirror as failure_mirror
 
 GateError = rb.GateError
 
@@ -268,10 +269,10 @@ def main() -> None:
     elif args.phase == "cleanup":
         rb.cleanup()
     else:
-        # Generic publish archives and records success or bounded failure first.
-        # The standard workflow invokes the success-only summary mirror as the
-        # next command, so a technical compute failure can never suppress its
-        # own diagnostic evidence.
+        # The failure mirror exports only a sanitized exception code and is a
+        # no-op after validated success. Generic publish then archives the full
+        # bounded evidence and records the ordinary runner receipt.
+        failure_mirror.main()
         rb.publish(PROFILE)
 
 
