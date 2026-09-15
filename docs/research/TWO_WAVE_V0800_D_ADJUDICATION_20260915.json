@@ -1,0 +1,85 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_d_adjudication@1.0",
+  "study": "V0800-D_TWO_WAVE_DIRECTION_GRID_ADJUDICATION",
+  "source_run": {
+    "public_run_id": "34963875542-1",
+    "public_source_sha": "a0f7b665ec5c5754ef5d2c21a3bab99f9383a883",
+    "profile": "two-wave-v0800-d-direction-grid-v1",
+    "runner_status": "passed",
+    "trusted_independent_comparison": "passed"
+  },
+  "input_identity": {
+    "source_repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "source_ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "file": "5m_offset_0.parquet",
+    "rows": 70114,
+    "bytes": 3351411,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "allowed_start": "2015-01-05",
+    "allowed_end": "2020-12-31",
+    "substitute_data_used": false,
+    "year_2026_read": false
+  },
+  "frozen_universe": {
+    "strict_pair_count": 2358,
+    "operational_rho": 1.4142135623730951,
+    "operational_rho_symbolic": "sqrt(2)",
+    "eligible_same_scale_pair_count": 924,
+    "continuity": "shared_anchor_strict_L-H-L-H-L",
+    "knowledge_time": "current_A_wave_confirmation_bar"
+  },
+  "grid": {
+    "taus": [0.05, 0.10, 0.15, 0.20],
+    "kappas": [1.25, 1.50, 2.00],
+    "combinations": 12,
+    "overall": {
+      "tau=0.05|kappa=1.25": {"DownTrend": 27, "Range": 2, "Uncertain": 871, "UpTrend": 24, "decisive_fraction": 0.05735930735930736},
+      "tau=0.05|kappa=1.50": {"DownTrend": 48, "Range": 2, "Uncertain": 823, "UpTrend": 51, "decisive_fraction": 0.10930735930735931},
+      "tau=0.05|kappa=2.00": {"DownTrend": 86, "Range": 2, "Uncertain": 753, "UpTrend": 83, "decisive_fraction": 0.18506493506493507},
+      "tau=0.10|kappa=1.25": {"DownTrend": 26, "Range": 6, "Uncertain": 868, "UpTrend": 24, "decisive_fraction": 0.06060606060606061},
+      "tau=0.10|kappa=1.50": {"DownTrend": 47, "Range": 6, "Uncertain": 820, "UpTrend": 51, "decisive_fraction": 0.11255411255411256},
+      "tau=0.10|kappa=2.00": {"DownTrend": 83, "Range": 6, "Uncertain": 752, "UpTrend": 83, "decisive_fraction": 0.18614718614718614},
+      "tau=0.15|kappa=1.25": {"DownTrend": 24, "Range": 14, "Uncertain": 862, "UpTrend": 24, "decisive_fraction": 0.0670995670995671},
+      "tau=0.15|kappa=1.50": {"DownTrend": 45, "Range": 14, "Uncertain": 815, "UpTrend": 50, "decisive_fraction": 0.11796536796536797},
+      "tau=0.15|kappa=2.00": {"DownTrend": 81, "Range": 14, "Uncertain": 748, "UpTrend": 81, "decisive_fraction": 0.19047619047619047},
+      "tau=0.20|kappa=1.25": {"DownTrend": 23, "Range": 23, "Uncertain": 854, "UpTrend": 24, "decisive_fraction": 0.07575757575757576},
+      "tau=0.20|kappa=1.50": {"DownTrend": 44, "Range": 23, "Uncertain": 809, "UpTrend": 48, "decisive_fraction": 0.12445887445887446},
+      "tau=0.20|kappa=2.00": {"DownTrend": 79, "Range": 23, "Uncertain": 744, "UpTrend": 78, "decisive_fraction": 0.19480519480519481}
+    }
+  },
+  "observations": {
+    "kappa_role": "primary_trend_consistency_width_knob",
+    "tau_role": "primary_range_dead_zone_knob",
+    "range_counts_by_tau": {"0.05": 2, "0.10": 6, "0.15": 14, "0.20": 23},
+    "global_up_down_near_symmetry": true,
+    "predictive_validity_claimed": false
+  },
+  "selection_policy": {
+    "tau_winner": null,
+    "kappa_winner": null,
+    "automatic_selection_used": false,
+    "forbid_max_decisive_fraction_as_winner_rule": true,
+    "forbid_min_uncertain_as_winner_rule": true,
+    "forbid_state_balance_as_winner_rule": true,
+    "forbid_returns_or_pnl_selection": true,
+    "post_run_semantic_adjudication_required": true
+  },
+  "authority": {
+    "direction_acceptance": false,
+    "state_publication_authority": false,
+    "trade_authority": false,
+    "production_authority": false,
+    "future_outcome_used": false,
+    "returns_used": false,
+    "pnl_used": false,
+    "positions_used": false
+  },
+  "next_gate": {
+    "name": "V0800-E_MORPHOLOGY_VISUAL_AUDIT",
+    "purpose": "audit whether threshold-sensitive labels match intended geometry at confirmation time",
+    "future_bars_after_confirmation_allowed": false,
+    "future_returns_allowed": false,
+    "automatic_parameter_promotion_allowed": false,
+    "deterministic_year_stratified_sampling_required": true
+  }
+}
