@@ -71,6 +71,15 @@ _SAFE_EXCEPTION = re.compile(r"^([A-Za-z_][A-Za-z0-9_.]*(?:Error|Exception))(?::
 _SAFE_LOCATION = re.compile(
     r'File "/work/d0/(ols_drawdown_d0(?:_verifier|_session_adapter)?\.py|ols_drawdown_atlas\.py)", line ([0-9]+)'
 )
+_PRIVATE_TEXT_MIRROR = (
+    "study/RESULTS.json",
+    "study/mode_comparison.csv",
+    "study/qualification_reset/drawdown_atlas.csv",
+    "study/first_opposite_close/drawdown_atlas.csv",
+    "study/two_opposite_closes/drawdown_atlas.csv",
+    "study/prior_extreme_break/drawdown_atlas.csv",
+    "study/frozen_midline_break/drawdown_atlas.csv",
+)
 
 
 def blobsha(raw: bytes) -> str:
@@ -204,6 +213,38 @@ def _safe_failure_diagnostic() -> None:
     print("OLS_D0_SAFE_DIAGNOSTIC=" + json.dumps(payload, sort_keys=True, separators=(",", ":")), file=sys.stderr)
 
 
+def _mirror_private_text_results() -> None:
+    state, root = rb.load_state()
+    if not state.get("compute_success") or not state.get("cleanup_complete"):
+        raise GateError("ols_d0_private_text_mirror_requires_verified_success")
+    api = rb.require_private_api()
+    results = root / "results"
+    for relative in _PRIVATE_TEXT_MIRROR:
+        source = results / relative
+        if not source.is_file() or source.is_symlink() or source.stat().st_size > 256 * 1024:
+            raise GateError("ols_d0_private_text_mirror_source_invalid")
+        raw = source.read_bytes()
+        try:
+            raw.decode("utf-8")
+        except UnicodeDecodeError:
+            raise GateError("ols_d0_private_text_mirror_not_utf8") from None
+        private_path = f"research/public-runs/{state['run_id']}/ols-d0/{relative}"
+        endpoint = f"repos/{rb.PRIVATE_REPO}/contents/{urllib.parse.quote(private_path, safe='/')}"
+        api.request(
+            endpoint,
+            {
+                "message": "Mirror verified OLS D0 text result [skip ci]",
+                "branch": state["branch"],
+                "content": base64.b64encode(raw).decode(),
+            },
+            method="PUT",
+        )
+        returned = api.request(endpoint + "?ref=" + urllib.parse.quote(state["branch"], safe=""))
+        if returned.get("encoding") != "base64" or base64.b64decode(returned.get("content", "") or "") != raw:
+            raise GateError("ols_d0_private_text_mirror_readback_failed")
+    print("Verified OLS D0 text mirror written to the private run branch.")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("phase", choices=["prepare", "compute", "cleanup", "publish"])
@@ -226,6 +267,7 @@ def main() -> None:
         rb.cleanup()
     else:
         rb.publish(PROFILE)
+        _mirror_private_text_results()
 
 
 def run() -> None:
