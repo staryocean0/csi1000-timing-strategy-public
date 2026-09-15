@@ -1,0 +1,76 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_final_2026_confirmatory_v1@1.0",
+  "task_id": "CSI1000-RISK-V2-FINAL-2026-CONFIRMATORY-V1-20260915",
+  "status": "FROZEN_BEFORE_RISK_TOOL_2026_SEMANTIC_READ",
+  "finite_endpoint": true,
+  "fresh_oos_claim": false,
+  "confirmatory_as_of_end": "2026-08-21",
+  "symbols": ["000688.SH", "000852.SH"],
+  "horizons_minutes": [15, 30],
+  "model_freeze_sha256": "b81cae6208d96890c0fd83d47e4ea8c8a81ba55b41c78f58db29e9160f173551",
+  "calibration_freeze_sha256": "74ecd25790123f026e29cba7bb84322aad8a385c10fe3d60ef0d75d52d1b1909",
+  "candidate": {
+    "15": {
+      "raw_scores": "unchanged_frozen_B_C",
+      "B_calibration": "unchanged_phase1b_audit_platt",
+      "C_calibration": "phase1b_audit_platt_then_tail_L_4",
+      "tail_anchor_event_rate": 0.2312353159391616,
+      "tail_limit": 4.0,
+      "selection_authority_run": "34920654435-1"
+    },
+    "30": {
+      "raw_scores": "unchanged_frozen_B_C",
+      "B_calibration": "unchanged_phase1b_audit_platt",
+      "C_calibration": "unchanged_phase1b_audit_platt"
+    }
+  },
+  "carrier": {
+    "repository": "staryocean0/factorlab-star50-filter-lab",
+    "pack": "data/cross_index_risk_gate_2026_v1/1m",
+    "manifest_git_blob": "62b997a7e975b976b00dc5d0fdd08170b8cfe7cb",
+    "actual_first_day": "2026-01-05",
+    "actual_last_day": "2026-08-21",
+    "actual_days": 154,
+    "files": {
+      "000688.SH": {"git_blob": "4626fb307bbcae1c417ddcd69ac694cf322c8bbc", "bytes": 584376, "sha256": "b7e7e9a9e85b738d661583dcd3d7dab158562fddac4355362cc37597db21eca4"},
+      "000852.SH": {"git_blob": "8de5cd3caab99dbacae229a2c87f15c4ff2f8558", "bytes": 707905, "sha256": "60b2054d2055bef8010a9948a0589bc1c4b0bb18dd6f373a9366f97e689fdf87"}
+    }
+  },
+  "synthesis_1m_to_5m": {
+    "authorized": true,
+    "rows_per_complete_day_1m": 240,
+    "rows_per_half_session_1m": 120,
+    "group_size": 5,
+    "rows_per_complete_day_5m": 48,
+    "close_rule": "fifth_1m_close",
+    "timestamp_rule": "fifth_source_timestamp",
+    "interpolation": false,
+    "forward_fill": false,
+    "guard_year": 2023,
+    "max_abs_close_diff": 1e-9,
+    "guard_files": {
+      "000688.SH": {"one_minute_git_blob": "6dc7de6de7fe04233566b2a1743de66b054df18b", "one_minute_bytes": 1156684, "native_5m_git_blob": "02c3a9474dff4e5203cec12ca7a24a3b2be8994b", "native_5m_bytes": 309025},
+      "000852.SH": {"one_minute_git_blob": "a915cc9a0e9259e2660558c07ffbe1d6c37c0e8f", "one_minute_bytes": 1507783, "native_5m_git_blob": "0b17d76b150bfd15d45158f100748898e72089b1", "native_5m_bytes": 342750}
+    }
+  },
+  "warmup_2025": {
+    "000688.SH": {"git_blob": "32d6d1754f965dd6298c885e30b244b877d694ed", "bytes": 320754, "sha256": "bb0b3a5747f11bf5e8908ac169185b582213fcc83a74567e683a56410ceb8511"},
+    "000852.SH": {"git_blob": "85159b9fa1b2b6854b1a0f04faa9f963e9d04c13", "bytes": 353882, "sha256": "5fbecf49d76cd2560e7db5af280b60c012a440a6e69ba6b8306acbbbd4e49333"}
+  },
+  "support_gate": {
+    "pooled_rows_min": 1000,
+    "each_symbol_rows_min": 150,
+    "pooled_positive_min": 100,
+    "pooled_negative_min": 100,
+    "each_symbol_both_classes": true
+  },
+  "bootstrap": {"cluster": "trading_day", "joint_symbols": true, "repetitions": 5000, "seed": 20260914, "family_size": 6, "one_sided_alpha": 0.05, "lower_quantile": 0.008333333333333333},
+  "acceptance_metrics": ["raw_auroc_gain", "calibrated_brier_gain", "calibrated_logloss_gain"],
+  "per_horizon_acceptance": "all pooled gains and family-adjusted lower bounds > 0; all three gains nonnegative for each symbol",
+  "final_statuses": ["LAYER2_CONFIRMATORY_FULL_VALIDATION", "LAYER2_CONFIRMATORY_PARTIAL_VALIDATION", "RISK_TOOL_V2_CLOSED_NOT_VALIDATED", "RISK_TOOL_V2_CLOSED_INSUFFICIENT_CONFIRMATORY_SUPPORT"],
+  "post_read_retuning_allowed": false,
+  "new_training": false,
+  "pnl": false,
+  "strategy_threshold_search": false,
+  "production_authority": false
+}
