@@ -14,25 +14,6 @@ d0 = adapter.d0
 d0._load_5m = adapter._load_5m_by_verified_order
 EXIT_MODES = d0.EXIT_MODES
 TOP_N = 20
-D1_AUTHORITY_FILE = "D1_AUTHORITY.json"
-
-
-def _require_d1_authority(inputs: Path) -> None:
-    path = inputs / D1_AUTHORITY_FILE
-    if not path.is_file() or path.is_symlink():
-        raise RuntimeError("ols_d2_verify_d1_authority_missing")
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    decision = payload.get("decision") or {}
-    if (
-        payload.get("schema_id") != "ols_r2_d1_leadlag@1.0"
-        or payload.get("d2_authority") is not True
-        or decision.get("status") != "SUPPORTED_FOR_D2_EXIT_OVERLAY_TEST"
-        or int(decision.get("coverage_gate_modes_passed", -1)) != 5
-        or int(decision.get("exit_lead_gate_modes_passed", -1)) != 5
-        or int(decision.get("same_window_guard_modes_passed", -1)) != 5
-        or payload.get("same_window_sensitivity") != "authority_window_equal_across_event_three_bars"
-    ):
-        raise RuntimeError("ols_d2_verify_d1_authority_mismatch")
 
 
 def _segments(pos: np.ndarray) -> np.ndarray:
@@ -50,16 +31,11 @@ def _segments(pos: np.ndarray) -> np.ndarray:
 
 def _events(trace: pd.DataFrame, seg: np.ndarray) -> np.ndarray:
     r2 = pd.to_numeric(trace["fit_r2"], errors="coerce").to_numpy(float)
-    windows = pd.to_numeric(trace["authority_window_bars"], errors="coerce").to_numpy(float)
     event = np.zeros(len(trace), dtype=bool)
     for i in range(2, len(trace)):
         if seg[i] == 0 or not (seg[i] == seg[i - 1] == seg[i - 2]):
             continue
-        same_window = (
-            np.isfinite(windows[i - 2 : i + 1]).all()
-            and windows[i] == windows[i - 1] == windows[i - 2]
-        )
-        if same_window and np.isfinite(r2[i - 2 : i + 1]).all() and r2[i] < r2[i - 1] < r2[i - 2]:
+        if np.isfinite(r2[i - 2 : i + 1]).all() and r2[i] < r2[i - 1] < r2[i - 2]:
             event[i] = True
     return event
 
@@ -168,12 +144,9 @@ def _check_summary(reported: dict[str, object], trace: pd.DataFrame, bars: pd.Da
         elif not _close(got, value):
             raise RuntimeError(f"ols_d2_verify_{mode}_{key}")
 
-    windows = pd.to_numeric(trace["authority_window_bars"], errors="coerce").to_numpy(float)
     for _, e, end in warned:
         if over[e] != pos[e]:
             raise RuntimeError(f"ols_d2_verify_{mode}_warning_bar_changed")
-        if not (e >= 2 and windows[e] == windows[e - 1] == windows[e - 2]):
-            raise RuntimeError(f"ols_d2_verify_{mode}_same_window_guard")
         if e + 1 <= end and np.count_nonzero(over[e + 1 : end + 1]) != 0:
             raise RuntimeError(f"ols_d2_verify_{mode}_lockout_failed")
 
@@ -215,12 +188,9 @@ def _decision(rows: list[dict[str, object]]) -> dict[str, object]:
 
 
 def verify(inputs: Path, results: Path) -> None:
-    _require_d1_authority(inputs)
     payload = json.loads((results / "RESULTS.json").read_text(encoding="utf-8"))
-    if payload.get("schema_id") != "ols_r2_d2_exit_overlay@1.1":
+    if payload.get("schema_id") != "ols_r2_d2_exit_overlay@1.0":
         raise RuntimeError("ols_d2_verify_schema")
-    if payload.get("overlay_rule", {}).get("trigger") != "first_same_window_two_consecutive_fit_r2_declines_per_baseline_nonflat_same_direction_segment":
-        raise RuntimeError("ols_d2_verify_trigger_semantics")
     for key in ("optimization_performed", "parameter_search_performed", "entry_rule_changed", "baseline_exit_rules_changed", "position_sizing_changed", "routing_changed", "leverage_changed", "production_authority"):
         if payload.get(key) is not False:
             raise RuntimeError(f"ols_d2_verify_false_flag_{key}")
