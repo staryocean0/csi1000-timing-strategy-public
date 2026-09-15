@@ -21,13 +21,16 @@ def load_sync_module():
 class PrivateGovernanceSyncTests(unittest.TestCase):
     def test_contract_is_fixed_and_sources_exist(self):
         mod = load_sync_module()
+        self.assertIn("two-repo-control-plane-hardening-v1", mod.CONTRACTS)
+        self.assertIn("layer3-ols-family-import-20260915-v1", mod.CONTRACTS)
+        legacy = mod.CONTRACTS["two-repo-control-plane-hardening-v1"]
         self.assertEqual(
-            {row["target"] for row in mod.TARGETS},
+            {row["target"] for row in legacy["targets"]},
             {"AGENTS.md", "docs/WORKFLOW.md"},
         )
-        self.assertRegex(mod.PRIVATE_BASE_SHA, r"^[0-9a-f]{40}$")
-        self.assertEqual(mod.PRIVATE_BRANCH, "sync/public-governance/two-repo-control-plane-hardening-v1")
-        for row in mod.TARGETS:
+        self.assertRegex(str(legacy["private_base_sha"]), r"^[0-9a-f]{40}$")
+        self.assertEqual(legacy["private_branch"], "sync/public-governance/two-repo-control-plane-hardening-v1")
+        for row in legacy["targets"]:
             self.assertRegex(row["expected_private_blob"], r"^[0-9a-f]{40}$")
             source = ROOT / row["source"]
             self.assertTrue(source.is_file())
@@ -36,12 +39,11 @@ class PrivateGovernanceSyncTests(unittest.TestCase):
             self.assertIn("公库", text)
             self.assertIn("私库", text)
         mod.self_test()
-        request = mod._load_request()
-        # The reviewed request remains in its completed merge phase after PR #10.
-        # Do not rewrite it merely to make the test green: changing it on the
-        # control branch would retrigger the private governance workflow.
+        request, contract = mod._load_request()
         self.assertEqual(request["phase"], "merge")
-        self.assertEqual(request["targets"], ["AGENTS.md", "docs/WORKFLOW.md"])
+        self.assertEqual(request["sync_id"], "layer3-ols-family-import-20260915-v1")
+        self.assertEqual(request["private_base_sha"], contract["private_base_sha"])
+        self.assertEqual(request["targets"], [row["target"] for row in contract["targets"]])
 
     def test_workflow_only_accepts_manual_or_fixed_request_push(self):
         text = WORKFLOW.read_text(encoding="utf-8")
@@ -56,8 +58,9 @@ class PrivateGovernanceSyncTests(unittest.TestCase):
 
     def test_merge_is_exact_compare_then_non_force_fast_forward(self):
         text = SCRIPT.read_text(encoding="utf-8")
-        self.assertIn('f"repos/{PRIVATE_REPO}/compare/{PRIVATE_BASE_SHA}...{head_sha}"', text)
-        self.assertIn('set(TARGET_NAMES)', text)
+        self.assertIn('private_base_sha = str(contract["private_base_sha"])', text)
+        self.assertIn('f"repos/{PRIVATE_REPO}/compare/{private_base_sha}...{head_sha}"', text)
+        self.assertIn('expected_names = {row["target"] for row in contract["targets"]}', text)
         self.assertIn('f"repos/{PRIVATE_REPO}/git/refs/heads/{PRIVATE_BASE_BRANCH}"', text)
         self.assertIn('{"sha": head_sha, "force": False}', text)
         self.assertNotIn('"force": True', text)
