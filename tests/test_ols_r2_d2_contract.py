@@ -19,10 +19,16 @@ CONTROLLER = ROOT / ".github" / "workflows" / "controller-dispatch.yml"
 class OlsR2D2ContractTests(unittest.TestCase):
     def test_profile_is_frozen_and_nonproduction(self):
         p = json.loads(PROFILE.read_text())
-        self.assertEqual(p["schema_id"], "ols_r2_d2_exit_overlay_profile@1.0")
+        self.assertEqual(p["schema_id"], "ols_r2_d2_exit_overlay_profile@1.1")
         self.assertEqual(p["d1_authoritative_run"], "34964393250")
+        self.assertEqual(p["d1_result_branch"], "runs/public-research/34964393250-1")
+        self.assertEqual(p["d1_result_blob"], "f35ae2ff402c90b54d318b49bd678c5398a60493")
         self.assertFalse(p["optimization_performed"])
         self.assertFalse(p["production_authority"])
+        self.assertEqual(
+            p["overlay_rule"]["trigger"],
+            "first_same_window_two_consecutive_fit_r2_declines_per_baseline_nonflat_same_direction_segment",
+        )
         self.assertEqual(p["overlay_rule"]["execution"], "warning_at_close_t_flat_from_next_executable_bar")
         self.assertEqual(p["overlay_rule"]["lockout"], "remain_flat_until_original_baseline_segment_ends")
 
@@ -38,12 +44,16 @@ class OlsR2D2ContractTests(unittest.TestCase):
 
     def test_engine_has_no_parameter_search_or_production_authority(self):
         text = ENGINE.read_text()
+        broker = BROKER.read_text()
+        verifier = VERIFIER.read_text()
         self.assertIn('"parameter_search_performed": False', text)
         self.assertIn('"production_authority": False', text)
+        self.assertIn('events = trace["r2_two_down_same_window"]', text)
+        self.assertIn('D1_RESULT_BLOB = "f35ae2ff402c90b54d318b49bd678c5398a60493"', broker)
+        self.assertIn("same_window_guard_modes_passed", broker)
+        self.assertIn("windows[i] == windows[i - 1] == windows[i - 2]", verifier)
         self.assertNotIn("GridSearch", text)
         self.assertNotIn("optuna", text.lower())
-        self.assertTrue(BROKER.is_file())
-        self.assertTrue(VERIFIER.is_file())
 
     def test_overlay_waits_until_next_bar_and_locks_out(self):
         source = ENGINE.read_text()
@@ -55,7 +65,7 @@ class OlsR2D2ContractTests(unittest.TestCase):
             {
                 "executable_position": [1, 1, 1, 1, 0, -1, -1, -1],
                 "segment_id": [1, 1, 1, 1, 0, 2, 2, 2],
-                "r2_two_down_event": [False, False, True, True, False, False, True, False],
+                "r2_two_down_same_window": [False, False, True, True, False, False, True, False],
                 "strategy_return": [0.01] * 8,
                 "timestamp": [str(i) for i in range(8)],
                 "authority_window_bars": [12, 12, 12, 12, np.nan, 24, 24, 24],
@@ -67,6 +77,7 @@ class OlsR2D2ContractTests(unittest.TestCase):
         self.assertEqual(overlay.tolist(), [1, 1, 1, 0, 0, -1, -1, 0])
         self.assertEqual(len(rows), 2)
         self.assertTrue(rows[0]["effective_overlay_exit"])
+        self.assertTrue(all(row["same_window_three_bar_guard"] for row in rows))
 
 
 if __name__ == "__main__":
