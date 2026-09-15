@@ -8,23 +8,29 @@ import sys
 import urllib.parse
 
 import research_broker as rb
-import risk_phase1b_fresh_oos_eval as ev
 
 GateError = rb.GateError
+
+SCHEMA_ID = "risk_tool_v2_phase1b_fresh_oos_result@2.0"
+TASK_ID = "CSI1000-RISK-V2-2026-FRESH-OOS-V1-20260914"
+PREREG_SHA256 = "c05bdf09c54626861f2a86abbcadb514fa90918320e2ab4be45e1e3217b7c9d7"
+CARRIER_SHA256 = "211448c914b547232bc536da7df94dc5ae279b8265a5cafe58409238485217d7"
+MODEL_FREEZE_SHA256 = "b81cae6208d96890c0fd83d47e4ea8c8a81ba55b41c78f58db29e9160f173551"
+CALIBRATION_FREEZE_SHA256 = "74ecd25790123f026e29cba7bb84322aad8a385c10fe3d60ef0d75d52d1b1909"
 
 
 def validate_summary(value: object) -> dict:
     if not isinstance(value, dict):
         raise GateError("fresh_oos_summary_not_object")
-    if value.get("schema_id") != ev.SCHEMA_ID or value.get("task_id") != ev.TASK_ID:
+    if value.get("schema_id") != SCHEMA_ID or value.get("task_id") != TASK_ID:
         raise GateError("fresh_oos_summary_schema_or_task_mismatch")
-    if value.get("prereg_sha256") != ev.PREREG_SHA256:
+    if value.get("prereg_sha256") != PREREG_SHA256:
         raise GateError("fresh_oos_summary_prereg_mismatch")
-    if value.get("carrier_identity_sha256") != ev.CARRIER_SHA256:
+    if value.get("carrier_identity_sha256") != CARRIER_SHA256:
         raise GateError("fresh_oos_summary_carrier_mismatch")
-    if value.get("model_freeze_sha256") != ev.MODEL_FREEZE_SHA256:
+    if value.get("model_freeze_sha256") != MODEL_FREEZE_SHA256:
         raise GateError("fresh_oos_summary_model_mismatch")
-    if value.get("calibration_freeze_sha256") != ev.CALIBRATION_FREEZE_SHA256:
+    if value.get("calibration_freeze_sha256") != CALIBRATION_FREEZE_SHA256:
         raise GateError("fresh_oos_summary_calibration_mismatch")
     if value.get("year_2026_semantic_read") is not True:
         raise GateError("fresh_oos_summary_not_revealed")
