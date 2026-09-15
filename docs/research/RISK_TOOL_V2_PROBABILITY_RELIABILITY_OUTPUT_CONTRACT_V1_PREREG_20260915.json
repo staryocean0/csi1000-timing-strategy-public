@@ -1,0 +1,46 @@
+{
+  "schema_id": "risk_tool_v2_probability_reliability_output_contract_prereg@1.0",
+  "profile": "risk-v2-probability-reliability-output-contract-v1",
+  "purpose": "Adjudicate a frozen Probability + Reliability output contract using only already-authoritative v3 acceptance and reliability-score results.",
+  "inputs": {
+    "temporal_v3": {
+      "run": "34930354449-1",
+      "path": "research/public-runs/34930354449-1-results/ACCEPTANCE_RESULT_V3.json",
+      "git_blob_sha1": "8472220fb8d97256e93a03404e459021badaa14f",
+      "bytes": 9251,
+      "sha256": "74df0b6b688d91f8f30c9dcdf3e16f9ddbe77204c9e702fe1d0476601ee3f5ca"
+    },
+    "reliability": {
+      "run": "34942554638-1",
+      "path": "research/public-runs/34942554638-1-results/RELIABILITY_RESULT.json",
+      "git_blob_sha1": "0f3b9d50ff73c168a46e65aad0f1f77a4ace89b9",
+      "bytes": 2059,
+      "sha256": "4993e226b4a5840d30b61dcc3aafd49b6996a38385c61a0acb2fe7bdd4e7a6d6"
+    }
+  },
+  "frozen_contract_path": "docs/acceptance/risk_tool_v2/probability_reliability_output_contract_v1.json",
+  "required_findings": {
+    "15m_grade": "TS-B_STABLE_RANKING_CALIBRATION_GUARDED",
+    "15m_bottleneck": "weekly.calibration",
+    "30m_grade": "TS-A_STABLE_PROBABILITY_COMPONENT",
+    "30m_state": "COMPLETE",
+    "reliability_score_supported": true,
+    "reliability_q33": 0.5170330932673238,
+    "reliability_q67": 0.7096666848299501,
+    "year_2026_read": false
+  },
+  "adjudication": {
+    "success_status": "DUAL_OUTPUT_CONTRACT_SUPPORTED",
+    "failure_status": "DUAL_OUTPUT_CONTRACT_NOT_SUPPORTED",
+    "cannot_promote_15m_to_complete": true,
+    "cannot_modify_probability": true,
+    "cannot_modify_ordering": true,
+    "cannot_grant_production_authority": true
+  },
+  "no_market_data_read": true,
+  "no_model_execution": true,
+  "no_candidate_search": true,
+  "pnl": false,
+  "production_authority": false,
+  "year_2026_read": false
+}
