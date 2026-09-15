@@ -391,7 +391,8 @@ jobs:
             python3 executor/risk_phase1b_fresh_oos_broker.py publish risk-v2-phase1b-fresh-oos-v1
             python3 executor/risk_phase1b_fresh_oos_private_mirror.py
           elif [ '${{ inputs.profile }}' = 'risk-v2-phase1b-fresh-oos-attrition-v1' ]; then
-            python3 executor/risk_phase1b_fresh_oos_broker.py publish risk-v2-phase1b-fresh-oos-attrition-v1
+            python3 executor/risk_phase1b_fresh_oos_attrition_broker.py publish risk-v2-phase1b-fresh-oos-attrition-v1
+            python3 executor/risk_phase1b_fresh_oos_attrition_private_mirror.py
           elif [ '${{ inputs.profile }}' = 'risk-v2-future-carrier-binding-audit-v1' ]; then
             python3 executor/risk_future_carrier_binding_audit_broker.py publish risk-v2-future-carrier-binding-audit-v1
             python3 executor/risk_future_carrier_binding_audit_private_mirror.py
@@ -399,9 +400,11 @@ jobs:
             python3 executor/risk_v3_native15_carrier_semantic_audit_broker.py publish risk-v3-native15-carrier-semantic-audit-v1
             python3 executor/risk_v3_native15_carrier_semantic_audit_private_mirror.py
           elif [ '${{ inputs.profile }}' = 'risk-v2-historical-000852-2015-2019-v1' ]; then
-            python3 executor/risk_historical_000852_broker.py publish risk-v2-historical-000852-2019-v1
+            python3 executor/risk_historical_000852_broker.py publish risk-v2-historical-000852-2015-2019-v1
+            python3 executor/risk_historical_private_mirror.py
           elif [ '${{ inputs.profile }}' = 'risk-v2-temporal-stability-2015-2025-v1' ]; then
             python3 executor/risk_temporal_stability_2015_2025_broker.py publish risk-v2-temporal-stability-2015-2025-v1
+            python3 executor/risk_temporal_stability_private_mirror.py
           elif [ '${{ inputs.profile }}' = 'risk-v2-15m-annual-calibration-diagnostic-v1' ]; then
             python3 executor/risk_annual_calibration_diagnostic_broker.py publish risk-v2-15m-annual-calibration-diagnostic-v1
             python3 executor/risk_annual_calibration_diagnostic_private_mirror.py
