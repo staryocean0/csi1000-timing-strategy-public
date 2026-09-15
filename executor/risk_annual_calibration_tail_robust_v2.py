@@ -55,19 +55,19 @@ def candidate_id(limit: float | None) -> str:
 
 
 def annual_candidate_rows(temporal, frame: pd.DataFrame, ycol: str, anchor: float, limit: float | None):
-    rows = []
-    transformed = smooth_tail(frame["cal_C"], anchor, limit)
     work = frame.copy()
-    work["cal_C_v2"] = transformed
+    work["cal_C_v2"] = smooth_tail(work["cal_C"], anchor, limit)
+    rows = []
     for year in HARD_YEARS:
         z = work[work.year.eq(year)]
         metrics = temporal.paired(z, ycol, "cal_B", "cal_C_v2")
+        positive = int(z[ycol].astype(int).sum())
         rows.append({
             "year": year,
             "role": temporal.role_for_year(year),
             "rows": int(len(z)),
-            "positive": int(z[ycol].astype(int).sum()),
-            "negative": int(len(z) - z[ycol].astype(int).sum()),
+            "positive": positive,
+            "negative": int(len(z) - positive),
             "brier_gain": float(metrics["brier_gain"]),
             "logloss_gain": float(metrics["logloss_gain"]),
             "joint_positive": bool(metrics["brier_gain"] > 0 and metrics["logloss_gain"] > 0),
@@ -76,15 +76,15 @@ def annual_candidate_rows(temporal, frame: pd.DataFrame, ycol: str, anchor: floa
 
 
 def candidate_summary(rows: list[dict], limit: float | None, anchor: float) -> dict:
-    selection = [r for r in rows if r["year"] in SELECTION_YEARS]
-    flags = [not r["joint_positive"] for r in selection]
-    logs = [r["logloss_gain"] for r in selection]
-    briers = [r["brier_gain"] for r in selection]
-    joint = sum(r["joint_positive"] for r in selection)
+    selection = [row for row in rows if row["year"] in SELECTION_YEARS]
+    failures = [not row["joint_positive"] for row in selection]
+    logs = [row["logloss_gain"] for row in selection]
+    briers = [row["brier_gain"] for row in selection]
+    joint = sum(row["joint_positive"] for row in selection)
     tie_preference = 1000.0 if limit is None else float(limit)
     objective = (
         int(joint),
-        -int(longest_failure(flags)),
+        -int(longest_failure(failures)),
         float(min(logs)),
         float(min(briers)),
         float(np.median(logs)),
@@ -95,11 +95,10 @@ def candidate_summary(rows: list[dict], limit: float | None, anchor: float) -> d
         "tail_limit": "control" if limit is None else float(limit),
         "anchor_event_rate": float(anchor),
         "selection_joint_positive_years": int(joint),
-        "selection_max_failure_streak": int(longest_failure(flags)),
+        "selection_max_failure_streak": int(longest_failure(failures)),
         "selection_worst_logloss_gain": float(min(logs)),
         "selection_worst_brier_gain": float(min(briers)),
         "selection_median_logloss_gain": float(np.median(logs)),
-        "selection_objective": list(objective),
         "_objective": objective,
     }
 
@@ -112,28 +111,26 @@ def select_candidate(temporal, frame: pd.DataFrame, ycol: str):
     summaries = []
     annual_by_candidate = {}
     for limit in TAIL_LIMITS:
-        rows = annual_candidate_rows(temporal, frame, ycol, anchor, limit)
-        summary = candidate_summary(rows, limit, anchor)
+        annual = annual_candidate_rows(temporal, frame, ycol, anchor, limit)
+        summary = candidate_summary(annual, limit, anchor)
         summaries.append(summary)
-        annual_by_candidate[summary["candidate_id"]] = rows
+        annual_by_candidate[summary["candidate_id"]] = annual
     selected = max(summaries, key=lambda row: row["_objective"])
+    selected_id = selected["candidate_id"]
     for row in summaries:
-        row["selected"] = row["candidate_id"] == selected["candidate_id"]
+        row["selected"] = row["candidate_id"] == selected_id
         row.pop("_objective", None)
-        row.pop("selection_objective", None)
-    limit = None if selected["tail_limit"] == "control" else float(selected["tail_limit"])
-    return anchor, limit, selected["candidate_id"], summaries, annual_by_candidate[selected["candidate_id"]]
+    selected_limit = None if selected["tail_limit"] == "control" else float(selected["tail_limit"])
+    return anchor, selected_limit, selected_id, summaries, annual_by_candidate[selected_id]
 
 
-def build_metrics(temporal, profile: dict, acceptance, cohort: pd.DataFrame, model: dict, cal: dict, market_days, selected_anchor: float, selected_limit: float | None):
-    expected = temporal.labels_for_days(pd.Series(market_days))
+def build_metrics(temporal, base, profile: dict, acceptance, cohort: pd.DataFrame, model: dict, cal: dict,
+                  market_days: pd.Series, selected_anchor: float, selected_limit: float | None):
+    expected = temporal.labels_for_days(market_days)
     metric_rows = []
-    selected_annual = None
     for horizon in temporal.HORIZONS:
         ycol = f"normal_within_{horizon}m"
         z = cohort[cohort[ycol].notna()].copy()
-        z["p_B"] = temporal.load_base.__self__.predict if False else 0  # unreachable sentinel
-        base = build_metrics.base
         z["p_B"] = base.predict(model["models"][str(horizon)]["B"], z)
         z["p_C"] = base.predict(model["models"][str(horizon)]["C"], z)
         z["cal_B"] = temporal.platt(cal["fits"][str(horizon)]["repeat_audit"]["B"], z.p_B)
@@ -146,8 +143,6 @@ def build_metrics(temporal, profile: dict, acceptance, cohort: pd.DataFrame, mod
             column = level + "_label"
             for label, role in sorted(expected[level].items()):
                 metric_rows.append(temporal.metric_row(z[z[column].eq(label)], horizon, level, label, role))
-        if horizon == HORIZON:
-            selected_annual = z
     accepted_rows = [{
         "horizon": int(row["horizon_minutes"]), "level": row["period_level"], "label": row["period_label"],
         "rows": int(row["rows"]), "positive": int(row["positive"]), "negative": int(row["negative"]),
@@ -177,13 +172,13 @@ def run(inputs: Path, out: Path):
     temporal = load_temporal(inputs)
     profile, acceptance = temporal.load_acceptance(inputs)
     base = temporal.load_base(inputs)
-    build_metrics.base = base
     model, cal, frames, receipt = temporal.load_inputs(inputs)
     frames, excluded = temporal.filter_complete_days(base, frames)
     states = base.build_state_rows(frames)
     cohort = base.build_primary_cohort(states)
     if not cohort.symbol.eq(temporal.SYMBOL).all() or set(cohort.year.unique()) - set(temporal.YEARS):
         raise RuntimeError("cohort_boundary_drift")
+
     ycol = f"normal_within_{HORIZON}m"
     z = cohort[cohort[ycol].notna()].copy()
     z["p_B"] = base.predict(model["models"][str(HORIZON)]["B"], z)
@@ -191,13 +186,23 @@ def run(inputs: Path, out: Path):
     z["cal_B"] = temporal.platt(cal["fits"][str(HORIZON)]["repeat_audit"]["B"], z.p_B)
     z["cal_C"] = temporal.platt(cal["fits"][str(HORIZON)]["repeat_audit"]["C"], z.p_C)
     anchor, limit, selected_id, candidate_rows, selected_annual = select_candidate(temporal, z, ycol)
-    market_days = pd.concat([pd.to_datetime(frame["trading_day"], errors="coerce") for frame in frames.values()], ignore_index=True)
-    metric_rows, acceptance_result = build_metrics(temporal, profile, acceptance, cohort, model, cal, market_days, anchor, limit)
+
+    market_days = pd.concat(
+        [pd.to_datetime(frame["trading_day"], errors="coerce") for frame in frames.values()],
+        ignore_index=True,
+    )
+    metric_rows, acceptance_result = build_metrics(
+        temporal, base, profile, acceptance, cohort, model, cal, market_days, anchor, limit
+    )
+
     out.mkdir(parents=True, exist_ok=False)
     pd.DataFrame(candidate_rows).to_csv(out / "CANDIDATE_SELECTION.csv", index=False)
     pd.DataFrame(selected_annual).to_csv(out / "ANNUAL_CALIBRATION_V2.csv", index=False)
     pd.DataFrame(metric_rows).to_csv(out / "TEMPORAL_METRICS_V2.csv", index=False)
-    (out / "ACCEPTANCE_RESULT_V2.json").write_text(json.dumps(acceptance_result, indent=2, sort_keys=True, allow_nan=True) + "\n")
+    (out / "ACCEPTANCE_RESULT_V2.json").write_text(
+        json.dumps(acceptance_result, indent=2, sort_keys=True, allow_nan=True) + "\n"
+    )
+
     summary = {
         "schema_id": "risk_tool_v2_15m_tail_robust_calibration_v2_summary@1.0",
         "parent_temporal_run": PARENT_TEMPORAL_RUN,
@@ -208,7 +213,9 @@ def run(inputs: Path, out: Path):
         "selection_years": list(SELECTION_YEARS),
         "repeat_audit_years_not_used_for_selection": list(AUDIT_YEARS),
         "tool_current_bottleneck_after_v2": acceptance_result["tool_current_bottleneck"],
-        "horizon_bottlenecks_after_v2": {h: node["current_bottleneck"] for h, node in acceptance_result["horizons"].items()},
+        "horizon_bottlenecks_after_v2": {
+            h: node["current_bottleneck"] for h, node in acceptance_result["horizons"].items()
+        },
         "acceptance_threshold_change": False,
         "raw_ordering_scores_changed": False,
         "new_ordering_training": False,
