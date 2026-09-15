@@ -5,12 +5,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 V1 = json.loads((ROOT / "docs/acceptance/risk_tool_v2/temporal_stability_profile_hierarchical_v1.json").read_text())
 V2 = json.loads((ROOT / "docs/acceptance/risk_tool_v2/temporal_stability_profile_hierarchical_v2.json").read_text())
-ACTIVE = json.loads((ROOT / "docs/acceptance/risk_tool_v2/ACTIVE_TEMPORAL_STABILITY_PROFILE.json").read_text())
 
 
 class TemporalStabilityProfileV2Test(unittest.TestCase):
-    def test_active_profile_is_v2_and_frozen_before_performance(self):
-        self.assertEqual(ACTIVE["active_profile_id"], V2["profile_id"])
+    def test_v2_profile_remains_frozen_historical_contract(self):
+        self.assertEqual(V2["profile_id"], "risk-tool-v2-temporal-stability-hierarchical-v2")
         self.assertEqual(V2["status"], "frozen_before_two_week_performance_evaluation")
         self.assertEqual(V2["profile_change_basis"]["authority_run"], "34925874662-1")
         self.assertFalse(V2["profile_change_basis"]["ordering_metrics_read_for_selection"])
@@ -43,7 +42,7 @@ class TemporalStabilityProfileV2Test(unittest.TestCase):
         self.assertEqual(weekly["support"]["coverage_min"], 0.80)
         self.assertEqual(weekly["support"]["minimum_hard_year_coverage_min"], 0.60)
 
-    def test_v1_remains_immutable_and_not_reinterpreted(self):
+    def test_v1_and_v2_remain_immutable_and_not_reinterpreted(self):
         self.assertEqual(V1["profile_id"], "risk-tool-v2-temporal-stability-hierarchical-v1")
         self.assertEqual(V1["levels"]["weekly"]["support"]["coverage_min"], 0.60)
         self.assertTrue(V2["change_control"]["v1_results_remain_bound_to_v1"])
