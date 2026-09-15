@@ -1,0 +1,61 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_c2_rho_semantic_adjudication@1.0",
+  "status": "frozen_semantic_rule_before_any_direction_grid",
+  "parent": {
+    "c_adjudication": "TWO_WAVE_V0800_C_ADJUDICATION_20260915.json",
+    "causal_prefix_gate_required": true
+  },
+  "problem": "Define a scale-invariant operational meaning of same temporal level without using returns, PnL, 2026, or Development support as a selection objective.",
+  "scale_coordinate": {
+    "name": "log2_duration",
+    "duration_unit": "bar_intervals_between_A_wave_low_anchors",
+    "level_lattice": "dyadic",
+    "adjacent_level_center_ratio": 2.0,
+    "rationale": "A dyadic lattice is multiplicatively self-similar and does not privilege an absolute bar duration. Nearest-level cells in log2 duration have half-octave boundaries."
+  },
+  "same_level_rule": {
+    "distance": "abs(log2(d_previous / d_current))",
+    "maximum_half_width_octaves": 0.5,
+    "equivalent_duration_ratio_limit": 1.4142135623730951,
+    "equivalent_symbolic_rho": "sqrt(2)",
+    "comparison": "duration_ratio <= sqrt(2)",
+    "integer_band_function": "[ceil(N/sqrt(2)), floor(N*sqrt(2))]",
+    "illustrative_bands": {
+      "5": [4, 7],
+      "10": [8, 14],
+      "20": [15, 28]
+    },
+    "boundary_note": "A ratio of two positive integer bar durations cannot equal irrational sqrt(2) exactly, so <= versus < does not create an integer-duration tie."
+  },
+  "frozen_candidate_family": [
+    1.25,
+    1.3333333333333333,
+    1.4142135623730951,
+    1.5
+  ],
+  "adjudication": {
+    "operational_rho": 1.4142135623730951,
+    "operational_rho_symbolic": "sqrt(2)",
+    "selection_type": "semantic_convention_not_empirical_winner",
+    "selected_by_support": false,
+    "selected_by_path_rms": false,
+    "selected_by_returns": false,
+    "selected_by_pnl": false,
+    "selected_by_2026": false,
+    "amplitude_gate_added": false,
+    "legacy_rho_2_role": "historical_control_only_not_operational"
+  },
+  "authority": {
+    "rho_semantic_authority": true,
+    "direction_thresholds": false,
+    "pair_state_publication": false,
+    "future_outcome_used": false,
+    "pnl_used": false,
+    "positions_used": false,
+    "trade_authority": false,
+    "production_authority": false,
+    "v0800_d_preregistration_allowed": true,
+    "v0800_d_execution_authorized": false
+  },
+  "next_gate": "V0800-D may now be preregistered using only strict shared-anchor pairs, confirmation-time knowledge, rho=sqrt(2), and the already-frozen tau/kappa candidate families. Execution remains blocked until that D protocol is separately reviewed and merged."
+}
