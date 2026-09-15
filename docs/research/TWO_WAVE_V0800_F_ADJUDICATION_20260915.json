@@ -1,0 +1,160 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_f_adjudication@1.0",
+  "study": "V0800-F_OPERATIONAL_STATE_STREAM_AUDIT_ADJUDICATION",
+  "source_run": {
+    "public_run_id": "34984126303-1",
+    "public_source_sha": "c9e2d8bfcb0eeb3ec7a933e730cb72601a9798d0",
+    "profile": "two-wave-v0800-f-operational-state-stream-audit-v1",
+    "runner_status": "passed",
+    "trusted_independent_comparison": "passed",
+    "private_delivery_status": "archive_uploaded_and_verified",
+    "private_source_ref": "67effb80f51228f6129dca5c4f7971a0bb6c7f15",
+    "manifest_sha256": "e046eafad7e1268d747a4f8e027aedb6743c1bd0935949c8ba997fb5d30e4065",
+    "summary_sha256": "5c723173677ac64f5bd777b6e06b3311c51e33624f0e157bbfac561befe6af9c",
+    "input_receipt_sha256": "72ad9dae71f6288489bbe293e65cebcd82d2b8a3ed0964bcb0a153de7269fa76"
+  },
+  "input_identity": {
+    "role": "already_consumed_development_not_fresh_oos",
+    "source_repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "source_ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "file": "5m_offset_0.parquet",
+    "rows": 70114,
+    "bytes": 3351411,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "allowed_start": "2015-01-05",
+    "allowed_end": "2020-12-31",
+    "substitute_data_used": false,
+    "year_2026_read": false
+  },
+  "frozen_semantics": {
+    "continuity": "shared_anchor_strict_L-H-L-H-L",
+    "knowledge_time": "current_A_wave_confirmation_bar",
+    "rho_symbolic": "sqrt(2)",
+    "rho": 1.4142135623730951,
+    "tau": 0.2,
+    "kappa": 2.0,
+    "parameter_search_used": false,
+    "bar_time_state_defined": false,
+    "between_event_state": "undefined",
+    "carry_forward": false
+  },
+  "primary_stream": {
+    "strict_event_count": 2358,
+    "eligible_event_count": 924,
+    "eligible_fraction_of_strict": 0.391858,
+    "scale_mismatch_count": 1434,
+    "scale_mismatch_fraction_of_strict": 0.608142,
+    "scale_mismatch_label": "NoStateScaleMismatch",
+    "eligible_state_counts": {
+      "Range": 23,
+      "UpTrend": 78,
+      "DownTrend": 79,
+      "Uncertain": 744
+    },
+    "eligible_state_fractions": {
+      "Range": 0.024892,
+      "UpTrend": 0.084416,
+      "DownTrend": 0.085498,
+      "Uncertain": 0.805195
+    },
+    "non_abstaining_eligible_count": 180,
+    "non_abstaining_fraction_of_strict": 0.076336,
+    "high_abstention_observed": true
+  },
+  "annual_eligible_diagnostics": {
+    "2015": {"strict": 368, "eligible": 136, "mismatch": 232, "Range": 2, "UpTrend": 17, "DownTrend": 6, "Uncertain": 111},
+    "2016": {"strict": 476, "eligible": 184, "mismatch": 292, "Range": 4, "UpTrend": 15, "DownTrend": 22, "Uncertain": 143},
+    "2017": {"strict": 407, "eligible": 166, "mismatch": 241, "Range": 4, "UpTrend": 15, "DownTrend": 13, "Uncertain": 134},
+    "2018": {"strict": 334, "eligible": 142, "mismatch": 192, "Range": 6, "UpTrend": 7, "DownTrend": 16, "Uncertain": 113},
+    "2019": {"strict": 401, "eligible": 155, "mismatch": 246, "Range": 6, "UpTrend": 15, "DownTrend": 11, "Uncertain": 123},
+    "2020": {"strict": 372, "eligible": 141, "mismatch": 231, "Range": 1, "UpTrend": 9, "DownTrend": 11, "Uncertain": 120}
+  },
+  "transition_adjudication": {
+    "primary_within_epoch_transition_count": 2221,
+    "primary_direct_up_down_reversal_count": 0,
+    "primary_direct_trend_to_range_count": 0,
+    "primary_direct_range_to_trend_count": 0,
+    "shared_wave_descriptor_consistency_observed": true,
+    "structural_interpretation": "Adjacent strict pairs share one A-wave. A decisive trend label fixes the shared wave descriptor as UP or DOWN, so the immediately adjacent strict pair cannot simultaneously require that same shared wave to be RANGE or the opposite direction. Uncertain or NoStateScaleMismatch therefore act as the natural event-time interruption states.",
+    "trend_event_exit_counts": {
+      "UpTrend": {"same_state": 7, "to_Uncertain": 31, "to_NoStateScaleMismatch": 39, "to_Range": 0, "to_DownTrend": 0},
+      "DownTrend": {"same_state": 11, "to_Uncertain": 24, "to_NoStateScaleMismatch": 39, "to_Range": 0, "to_UpTrend": 0}
+    },
+    "direct_reversal_pathology_observed": false
+  },
+  "eligible_only_diagnostic": {
+    "within_epoch_transition_count": 799,
+    "intervening_strict_event_count": {
+      "zero": 376,
+      "one": 150,
+      "two_or_more": 273,
+      "median": 1.0,
+      "p75": 2.0,
+      "p90": 4.0,
+      "max": 11.0
+    },
+    "eligible_links_with_at_least_one_intervening_strict_event": 423,
+    "eligible_links_with_at_least_one_intervening_fraction": 0.529412,
+    "direct_up_down_reversals_in_eligible_only_sequence": 8,
+    "eligible_only_reversals_with_zero_intervening_strict_events": 0,
+    "eligible_only_reversals_with_intervening_strict_events": 8,
+    "eligible_only_is_true_continuous_state_stream": false,
+    "interpretation": "More than half of within-epoch eligible-to-eligible links skip at least one strict event, and every apparent eligible-only UpTrend/DownTrend reversal crosses such a skipped strict event. Eligible-only persistence or reversal must therefore remain diagnostic and cannot be treated as continuity in the primary event stream."
+  },
+  "event_count_persistence": {
+    "semantics": "consecutive_same_label_strict_confirmation_events_within_epoch_only",
+    "not_bar_duration": true,
+    "not_clock_duration": true,
+    "run_length_summary": {
+      "UpTrend": {"runs": 71, "median": 1.0, "p90": 1.0, "max": 2.0},
+      "DownTrend": {"runs": 68, "median": 1.0, "p90": 2.0, "max": 3.0},
+      "Range": {"runs": 21, "median": 1.0, "p90": 1.0, "max": 2.0},
+      "Uncertain": {"runs": 497, "median": 1.0, "p90": 3.0, "max": 6.0},
+      "NoStateScaleMismatch": {"runs": 583, "median": 2.0, "p90": 5.0, "max": 11.0}
+    },
+    "interpretation": "Decisive event labels are usually local rather than long runs. This is not a bar-time holding result and does not authorize carrying a trend label forward beyond its confirmation event."
+  },
+  "semantic_adjudication": {
+    "primary_all_strict_event_stream_required": true,
+    "scale_mismatch_is_distinct_from_uncertain": true,
+    "epoch_reset_is_hard_boundary": true,
+    "eligible_only_false_continuity_material": true,
+    "high_abstention_material": true,
+    "high_abstention_by_itself_requires_parameter_change": false,
+    "morphology_parameter_change_authorized": false,
+    "morphology_definition_revision_required_before_next_gate": false,
+    "event_time_state_machine_coherent_enough_for_next_gate": true,
+    "adjudication": "The fixed event-time morphology state machine is coherent enough for a next semantic gate. Its coherence comes from fail-closed abstention, explicit scale-mismatch interruptions, zero direct opposite-trend transitions in the primary strict stream, and preserved epoch boundaries. The stream is sparse and highly abstaining, so no bar-time persistence or publication semantics may be inferred from this result."
+  },
+  "authority": {
+    "event_time_semantic_coherence_adjudicated": true,
+    "parameter_nomination_from_e_preserved": true,
+    "bar_time_state_authority": false,
+    "direction_acceptance": false,
+    "state_publication_authority": false,
+    "trade_authority": false,
+    "production_authority": false,
+    "future_outcome_used": false,
+    "returns_used": false,
+    "pnl_used": false,
+    "positions_used": false
+  },
+  "next_gate": {
+    "name": "V0800-G_BAR_TIME_CARRIER_EXPIRY_SEMANTICS",
+    "purpose": "Preregister how a causal confirmation-event label, if at all, maps onto later bars, including expiry and invalidation, without outcomes.",
+    "questions": [
+      "Does a confirmation-event state hold until the next strict event, only until the next eligible event, or for a fixed bar expiry?",
+      "Does epoch reset invalidate any carried state immediately?",
+      "Does NoStateScaleMismatch immediately clear a carried state?",
+      "Does Uncertain immediately clear a carried state?",
+      "What exact bar receives the event state and what is the first bar on which it can no longer be used?"
+    ],
+    "must_remain_preregistered": true,
+    "bar_time_rule_predecided_by_f": false,
+    "parameter_search_allowed": false,
+    "future_returns_allowed": false,
+    "pnl_allowed": false,
+    "trade_simulation_allowed": false,
+    "production_authority_allowed": false
+  }
+}
