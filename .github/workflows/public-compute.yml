@@ -36,6 +36,7 @@ on:
           - overnight-carrier-materialization-v1
           - overnight-continuous-tail-likelihood-dev-v1
           - overnight-continuous-tail-likelihood-blackbox-v1
+          - ols-drawdown-d0-v1
         default: runtime-smoke
         required: true
 permissions:
@@ -374,3 +375,25 @@ jobs:
           else
             exit 2
           fi
+      - name: Prepare fixed OLS D0 inputs
+        id: prepare_ols_d0
+        if: inputs.profile == 'ols-drawdown-d0-v1'
+        timeout-minutes: 6
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/ols_drawdown_d0_broker.py prepare ols-drawdown-d0-v1
+      - name: Compute OLS D0 without private credentials
+        if: inputs.profile == 'ols-drawdown-d0-v1' && steps.prepare_ols_d0.outcome == 'success'
+        timeout-minutes: 16
+        run: python3 executor/ols_drawdown_d0_broker.py compute ols-drawdown-d0-v1
+      - name: Stop OLS D0 owned container before credentials return
+        id: cleanup_ols_d0
+        if: always() && steps.prepare_ols_d0.outcome == 'success'
+        timeout-minutes: 1
+        run: python3 executor/ols_drawdown_d0_broker.py cleanup ols-drawdown-d0-v1
+      - name: Return verified OLS D0 results privately
+        if: always() && steps.prepare_ols_d0.outcome == 'success' && steps.cleanup_ols_d0.outcome == 'success'
+        timeout-minutes: 6
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/ols_drawdown_d0_broker.py publish ols-drawdown-d0-v1
