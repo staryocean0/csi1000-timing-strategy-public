@@ -38,6 +38,7 @@ on:
           - two-wave-v0800-c-causal-prefix-replay-v1
           - two-wave-v0800-d-direction-grid-v1
           - two-wave-v0800-e-morphology-visual-audit-v1
+          - two-wave-v0800-f-state-stream-audit-v1
           - overnight-official-inventory-v1
           - overnight-carrier-materialization-v1
           - overnight-continuous-tail-likelihood-dev-v1
@@ -461,3 +462,28 @@ jobs:
           else
             exit 2
           fi
+      - name: Prepare fixed Two-Wave F inputs
+        id: prepare_two_wave_f
+        if: inputs.profile == 'two-wave-v0800-f-state-stream-audit-v1'
+        timeout-minutes: 6
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/two_wave_v0800_f_state_stream_broker.py prepare two-wave-v0800-f-state-stream-audit-v1
+      - name: Compute Two-Wave F without private credentials
+        id: compute_two_wave_f
+        if: inputs.profile == 'two-wave-v0800-f-state-stream-audit-v1' && steps.prepare_two_wave_f.outcome == 'success'
+        timeout-minutes: 35
+        run: python3 executor/two_wave_v0800_f_state_stream_broker.py compute two-wave-v0800-f-state-stream-audit-v1
+      - name: Stop Two-Wave F owned container before credentials return
+        id: cleanup_two_wave_f
+        if: always() && inputs.profile == 'two-wave-v0800-f-state-stream-audit-v1' && steps.prepare_two_wave_f.outcome == 'success'
+        timeout-minutes: 1
+        run: python3 executor/two_wave_v0800_f_state_stream_broker.py cleanup two-wave-v0800-f-state-stream-audit-v1
+      - name: Return verified Two-Wave F results privately
+        if: always() && inputs.profile == 'two-wave-v0800-f-state-stream-audit-v1' && steps.prepare_two_wave_f.outcome == 'success' && steps.compute_two_wave_f.outcome == 'success' && steps.cleanup_two_wave_f.outcome == 'success'
+        timeout-minutes: 6
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: |
+          python3 executor/two_wave_v0800_f_state_stream_broker.py publish two-wave-v0800-f-state-stream-audit-v1
+          python3 executor/two_wave_v0800_f_state_stream_private_mirror.py
