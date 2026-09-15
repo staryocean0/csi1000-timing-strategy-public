@@ -15,6 +15,25 @@ d0._load_5m = adapter._load_5m_by_verified_order
 
 EXIT_MODES = d0.EXIT_MODES
 TOP_N = 20
+D1_AUTHORITY_FILE = "D1_AUTHORITY.json"
+
+
+def _require_d1_authority(inputs: Path) -> dict[str, object]:
+    path = inputs / D1_AUTHORITY_FILE
+    if not path.is_file() or path.is_symlink():
+        raise RuntimeError("ols_d2_d1_authority_missing")
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload.get("schema_id") != "ols_r2_d1_leadlag@1.0":
+        raise RuntimeError("ols_d2_d1_authority_schema")
+    decision = payload.get("decision") or {}
+    if payload.get("d2_authority") is not True or decision.get("status") != "SUPPORTED_FOR_D2_EXIT_OVERLAY_TEST":
+        raise RuntimeError("ols_d2_d1_authority_not_granted")
+    for key in ("coverage_gate_modes_passed", "exit_lead_gate_modes_passed", "same_window_guard_modes_passed"):
+        if int(decision.get(key, -1)) != 5:
+            raise RuntimeError("ols_d2_d1_authority_gate_mismatch")
+    if payload.get("same_window_sensitivity") != "authority_window_equal_across_event_three_bars":
+        raise RuntimeError("ols_d2_d1_same_window_authority_missing")
+    return payload
 
 
 def _equity_metrics(returns: np.ndarray) -> dict[str, float]:
@@ -69,7 +88,7 @@ def _segment_bounds(segment_id: np.ndarray) -> dict[int, tuple[int, int]]:
 def _apply_overlay(trace: pd.DataFrame) -> tuple[np.ndarray, list[dict[str, object]]]:
     pos = trace["executable_position"].to_numpy(int)
     segment = trace["segment_id"].to_numpy(int)
-    events = trace["r2_two_down_event"].to_numpy(bool)
+    events = trace["r2_two_down_same_window"].to_numpy(bool)
     returns = trace["strategy_return"].to_numpy(float)
     timestamps = trace["timestamp"].astype(str).to_numpy()
     windows = pd.to_numeric(trace["authority_window_bars"], errors="coerce").to_numpy(float)
@@ -95,6 +114,7 @@ def _apply_overlay(trace: pd.DataFrame) -> tuple[np.ndarray, list[dict[str, obje
                 "warning_timestamp": timestamps[event_idx],
                 "segment_end_timestamp": timestamps[end],
                 "authority_window_at_warning": int(windows[event_idx]),
+                "same_window_three_bar_guard": True,
                 "fit_r2_at_warning": float(r2[event_idx]),
                 "path_efficiency_at_warning": float(pe[event_idx]),
                 "warning_index": int(event_idx),
@@ -235,6 +255,7 @@ def _decision(rows: list[dict[str, object]]) -> dict[str, object]:
 
 
 def run(inputs: Path, out: Path) -> None:
+    _require_d1_authority(inputs)
     raw5, data_receipt = d0._load_5m(inputs)
     bars = d0._to_15m(raw5)
     upf = d0._features(bars, "up")
@@ -252,18 +273,19 @@ def run(inputs: Path, out: Path) -> None:
     pd.DataFrame(summaries).to_csv(out / "mode_comparison.csv", index=False)
     decision = _decision(summaries)
     payload = {
-        "schema_id": "ols_r2_d2_exit_overlay@1.0",
+        "schema_id": "ols_r2_d2_exit_overlay@1.1",
         "status": "completed_research_ab_only",
         "decision": decision,
         "symbol": d0.SYMBOL,
         "years": list(d0.YEARS),
         "exit_modes": list(EXIT_MODES),
         "overlay_rule": {
-            "trigger": "first_two_consecutive_fit_r2_declines_per_baseline_nonflat_same_direction_segment",
+            "trigger": "first_same_window_two_consecutive_fit_r2_declines_per_baseline_nonflat_same_direction_segment",
             "execution": "warning_at_close_t_flat_from_next_executable_bar",
             "lockout": "remain_flat_until_original_baseline_segment_ends",
             "reentry": "allowed_only_when_baseline_enters_a_new_nonflat_segment",
         },
+        "d1_authority_file": D1_AUTHORITY_FILE,
         "side_specific_audit": "current_side_lifecycle_exit_trigger_only",
         "return_semantics": "open_t_to_open_t_plus_1_gross",
         "transaction_cost_assumption": "zero_cost_gross_research_ab_only",
