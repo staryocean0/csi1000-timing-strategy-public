@@ -1,0 +1,89 @@
+{
+  "schema_id": "risk_tool_v2_15m_online_prior_calibration_v3_prereg@1.0",
+  "profile": "risk-v2-15m-online-prior-calibration-v3",
+  "frozen_at": "2026-09-15",
+  "target": "15m.weekly.calibration",
+  "purpose": "Test whether a strictly point-in-time global online logit-intercept update can absorb temporal prior/base-rate drift while leaving the frozen B/C models, Severity representation, tail transform, and acceptance thresholds unchanged.",
+  "authority_chain": {
+    "within_cell_diagnostic_run": "34937379667-1",
+    "state_conditional_run": "34935354211-1",
+    "v3_adjudication_run": "34930354449-1"
+  },
+  "scope": {
+    "symbol": "000852.SH",
+    "horizon_minutes": 15,
+    "hard_years": [2015,2016,2017,2018,2019,2021,2022,2023,2024,2025],
+    "year_2020_role": "warmup_available_to_point_in_time_history_but_not_validation",
+    "year_2026_read": false,
+    "weekly_measurement": "trailing_2_market_weeks_at_each_market_week_endpoint",
+    "selection_years": [2015,2016,2017,2018,2019,2021,2022,2023],
+    "repeat_audit_years_not_used_for_selection": [2024,2025]
+  },
+  "frozen_base_tool": {
+    "model": "Phase1 frozen 15m B/C",
+    "platt": "Phase1b repeat-audit frozen Platt",
+    "tail_anchor": 0.2312353159391616,
+    "tail_limit": 4.0,
+    "tail_authority_run": "34920654435-1"
+  },
+  "candidate_family": [
+    {"id": "control", "history_market_weeks": 0},
+    {"id": "w4", "history_market_weeks": 4},
+    {"id": "w8", "history_market_weeks": 8},
+    {"id": "w13", "history_market_weeks": 13}
+  ],
+  "online_update": {
+    "applied_to": "post_tail_C",
+    "form": "sigmoid(logit(post_tail_C)+delta_week)",
+    "delta_week_source": "previous completed market weeks only; current-week labels are forbidden",
+    "delta_solver": "single scalar bisection on [-6,6] matching trailing observed event rate to trailing mean adjusted probability",
+    "history_support": {"rows_min": 80, "positive_min": 16, "negative_min": 16},
+    "insufficient_history_action": "delta_week=0",
+    "offline_refit": false,
+    "slope_change": false,
+    "feature_change": false
+  },
+  "selection_rule": {
+    "data": "selection_years only",
+    "weekly_evaluable_semantics": "same frozen v3 weekly support gates; unsupported endpoints omitted from streak exactly as in the existing evaluator",
+    "lexicographic": [
+      "minimize max_calibration_negative_streak",
+      "maximize joint_calibration_positive_fraction",
+      "maximize median_brier_gain",
+      "maximize median_logloss_gain",
+      "prefer_less_intervention control_then_w13_then_w8_then_w4"
+    ],
+    "no_repeat_audit_lookahead": true
+  },
+  "post_selection_evaluation": {
+    "full_hierarchy": "apply unchanged hierarchical-v3 acceptance to 2015-2025 hard years",
+    "repeat_audit": "report 2024-2025 weekly calibration metrics separately",
+    "acceptance_threshold_change": false
+  },
+  "outputs": [
+    "CANDIDATE_SELECTION.csv",
+    "SELECTED_WEEKLY_DELTAS.csv",
+    "TEMPORAL_METRICS_ONLINE_V3.csv",
+    "ACCEPTANCE_RESULT_ONLINE_V3.json",
+    "SUMMARY.json",
+    "INPUT_DATA_RECEIPT.json",
+    "MODEL_INPUT_RECEIPT.json"
+  ],
+  "prohibitions": {
+    "model_refit": true,
+    "severity_change": true,
+    "tail_parameter_search": true,
+    "acceptance_threshold_change": true,
+    "repeat_audit_used_for_selection": true,
+    "year_2026_read": true,
+    "pnl": true,
+    "strategy_routing": true,
+    "production_authority": true
+  },
+  "interpretation": {
+    "development_optimization_on_consumed_data": true,
+    "not_fresh_oos": true,
+    "v3_prior_results_immutable": true,
+    "selected_candidate_must_pass_unchanged_hierarchy_to_change_tool_status": true
+  }
+}
