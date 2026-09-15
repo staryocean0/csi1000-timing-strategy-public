@@ -1,8 +1,11 @@
-"""Apply one frozen public -> private governance synchronization request.
+"""Apply one frozen public -> private bounded synchronization request.
 
-This is not a research runner. The request has a fixed identity, private base,
-target set and two phases: stage an exact private branch, then fast-forward the
-private main ref to that exact verified branch. Chat mutates only public files.
+This is not a research runner. Each supported sync contract has a fixed identity,
+private base, target set, source identity, and two phases: stage an exact private
+branch, then fast-forward private main to that exact verified branch.
+
+Chat mutates only public files. Private writes happen only inside this reviewed
+workflow using the repository's restricted private-research credential.
 """
 from __future__ import annotations
 
@@ -29,32 +32,80 @@ PUBLIC_REPO = broker.PUBLIC_REPO
 PRIVATE_REPO = broker.PRIVATE_REPO
 
 PRIVATE_BASE_BRANCH = "main"
-PRIVATE_BASE_SHA = "653fdfc232f1d877f051e05e3238d409d269f85d"
-SYNC_ID = "two-repo-control-plane-hardening-v1"
-PRIVATE_BRANCH = "sync/public-governance/" + SYNC_ID
 REQUEST_PATH = ROOT / "governance/private_sync/v1/request.json"
-TARGETS = (
-    {
-        "source": "governance/private_sync/v1/AGENTS.md",
-        "target": "AGENTS.md",
-        "expected_private_blob": "344a0dfea3614868de78e570d4f47f0215239537",
+
+CONTRACTS: dict[str, dict[str, object]] = {
+    "two-repo-control-plane-hardening-v1": {
+        "private_base_sha": "653fdfc232f1d877f051e05e3238d409d269f85d",
+        "private_branch": "sync/public-governance/two-repo-control-plane-hardening-v1",
+        "target_status": "modified",
+        "targets": (
+            {
+                "source": "governance/private_sync/v1/AGENTS.md",
+                "target": "AGENTS.md",
+                "expected_private_blob": "344a0dfea3614868de78e570d4f47f0215239537",
+            },
+            {
+                "source": "governance/private_sync/v1/docs/WORKFLOW.md",
+                "target": "docs/WORKFLOW.md",
+                "expected_private_blob": "4c2053f177bd96d6a007c0773859643f37c92524",
+            },
+        ),
     },
-    {
-        "source": "governance/private_sync/v1/docs/WORKFLOW.md",
-        "target": "docs/WORKFLOW.md",
-        "expected_private_blob": "4c2053f177bd96d6a007c0773859643f37c92524",
+    "layer3-ols-family-import-20260915-v1": {
+        "private_base_sha": "46e818ef51618e225be2d79a516424ff16231a1d",
+        "private_branch": "sync/public-import/layer3-ols-family-20260915-v1",
+        "target_status": "added",
+        "targets": (
+            {
+                "source": "docs/research/layer3/ols_family/MIGRATION_MANIFEST.json",
+                "target": "docs/imports/layer3_ols_family_20260915/MIGRATION_MANIFEST.json",
+                "expected_public_blob": "7ee1ade47b18418fca84577627cc4fd8457a039f",
+            },
+            {
+                "source": "docs/research/layer3/ols_family/README.md",
+                "target": "docs/imports/layer3_ols_family_20260915/README.md",
+                "expected_public_blob": "9fe46624320531129741ede63f0e0e115300c499",
+            },
+            {
+                "source": "docs/research/layer3/ols_family/source_snapshot/trend_regime_baseline.py",
+                "target": "docs/imports/layer3_ols_family_20260915/source_snapshot/trend_regime_baseline.py",
+                "expected_public_blob": "25309a1dfc2dd8b93e777747a24c6843e086bc7d",
+            },
+            {
+                "source": "docs/research/layer3/ols_family/source_snapshot/trend_regime_consumer.py",
+                "target": "docs/imports/layer3_ols_family_20260915/source_snapshot/trend_regime_consumer.py",
+                "expected_public_blob": "6ec31839a9497ad96fd59e9503c73ed1984569fa",
+            },
+            {
+                "source": "docs/research/layer3/ols_family/source_snapshot/trend_regime_profiles.py",
+                "target": "docs/imports/layer3_ols_family_20260915/source_snapshot/trend_regime_profiles.py",
+                "expected_public_blob": "6d192667434c1406bfbc5e6c8e88bc48c2bc2231",
+            },
+            {
+                "source": "docs/research/layer3/ols_family/source_snapshot/trend_regime_representation.py",
+                "target": "docs/imports/layer3_ols_family_20260915/source_snapshot/trend_regime_representation.py",
+                "expected_public_blob": "677571f4a31a8e935f448cb8a5f6b05b1e5accef",
+            },
+        ),
     },
-)
-TARGET_NAMES = [row["target"] for row in TARGETS]
+}
+
+
+def _git_blob_sha(raw: bytes) -> str:
+    return hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()
 
 
 def _source_bytes(row: dict[str, str]) -> bytes:
     path = ROOT / row["source"]
     if path.is_symlink() or not path.is_file():
-        raise GateError("governance_source_missing")
+        raise GateError("sync_source_missing")
     raw = path.read_bytes()
     if not raw or len(raw) > 128 * 1024:
-        raise GateError("governance_source_size_invalid")
+        raise GateError("sync_source_size_invalid")
+    expected_public_blob = row.get("expected_public_blob")
+    if expected_public_blob and _git_blob_sha(raw) != expected_public_blob:
+        raise GateError("sync_source_identity_drift")
     return raw
 
 
@@ -71,7 +122,7 @@ def _require_context() -> None:
         raise GateError("invalid_run_identity")
 
 
-def _load_request() -> dict:
+def _load_request() -> tuple[dict, dict[str, object]]:
     try:
         value = json.loads(REQUEST_PATH.read_text(encoding="utf-8"))
     except Exception:
@@ -81,28 +132,54 @@ def _load_request() -> dict:
         raise GateError("invalid_governance_request")
     if value["schema_id"] != "csi1000.private_governance_sync_request@1.0":
         raise GateError("invalid_governance_request")
-    if value["sync_id"] != SYNC_ID or value["private_base_sha"] != PRIVATE_BASE_SHA:
+    contract = CONTRACTS.get(value["sync_id"])
+    if contract is None:
+        raise GateError("governance_request_identity_drift")
+    target_names = [row["target"] for row in contract["targets"]]
+    if value["private_base_sha"] != contract["private_base_sha"]:
         raise GateError("governance_request_identity_drift")
     if value["phase"] not in {"stage", "merge"}:
         raise GateError("governance_request_phase_invalid")
-    if value["targets"] != TARGET_NAMES:
+    if value["targets"] != target_names:
         raise GateError("governance_request_target_drift")
-    return value
+    return value, contract
 
 
 def self_test() -> None:
     if PRIVATE_REPO != "staryocean0/csi1000-timing-strategy-private":
         raise GateError("private_identity_drift")
-    if not re.fullmatch(r"[0-9a-f]{40}", PRIVATE_BASE_SHA):
-        raise GateError("private_base_not_immutable")
-    if set(TARGET_NAMES) != {"AGENTS.md", "docs/WORKFLOW.md"}:
-        raise GateError("governance_target_scope_drift")
-    for row in TARGETS:
-        if not re.fullmatch(r"[0-9a-f]{40}", row["expected_private_blob"]):
-            raise GateError("private_blob_not_immutable")
-        _source_bytes(row)
+    for sync_id, contract in CONTRACTS.items():
+        private_base_sha = contract["private_base_sha"]
+        if not re.fullmatch(r"[0-9a-f]{40}", str(private_base_sha)):
+            raise GateError("private_base_not_immutable")
+        branch = str(contract["private_branch"])
+        if not branch.startswith("sync/"):
+            raise GateError("private_branch_scope_drift")
+        targets = contract["targets"]
+        names = [row["target"] for row in targets]
+        if len(names) != len(set(names)) or not names:
+            raise GateError("governance_target_scope_drift")
+        expected_status = contract["target_status"]
+        if expected_status not in {"added", "modified"}:
+            raise GateError("governance_target_scope_drift")
+        for row in targets:
+            expected_public_blob = row.get("expected_public_blob")
+            expected_private_blob = row.get("expected_private_blob")
+            if expected_public_blob and not re.fullmatch(r"[0-9a-f]{40}", expected_public_blob):
+                raise GateError("public_blob_not_immutable")
+            if expected_private_blob and not re.fullmatch(r"[0-9a-f]{40}", expected_private_blob):
+                raise GateError("private_blob_not_immutable")
+            if expected_status == "added" and expected_private_blob:
+                raise GateError("governance_target_scope_drift")
+            if expected_status == "modified" and not expected_private_blob:
+                raise GateError("governance_target_scope_drift")
+            _source_bytes(row)
+        if sync_id == "layer3-ols-family-import-20260915-v1":
+            prefix = "docs/imports/layer3_ols_family_20260915/"
+            if not all(name.startswith(prefix) for name in names):
+                raise GateError("governance_target_scope_drift")
     _load_request()
-    print("Bounded governance sync contract is structurally valid.")
+    print("Bounded private sync contract is structurally valid.")
 
 
 def _api() -> GitHub:
@@ -114,15 +191,16 @@ def _api() -> GitHub:
     return api
 
 
-def _require_private_base(api: GitHub) -> None:
+def _require_private_base(api: GitHub, contract: dict[str, object]) -> None:
     meta = api.request(f"repos/{PRIVATE_REPO}/branches/{PRIVATE_BASE_BRANCH}")
-    if meta.get("commit", {}).get("sha") != PRIVATE_BASE_SHA:
+    if meta.get("commit", {}).get("sha") != contract["private_base_sha"]:
         raise GateError("private_base_moved_re_freeze_required")
 
 
-def _branch_head(api: GitHub) -> str:
+def _branch_head(api: GitHub, contract: dict[str, object]) -> str:
     branch = api.request(
-        f"repos/{PRIVATE_REPO}/branches/" + urllib.parse.quote(PRIVATE_BRANCH, safe="")
+        f"repos/{PRIVATE_REPO}/branches/"
+        + urllib.parse.quote(str(contract["private_branch"]), safe="")
     )
     head = branch.get("commit", {}).get("sha")
     if not re.fullmatch(r"[0-9a-f]{40}", head or ""):
@@ -130,13 +208,13 @@ def _branch_head(api: GitHub) -> str:
     return head
 
 
-def _verify_branch_files(api: GitHub) -> dict[str, str]:
+def _verify_branch_files(api: GitHub, contract: dict[str, object]) -> dict[str, str]:
     digests: dict[str, str] = {}
-    for row in TARGETS:
+    for row in contract["targets"]:
         target_q = urllib.parse.quote(row["target"], safe="/")
         returned = api.request(
             f"repos/{PRIVATE_REPO}/contents/{target_q}?ref="
-            + urllib.parse.quote(PRIVATE_BRANCH, safe="")
+            + urllib.parse.quote(str(contract["private_branch"]), safe="")
         )
         try:
             actual = base64.b64decode(returned["content"])
@@ -149,54 +227,66 @@ def _verify_branch_files(api: GitHub) -> dict[str, str]:
     return digests
 
 
-def _verify_exact_compare(api: GitHub, head_sha: str) -> None:
-    compare = api.request(f"repos/{PRIVATE_REPO}/compare/{PRIVATE_BASE_SHA}...{head_sha}")
+def _verify_exact_compare(
+    api: GitHub, contract: dict[str, object], head_sha: str
+) -> None:
+    private_base_sha = str(contract["private_base_sha"])
+    compare = api.request(f"repos/{PRIVATE_REPO}/compare/{private_base_sha}...{head_sha}")
     if (
         compare.get("status") != "ahead"
         or compare.get("behind_by") != 0
-        or compare.get("merge_base_commit", {}).get("sha") != PRIVATE_BASE_SHA
+        or compare.get("merge_base_commit", {}).get("sha") != private_base_sha
     ):
         raise GateError("private_governance_history_drift")
     files = compare.get("files")
-    if not isinstance(files, list) or {row.get("filename") for row in files} != set(TARGET_NAMES):
+    expected_names = {row["target"] for row in contract["targets"]}
+    if not isinstance(files, list) or {row.get("filename") for row in files} != expected_names:
         raise GateError("private_governance_diff_scope_drift")
-    if any(row.get("status") != "modified" for row in files):
+    expected_status = contract["target_status"]
+    if any(row.get("status") != expected_status for row in files):
         raise GateError("private_governance_diff_scope_drift")
 
 
-def stage(api: GitHub) -> None:
-    _require_private_base(api)
+def stage(api: GitHub, contract: dict[str, object]) -> None:
+    _require_private_base(api, contract)
+    private_base_sha = str(contract["private_base_sha"])
+    private_branch = str(contract["private_branch"])
     api.request(
         f"repos/{PRIVATE_REPO}/git/refs",
-        {"ref": "refs/heads/" + PRIVATE_BRANCH, "sha": PRIVATE_BASE_SHA},
+        {"ref": "refs/heads/" + private_branch, "sha": private_base_sha},
         method="POST",
     )
-    for row in TARGETS:
+    for row in contract["targets"]:
         target_q = urllib.parse.quote(row["target"], safe="/")
-        meta = api.request(f"repos/{PRIVATE_REPO}/contents/{target_q}?ref={PRIVATE_BASE_SHA}")
-        if meta.get("type") != "file" or meta.get("sha") != row["expected_private_blob"]:
-            raise GateError("private_governance_target_drift")
+        body = {
+            "message": "Apply reviewed bounded public sync [skip ci]",
+            "branch": private_branch,
+            "content": base64.b64encode(_source_bytes(row)).decode("ascii"),
+        }
+        expected_private_blob = row.get("expected_private_blob")
+        if expected_private_blob:
+            meta = api.request(
+                f"repos/{PRIVATE_REPO}/contents/{target_q}?ref={private_base_sha}"
+            )
+            if meta.get("type") != "file" or meta.get("sha") != expected_private_blob:
+                raise GateError("private_governance_target_drift")
+            body["sha"] = meta["sha"]
         api.request(
             f"repos/{PRIVATE_REPO}/contents/{target_q}",
-            {
-                "message": "Apply reviewed public governance sync [skip ci]",
-                "branch": PRIVATE_BRANCH,
-                "sha": meta["sha"],
-                "content": base64.b64encode(_source_bytes(row)).decode("ascii"),
-            },
+            body,
             method="PUT",
         )
-    head_sha = _branch_head(api)
-    _verify_branch_files(api)
-    _verify_exact_compare(api, head_sha)
-    print("Bounded private governance sync staged and verified on the fixed private branch.")
+    head_sha = _branch_head(api, contract)
+    _verify_branch_files(api, contract)
+    _verify_exact_compare(api, contract, head_sha)
+    print("Bounded private sync staged and verified on the fixed private branch.")
 
 
-def merge(api: GitHub) -> None:
-    _require_private_base(api)
-    head_sha = _branch_head(api)
-    _verify_branch_files(api)
-    _verify_exact_compare(api, head_sha)
+def merge(api: GitHub, contract: dict[str, object]) -> None:
+    _require_private_base(api, contract)
+    head_sha = _branch_head(api, contract)
+    _verify_branch_files(api, contract)
+    _verify_exact_compare(api, contract, head_sha)
     result = api.request(
         f"repos/{PRIVATE_REPO}/git/refs/heads/{PRIVATE_BASE_BRANCH}",
         {"sha": head_sha, "force": False},
@@ -207,7 +297,7 @@ def merge(api: GitHub) -> None:
     main = api.request(f"repos/{PRIVATE_REPO}/branches/{PRIVATE_BASE_BRANCH}")
     if main.get("commit", {}).get("sha") != head_sha:
         raise GateError("private_governance_fast_forward_readback_failed")
-    for row in TARGETS:
+    for row in contract["targets"]:
         target_q = urllib.parse.quote(row["target"], safe="/")
         returned = api.request(f"repos/{PRIVATE_REPO}/contents/{target_q}?ref={head_sha}")
         try:
@@ -216,18 +306,18 @@ def merge(api: GitHub) -> None:
             raise GateError("private_governance_fast_forward_readback_failed") from None
         if actual != _source_bytes(row):
             raise GateError("private_governance_fast_forward_readback_failed")
-    print("Bounded private governance sync fast-forwarded private main after exact diff verification.")
+    print("Bounded private sync fast-forwarded private main after exact diff verification.")
 
 
 def run_sync() -> None:
     _require_context()
     self_test()
-    request = _load_request()
+    request, contract = _load_request()
     api = _api()
     if request["phase"] == "stage":
-        stage(api)
+        stage(api, contract)
     else:
-        merge(api)
+        merge(api, contract)
 
 
 def main() -> None:
