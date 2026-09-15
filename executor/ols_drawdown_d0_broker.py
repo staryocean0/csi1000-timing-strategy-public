@@ -66,6 +66,12 @@ PROFILE = {
 rb.COMPUTE_HOST_TIMEOUT_SECONDS = 930
 rb.VALIDATE_HOST_TIMEOUT_SECONDS = 330
 
+_SAFE_D0_CODE = re.compile(r"\bols_d0_[a-z0-9_:-]+\b")
+_SAFE_EXCEPTION = re.compile(r"^([A-Za-z_][A-Za-z0-9_.]*(?:Error|Exception))(?::|$)", re.MULTILINE)
+_SAFE_LOCATION = re.compile(
+    r'File "/work/d0/(ols_drawdown_d0(?:_verifier)?\.py|ols_drawdown_atlas\.py)", line ([0-9]+)'
+)
+
 
 def blobsha(raw: bytes) -> str:
     return hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
@@ -166,6 +172,34 @@ def prepare_inputs(api, root: Path, profile: dict) -> Path:
     return work
 
 
+def _safe_failure_diagnostic() -> None:
+    try:
+        state, root = rb.load_state()
+    except Exception:
+        print('OLS_D0_SAFE_DIAGNOSTIC={"available":false,"reason":"state_unavailable"}', file=sys.stderr)
+        return
+    paths = [root / "results" / "compute.log", root / "results" / "controller_validation.log"]
+    codes: set[str] = set()
+    exceptions: set[str] = set()
+    locations: set[str] = set()
+    for path in paths:
+        if not path.is_file() or path.is_symlink() or path.stat().st_size > 65536:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        codes.update(_SAFE_D0_CODE.findall(text))
+        exceptions.update(_SAFE_EXCEPTION.findall(text))
+        locations.update(f"{name}:{line}" for name, line in _SAFE_LOCATION.findall(text))
+    payload = {
+        "available": bool(codes or exceptions or locations),
+        "compute_exit_code": state.get("compute_exit_code"),
+        "validation_exit_code": state.get("validation_exit_code"),
+        "codes": sorted(codes),
+        "exception_classes": sorted(exceptions),
+        "public_source_locations": sorted(locations),
+    }
+    print("OLS_D0_SAFE_DIAGNOSTIC=" + json.dumps(payload, sort_keys=True, separators=(",", ":")), file=sys.stderr)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("phase", choices=["prepare", "compute", "cleanup", "publish"])
@@ -178,7 +212,12 @@ def main() -> None:
     if args.phase == "prepare":
         rb.prepare(PROFILE_NAME, PROFILE)
     elif args.phase == "compute":
-        rb.compute()
+        try:
+            rb.compute()
+        except GateError as error:
+            if str(error) == "compute_failed_private_publish_step_will_report":
+                _safe_failure_diagnostic()
+            raise
     elif args.phase == "cleanup":
         rb.cleanup()
     else:
