@@ -1,0 +1,65 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_e_post_audit_adjudication@1.0",
+  "study": "V0800-E_POST_AUDIT_ADJUDICATION",
+  "status": "accepted_layer2_descriptive_morphology",
+  "source_evidence": {
+    "science_run_id": "34967434004-1",
+    "science_public_source_sha": "0ec32093653e5fd36dc2160200061f4ffacac57b",
+    "transport_replay_run_id": "34971340135-1",
+    "transport_public_source_sha": "1bb6f89fab8ef34b726f6a77d15a6f3b11b50b31",
+    "audit_manifest_sha256": "c3260be7f72a12a5da0b33d1fb23deacd32d967d83e45f480d0363ca2e836ab5",
+    "selected_case_count": 59,
+    "eligible_same_scale_pair_count": 924,
+    "strict_pair_count": 2358,
+    "bars_read": 70114,
+    "development_data_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48"
+  },
+  "frozen_semantics": {
+    "pair_continuity": "shared_anchor_strict_L-H-L-H-L",
+    "knowledge_time": "current_A_wave_confirmation_bar",
+    "scale_coordinate": "bar_intervals_between_pivot_occurrence_bars",
+    "operational_rho_symbolic": "sqrt(2)",
+    "operational_rho": 1.4142135623730951,
+    "tau": 0.2,
+    "kappa": 1.5,
+    "bottom_channel_authority": true,
+    "top_channel_rule": "parallel_translation_of_bottom"
+  },
+  "state_rule": {
+    "range": "both abs(g) <= 0.20",
+    "uptrend": "both g > 0.20 and max(abs(g1),abs(g2))/min(abs(g1),abs(g2)) <= 1.50",
+    "downtrend": "both g < -0.20 and max(abs(g1),abs(g2))/min(abs(g1),abs(g2)) <= 1.50",
+    "uncertain": "eligible strict same-scale pair that does not satisfy Range, UpTrend, or DownTrend",
+    "outside_eligible_pair_universe": "no directional state publication"
+  },
+  "visual_semantic_adjudication": {
+    "tau_0_05": "rejected_as_too_narrow_for_visually_flat_pairs",
+    "tau_0_10": "rejected_as_still_too_narrow_for_multiple_shallow_migration_pairs",
+    "tau_0_15": "rejected_as_still_missing_preregistered_visually_flat_boundary_examples",
+    "tau_0_20": "accepted_as_near_horizontal_deadzone_equal_to_at_most_one_fifth_channel_height_low_to_low_migration",
+    "kappa_1_25": "rejected_as_too_strict_for_visually_similar_same_direction_pairs",
+    "kappa_1_50": "accepted_as_similar_slope_tolerance",
+    "kappa_2_00": "rejected_as_too_loose_because_it_accepts_pairs_with_about_1_85_to_1_88_times_normalized_migration",
+    "selection_used_future_outcomes": false,
+    "selection_used_returns": false,
+    "selection_used_pnl": false,
+    "selection_used_decisiveness_maximization": false
+  },
+  "authority": {
+    "layer2_descriptive_morphology_semantic_acceptance": true,
+    "layer2_descriptive_state_publication_authority": true,
+    "predictive_signal_authority": false,
+    "future_outcome_validation_complete": false,
+    "layer3_consumption_authority": false,
+    "trade_authority": false,
+    "position_authority": false,
+    "production_strategy_authority": false,
+    "year_2026_used": false
+  },
+  "next_gate": {
+    "name": "frozen_morphology_future_information_validation",
+    "must_preregister_before_outcome_read": true,
+    "tau_kappa_search_reopened": false,
+    "development_result_may_not_be_called_fresh_oos": true
+  }
+}
