@@ -1,0 +1,89 @@
+{
+  "schema_id": "csi1000_layer3_ols_family_migration@1.0",
+  "migration_date": "2026-09-15",
+  "target_repo": "staryocean0/csi1000-timing-strategy-public",
+  "target_branch": "cloud-workspace-v1",
+  "target_layer": "Layer3",
+  "authority": {
+    "cloud_research_placement": true,
+    "production_authority": false,
+    "external_results_accepted_as_csi1000_science": false,
+    "local_final_layer3_merge_deferred": true
+  },
+  "source": {
+    "repo": "staryocean0/factorlab-trend-reversion-regime-lab",
+    "snapshot_commit": "69e83973f6213d308a4b3afc6b3715b76e3d67b7",
+    "pivot_parent": "ab4979b224d8ee97f89b75ac428ddd71887fecf1",
+    "roadmap_pivot_commit": "8a2d599f5734dbdf612655b7f027136f2507f7fa",
+    "ols_baseline_freeze_commit": "cb280fa3b5137dea34ccaa1c0c9f33af821a52fa",
+    "provenance_compare": "ab4979b224d8ee97f89b75ac428ddd71887fecf1..69e83973f6213d308a4b3afc6b3715b76e3d67b7",
+    "descendant_commit_count": 353
+  },
+  "excluded_lineage": {
+    "name": "true-wave / two-wave / kline-recognizer v1-v13",
+    "reason": "historical Layer2/Two-Wave lineage must remain separate from the OLS family",
+    "scope_migration_commit": "d30400e52a65888192bdb62e86f493eb81cbd8e2",
+    "recorded_destination_repo": "staryocean0/factorlab-two-wave-strategy-lab",
+    "recorded_destination_path": "docs/archive/migrated_kline_state_recognizer_from_trend_reversion_20260909/"
+  },
+  "migrated_runtime_components": [
+    {
+      "stage": "M2",
+      "source_path": "src/factor_lab/market_state/trend_regime_baseline.py",
+      "source_blob": "25309a1dfc2dd8b93e777747a24c6843e086bc7d",
+      "snapshot_path": "docs/research/layer3/ols_family/source_snapshot/trend_regime_baseline.py",
+      "role": "OLS baseline measurement"
+    },
+    {
+      "stage": "M3",
+      "source_path": "src/factor_lab/market_state/trend_regime_profiles.py",
+      "source_blob": "6d192667434c1406bfbc5e6c8e88bc48c2bc2231",
+      "snapshot_path": "docs/research/layer3/ols_family/source_snapshot/trend_regime_profiles.py",
+      "role": "multi-interval profile binding"
+    },
+    {
+      "stage": "M6",
+      "source_path": "src/factor_lab/market_state/trend_regime_representation.py",
+      "source_blob": "677571f4a31a8e935f448cb8a5f6b05b1e5accef",
+      "snapshot_path": "docs/research/layer3/ols_family/source_snapshot/trend_regime_representation.py",
+      "role": "three-bucket plus continuous-strength representation"
+    },
+    {
+      "stage": "M7",
+      "source_path": "src/factor_lab/market_state/trend_regime_consumer.py",
+      "source_blob": "6ec31839a9497ad96fd59e9503c73ed1984569fa",
+      "snapshot_path": "docs/research/layer3/ols_family/source_snapshot/trend_regime_consumer.py",
+      "role": "immutable snapshot/query consumer"
+    }
+  ],
+  "descendant_scope": {
+    "milestones": ["M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9"],
+    "post_v1_families": [
+      "X2 cross-profile distributional invariance",
+      "X3 state-dynamics invariance",
+      "X4 calibration-family decisions and rolling updates",
+      "X5 five-carrier replication",
+      "X5B source robustness",
+      "X5C 15m/60m cross-carrier",
+      "X5D interval calibration comparison",
+      "X5E temporal-scale causal normalization",
+      "X5F strength-scale decomposition",
+      "X5G dynamic common scale / carrier interaction",
+      "X5H adaptive regime-shift strength scale",
+      "X5I prospective fast-vs-adaptive strength scale",
+      "X5J turnover-regularized strength scale",
+      "X5K sparse hysteretic strength scale",
+      "X5L partial-reset/cooldown strength scale",
+      "X5M anchored structural validation",
+      "X5N structural failure attribution",
+      "X5O causal regime observable identifiability"
+    ]
+  },
+  "explicit_non_scope": [
+    "pre-pivot R1/R2 reversal strategy research",
+    "pre-pivot option/MO carrier research",
+    "true-wave/two-wave lineage",
+    "native local Layer3 merge mechanics",
+    "production wiring or trading authority"
+  ]
+}
