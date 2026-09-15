@@ -1,0 +1,55 @@
+{
+  "schema_id": "csi1000.risk_tool_consumer_contract_prereg@1.0",
+  "profile": "risk-v2-probability-reliability-consumer-contract-v1",
+  "status": "frozen_before_conformance_run",
+  "objective": "Adjudicate the machine-enforced Layer2-to-Layer3 consumer interface for the supported Probability + Reliability output contract without changing model science.",
+  "authority_input": {
+    "run": "34945466654-1",
+    "private_branch": "runs/public-research/34945466654-1",
+    "path": "research/public-runs/34945466654-1-results/OUTPUT_CONTRACT_RESULT.json",
+    "git_blob_sha1": "83b19574fef3ef5e46c823f6a9eb067781b85c3e",
+    "bytes": 2759,
+    "sha256": "d7c2cd1106b8025c242ff0486e6a167be3d8669145735e634ea14ddb9977aa96"
+  },
+  "public_contract": "docs/acceptance/risk_tool_v2/probability_reliability_consumer_contract_v1.json",
+  "public_payload_schema": "docs/acceptance/risk_tool_v2/probability_reliability_consumer_payload_schema_v1.json",
+  "consumer_module": "executor/risk_probability_reliability_consumer_v1.py",
+  "fixed_conformance_cases": [
+    "15m_high_probability_research_allowed",
+    "15m_mid_probability_context_allowed",
+    "15m_mid_probability_research_rejected",
+    "15m_low_ranking_allowed",
+    "15m_low_probability_context_rejected",
+    "15m_unscored_probability_rejected",
+    "15m_forged_high_band_rejected",
+    "tampered_permission_rejected",
+    "all_bands_hard_threshold_rejected",
+    "all_bands_strategy_routing_rejected",
+    "all_bands_position_sizing_rejected",
+    "all_bands_pnl_rejected",
+    "all_bands_production_rejected",
+    "30m_probability_research_allowed",
+    "30m_reliability_overlay_rejected"
+  ],
+  "acceptance": {
+    "parent_output_contract_status_must_equal": "DUAL_OUTPUT_CONTRACT_SUPPORTED",
+    "q33_must_equal": 0.5170330932673238,
+    "q67_must_equal": 0.7096666848299501,
+    "all_fixed_conformance_cases_must_pass": true,
+    "consumer_contract_status_on_success": "CONSUMER_CONTRACT_SUPPORTED"
+  },
+  "boundaries": {
+    "market_data_read": false,
+    "model_execution": false,
+    "probability_refit": false,
+    "ordering_modified": false,
+    "reliability_formula_modified": false,
+    "year_2026_read": false,
+    "pnl": false,
+    "strategy_routing": false,
+    "position_sizing": false,
+    "production_authority": false,
+    "current_v3_authority_immutable": true,
+    "cannot_promote_15m_to_complete": true
+  }
+}
