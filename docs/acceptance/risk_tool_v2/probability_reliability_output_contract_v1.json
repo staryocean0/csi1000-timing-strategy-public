@@ -1,0 +1,65 @@
+{
+  "schema_id": "risk_tool_v2_probability_reliability_output_contract@1.0",
+  "contract_id": "risk-tool-v2-probability-reliability-output-v1",
+  "status": "frozen_pending_adjudication",
+  "authority_inputs": {
+    "temporal_v3_run": "34930354449-1",
+    "reliability_run": "34942554638-1"
+  },
+  "15m": {
+    "authority_grade_must_equal": "TS-B_STABLE_RANKING_CALIBRATION_GUARDED",
+    "authority_bottleneck_must_equal": "weekly.calibration",
+    "reliability_must_be_supported": true,
+    "band_thresholds": {
+      "low_upper_exclusive": 0.5170330932673238,
+      "high_lower_inclusive": 0.7096666848299501,
+      "source": "development_tercile_cutpoints from authority run 34942554638-1"
+    },
+    "bands": {
+      "UNSCORED": {
+        "ordering_signal": "allowed",
+        "reliability_score": "unavailable",
+        "absolute_probability_research_interpretation": "not_authorized",
+        "probability_value_surface": "diagnostic_only",
+        "hard_probability_thresholding": false
+      },
+      "LOW": {
+        "ordering_signal": "allowed",
+        "reliability_score": "required",
+        "absolute_probability_research_interpretation": "not_authorized",
+        "probability_value_surface": "diagnostic_only",
+        "hard_probability_thresholding": false
+      },
+      "MID": {
+        "ordering_signal": "allowed",
+        "reliability_score": "required",
+        "absolute_probability_research_interpretation": "guarded_context_only",
+        "probability_value_surface": "allowed_with_reliability_label",
+        "hard_probability_thresholding": false
+      },
+      "HIGH": {
+        "ordering_signal": "allowed",
+        "reliability_score": "required",
+        "absolute_probability_research_interpretation": "allowed_with_reliability_label",
+        "probability_value_surface": "allowed_with_reliability_label",
+        "hard_probability_thresholding": false
+      }
+    }
+  },
+  "30m": {
+    "authority_grade_must_equal": "TS-A_STABLE_PROBABILITY_COMPONENT",
+    "authority_state_must_equal": "COMPLETE",
+    "reliability_overlay_required": false,
+    "research_probability_interpretation": "allowed"
+  },
+  "global_prohibitions": {
+    "production_authority": false,
+    "strategy_routing": false,
+    "position_sizing": false,
+    "pnl_authority": false,
+    "probability_refit": false,
+    "ordering_modified": false,
+    "year_2026_read": false
+  },
+  "promotion_rule": "Reliability support changes interpretation permissions only; it cannot promote 15m to COMPLETE or alter the current v3 verdict."
+}
