@@ -1,7 +1,7 @@
 {
   "schema_id": "csi1000.private_governance_sync_request@1.0",
-  "sync_id": "layer3-ols-external-evidence-20260915-v1",
   "phase": "stage",
+  "sync_id": "layer3-ols-external-evidence-20260915-v1",
   "private_base_sha": "215662a7a07070a34473148e172bf56d17fefd62",
   "targets": [
     "docs/imports/layer3_ols_external_evidence_20260915/EVIDENCE_MANIFEST.json",
