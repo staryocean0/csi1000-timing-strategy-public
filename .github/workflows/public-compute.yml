@@ -12,6 +12,7 @@ on:
           - risk-v2-phase1-calibration-diagnostic-20260914
           - risk-v2-phase1b-ordering-calibration-v1
           - risk-v2-historical-000852-2015-2019-v1
+          - risk-v2-temporal-stability-2015-2025-v1
           - overnight-official-inventory-v1
           - overnight-carrier-materialization-v1
           - overnight-continuous-tail-likelihood-dev-v1
@@ -43,9 +44,9 @@ jobs:
             executor
             tests
             docs/research
+            docs/acceptance
             governance/private_sync
             .github/workflows
-            docs/research
             governance/private_sync/v1
           sparse-checkout-cone-mode: true
       - name: Synthetic executor tests
@@ -67,7 +68,7 @@ jobs:
         run: python3 executor/overnight_tail_blackbox_stage_public.py
       - name: Prepare fixed private inputs
         id: prepare
-        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1-calibration-diagnostic-20260914' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'risk-v2-historical-000852-2015-2019-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-blackbox-v1'
+        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1-calibration-diagnostic-20260914' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'risk-v2-historical-000852-2015-2019-v1' || inputs.profile == 'risk-v2-temporal-stability-2015-2025-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-blackbox-v1'
         timeout-minutes: 6
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
@@ -82,6 +83,8 @@ jobs:
             python3 executor/risk_phase1b_release_broker.py prepare risk-v2-phase1b-ordering-calibration-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-historical-000852-2015-2019-v1' ]; then
             python3 executor/risk_historical_000852_broker.py prepare risk-v2-historical-000852-2015-2019-v1
+          elif [ '${{ inputs.profile }}' = 'risk-v2-temporal-stability-2015-2025-v1' ]; then
+            python3 executor/risk_temporal_stability_2015_2025_broker.py prepare risk-v2-temporal-stability-2015-2025-v1
           elif [ '${{ inputs.profile }}' = 'overnight-official-inventory-v1' ]; then
             python3 executor/overnight_inventory_broker.py prepare overnight-official-inventory-v1
           elif [ '${{ inputs.profile }}' = 'overnight-carrier-materialization-v1' ]; then
@@ -94,7 +97,7 @@ jobs:
             exit 2
           fi
       - name: Compute without private credentials
-        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1-calibration-diagnostic-20260914' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'risk-v2-historical-000852-2015-2019-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-blackbox-v1'
+        if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1-calibration-diagnostic-20260914' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'risk-v2-historical-000852-2015-2019-v1' || inputs.profile == 'risk-v2-temporal-stability-2015-2025-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-blackbox-v1'
         timeout-minutes: 16
         run: |
           if [ '${{ inputs.profile }}' = 'handoff-verify-v1' ]; then
@@ -107,6 +110,8 @@ jobs:
             python3 executor/risk_phase1b_release_broker.py compute risk-v2-phase1b-ordering-calibration-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-historical-000852-2015-2019-v1' ]; then
             python3 executor/risk_historical_000852_broker.py compute risk-v2-historical-000852-2015-2019-v1
+          elif [ '${{ inputs.profile }}' = 'risk-v2-temporal-stability-2015-2025-v1' ]; then
+            python3 executor/risk_temporal_stability_2015_2025_broker.py compute risk-v2-temporal-stability-2015-2025-v1
           elif [ '${{ inputs.profile }}' = 'overnight-official-inventory-v1' ]; then
             python3 executor/overnight_inventory_broker.py compute overnight-official-inventory-v1
           elif [ '${{ inputs.profile }}' = 'overnight-carrier-materialization-v1' ]; then
@@ -133,6 +138,8 @@ jobs:
             python3 executor/risk_phase1b_release_broker.py cleanup risk-v2-phase1b-ordering-calibration-v1
           elif [ '${{ inputs.profile }}' = 'risk-v2-historical-000852-2015-2019-v1' ]; then
             python3 executor/risk_historical_000852_broker.py cleanup risk-v2-historical-000852-2015-2019-v1
+          elif [ '${{ inputs.profile }}' = 'risk-v2-temporal-stability-2015-2025-v1' ]; then
+            python3 executor/risk_temporal_stability_2015_2025_broker.py cleanup risk-v2-temporal-stability-2015-2025-v1
           elif [ '${{ inputs.profile }}' = 'overnight-official-inventory-v1' ]; then
             python3 executor/overnight_inventory_broker.py cleanup overnight-official-inventory-v1
           elif [ '${{ inputs.profile }}' = 'overnight-carrier-materialization-v1' ]; then
@@ -163,6 +170,9 @@ jobs:
           elif [ '${{ inputs.profile }}' = 'risk-v2-historical-000852-2015-2019-v1' ]; then
             python3 executor/risk_historical_000852_broker.py publish risk-v2-historical-000852-2015-2019-v1
             python3 executor/risk_historical_private_mirror.py
+          elif [ '${{ inputs.profile }}' = 'risk-v2-temporal-stability-2015-2025-v1' ]; then
+            python3 executor/risk_temporal_stability_2015_2025_broker.py publish risk-v2-temporal-stability-2015-2025-v1
+            python3 executor/risk_temporal_stability_private_mirror.py
           elif [ '${{ inputs.profile }}' = 'overnight-official-inventory-v1' ]; then
             python3 executor/overnight_inventory_broker.py publish overnight-official-inventory-v1
           elif [ '${{ inputs.profile }}' = 'overnight-carrier-materialization-v1' ]; then
