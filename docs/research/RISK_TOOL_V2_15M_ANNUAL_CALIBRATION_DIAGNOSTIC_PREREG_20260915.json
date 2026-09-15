@@ -1,0 +1,46 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_15m_annual_calibration_diagnostic@1.0",
+  "task_id": "CSI1000-RISK-V2-15M-ANNUAL-CALIBRATION-DIAGNOSTIC-V1-20260915",
+  "parent_temporal_run": "34919074188-1",
+  "parent_current_bottleneck": "annual.calibration",
+  "purpose": "Diagnose why frozen 15m calibration fails the annual max-negative-streak gate while annual ordering and Brier improvement remain stable. This is diagnosis only and cannot change acceptance thresholds or promote a model.",
+  "symbol": "000852.SH",
+  "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],
+  "hard_gate_years": [2015,2016,2017,2018,2019,2021,2022,2023,2024,2025],
+  "warmup_year": 2020,
+  "horizon_minutes": 15,
+  "known_failed_logloss_years_from_parent": [2016,2019,2021],
+  "diagnostic_axes": {
+    "intercept_drift": ["event_rate","mean_frozen_probability_B","mean_frozen_probability_C","annual_calibration_intercept_B","annual_calibration_intercept_C"],
+    "slope_overconfidence": ["annual_calibration_slope_B","annual_calibration_slope_C"],
+    "tail_concentration": ["worst_1pct_positive_excess_share","worst_5pct_positive_excess_share","worst_10pct_positive_excess_share","high_confidence_C_fraction","high_confidence_C_positive_excess_share"],
+    "reliability": ["ece10_B","ece10_C","brier_gain","logloss_gain"]
+  },
+  "definitions": {
+    "annual_calibration_fit": "Descriptive per-year logistic fit y ~ intercept + slope*logit(frozen_probability); fit is never used for prediction or acceptance.",
+    "positive_excess_loss": "max(row_logloss_C - row_logloss_B, 0)",
+    "worst_kpct_share": "share of total positive excess loss contributed by the largest k percent of rows ranked by row_logloss_C-row_logloss_B",
+    "high_confidence_C": "frozen calibrated C probability <=0.05 or >=0.95",
+    "ece10": "10 equal-frequency-bin expected calibration error"
+  },
+  "frozen_inputs": {
+    "canonical_data_ref": "1d760ea9525eb3688b70a4aa0f2b5b207af16a17",
+    "model_freeze_sha256": "b81cae6208d96890c0fd83d47e4ea8c8a81ba55b41c78f58db29e9160f173551",
+    "calibration_freeze_sha256": "74ecd25790123f026e29cba7bb84322aad8a385c10fe3d60ef0d75d52d1b1909",
+    "score_refit": false,
+    "production_calibration_refit": false
+  },
+  "decision_boundary": {
+    "no_candidate_calibrator_search": true,
+    "no_clipping_parameter_search": true,
+    "no_acceptance_threshold_change": true,
+    "no_quarterly_or_lower_level_optimization": true,
+    "diagnostic_year_fits_are_descriptive_only": true
+  },
+  "scope": {
+    "year_2026_read": false,
+    "pnl": false,
+    "strategy_threshold_search": false,
+    "production_authority": false
+  }
+}

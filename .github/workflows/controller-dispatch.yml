@@ -26,6 +26,7 @@ jobs:
        github.event.issue.title == 'controller: risk-v2-phase1b-ordering-calibration-v1' ||
        github.event.issue.title == 'controller: risk-v2-historical-000852-2015-2019-v1' ||
        github.event.issue.title == 'controller: risk-v2-temporal-stability-2015-2025-v1' ||
+       github.event.issue.title == 'controller: risk-v2-15m-annual-calibration-diagnostic-v1' ||
        github.event.issue.title == 'controller: overnight-carrier-materialization-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-dev-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-blackbox-v1')
@@ -57,6 +58,9 @@ jobs:
               ;;
             'controller: risk-v2-temporal-stability-2015-2025-v1')
               profile='risk-v2-temporal-stability-2015-2025-v1'
+              ;;
+            'controller: risk-v2-15m-annual-calibration-diagnostic-v1')
+              profile='risk-v2-15m-annual-calibration-diagnostic-v1'
               ;;
             'controller: overnight-carrier-materialization-v1')
               profile='overnight-carrier-materialization-v1'
