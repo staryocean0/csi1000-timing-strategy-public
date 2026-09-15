@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location("tsa_h", ROOT / "executor/risk_temporal_stability_acceptance.py")
+SPEC = importlib.util.spec_from_file_location("tsa_h", ROOT / "executor/risk_temporal_stability_hierarchical_acceptance.py")
 MOD = importlib.util.module_from_spec(SPEC); SPEC.loader.exec_module(MOD)
 PROFILE = json.loads((ROOT / "docs/acceptance/risk_tool_v2/temporal_stability_profile_hierarchical_v1.json").read_text())
 ACTIVE = json.loads((ROOT / "docs/acceptance/risk_tool_v2/ACTIVE_TEMPORAL_STABILITY_PROFILE.json").read_text())
