@@ -52,7 +52,7 @@ PROFILE = {
     "private_ref": PRIVATE_REF,
     "manifest_sha256": PREREG_SHA256,
     "command": [
-        "fresh_oos/risk_phase1b_fresh_oos_eval.py",
+        "fresh_oos/risk_phase1b_fresh_oos_entry.py",
         "--inputs",
         "/work/inputs",
         "--out",
@@ -210,7 +210,11 @@ def prepare_inputs(api, root: Path, profile: dict):
     work.mkdir()
     scripts = work / "fresh_oos"
     scripts.mkdir()
-    for name in ("risk_phase1b_fresh_oos_eval.py", "risk_phase1b_fresh_oos_verifier.py"):
+    for name in (
+        "risk_phase1b_fresh_oos_entry.py",
+        "risk_phase1b_fresh_oos_eval.py",
+        "risk_phase1b_fresh_oos_verifier.py",
+    ):
         source = Path(__file__).resolve().parent / name
         if not source.is_file() or source.is_symlink():
             raise GateError("fresh_oos_public_source_missing")
