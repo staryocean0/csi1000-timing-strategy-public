@@ -1,0 +1,110 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_weekly_calibration_streak_diagnostic_prereg@1.0",
+  "study_id": "risk-v2-weekly-calibration-streak-diagnostic-v1",
+  "status": "frozen_before_execution",
+  "frozen_at_date": "2026-09-15",
+  "question": "Why does the frozen 15m Severity probability component fail the hierarchical-v3 weekly calibration streak gate even though weekly support, ordering, joint-positive fraction and median calibration gains pass?",
+  "authority_chain": {
+    "two_week_metrics_run": "34926868278-1",
+    "two_week_metrics": {
+      "private_branch": "runs/public-research/34926868278-1",
+      "path": "research/public-runs/34926868278-1-results/TEMPORAL_METRICS_2W_V2.csv",
+      "git_blob_sha1": "478f73c1fb9ac9c91d670e67733623e1450da953",
+      "bytes": 170908,
+      "sha256": "455a0f0d61993a933016e111aa1386eaf4ddf3ec6aeb9e28c109f08a559fd060"
+    },
+    "v3_adjudication_run": "34930354449-1",
+    "v3_result": {
+      "private_branch": "runs/public-research/34930354449-1",
+      "path": "research/public-runs/34930354449-1-results/ACCEPTANCE_RESULT_V3.json",
+      "git_blob_sha1": "8472220fb8d97256e93a03404e459021badaa14f",
+      "bytes": 9251,
+      "sha256": "74df0b6b688d91f8f30c9dcdf3e16f9ddbe77204c9e702fe1d0476601ee3f5ca"
+    },
+    "required_v3_state": {
+      "horizon_minutes": 15,
+      "acceptance_state": "IN_PROGRESS",
+      "current_bottleneck": "weekly.calibration",
+      "weekly_max_calibration_negative_streak": 12
+    }
+  },
+  "frozen_representation": {
+    "horizon_minutes": 15,
+    "comparison": "frozen_C_minus_frozen_B",
+    "weekly_measurement": "trailing two market weeks ending at each market-week endpoint",
+    "model_freeze_sha256": "b81cae6208d96890c0fd83d47e4ea8c8a81ba55b41c78f58db29e9160f173551",
+    "calibration_freeze_sha256": "74ecd25790123f026e29cba7bb84322aad8a385c10fe3d60ef0d75d52d1b1909",
+    "tail_calibration_authority_run": "34920654435-1",
+    "tail_anchor": 0.2312353159391616,
+    "tail_limit": 4.0,
+    "tail_transform": "z_post = anchor + L*tanh((z_pre-anchor)/L); p_post=sigmoid(z_post)",
+    "weekly_support": {
+      "rows_min": 20,
+      "positive_min": 4,
+      "negative_min": 4
+    },
+    "weekly_calibration_pass": "cal_brier_gain > 0 AND cal_logloss_gain > 0",
+    "streak_semantics": "longest consecutive calibration failures across evaluable expected non-warmup weekly endpoints; unsupported endpoints are omitted and do not break an evaluable-endpoint streak"
+  },
+  "diagnostic_plan": {
+    "stage_1_authority_lock": [
+      "verify exact two-week metrics identity",
+      "verify exact v3 result identity and required bottleneck",
+      "recompute frozen 15m two-week weekly support and final calibrated Brier/LogLoss gains",
+      "fail closed unless recomputed rows, class counts and gains match authority metrics within 1e-11"
+    ],
+    "stage_2_streak_localization": [
+      "identify every evaluable weekly calibration failure",
+      "classify each as brier_only, logloss_only, both, or pass",
+      "identify the unique longest failure streak and require length exactly 12",
+      "report omitted unsupported endpoints inside the calendar span separately"
+    ],
+    "stage_3_tail_and_regime_description": {
+      "tail": [
+        "pre-tail C Brier and LogLoss gains versus frozen B",
+        "post-tail final C Brier and LogLoss gains versus frozen B",
+        "post-minus-pre gain contribution",
+        "mean absolute probability change from tail transform",
+        "pre-tail and post-tail high-confidence fractions using p<=0.05 or p>=0.95",
+        "positive excess-logloss concentration including top-5-percent share"
+      ],
+      "frozen_regime_dimensions": [
+        "current_state: UNSAFE versus RECOVERING",
+        "age_bucket: LT15, M15_25, M30_40, GE45",
+        "session: AM versus PM",
+        "median shock_intensity",
+        "median vol_ratio"
+      ],
+      "comparison": "longest-streak endpoints versus other evaluable passing endpoints; descriptive only"
+    }
+  },
+  "outputs": [
+    "WEEKLY_CALIBRATION_BUCKETS.csv",
+    "LONGEST_CALIBRATION_STREAK.csv",
+    "STREAK_TAIL_DIAGNOSTICS.csv",
+    "STREAK_REGIME_COMPOSITION.csv",
+    "SUMMARY.json",
+    "INPUT_DATA_RECEIPT.json",
+    "MODEL_INPUT_RECEIPT.json"
+  ],
+  "prohibitions": {
+    "candidate_search": true,
+    "calibration_refit": true,
+    "tail_parameter_search": true,
+    "numeric_threshold_change": true,
+    "model_change": true,
+    "market_data_substitution": true,
+    "year_2026_read": true,
+    "pnl": true,
+    "strategy_routing": true,
+    "production_authority": true
+  },
+  "interpretation": {
+    "diagnostic_only": true,
+    "consumed_data_only": true,
+    "fresh_oos_claim": false,
+    "v3_result_34930354449_1_immutable": true,
+    "diagnostic_cannot_promote_15m_to_complete": true,
+    "next_candidate_family_requires_separate_preregistration": true
+  }
+}
