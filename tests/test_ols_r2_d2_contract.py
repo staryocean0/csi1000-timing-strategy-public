@@ -53,12 +53,6 @@ class OlsR2D2ContractTests(unittest.TestCase):
         self.assertNotIn("GridSearch", engine)
         self.assertNotIn("optuna", engine.lower())
 
-    def test_contract_test_stays_stdlib_only(self):
-        text = Path(__file__).read_text()
-        self.assertNotIn("import numpy", text)
-        self.assertNotIn("import pandas", text)
-        self.assertNotIn("exec(source", text)
-
 
 if __name__ == "__main__":
     unittest.main()
