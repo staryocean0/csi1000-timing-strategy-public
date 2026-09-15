@@ -1,0 +1,61 @@
+{
+  "allowed_reads": {
+    "labels": false,
+    "market_value_columns": false,
+    "model_outputs": false,
+    "parquet_columns": [
+      "timestamp_or_datetime",
+      "symbol"
+    ],
+    "parquet_schema_metadata": true,
+    "returns": false,
+    "source_manifest_metadata": true
+  },
+  "boundaries": {
+    "calibration": false,
+    "model_fit": false,
+    "pnl": false,
+    "position_sizing": false,
+    "production_authority": false,
+    "strategy_routing": false,
+    "threshold_search": false,
+    "v2_parameters_authoritative_for_native15": false,
+    "year_2026_threshold_or_model_training": false
+  },
+  "frozen_private_transport": {
+    "bundle_member": "bundle.tar",
+    "candidate_suffix": "data/index/15m_offset_5.parquet",
+    "data_release_tag": "csi1000-handoff-v1-20260913",
+    "private_ref": "6f41091f1d29c5d6a3aaf74c49f538526c567eef",
+    "source_contract_suffix": "data/index/SOURCE_MANIFEST.json"
+  },
+  "next_phase_if_supported": "Native-15m descriptive risk map: frequency / severity / persistence / recovery. Threshold/state-machine search requires a new preregistration.",
+  "objective": "Freeze the native 15-minute K-line carrier and bar semantics before any Risk Tool V3 threshold or model research.",
+  "profile": "risk-v3-native15-carrier-semantic-audit-v1",
+  "research_issue": 211,
+  "schema_id": "risk_tool_v3_native15_carrier_semantic_audit_prereg@1.0",
+  "semantic_rule": {
+    "all_future_returns_volatility_shocks_states_persistence_labels_must_be_defined_on_native_15m_bars": true,
+    "native_15m_means_base_kline_interval_minutes": 15,
+    "not_v2_5m_forecast_horizon": true
+  },
+  "task_id": "CSI1000-RISK-V3-NATIVE15-PHASE-A-CARRIER-SEMANTIC-AUDIT-V1-20260915",
+  "technical_acceptance": {
+    "candidate_member_unique": true,
+    "max_duplicate_symbol_timestamp_rows": 0,
+    "min_primary_complete_day_share": 0.95,
+    "min_timestamp_parse_rate": 0.9999,
+    "min_trading_days_each_required_year": 200,
+    "min_within_session_15m_delta_share": 0.99,
+    "primary_symbol": "000852.SH",
+    "required_unique_mod15_residue": 5,
+    "required_years_primary": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "source_contract_member_unique": true
+  }
+}
