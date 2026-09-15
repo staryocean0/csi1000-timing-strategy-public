@@ -1,0 +1,98 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_f_state_stream_protocol@1.0",
+  "study": "V0800-F_OPERATIONAL_STATE_STREAM_AUDIT",
+  "status": "preregistered_before_execution",
+  "parent_adjudication": {
+    "document": "docs/research/TWO_WAVE_V0800_E_ADJUDICATION_20260915.json",
+    "source_run_id": "34971340135-1",
+    "audit_manifest_sha256": "c3260be7f72a12a5da0b33d1fb23deacd32d967d83e45f480d0363ca2e836ab5"
+  },
+  "question": "With the post-audit semantic parameters frozen, does the causal confirmation-time Two-Wave state stream satisfy its overlap invariants and exhibit interpretable persistence, transitions and abstention without using outcomes?",
+  "input": {
+    "source_repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "source_ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "file": "data/development/5m_offset_0.parquet",
+    "rows": 70114,
+    "bytes": 3351411,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "allowed_start": "2015-01-05",
+    "allowed_end": "2020-12-31",
+    "role": "already_consumed_development_not_fresh_oos",
+    "year_2026_allowed": false,
+    "substitute_data_allowed": false
+  },
+  "frozen_semantics": {
+    "pivot_kernel": "v0.4.3_causal_temporal_maturity",
+    "continuity": "shared_anchor_strict_L-H-L-H-L",
+    "knowledge_time": "current_A_wave_confirmation_bar",
+    "bottom_authoritative_channel": true,
+    "rho": 1.4142135623730951,
+    "rho_symbolic": "sqrt(2)",
+    "tau": 0.20,
+    "kappa": 2.00,
+    "parameter_search_allowed": false
+  },
+  "event_stream": {
+    "one_row_per_strict_pair": true,
+    "causal_order": "current_A_wave_confirmation_bar_then_strict_pair_enumeration_order",
+    "scale_gate_precedes_state": true,
+    "states": ["ScaleIneligible", "Range", "UpTrend", "DownTrend", "Uncertain"],
+    "reason_partition": [
+      "scale_ineligible",
+      "both_range",
+      "same_up_within_kappa",
+      "same_down_within_kappa",
+      "sign_conflict",
+      "mixed_range_direction",
+      "speed_mismatch"
+    ]
+  },
+  "overlap_adjacency": {
+    "definition": "two consecutive strict-pair events where prior.current_wave_id equals next.previous_wave_id",
+    "operational_transition_requires_both_scale_eligible": true,
+    "shared_wave_descriptor_must_match": true,
+    "forbidden_direct_published_transitions": ["UpTrend->DownTrend", "DownTrend->UpTrend"],
+    "rationale": "the shared middle A-wave has one fixed tau descriptor and cannot be both UP and DOWN"
+  },
+  "required_outputs": {
+    "row_level": ["STATE_STREAM_EVENTS.csv"],
+    "aggregate": ["SUMMARY.json", "INPUT_RECEIPT.json"],
+    "private_text_mirror": ["SUMMARY.json", "INPUT_RECEIPT.json"],
+    "row_level_private_text_mirror_allowed": false
+  },
+  "required_summary": {
+    "strict_pair_count": true,
+    "eligible_same_scale_pair_count": true,
+    "state_counts": true,
+    "reason_counts": true,
+    "annual_state_and_reason_counts_2015_2020": true,
+    "overlap_adjacency_count": true,
+    "eligible_overlap_adjacency_count": true,
+    "transition_matrix": true,
+    "shared_descriptor_mismatch_count": true,
+    "direct_opposite_trend_transition_count": true,
+    "same_state_run_length_histograms": true,
+    "eligible_overlap_state_change_fraction": true
+  },
+  "adjudication_policy": {
+    "hard_structural_failure_if_shared_descriptor_mismatch": true,
+    "hard_structural_failure_if_direct_opposite_published_transition": true,
+    "persistence_threshold_preregistered": false,
+    "churn_threshold_preregistered": false,
+    "automatic_state_stream_acceptance": false,
+    "post_run_semantic_adjudication_required": true
+  },
+  "forbidden": {
+    "future_returns": true,
+    "pnl": true,
+    "positions": true,
+    "transaction_costs": true,
+    "trade_simulation": true,
+    "parameter_search": true,
+    "2026_data": true,
+    "direction_acceptance": true,
+    "state_publication_authority": true,
+    "trade_authority": true,
+    "production_authority": true
+  }
+}
