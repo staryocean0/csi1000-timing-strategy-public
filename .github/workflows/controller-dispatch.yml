@@ -29,6 +29,7 @@ jobs:
        github.event.issue.title == 'controller: risk-v2-15m-annual-calibration-diagnostic-v1' ||
        github.event.issue.title == 'controller: risk-v2-15m-tail-robust-calibration-v2' ||
        github.event.issue.title == 'controller: risk-v2-weekly-support-diagnostic-v1' ||
+       github.event.issue.title == 'controller: risk-v2-weekly-window-feasibility-v1' ||
        github.event.issue.title == 'controller: overnight-carrier-materialization-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-dev-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-blackbox-v1')
@@ -69,6 +70,9 @@ jobs:
               ;;
             'controller: risk-v2-weekly-support-diagnostic-v1')
               profile='risk-v2-weekly-support-diagnostic-v1'
+              ;;
+            'controller: risk-v2-weekly-window-feasibility-v1')
+              profile='risk-v2-weekly-window-feasibility-v1'
               ;;
             'controller: overnight-carrier-materialization-v1')
               profile='overnight-carrier-materialization-v1'

@@ -1,0 +1,42 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_weekly_window_feasibility_v1_prereg@1.0",
+  "task_id": "CSI1000-RISK-V2-WEEKLY-WINDOW-FEASIBILITY-V1-20260915",
+  "parent_authority_run": "34925285496-1",
+  "target_bottleneck": "weekly.support",
+  "input_identity": {
+    "private_ref": "runs/public-research/34925285496-1",
+    "path": "research/public-runs/34925285496-1-results/WEEKLY_SUPPORT_BUCKETS.csv",
+    "bytes": 82047,
+    "git_blob_sha1": "7a5b3642acf47371c92ea3107a89a3d528cf4ba8",
+    "sha256": "e41f398d289cac851991e5bce3818d834dcdb82ce18dd5120ae3b11dfa6bb2f9"
+  },
+  "candidate_trailing_market_weeks": [1, 2, 3, 4],
+  "window_support_minima": {
+    "rows_min": 20,
+    "positive_min": 4,
+    "negative_min": 4
+  },
+  "feasibility_rule": {
+    "overall_coverage_min_each_horizon": 0.80,
+    "minimum_hard_year_coverage_each_horizon": 0.60,
+    "selection": "choose the smallest candidate window satisfying both criteria for both 15m and 30m",
+    "no_feasible_candidate_action": "report NO_FEASIBLE_WINDOW and do not change the acceptance profile",
+    "initial_incomplete_history_windows_count_as_unsupported": true
+  },
+  "interpretation_boundary": {
+    "uses_only_support_counts": true,
+    "ordering_metrics_read": false,
+    "calibration_metrics_read": false,
+    "acceptance_threshold_change": false,
+    "parent_acceptance_rescue": false,
+    "selected_window_if_any_requires_new_acceptance_profile_before_performance_evaluation": true
+  },
+  "scope": {
+    "year_2026_read": false,
+    "pnl": false,
+    "strategy_threshold_search": false,
+    "model_or_calibration_change": false,
+    "new_training": false,
+    "production_authority": false
+  }
+}
