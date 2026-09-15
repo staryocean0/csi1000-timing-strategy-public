@@ -5,14 +5,13 @@ import hashlib
 import json
 from pathlib import Path
 
-import pandas as pd
-import pyarrow.parquet as pq
-
 TASK_ID = "CSI1000-RISK-V2-FUTURE-CARRIER-BINDING-AUDIT-V1-20260915"
 PROFILE = "risk-v2-future-carrier-binding-audit-v1"
-SCHEMA_ID = "risk_tool_v2_future_carrier_binding_audit_result@1.0"
-PREREG_SHA256 = "6158bfb13dafe8a6ffee255455320c6598d17c932115985070994cade0030540"
-EXPECTED_SYMBOLS = ("000688.SH", "000852.SH")
+SCHEMA_ID = "risk_tool_v2_future_carrier_binding_audit_result@2.0"
+AMENDMENT_SCHEMA = "risk_tool_v2_future_carrier_binding_audit_amendment@1.0"
+AMENDMENT_SHA256 = "7972fbc0a13671cf182cdb0c7c3b4ce6d10588c63cbe34c9e6871f300626f371"
+SOURCE_CONTRACT_SHA256 = "c46f2da6c3df016ca054e183e37267dc472097450fcdd6644c22aa0084c15749"
+SOURCE_CONTRACT_BYTES = 52711
 FUTURE_START = "2026-09-14"
 FUTURE_END = "2027-03-31"
 
@@ -23,89 +22,94 @@ def sha256_file(path: Path) -> str:
 
 
 def load_json(path: Path) -> dict:
+    if path.is_symlink() or not path.is_file():
+        raise RuntimeError("json_input_missing")
     value = json.loads(path.read_text())
     if not isinstance(value, dict):
         raise RuntimeError("json_object_required")
     return value
 
 
-def _wallclock(series: pd.Series) -> pd.Series:
-    return pd.to_datetime(series.astype(str).str.slice(0, 19), errors="coerce")
+def _target_subset(row: object) -> dict | None:
+    if not isinstance(row, dict):
+        return None
+    keys = (
+        "rows",
+        "first_trading_day",
+        "last_trading_day",
+        "trading_day_count",
+        "expected_trading_day_count",
+        "day_count_ready",
+    )
+    if any(key not in row for key in keys):
+        return None
+    return {key: row[key] for key in keys}
 
 
-def inspect_member(path: Path, expected_symbol: str, identity: dict) -> dict:
-    if path.is_symlink() or not path.is_file():
-        raise RuntimeError(f"pair_member_missing:{expected_symbol}")
-    expected_bytes = int(identity["bytes"])
-    expected_sha = str(identity["sha256"])
-    if path.stat().st_size != expected_bytes or sha256_file(path) != expected_sha:
-        raise RuntimeError(f"pair_member_identity_mismatch:{expected_symbol}")
-
-    parquet = pq.ParquetFile(path)
-    schema = parquet.schema_arrow
-    names = list(schema.names)
-    if "symbol" not in names:
-        raise RuntimeError(f"symbol_field_missing:{expected_symbol}")
-    time_field = "trading_day" if "trading_day" in names else ("timestamp" if "timestamp" in names else None)
-    if time_field is None:
-        raise RuntimeError(f"time_identity_field_missing:{expected_symbol}")
-
-    # Deliberately read identity fields only. Market-value fields may exist in
-    # the physical schema but are never deserialized here.
-    frame = pq.read_table(path, columns=["symbol", time_field]).to_pandas()
-    symbols = sorted(set(frame["symbol"].dropna().astype(str)))
-    if time_field == "trading_day":
-        day = pd.to_datetime(frame[time_field].astype(str).str.slice(0, 10), errors="coerce")
-    else:
-        day = _wallclock(frame[time_field])
-    day = day.dropna()
-
-    symbol_match = symbols == [expected_symbol]
-    min_day = day.min().strftime("%Y-%m-%d") if len(day) else None
-    max_day = day.max().strftime("%Y-%m-%d") if len(day) else None
-
-    return {
-        "expected_symbol": expected_symbol,
-        "archive_path": identity["archive_path"],
-        "bytes": expected_bytes,
-        "sha256": expected_sha,
-        "rows": int(parquet.metadata.num_rows),
-        "physical_fields": [{"name": field.name, "type": str(field.type)} for field in schema],
-        "identity_columns_read": ["symbol", time_field],
-        "distinct_symbols": symbols,
-        "symbol_binding_valid": bool(symbol_match),
-        "time_identity_field": time_field,
-        "time_identity_non_null_rows": int(len(day)),
-        "min_trading_day": min_day,
-        "max_trading_day": max_day,
-        "market_value_columns_read": False,
-        "row_level_data_exported": False,
-    }
+def _matching_views(manifest: dict, expected: dict) -> list[int]:
+    views = manifest.get("views")
+    if not isinstance(views, list):
+        return []
+    matches: list[int] = []
+    for index, view in enumerate(views):
+        if not isinstance(view, dict):
+            continue
+        audit = view.get("audit")
+        symbols = audit.get("symbols") if isinstance(audit, dict) else None
+        if not isinstance(symbols, dict):
+            continue
+        ok = True
+        for symbol, expected_row in expected.items():
+            if _target_subset(symbols.get(symbol)) != expected_row:
+                ok = False
+                break
+        if ok:
+            matches.append(index)
+    return matches
 
 
-def run(inputs: Path, out: Path) -> dict:
-    if out.exists():
-        raise RuntimeError("output_directory_already_exists")
-    identity = load_json(inputs / "PAIR_INPUT_IDENTITY.json")
-    if identity.get("schema_id") != "risk_tool_v2_future_carrier_binding_input@1.0":
-        raise RuntimeError("input_identity_schema_mismatch")
-    if identity.get("task_id") != TASK_ID or identity.get("prereg_sha256") != PREREG_SHA256:
-        raise RuntimeError("input_identity_task_or_prereg_mismatch")
-    members = identity.get("members")
-    if not isinstance(members, dict) or set(members) != set(EXPECTED_SYMBOLS):
-        raise RuntimeError("pair_member_set_mismatch")
+def build_result(inputs: Path) -> dict:
+    amendment_path = inputs / "BINDING_AMENDMENT.json"
+    source_path = inputs / "SOURCE_MANIFEST.json"
+    identity = load_json(inputs / "SOURCE_CONTRACT_IDENTITY.json")
+    amendment = load_json(amendment_path)
 
-    inspected = {}
-    for symbol in EXPECTED_SYMBOLS:
-        local = inputs / "pair" / (symbol + ".parquet")
-        inspected[symbol] = inspect_member(local, symbol, members[symbol])
+    if sha256_file(amendment_path) != AMENDMENT_SHA256:
+        raise RuntimeError("binding_amendment_digest_mismatch")
+    if amendment.get("schema_id") != AMENDMENT_SCHEMA or amendment.get("task_id") != TASK_ID:
+        raise RuntimeError("binding_amendment_identity_mismatch")
+    if source_path.stat().st_size != SOURCE_CONTRACT_BYTES or sha256_file(source_path) != SOURCE_CONTRACT_SHA256:
+        raise RuntimeError("source_contract_identity_mismatch")
+    if identity.get("source_contract", {}).get("sha256") != SOURCE_CONTRACT_SHA256:
+        raise RuntimeError("source_contract_broker_identity_mismatch")
+    if identity.get("amendment_sha256") != AMENDMENT_SHA256:
+        raise RuntimeError("binding_amendment_broker_identity_mismatch")
 
-    valid = all(inspected[s]["symbol_binding_valid"] for s in EXPECTED_SYMBOLS)
-    starts = [inspected[s]["min_trading_day"] for s in EXPECTED_SYMBOLS if inspected[s]["min_trading_day"]]
-    ends = [inspected[s]["max_trading_day"] for s in EXPECTED_SYMBOLS if inspected[s]["max_trading_day"]]
-    overlap_start = max(starts) if len(starts) == 2 else None
-    overlap_end = min(ends) if len(ends) == 2 else None
-    covers_future = bool(
+    manifest = load_json(source_path)
+    corrected = amendment["corrected_binding"]
+    expected_artifact = corrected["source_artifact"]
+    expected_targets = corrected["target_symbols"]
+    target_symbols = sorted(expected_targets)
+
+    declared_symbols = manifest.get("symbols")
+    root_symbol_binding = isinstance(declared_symbols, list) and all(symbol in declared_symbols for symbol in target_symbols)
+
+    artifacts = manifest.get("artifacts")
+    actual_artifact = artifacts.get(expected_artifact["name"]) if isinstance(artifacts, dict) else None
+    source_artifact_binding = (
+        isinstance(actual_artifact, dict)
+        and actual_artifact.get("sha256") == expected_artifact["sha256"]
+        and actual_artifact.get("rows") == expected_artifact["rows"]
+    )
+
+    parent_dataset_binding = manifest.get("canonical_1m_parent_dataset_version") == corrected["canonical_1m_parent_dataset_version"]
+    matching_views = _matching_views(manifest, expected_targets)
+    view_binding_unique = len(matching_views) == 1
+
+    valid = bool(root_symbol_binding and source_artifact_binding and parent_dataset_binding and view_binding_unique)
+    overlap_start = max(row["first_trading_day"] for row in expected_targets.values()) if valid else None
+    overlap_end = min(row["last_trading_day"] for row in expected_targets.values()) if valid else None
+    current_snapshot_covers_full_window = bool(
         valid
         and overlap_start is not None
         and overlap_end is not None
@@ -113,27 +117,38 @@ def run(inputs: Path, out: Path) -> dict:
         and overlap_end >= FUTURE_END
     )
 
-    result = {
+    return {
         "schema_id": SCHEMA_ID,
         "task_id": TASK_ID,
         "profile": PROFILE,
-        "prereg_sha256": PREREG_SHA256,
-        "status": "PAIR_BINDING_VALID_FOR_SOURCE_FAMILY" if valid else "PAIR_BINDING_INVALID",
-        "source": identity["source"],
-        "members": inspected,
-        "pair_overlap": {
-            "min_trading_day": overlap_start,
-            "max_trading_day": overlap_end,
+        "amendment_sha256": AMENDMENT_SHA256,
+        "original_prereg_sha256": amendment["original_preregistration"]["sha256"],
+        "status": "SOURCE_FAMILY_BINDING_VALID" if valid else "SOURCE_FAMILY_BINDING_INVALID",
+        "source_contract": identity["source_contract"],
+        "source_artifact": {
+            "name": expected_artifact["name"],
+            "sha256": expected_artifact["sha256"],
+            "rows": expected_artifact["rows"],
+            "binding_valid": bool(source_artifact_binding),
         },
+        "canonical_1m_parent_dataset_version": corrected["canonical_1m_parent_dataset_version"],
+        "parent_dataset_binding_valid": bool(parent_dataset_binding),
+        "declared_target_symbols_present": bool(root_symbol_binding),
+        "target_symbols": expected_targets,
+        "matching_view_indexes": matching_views,
+        "view_binding_unique": bool(view_binding_unique),
+        "pair_overlap": {"min_trading_day": overlap_start, "max_trading_day": overlap_end},
         "future_oos_window": {
             "start_inclusive": FUTURE_START,
             "end_inclusive": FUTURE_END,
-            "current_snapshot_covers_full_window": covers_future,
+            "current_snapshot_covers_full_window": current_snapshot_covers_full_window,
             "current_snapshot_is_future_oos_evidence": False,
+            "activation_requires_new_snapshot_covering_full_window_for_both_symbols": True,
         },
         "controls": {
             "market_values_read": False,
             "returns_or_labels_read": False,
+            "parquet_deserialization": False,
             "model_execution": False,
             "calibration_execution": False,
             "new_training": False,
@@ -142,6 +157,12 @@ def run(inputs: Path, out: Path) -> dict:
             "production_authority": False,
         },
     }
+
+
+def run(inputs: Path, out: Path) -> dict:
+    if out.exists():
+        raise RuntimeError("output_directory_already_exists")
+    result = build_result(inputs)
     out.mkdir(parents=True)
     (out / "BINDING_AUDIT.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
     return result

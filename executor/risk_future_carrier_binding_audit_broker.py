@@ -1,4 +1,9 @@
-"""Bounded future carrier-binding audit broker for Risk Tool V2."""
+"""Bounded future carrier-binding audit broker for Risk Tool V2.
+
+The corrected v1 audit binds the future carrier family through the immutable
+SOURCE_MANIFEST. It does not assume per-symbol parquet members exist and never
+stages or deserializes market-value parquet.
+"""
 
 from __future__ import annotations
 
@@ -10,7 +15,7 @@ import re
 import shutil
 import sys
 import tarfile
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 import research_broker as rb
 import risk_phase1b_carrier_inventory_core_v1 as inv
@@ -18,16 +23,17 @@ import risk_phase1b_carrier_inventory_core_v1 as inv
 GateError = rb.GateError
 PROFILE_NAME = "risk-v2-future-carrier-binding-audit-v1"
 TASK_ID = "CSI1000-RISK-V2-FUTURE-CARRIER-BINDING-AUDIT-V1-20260915"
-PREREG_SHA256 = "6158bfb13dafe8a6ffee255455320c6598d17c932115985070994cade0030540"
+ORIGINAL_PREREG_SHA256 = "6158bfb13dafe8a6ffee255455320c6598d17c932115985070994cade0030540"
+AMENDMENT_SHA256 = "7972fbc0a13671cf182cdb0c7c3b4ce6d10588c63cbe34c9e6871f300626f371"
+AMENDMENT_NAME = "RISK_TOOL_V2_FUTURE_CARRIER_BINDING_AUDIT_V1_AMENDMENT_20260915.json"
+SOURCE_CONTRACT_SUFFIX = "data/index/SOURCE_MANIFEST.json"
+SOURCE_CONTRACT_BYTES = 52711
+SOURCE_CONTRACT_SHA256 = "c46f2da6c3df016ca054e183e37267dc472097450fcdd6644c22aa0084c15749"
 PRIVATE_REF = "7688ba57206dd29fbef88d8e57475255718471fe"
-MEMBERS = {
-    "000688.SH": "data/market/5m/000688.SH/2026.parquet",
-    "000852.SH": "data/market/5m/000852.SH/2026.parquet",
-}
 
 PROFILE = {
     "private_ref": PRIVATE_REF,
-    "manifest_sha256": PREREG_SHA256,
+    "manifest_sha256": AMENDMENT_SHA256,
     "command": [
         "future_binding/risk_future_carrier_binding_audit.py",
         "--inputs",
@@ -71,6 +77,11 @@ def require_context() -> None:
         raise GateError("invalid_run_identity")
 
 
+def _safe_member_name(name: str) -> bool:
+    path = PurePosixPath(name)
+    return bool(path.parts) and not path.is_absolute() and ".." not in path.parts and "\\" not in name
+
+
 def _stage_frozen_bundle(api, root: Path) -> tuple[Path, dict]:
     profile = inv.load_profile()
     release = api.request(f"repos/{rb.PRIVATE_REPO}/releases/tags/{profile['data_release_tag']}")
@@ -111,64 +122,55 @@ def _stage_frozen_bundle(api, root: Path) -> tuple[Path, dict]:
         expected={bundle["name"]: {"bytes": bundle["bytes"], "sha256": bundle["sha256"]}},
     )
     compressed.unlink()
-    bundle_path = unpacked / bundle["name"]
-    return bundle_path, profile
+    return unpacked / bundle["name"], profile
 
 
-def _extract_pair(bundle_path: Path, profile: dict, inputs: Path) -> dict:
-    pair_dir = inputs / "pair"
-    pair_dir.mkdir()
+def _extract_source_contract(bundle_path: Path, profile: dict, inputs: Path) -> dict:
     with tarfile.open(bundle_path, "r:") as tar:
-        regular = [m for m in tar.getmembers() if m.isfile()]
-        by_name = {m.name: m for m in regular}
+        regular = [member for member in tar.getmembers() if member.isfile()]
+        if any(not _safe_member_name(member.name) for member in regular):
+            raise GateError("future_binding_invalid_bundle_member")
+        by_name = {member.name: member for member in regular}
         if len(by_name) != len(regular):
             raise GateError("future_binding_duplicate_bundle_member")
+        names = [
+            name
+            for name in by_name
+            if name == SOURCE_CONTRACT_SUFFIX or name.endswith("/" + SOURCE_CONTRACT_SUFFIX)
+        ]
+        if len(names) != 1:
+            raise GateError("future_binding_source_contract_not_unique")
+        name = names[0]
+        member = by_name[name]
+        if member.size != SOURCE_CONTRACT_BYTES:
+            raise GateError("future_binding_source_contract_size_mismatch")
+
         manifest_member = by_name.get("BUNDLE_MANIFEST.json")
         if manifest_member is None or manifest_member.size > inv.MAX_MANIFEST_BYTES:
-            raise GateError("future_binding_manifest_missing")
-        stream = tar.extractfile(manifest_member)
-        if stream is None:
-            raise GateError("future_binding_manifest_unreadable")
-        raw = stream.read(inv.MAX_MANIFEST_BYTES + 1)
-        if len(raw) != manifest_member.size:
-            raise GateError("future_binding_manifest_size_mismatch")
-        try:
-            manifest = json.loads(raw)
-        except Exception:
-            raise GateError("future_binding_manifest_invalid") from None
-        files = manifest.get("files") if isinstance(manifest, dict) else None
-        if not isinstance(files, dict):
-            raise GateError("future_binding_manifest_files_missing")
+            raise GateError("future_binding_bundle_manifest_missing")
+        manifest_stream = tar.extractfile(manifest_member)
+        if manifest_stream is None:
+            raise GateError("future_binding_bundle_manifest_unreadable")
+        bundle_manifest = json.loads(manifest_stream.read(inv.MAX_MANIFEST_BYTES + 1))
+        files = bundle_manifest.get("files") if isinstance(bundle_manifest, dict) else None
+        meta = files.get(name) if isinstance(files, dict) else None
+        if meta != {"bytes": SOURCE_CONTRACT_BYTES, "sha256": SOURCE_CONTRACT_SHA256}:
+            raise GateError("future_binding_source_contract_manifest_identity_mismatch")
 
-        output_members = {}
-        for symbol, suffix in MEMBERS.items():
-            matches = [m for m in regular if m.name == suffix or m.name.endswith("/" + suffix)]
-            if len(matches) != 1:
-                raise GateError(f"future_binding_member_not_unique:{symbol}")
-            member = matches[0]
-            meta = files.get(member.name)
-            if not isinstance(meta, dict) or set(meta) != {"bytes", "sha256"}:
-                raise GateError(f"future_binding_member_manifest_missing:{symbol}")
-            if member.size != meta["bytes"] or not re.fullmatch(r"[0-9a-f]{64}", str(meta["sha256"])):
-                raise GateError(f"future_binding_member_manifest_invalid:{symbol}")
-            source = tar.extractfile(member)
-            if source is None:
-                raise GateError(f"future_binding_member_unreadable:{symbol}")
-            destination = pair_dir / (symbol + ".parquet")
-            with destination.open("xb") as target:
-                shutil.copyfileobj(source, target)
-            if destination.stat().st_size != meta["bytes"] or sha256_file(destination) != meta["sha256"]:
-                raise GateError(f"future_binding_member_digest_failed:{symbol}")
-            output_members[symbol] = {
-                "archive_path": member.name,
-                "bytes": int(meta["bytes"]),
-                "sha256": str(meta["sha256"]),
-            }
+        stream = tar.extractfile(member)
+        if stream is None:
+            raise GateError("future_binding_source_contract_unreadable")
+        raw = stream.read(SOURCE_CONTRACT_BYTES + 1)
+        if len(raw) != SOURCE_CONTRACT_BYTES or hashlib.sha256(raw).hexdigest() != SOURCE_CONTRACT_SHA256:
+            raise GateError("future_binding_source_contract_digest_mismatch")
+        destination = inputs / "SOURCE_MANIFEST.json"
+        destination.write_bytes(raw)
 
     return {
-        "schema_id": "risk_tool_v2_future_carrier_binding_input@1.0",
+        "schema_id": "risk_tool_v2_future_carrier_binding_input@2.0",
         "task_id": TASK_ID,
-        "prereg_sha256": PREREG_SHA256,
+        "amendment_sha256": AMENDMENT_SHA256,
+        "original_prereg_sha256": ORIGINAL_PREREG_SHA256,
         "source": {
             "private_ref": PRIVATE_REF,
             "release_tag": profile["data_release_tag"],
@@ -176,8 +178,13 @@ def _extract_pair(bundle_path: Path, profile: dict, inputs: Path) -> dict:
             "asset_sha256": profile["data_asset_sha256"],
             "bundle_sha256": profile["bundle_member"]["sha256"],
         },
-        "members": output_members,
+        "source_contract": {
+            "archive_path": name,
+            "bytes": SOURCE_CONTRACT_BYTES,
+            "sha256": SOURCE_CONTRACT_SHA256,
+        },
         "market_values_exported": False,
+        "parquet_deserialization": False,
         "new_training": False,
         "production_authority": False,
     }
@@ -199,9 +206,14 @@ def prepare_inputs(api, root: Path, profile: dict):
 
     inputs = work / "inputs"
     inputs.mkdir()
+    amendment = Path(__file__).resolve().parents[1] / "docs" / "research" / AMENDMENT_NAME
+    if amendment.is_symlink() or not amendment.is_file() or sha256_file(amendment) != AMENDMENT_SHA256:
+        raise GateError("future_binding_amendment_identity_failed")
+    shutil.copy2(amendment, inputs / "BINDING_AMENDMENT.json")
+
     bundle_path, source_profile = _stage_frozen_bundle(api, root)
-    identity = _extract_pair(bundle_path, source_profile, inputs)
-    (inputs / "PAIR_INPUT_IDENTITY.json").write_text(json.dumps(identity, indent=2, sort_keys=True) + "\n")
+    identity = _extract_source_contract(bundle_path, source_profile, inputs)
+    (inputs / "SOURCE_CONTRACT_IDENTITY.json").write_text(json.dumps(identity, indent=2, sort_keys=True) + "\n")
     bundle_path.unlink()
     return work
 
