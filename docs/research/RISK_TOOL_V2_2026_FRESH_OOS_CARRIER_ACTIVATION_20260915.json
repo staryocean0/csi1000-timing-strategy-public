@@ -1,0 +1,50 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_2026_fresh_oos_carrier_activation@1.0",
+  "task_id": "CSI1000-RISK-V2-2026-FRESH-OOS-V1-20260914",
+  "activation_date": "2026-09-15",
+  "status": "CARRIER_ACCEPTED_FOR_PREREGISTERED_FRESH_OOS",
+  "user_decision": {
+    "same_source": true,
+    "data_valid_for_research": true,
+    "provenance_recheck_required": false,
+    "instruction": "Use the previously provided 5-minute data as valid research input; do not block the study on version/authenticity provenance questions. Report only genuine coverage or field insufficiency if encountered."
+  },
+  "accepted_carrier": {
+    "path": "data/index/5m_offset_0.parquet",
+    "rows_inventory": 135682,
+    "bytes": 3615731,
+    "sha256": "211448c914b547232bc536da7df94dc5ae279b8265a5cafe58409238485217d7",
+    "min_day_inventory": "2015-01-05",
+    "max_day_inventory": "2026-08-21",
+    "compute_rule": "Read the accepted combined 5-minute carrier once inside the credential-free compute stage and select 000688.SH / 000852.SH by the symbol column."
+  },
+  "frozen_preregistration": {
+    "path": "docs/research/RISK_TOOL_V2_2026_FRESH_OOS_PREREG_20260914.json",
+    "sha256": "c05bdf09c54626861f2a86abbcadb514fa90918320e2ab4be45e1e3217b7c9d7",
+    "fresh_oos_cutoff_trading_day_inclusive": "2026-09-11",
+    "horizons_minutes": [15, 30]
+  },
+  "scientific_contract_changed": false,
+  "unchanged_scientific_contract": [
+    "frozen Phase-1 model coefficients and ridge lambda",
+    "frozen Phase-1B Platt calibration parameters",
+    "15m and 30m horizons",
+    "2026-09-11 inclusive fresh-OOS cutoff",
+    "support gates",
+    "5000-draw trading-day bootstrap with seed 20260914",
+    "family size 2 and lower quantile 0.025",
+    "per-horizon acceptance gates",
+    "one-time reveal policy",
+    "no model or calibration refit"
+  ],
+  "pre_activation_controls": {
+    "year_2026_semantic_read": false,
+    "model_refit": false,
+    "calibrator_refit": false,
+    "sensor_retuning": false,
+    "cohort_retuning": false,
+    "production_authority": false
+  },
+  "insufficiency_policy": "If the accepted carrier lacks a required symbol, required columns, or enough frozen-cutoff support, report that concrete insufficiency; do not reopen provenance/version authenticity adjudication.",
+  "production_authority": false
+}
