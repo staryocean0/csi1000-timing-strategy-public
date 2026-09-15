@@ -106,8 +106,10 @@ class TwoWaveV0800FStateStreamTest(unittest.TestCase):
 
     def test_controller_routes_only_exact_f_title(self):
         text = CONTROLLER.read_text(encoding="utf-8")
-        self.assertEqual(text.count(CONTROLLER_TITLE), 2)
+        self.assertEqual(text.count(CONTROLLER_TITLE), 3)
         self.assertEqual(text.count(f"profile='{PROFILE}'"), 1)
+        self.assertEqual(text.count("github.event.issue.number == 227"), 1)
+        self.assertEqual(text.count("github.event.action == 'reopened'"), 1)
         self.assertIn("github.event.issue.user.login == github.repository_owner", text)
         self.assertIn("public-compute.yml/dispatches", text)
         self.assertIn("-f ref='cloud-workspace-v1'", text)
