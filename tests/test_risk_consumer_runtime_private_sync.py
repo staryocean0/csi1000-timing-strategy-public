@@ -21,7 +21,7 @@ def load_module():
 
 
 class RiskConsumerRuntimePrivateSyncTests(unittest.TestCase):
-    def test_contract_is_exact_and_stage_request_is_frozen(self) -> None:
+    def test_contract_is_exact_and_merge_request_is_frozen(self) -> None:
         mod = load_module()
         self.assertEqual(mod.SYNC_ID, "risk-v2-consumer-runtime-import-20260915-v1")
         self.assertEqual(mod.PRIVATE_BASE_SHA, "67effb80f51228f6129dca5c4f7971a0bb6c7f15")
@@ -41,7 +41,7 @@ class RiskConsumerRuntimePrivateSyncTests(unittest.TestCase):
             ],
         )
         request = json.loads(REQUEST.read_text(encoding="utf-8"))
-        self.assertEqual(request["phase"], "stage")
+        self.assertEqual(request["phase"], "merge")
         self.assertEqual(request["sync_id"], mod.SYNC_ID)
         self.assertEqual(request["private_base_sha"], mod.PRIVATE_BASE_SHA)
         self.assertEqual(request["targets"], [row["target"] for row in mod.TARGETS])
