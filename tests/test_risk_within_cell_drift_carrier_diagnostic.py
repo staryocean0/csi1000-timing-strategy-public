@@ -13,7 +13,7 @@ class WithinCellCarrierDiagnosticTest(unittest.TestCase):
     def test_non_rescue_contract(self):
         for v in PREREG["prohibitions"].values(): self.assertTrue(v)
         self.assertTrue(PREREG["descriptive_method"]["no_best_carrier_selection"]);self.assertTrue(PREREG["descriptive_method"]["no_significance_gate"])
-        self.assertTrue(PREREG["interpretation"]["v3_verdict_immutable"]);self.assertTrue(PREREG["interpretation"]["diagnostic_cannot_promote_15m_to_complete"])
+        self.assertTrue(PREREG["interpretation"]["v3_verdict_immutable"]);self.assertTrue(PREREG["interpretation"]["cannot_promote_15m_to_complete"])
     def test_sources_compile_and_verifier_is_independent(self):
         prod=(ROOT/"executor/risk_within_cell_drift_carrier_diagnostic.py").read_text();ver=(ROOT/"executor/risk_within_cell_drift_carrier_diagnostic_verifier.py").read_text()
         compile(prod,"producer","exec");compile(ver,"verifier","exec")
