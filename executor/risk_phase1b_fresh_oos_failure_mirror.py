@@ -1,4 +1,4 @@
-"""Mirror only a bounded sanitized fresh-OOS failure code to the private run branch."""
+"""Mirror only bounded non-semantic fresh-OOS failure metadata to the private run branch."""
 
 from __future__ import annotations
 
@@ -16,7 +16,11 @@ PROFILE_NAME = "risk-v2-phase1b-fresh-oos-v1"
 SCHEMA_ID = "risk_tool_v2_phase1b_fresh_oos_failure_code@1.0"
 MAX_LOG_BYTES = 8192
 SAFE_MESSAGE = re.compile(r"[A-Za-z0-9_.:/-]{1,240}")
-SAFE_EXCEPTION = {"RuntimeError", "ValueError", "KeyError", "TypeError"}
+SAFE_EXCEPTION_NAME = re.compile(r"[A-Za-z_][A-Za-z0-9_.]{0,127}")
+TRACE_FRAME = re.compile(
+    r'File "[^"]*risk_phase1b_fresh_oos_eval\.py", line ([0-9]{1,6}), in ([A-Za-z_][A-Za-z0-9_]*)'
+)
+EXCEPTION_LINE = re.compile(r"([A-Za-z_][A-Za-z0-9_.]{0,127}):(?:\s*(.*))?")
 
 
 def _extract(path: Path) -> dict:
@@ -25,16 +29,49 @@ def _extract(path: Path) -> dict:
     if path.stat().st_size > MAX_LOG_BYTES:
         return {"status": "LOG_TOO_LARGE"}
     text = path.read_text(errors="replace")
+
+    source_line = None
+    source_function = None
+    for line in text.splitlines():
+        frame = TRACE_FRAME.search(line)
+        if frame:
+            source_line = int(frame.group(1))
+            source_function = frame.group(2)
+
     found = None
     for line in text.splitlines():
-        match = re.fullmatch(r"(RuntimeError|ValueError|KeyError|TypeError):\s*([^\s]+)", line.strip())
+        match = EXCEPTION_LINE.fullmatch(line.strip())
         if not match:
             continue
         exception_type, message = match.groups()
-        message = message.strip("'\"")
-        if exception_type in SAFE_EXCEPTION and SAFE_MESSAGE.fullmatch(message):
-            found = {"status": "CLASSIFIED", "exception_type": exception_type, "code": message}
-    return found or {"status": "UNCLASSIFIED"}
+        if not SAFE_EXCEPTION_NAME.fullmatch(exception_type):
+            continue
+        node = {
+            "status": "CLASSIFIED_METADATA_ONLY",
+            "exception_type": exception_type,
+        }
+        if source_line is not None and source_function is not None:
+            node["source_file"] = "risk_phase1b_fresh_oos_eval.py"
+            node["source_line"] = source_line
+            node["source_function"] = source_function
+        if message:
+            message = message.strip("'\"")
+            if SAFE_MESSAGE.fullmatch(message):
+                node["status"] = "CLASSIFIED"
+                node["code"] = message
+            else:
+                node["code"] = "REDACTED_MESSAGE"
+        found = node
+    if found:
+        return found
+    if source_line is not None and source_function is not None:
+        return {
+            "status": "TRACE_LOCATION_ONLY",
+            "source_file": "risk_phase1b_fresh_oos_eval.py",
+            "source_line": source_line,
+            "source_function": source_function,
+        }
+    return {"status": "UNCLASSIFIED"}
 
 
 def main() -> None:
