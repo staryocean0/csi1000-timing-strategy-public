@@ -73,7 +73,7 @@ def _read_private_text(api, path: str, branch: str, expected_blob: str | None = 
     if expected_blob is not None and meta.get("sha") != expected_blob:
         raise GateError("ols_d2_recovery_private_text_blob_failed")
     try:
-        raw = base64.b64decode(meta.get("content", "") or "", validate=True)
+        raw = base64.b64decode(meta.get("content", "") or "")
         raw.decode("utf-8")
     except Exception:
         raise GateError("ols_d2_recovery_private_text_decode_failed") from None
