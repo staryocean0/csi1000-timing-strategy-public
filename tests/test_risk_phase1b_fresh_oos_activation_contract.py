@@ -71,6 +71,18 @@ class FreshOosActivationContractTest(unittest.TestCase):
         self.assertIn('"user_authorized_same_source_and_valid": True', text)
         self.assertIn('"provenance_recheck_required": False', text)
 
+    def test_publish_records_failure_before_success_only_mirror(self):
+        broker = (EXECUTOR / "risk_phase1b_fresh_oos_broker.py").read_text()
+        workflow = WORKFLOW.read_text()
+        self.assertNotIn("risk_phase1b_fresh_oos_private_mirror as fresh_mirror", broker)
+        self.assertNotIn("fresh_mirror.main()", broker)
+        self.assertIn("rb.publish(PROFILE)", broker)
+        publish = "python3 executor/risk_phase1b_fresh_oos_broker.py publish risk-v2-phase1b-fresh-oos-v1"
+        mirror = "python3 executor/risk_phase1b_fresh_oos_private_mirror.py"
+        self.assertIn(publish, workflow)
+        self.assertIn(mirror, workflow)
+        self.assertLess(workflow.index(publish), workflow.index(mirror))
+
     def test_unique_standard_executor_and_controller_are_registered(self):
         workflow = WORKFLOW.read_text()
         controller = CONTROLLER.read_text()
