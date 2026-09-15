@@ -1,0 +1,64 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_temporal_stability_2015_2025_prereg@1.0",
+  "task_id": "CSI1000-RISK-V2-TEMPORAL-STABILITY-2015-2025-V1-20260915",
+  "purpose": "First real hierarchical acceptance run for the already-frozen Risk Tool 2.0 representation. Measure temporal stability from annual to weekly scales and return the first unresolved optimization bottleneck.",
+  "active_acceptance_profile": "risk-tool-v2-temporal-stability-hierarchical-v1",
+  "primary_longitudinal_carrier": "000852.SH",
+  "years_read": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],
+  "hard_gate_years": [2015,2016,2017,2018,2019,2021,2022,2023,2024,2025],
+  "warmup_year": 2020,
+  "horizons_minutes": [15,30],
+  "optimization_order": ["global","annual","quarterly","monthly","weekly"],
+  "within_level_order": ["support","ordering","calibration"],
+  "period_conventions": {
+    "annual": "calendar year",
+    "quarterly": "calendar year-quarter",
+    "monthly": "calendar year-month",
+    "weekly": "calendar-year strftime %U bucket; no cross-year pooling"
+  },
+  "carrier_policy": {
+    "reason": "2015-2019 canonical history exists only for 000852.SH. The first temporal-stability acceptance lane therefore keeps the carrier fixed across the entire 2015-2025 span so carrier composition cannot masquerade as temporal instability.",
+    "000688_role": "not part of this hard-gate run; existing 2021-2025 cross-carrier evidence remains separate",
+    "cross_symbol_claim": false
+  },
+  "canonical_data": {
+    "repository": "staryocean0/factorlab-trend-reversion-regime-lab",
+    "ref": "1d760ea9525eb3688b70a4aa0f2b5b207af16a17",
+    "substitute_data_allowed": false
+  },
+  "known_incomplete_day_policy": {
+    "eligible_day": "exactly 48 five-minute bars and exactly 24 AM plus 24 PM bars",
+    "expected_exclusions": {"2016-01-04":30,"2016-01-07":5,"2017-08-24":47},
+    "action": "exclude entire day before state construction",
+    "unexpected_incomplete_day_policy": "fail_closed",
+    "imputation": false,
+    "interpolation": false
+  },
+  "frozen_model": {
+    "model_freeze_sha256": "b81cae6208d96890c0fd83d47e4ea8c8a81ba55b41c78f58db29e9160f173551",
+    "calibration_freeze_sha256": "74ecd25790123f026e29cba7bb84322aad8a385c10fe3d60ef0d75d52d1b1909",
+    "score_refit": false,
+    "calibration_refit": false,
+    "new_training": false
+  },
+  "outputs": ["SUMMARY.json","TEMPORAL_METRICS.csv","ACCEPTANCE_RESULT.json","INPUT_DATA_RECEIPT.json","MODEL_INPUT_RECEIPT.json"],
+  "scientific_rules": {
+    "first_unresolved_gate_is_only_optimization_target": true,
+    "lower_levels_cannot_rescue_higher_level_failure": true,
+    "support_shortage_is_not_model_failure": true,
+    "post_result_profile_switching": false,
+    "rescue_retuning": false
+  },
+  "scope": {
+    "fresh_oos": false,
+    "year_2026_read": false,
+    "pnl": false,
+    "strategy_threshold_search": false,
+    "production_authority": false
+  },
+  "execution": {
+    "standard_workflow_dispatch_only": true,
+    "independent_verifier_required": true,
+    "results_private": true
+  }
+}
