@@ -51,7 +51,8 @@ jobs:
        github.event.issue.title == 'controller: overnight-carrier-materialization-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-dev-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-blackbox-v1' ||
-       github.event.issue.title == 'controller: ols-drawdown-d0-v1')
+       github.event.issue.title == 'controller: ols-drawdown-d0-v1' ||
+       github.event.issue.title == 'controller: ols-r2-d1-leadlag-v1')
     runs-on: ubuntu-24.04
     timeout-minutes: 2
     env:
@@ -158,6 +159,9 @@ jobs:
               ;;
             'controller: ols-drawdown-d0-v1')
               profile='ols-drawdown-d0-v1'
+              ;;
+            'controller: ols-r2-d1-leadlag-v1')
+              profile='ols-r2-d1-leadlag-v1'
               ;;
             *)
               echo 'Execution stopped: unapproved_controller_request' >&2
