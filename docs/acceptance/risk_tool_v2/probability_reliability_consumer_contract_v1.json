@@ -1,0 +1,75 @@
+{
+  "schema_id": "csi1000.risk_tool_probability_reliability_consumer_contract@1.0",
+  "contract_id": "risk-tool-v2-probability-reliability-consumer-contract-v1",
+  "status": "frozen_before_consumer_conformance_run",
+  "source_authority": {
+    "temporal_v3_run": "34930354449-1",
+    "reliability_run": "34942554638-1",
+    "output_contract_run": "34945466654-1",
+    "output_contract_status": "DUAL_OUTPUT_CONTRACT_SUPPORTED"
+  },
+  "15m": {
+    "authority_grade": "TS-B_STABLE_RANKING_CALIBRATION_GUARDED",
+    "current_bottleneck": "weekly.calibration",
+    "q33": 0.5170330932673238,
+    "q67": 0.7096666848299501,
+    "bands": {
+      "UNSCORED": {
+        "ranking": true,
+        "probability_context": false,
+        "probability_research": false
+      },
+      "LOW": {
+        "ranking": true,
+        "probability_context": false,
+        "probability_research": false
+      },
+      "MID": {
+        "ranking": true,
+        "probability_context": true,
+        "probability_research": false
+      },
+      "HIGH": {
+        "ranking": true,
+        "probability_context": true,
+        "probability_research": true
+      }
+    }
+  },
+  "30m": {
+    "authority_grade": "TS-A_STABLE_PROBABILITY_COMPONENT",
+    "authority_state": "COMPLETE",
+    "reliability_overlay_required": false,
+    "permissions": {
+      "ranking": true,
+      "probability_context": true,
+      "probability_research": true
+    }
+  },
+  "globally_forbidden_capabilities": [
+    "hard_probability_threshold",
+    "strategy_routing",
+    "position_sizing",
+    "pnl_authority",
+    "production_authority"
+  ],
+  "consumer_api": {
+    "conformant_entrypoint": "consume(payload, capability)",
+    "direct_raw_probability_field_consumption": "non_conformant",
+    "payload_validation_required_before_consumption": true,
+    "band_must_be_derived_from_reliability_score": true,
+    "permission_matrix_must_be_rederived_and_exact": true
+  },
+  "boundaries": {
+    "probability_modified": false,
+    "ordering_modified": false,
+    "reliability_formula_modified": false,
+    "current_v3_authority_immutable": true,
+    "cannot_promote_15m_to_complete": true,
+    "year_2026_read": false,
+    "pnl": false,
+    "strategy_routing": false,
+    "position_sizing": false,
+    "production_authority": false
+  }
+}
