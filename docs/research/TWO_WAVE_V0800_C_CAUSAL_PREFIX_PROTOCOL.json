@@ -1,0 +1,87 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_causal_prefix_protocol@1.0",
+  "status": "PUBLIC_PREREGISTRATION_CANDIDATE_NOT_PRIVATE_AUTHORITY",
+  "layer": "Layer2",
+  "instrument": "000852.SH",
+  "study": "V0800-C_CAUSAL_PREFIX_REPLAY",
+  "parent_study": "V0800-B_DURATION_SCALE_BAND_MAP",
+  "input": {
+    "repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "path": "data/development/5m_offset_0.parquet",
+    "bytes": 3351411,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "start": "2015-01-05",
+    "end": "2020-12-31",
+    "fresh_oos": false,
+    "substitute_data_allowed": false
+  },
+  "kernel": {
+    "phase": "A_low_high_low_only",
+    "pivot_timing": "v0.4.3_opposite_extremum_min_leg_maturity",
+    "min_leg": 4,
+    "max_unfinished_leg": 48,
+    "current_first_backward_search": true,
+    "predecessor_must_be_confirmed_by_current_publication": true,
+    "same_epoch_required": true,
+    "previous_end_lte_current_start": true,
+    "nearest_eligible_predecessor_required": true
+  },
+  "same_scale": {
+    "relation": "max(d_prev,d_cur)/min(d_prev,d_cur) <= rho",
+    "candidate_rho": [1.25, 1.3333333333333333, 1.4142135623730951, 1.5],
+    "rho_winner_before_run": null,
+    "rho_selection_allowed": false
+  },
+  "prefix_checkpoints": {
+    "fixed_stride_rows": 4096,
+    "include_last_row_count_of_each_calendar_year": [2015, 2016, 2017, 2018, 2019, 2020],
+    "event_wave_ordinal_stride": 256,
+    "include_first_event_ordinal": 0,
+    "include_final_wave_confirmation": true,
+    "include_full_row_count": true,
+    "duplicates_removed": true,
+    "sorted": true
+  },
+  "exact_replay": {
+    "prefix_rerun_from_start": true,
+    "expected_wave_filter": "confirmation_bar < prefix_length",
+    "expected_pair_filter": "current_confirmation_bar < prefix_length",
+    "canonical_wave_ledger_exact_match": true,
+    "canonical_pair_ledger_exact_match": true,
+    "ledger_sha256_exact_match": true
+  },
+  "acceptance": {
+    "all_checkpoints_must_pass": true,
+    "future_reference_violations_must_equal": 0,
+    "predecessor_after_current_violations_must_equal": 0,
+    "nearer_eligible_predecessor_skip_violations_must_equal": 0,
+    "wave_prefix_mismatches_must_equal": 0,
+    "pair_prefix_mismatches_must_equal": 0,
+    "ledger_hash_mismatches_must_equal": 0
+  },
+  "outputs": [
+    "CHECKPOINT_AUDIT.csv",
+    "LEDGER_HASHES.json",
+    "SUMMARY.json",
+    "INPUT_RECEIPT.json"
+  ],
+  "forbidden_outputs_or_inputs": [
+    "future_return",
+    "pnl",
+    "position",
+    "buy_signal",
+    "sell_signal",
+    "cost_optimized_parameter",
+    "execution_route",
+    "rho_winner",
+    "production_authority"
+  ],
+  "authority": {
+    "morphology_acceptance": false,
+    "direction_winner": null,
+    "rho_winner": null,
+    "trade_authority": false,
+    "production_authority": false
+  }
+}
