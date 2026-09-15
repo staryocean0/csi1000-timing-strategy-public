@@ -39,7 +39,7 @@ TARGETS = (
     {
         "source": "governance/private_sync/v1/risk_tool_v2/test_risk_probability_reliability_consumer_integration_v1.py",
         "target": "runtime/tests/unit/test_risk_probability_reliability_consumer_integration_v1.py",
-        "expected_public_blob": "f4ac613b9b696530de55f1d07d33cf28ae143cf4",
+        "expected_public_blob": "90c41e566457806c673ccb3ac3f0b8d150a6db51",
     },
 )
 
