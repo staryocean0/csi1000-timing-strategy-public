@@ -2,6 +2,11 @@ name: OLS D0 drawdown attribution
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - cloud-workspace-v1
+    paths:
+      - .github/workflows/ols-drawdown-d0.yml
 
 permissions:
   contents: read
@@ -16,10 +21,12 @@ jobs:
       github.repository == 'staryocean0/csi1000-timing-strategy-public' &&
       github.event.repository.private == false &&
       github.ref == 'refs/heads/cloud-workspace-v1' &&
-      github.event_name == 'workflow_dispatch'
+      (github.event_name == 'workflow_dispatch' || github.event_name == 'push')
     runs-on: ubuntu-24.04
     environment: private-research
     timeout-minutes: 30
+    env:
+      OLS_D0_AUTORUN_CONTEXT: fixed-reviewed-d0-v1
     steps:
       - name: Checkout reviewed OLS D0 executor only
         timeout-minutes: 3
@@ -37,6 +44,7 @@ jobs:
           python3 -m py_compile \
             executor/ols_drawdown_d0.py \
             executor/ols_drawdown_d0_broker.py \
+            executor/ols_drawdown_d0_autorun.py \
             executor/ols_drawdown_d0_verifier.py \
             docs/research/layer3/ols_family/ols_drawdown_atlas.py
 
@@ -53,21 +61,21 @@ jobs:
         timeout-minutes: 6
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
-        run: python3 executor/ols_drawdown_d0_broker.py prepare ols-drawdown-d0-v1
+        run: python3 executor/ols_drawdown_d0_autorun.py prepare ols-drawdown-d0-v1
 
       - name: Compute and verify without private credentials
         timeout-minutes: 16
-        run: python3 executor/ols_drawdown_d0_broker.py compute ols-drawdown-d0-v1
+        run: python3 executor/ols_drawdown_d0_autorun.py compute ols-drawdown-d0-v1
 
       - name: Stop owned container before credentials return
         id: cleanup
         if: always() && steps.prepare.outcome == 'success'
         timeout-minutes: 1
-        run: python3 executor/ols_drawdown_d0_broker.py cleanup ols-drawdown-d0-v1
+        run: python3 executor/ols_drawdown_d0_autorun.py cleanup ols-drawdown-d0-v1
 
       - name: Return verified D0 results privately
         if: always() && steps.prepare.outcome == 'success' && steps.cleanup.outcome == 'success'
         timeout-minutes: 6
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
-        run: python3 executor/ols_drawdown_d0_broker.py publish ols-drawdown-d0-v1
+        run: python3 executor/ols_drawdown_d0_autorun.py publish ols-drawdown-d0-v1
