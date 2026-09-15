@@ -215,7 +215,6 @@ def verify(inputs: Path, results: Path) -> None:
         raise RuntimeError("ols_d2_verify_decision")
     if bool(payload.get("d2b_authority")) != (expected_decision["status"] == "SUPPORTED_AS_D2_EXIT_OVERLAY_CANDIDATE"):
         raise RuntimeError("ols_d2_verify_authority")
-    print("OLS_D2_VERIFIED")
 
 
 def main() -> None:
@@ -224,6 +223,18 @@ def main() -> None:
     parser.add_argument("--results", type=Path, required=True)
     args = parser.parse_args()
     verify(args.inputs, args.results)
+    print(
+        json.dumps(
+            {
+                "schema_id": "ols_r2_d2_verification@1.0",
+                "status": "passed",
+                "exit_mode_count": len(EXIT_MODES),
+                "research_ab_only": True,
+                "production_authority": False,
+            },
+            sort_keys=True,
+        )
+    )
 
 
 if __name__ == "__main__":
