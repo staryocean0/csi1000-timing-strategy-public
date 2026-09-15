@@ -189,7 +189,7 @@ def _safe_failure_diagnostic() -> None:
     try:
         state, root = rb.load_state()
     except Exception:
-        print('{"available":false,"reason":"state_unavailable"}', file=sys.stderr)
+        print('OLS_D0_SAFE_DIAGNOSTIC={"available":false,"reason":"state_unavailable"}', file=sys.stderr)
         return
     paths = [root / "results" / "compute.log", root / "results" / "controller_validation.log"]
     codes: set[str] = set()
