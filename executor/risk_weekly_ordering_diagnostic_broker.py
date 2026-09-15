@@ -5,7 +5,7 @@ HERE=Path(__file__).resolve().parent
 _spec=importlib.util.spec_from_file_location("_rb",HERE/"research_broker.py");rb=importlib.util.module_from_spec(_spec);_spec.loader.exec_module(rb);GateError=rb.GateError
 _tspec=importlib.util.spec_from_file_location("_tb",HERE/"risk_temporal_stability_2week_v2_broker.py");tb=importlib.util.module_from_spec(_tspec);_tspec.loader.exec_module(tb)
 PROFILE_NAME="risk-v2-weekly-ordering-diagnostic-v1"
-PROFILE={"private_ref":tb.tb.PRIVATE_REF,"manifest_sha256":tb.tb.P1[6],"command":["diagnostic/risk_weekly_ordering_diagnostic.py","--inputs","/work/inputs","--out","/results/study"],"verify_command":["diagnostic/risk_weekly_ordering_diagnostic_verifier.py","--inputs","/work/inputs","--results","/results/study"],"command_timeout_seconds":600,"verification_timeout_seconds":600,"new_training":False,"production_authority":False}
+PROFILE={"private_ref":tb.PROFILE["private_ref"],"manifest_sha256":tb.PROFILE["manifest_sha256"],"command":["diagnostic/risk_weekly_ordering_diagnostic.py","--inputs","/work/inputs","--out","/results/study"],"verify_command":["diagnostic/risk_weekly_ordering_diagnostic_verifier.py","--inputs","/work/inputs","--results","/results/study"],"command_timeout_seconds":600,"verification_timeout_seconds":600,"new_training":False,"production_authority":False}
 rb.COMPUTE_HOST_TIMEOUT_SECONDS=630;rb.VALIDATE_HOST_TIMEOUT_SECONDS=630
 
 def require_context():
