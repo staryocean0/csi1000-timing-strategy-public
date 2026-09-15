@@ -1,7 +1,7 @@
 {
   "schema_id": "csi1000.private_runtime_sync_request@1.0",
   "sync_id": "risk-v2-consumer-runtime-import-20260915-v1",
-  "phase": "stage",
+  "phase": "merge",
   "private_base_sha": "67effb80f51228f6129dca5c4f7971a0bb6c7f15",
   "targets": [
     "runtime/src/factor_lab/market_state/risk_probability_reliability_consumer_v1.py",
