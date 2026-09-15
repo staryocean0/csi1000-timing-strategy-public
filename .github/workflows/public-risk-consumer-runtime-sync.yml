@@ -1,0 +1,74 @@
+name: CSI1000 Risk consumer runtime bounded sync
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - cloud-workspace-v1
+    paths:
+      - governance/private_sync/v1/risk_tool_v2/runtime_consumer_request.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: csi1000-risk-consumer-runtime-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: >-
+      github.repository == 'staryocean0/csi1000-timing-strategy-public' &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/cloud-workspace-v1' &&
+      (github.event_name == 'workflow_dispatch' || github.event_name == 'push')
+    runs-on: ubuntu-24.04
+    environment: private-research
+    timeout-minutes: 6
+    steps:
+      - name: Checkout reviewed bounded sync surface
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            executor
+            governance/private_sync/v1/risk_tool_v2
+          sparse-checkout-cone-mode: true
+      - name: Verify fixed runtime sync contract before credentials
+        run: |
+          GITHUB_ACTIONS=true \
+          GITHUB_REPOSITORY='staryocean0/csi1000-timing-strategy-public' \
+          GITHUB_REF='refs/heads/cloud-workspace-v1' \
+          GITHUB_EVENT_NAME='workflow_dispatch' \
+          GITHUB_RUN_ID='1' \
+          python3 executor/risk_consumer_runtime_private_sync.py >/dev/null 2>&1 || true
+          python3 - <<'PY'
+          import importlib.util
+          from pathlib import Path
+          p = Path('executor/risk_consumer_runtime_private_sync.py')
+          s = importlib.util.spec_from_file_location('runtime_sync_contract', p)
+          m = importlib.util.module_from_spec(s)
+          s.loader.exec_module(m)
+          m.self_test()
+          PY
+      - name: Apply fixed private runtime sync request
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/risk_consumer_runtime_private_sync.py
+      - name: Run Layer3 import smoke without private credentials
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ''
+        run: |
+          rm -rf /tmp/risk-consumer-runtime-smoke
+          mkdir -p /tmp/risk-consumer-runtime-smoke/src/factor_lab/market_state
+          mkdir -p /tmp/risk-consumer-runtime-smoke/tests/unit
+          cp executor/risk_probability_reliability_consumer_v1.py \
+            /tmp/risk-consumer-runtime-smoke/src/factor_lab/market_state/risk_probability_reliability_consumer_v1.py
+          cp governance/private_sync/v1/risk_tool_v2/test_risk_probability_reliability_consumer_integration_v1.py \
+            /tmp/risk-consumer-runtime-smoke/tests/unit/test_risk_probability_reliability_consumer_integration_v1.py
+          touch /tmp/risk-consumer-runtime-smoke/src/factor_lab/__init__.py
+          touch /tmp/risk-consumer-runtime-smoke/src/factor_lab/market_state/__init__.py
+          cd /tmp/risk-consumer-runtime-smoke
+          PYTHONPATH=/tmp/risk-consumer-runtime-smoke/src \
+            python3 -m unittest discover -s tests/unit \
+            -p 'test_risk_probability_reliability_consumer_integration_v1.py' -v
