@@ -1,0 +1,73 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_c_adjudication@1.0",
+  "status": "frozen_after_verified_c_before_rho_semantic_adjudication",
+  "source_run": {
+    "public_run_id": "34961575435-1",
+    "public_source_sha": "af9ba09bb2a3cc821ee89a7a2cf2ac29776debed",
+    "profile": "two-wave-v0800-c-causal-prefix-replay-v1",
+    "receipt_status": "passed",
+    "delivery_status": "archive_uploaded_and_verified",
+    "input_rows": 70114,
+    "input_bytes": 3351411,
+    "input_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "allowed_start": "2015-01-05",
+    "allowed_end": "2020-12-31",
+    "fresh_oos": false,
+    "substitute_data_used": false,
+    "year_2026_read": false
+  },
+  "verified_observations": {
+    "bars_replayed": 70114,
+    "pivot_count": 5471,
+    "reset_count": 164,
+    "wave_count": 2503,
+    "strict_pair_count": 2358,
+    "earliest_event_confirmation_bar": 4,
+    "latest_event_confirmation_bar": 70090,
+    "max_pivot_confirmation_delay_bars": 41,
+    "producer_implementation": "independent_incremental_state_machine",
+    "append_only_event_ledgers": true,
+    "event_visibility": "confirmation_bar_only",
+    "prefix_replay_complete": true,
+    "independent_trusted_output_comparison": "passed",
+    "same_scale_counts": {
+      "1.25": 587,
+      "1.3333333333333333": 772,
+      "1.4142135623730951": 924,
+      "1.5": 1084
+    }
+  },
+  "adjudication": {
+    "causal_prefix_gate_passed": true,
+    "strict_shared_anchor_continuity": "retained_as_only_direction_eligible_pair_semantic_for_v0800",
+    "duration_remains_primary_scale_coordinate": true,
+    "candidate_rhos_remain_frozen": [
+      1.25,
+      1.3333333333333333,
+      1.4142135623730951,
+      1.5
+    ],
+    "legacy_rho_2_evaluated_in_c": false,
+    "rho_winner": null,
+    "rho_selection_evidence_added_by_c": false,
+    "reason": "C establishes point-in-time causal equivalence. Reproduction of B1 support under causal replay validates knowability but does not discriminate among candidate rho values."
+  },
+  "authority": {
+    "direction_thresholds": false,
+    "pair_state_publication": false,
+    "future_outcome_used": false,
+    "pnl_used": false,
+    "positions_used": false,
+    "trade_authority": false,
+    "production_authority": false,
+    "v0800_d_authorized": false
+  },
+  "next_gate": {
+    "name": "V0800-C2_RHO_SEMANTIC_ADJUDICATION",
+    "purpose": "Reduce or operationally bind the frozen rho family using a preregistered scale-semantic rule before any direction grid.",
+    "may_use_future_returns": false,
+    "may_use_pnl": false,
+    "may_open_2026": false,
+    "may_tune_tau_or_kappa": false
+  }
+}
