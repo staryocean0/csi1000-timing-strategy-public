@@ -232,6 +232,7 @@ jobs:
             python3 executor/risk_phase1b_private_mirror.py
           elif [ '${{ inputs.profile }}' = 'risk-v2-phase1b-carrier-inventory-v1' ]; then
             python3 executor/risk_phase1b_carrier_inventory_broker.py publish risk-v2-phase1b-carrier-inventory-v1
+            python3 executor/risk_phase1b_carrier_inventory_private_mirror.py
           elif [ '${{ inputs.profile }}' = 'risk-v2-historical-000852-2015-2019-v1' ]; then
             python3 executor/risk_historical_000852_broker.py publish risk-v2-historical-000852-2015-2019-v1
             python3 executor/risk_historical_private_mirror.py
