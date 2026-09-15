@@ -1,4 +1,4 @@
-import importlib.util
+import ast
 import json
 import unittest
 from pathlib import Path
@@ -8,11 +8,16 @@ PROFILE = "risk-v2-weekly-calibration-streak-diagnostic-v1"
 PREREG = json.loads((ROOT / "docs/research/RISK_TOOL_V2_15M_WEEKLY_CALIBRATION_STREAK_DIAGNOSTIC_V1_PREREG_20260915.json").read_text())
 
 
-def load_module(path, name):
-    spec = importlib.util.spec_from_file_location(name, path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+def load_pure_functions(path, names):
+    tree = ast.parse(path.read_text())
+    selected = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name in names]
+    if {node.name for node in selected} != set(names):
+        raise AssertionError("pure helper missing")
+    module = ast.Module(body=selected, type_ignores=[])
+    ast.fix_missing_locations(module)
+    namespace = {}
+    exec(compile(module, str(path), "exec"), namespace)
+    return namespace
 
 
 class WeeklyCalibrationStreakDiagnosticTest(unittest.TestCase):
@@ -47,12 +52,17 @@ class WeeklyCalibrationStreakDiagnosticTest(unittest.TestCase):
         self.assertTrue(interpretation["diagnostic_cannot_promote_15m_to_complete"])
 
     def test_streak_semantics_and_failure_components(self):
-        producer = load_module(ROOT / "executor/risk_weekly_calibration_streak_diagnostic.py", "cal_streak_test")
-        self.assertEqual(producer.failure_component(0.1, 0.2), "pass")
-        self.assertEqual(producer.failure_component(-0.1, 0.2), "brier_only")
-        self.assertEqual(producer.failure_component(0.1, 0.0), "logloss_only")
-        self.assertEqual(producer.failure_component(0.0, -0.1), "both")
-        self.assertEqual(producer.longest_runs([True, True, False, True, True, True]), [(0, 1, 2), (3, 5, 3)])
+        helpers = load_pure_functions(
+            ROOT / "executor/risk_weekly_calibration_streak_diagnostic.py",
+            {"failure_component", "longest_runs"},
+        )
+        failure_component = helpers["failure_component"]
+        longest_runs = helpers["longest_runs"]
+        self.assertEqual(failure_component(0.1, 0.2), "pass")
+        self.assertEqual(failure_component(-0.1, 0.2), "brier_only")
+        self.assertEqual(failure_component(0.1, 0.0), "logloss_only")
+        self.assertEqual(failure_component(0.0, -0.1), "both")
+        self.assertEqual(longest_runs([True, True, False, True, True, True]), [(0, 1, 2), (3, 5, 3)])
         self.assertIn("unsupported endpoints are omitted", PREREG["frozen_representation"]["streak_semantics"])
 
     def test_broker_is_bounded_and_dispatch_only(self):
