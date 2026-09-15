@@ -1,0 +1,48 @@
+{
+  "schema_id": "csi1000.risk_tool_consumer_contract_prereg@1.0",
+  "profile": "risk-v2-consumer-contract-v1",
+  "status": "frozen_before_execution",
+  "objective": "Adjudicate a fail-closed downstream consumption contract for the already-supported Probability + Reliability output without changing any scientific authority.",
+  "authority_input": {
+    "run": "34945466654-1",
+    "branch": "runs/public-research/34945466654-1",
+    "path": "research/public-runs/34945466654-1-results/OUTPUT_CONTRACT_RESULT.json",
+    "git_blob": "83b19574fef3ef5e46c823f6a9eb067781b85c3e",
+    "bytes": 2759,
+    "sha256": "d7c2cd1106b8025c242ff0486e6a167be3d8669145735e634ea14ddb9977aa96"
+  },
+  "public_contracts": [
+    "docs/acceptance/risk_tool_v2/risk_tool_consumer_contract_v1.json",
+    "docs/acceptance/risk_tool_v2/risk_tool_output_envelope_v1.schema.json"
+  ],
+  "required_checks": [
+    "parent_output_contract_status_is_DUAL_OUTPUT_CONTRACT_SUPPORTED",
+    "15m_remains_TS_B_and_weekly_calibration_bottleneck",
+    "30m_remains_COMPLETE_TS_A",
+    "q33_q67_equal_parent_authority",
+    "all_forbidden_capabilities_are_fail_closed",
+    "15m_LOW_and_UNSCORED_cannot_interpret_absolute_probability",
+    "15m_MID_is_guarded_only",
+    "15m_HIGH_allows_research_probability_interpretation_only",
+    "30m_research_probability_interpretation_is_allowed_without_reliability_overlay",
+    "no_band_grants_hard_threshold_routing_sizing_pnl_or_production"
+  ],
+  "outputs": [
+    "CONSUMER_CONTRACT_RESULT.json",
+    "CAPABILITY_MATRIX.csv",
+    "ENVELOPE_EXAMPLES.json",
+    "SUMMARY.json"
+  ],
+  "boundaries": {
+    "market_data_read": false,
+    "model_execution": false,
+    "probability_refit": false,
+    "ordering_change": false,
+    "reliability_change": false,
+    "threshold_search": false,
+    "strategy_logic": false,
+    "pnl": false,
+    "year_2026_read": false,
+    "production_authority": false
+  }
+}
