@@ -1,0 +1,64 @@
+{
+  "schema_id": "risk_tool_v2_15m_within_cell_drift_carrier_diagnostic_prereg@1.0",
+  "profile": "risk-v2-15m-within-cell-drift-carrier-diagnostic-v1",
+  "frozen_at": "2026-09-15",
+  "target": "15m.weekly.calibration",
+  "purpose": "Diagnose which already-frozen continuous carrier, if any, explains temporal calibration drift inside the same current_state x age_bucket cell. This is descriptive attribution only and cannot change the v3 acceptance verdict.",
+  "authority_chain": {
+    "state_conditional_run": "34935354211-1",
+    "state_summary": {"path": "research/public-runs/34935354211-1-results/SUMMARY.json", "bytes": 2167, "sha256": "534892118a09008657c3a742ffd6c22f285a851f1bf1763eefb0a58536169777"},
+    "state_group_summary": {"path": "research/public-runs/34935354211-1-results/STATE_GROUP_SUMMARY.csv", "bytes": 7524, "sha256": "a091876a8e0065af595a64f975fefe99eb9dbb3ff8f8eab41e6b0369bf903f35"},
+    "required_streak_labels": ["2023-W21","2023-W22","2023-W23","2023-W24","2023-W25","2023-W26","2023-W27","2023-W28","2023-W29","2023-W30","2023-W31","2023-W32"]
+  },
+  "scope": {
+    "symbol": "000852.SH",
+    "horizon_minutes": 15,
+    "hard_years": [2015,2016,2017,2018,2019,2021,2022,2023,2024,2025],
+    "year_2020_role": "warmup_not_validation",
+    "year_2026_read": false,
+    "weekly_measurement": "trailing_2_market_weeks_at_each_market_week_endpoint",
+    "cohort_groups": ["STREAK","OTHER_PASS"],
+    "cells": "current_state x age_bucket plus current_state aggregate",
+    "primary_cell_support": {"streak_rows_min": 20, "other_pass_rows_min": 200}
+  },
+  "frozen_carriers": [
+    {"name": "shock_intensity", "source": "existing frozen cohort field"},
+    {"name": "vol_ratio", "source": "existing frozen cohort field"},
+    {"name": "raw_severity_increment", "formula": "p_C - p_B"}
+  ],
+  "descriptive_method": {
+    "distribution_summary": ["mean","median","q25","q75","other_pass_iqr_standardized_mean_shift"],
+    "carrier_bins": "Within each eligible cell and carrier, quartile cut points are frozen from OTHER_PASS only; duplicate cut points are collapsed fail-closed to the remaining unique ordered bins.",
+    "residual": "y - post_tail_C",
+    "decomposition": {
+      "raw_residual_gap": "mean_residual_STREAK - mean_residual_OTHER_PASS",
+      "composition_counterfactual": "sum over OTHER_PASS-defined carrier bins of STREAK bin share times OTHER_PASS mean residual in that bin",
+      "composition_component": "composition_counterfactual - mean_residual_OTHER_PASS",
+      "within_bin_component": "mean_residual_STREAK - composition_counterfactual",
+      "identity": "raw_residual_gap = composition_component + within_bin_component"
+    },
+    "no_best_carrier_selection": true,
+    "no_significance_gate": true
+  },
+  "outputs": ["CARRIER_CELL_SUMMARY.csv","CARRIER_BIN_METRICS.csv","CARRIER_DECOMPOSITION.csv","SUMMARY.json","INPUT_DATA_RECEIPT.json","MODEL_INPUT_RECEIPT.json"],
+  "prohibitions": {
+    "candidate_search": true,
+    "carrier_threshold_search": true,
+    "calibration_refit": true,
+    "tail_parameter_search": true,
+    "numeric_acceptance_threshold_change": true,
+    "model_change": true,
+    "data_substitution": true,
+    "year_2026_read": true,
+    "pnl": true,
+    "strategy_routing": true,
+    "production_authority": true
+  },
+  "interpretation": {
+    "diagnostic_only": true,
+    "state_conditional_authority_34935354211_1_immutable": true,
+    "v3_verdict_immutable": true,
+    "may_motivate_future_preregistered_representation_study": true,
+    "cannot_promote_15m_to_complete": true
+  }
+}
