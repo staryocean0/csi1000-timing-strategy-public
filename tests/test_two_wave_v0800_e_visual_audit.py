@@ -65,11 +65,17 @@ class TwoWaveV0800EVisualAuditTest(unittest.TestCase):
         self.assertIn('"new_training": False', text)
         self.assertIn('"production_authority": False', text)
 
-    def test_private_mirror_is_bounded_and_excludes_row_level_and_visual_files(self):
+    def test_private_mirror_is_bounded_and_only_exposes_frozen_verified_visual_pack(self):
         text = MIRROR.read_text(encoding="utf-8")
         self.assertIn('"SUMMARY.json", "INPUT_RECEIPT.json", "AUDIT_MANIFEST.json", "AUDIT_REPORT.md"', text)
         self.assertNotIn("AUDIT_CASES.csv", text)
-        self.assertNotIn("visuals/", text)
+        self.assertIn("c3260be7f72a12a5da0b33d1fb23deacd32d967d83e45f480d0363ca2e836ab5", text)
+        self.assertIn("MAX_VISUAL_FILES = 60", text)
+        self.assertIn("MAX_VISUAL_BYTES = 64 * 1024", text)
+        self.assertIn("MAX_VISUAL_TOTAL_BYTES = 2 * 1024 * 1024", text)
+        self.assertIn("count != 59", text)
+        self.assertIn("two_wave_v0800_e_manifest_not_frozen_source_pack", text)
+        self.assertIn("data-bar-index=", text)
         self.assertIn("premature_parameter_winner", text)
 
     def test_no_parameter_or_direction_authority(self):
