@@ -30,9 +30,9 @@ jobs:
             executor
             tests
           sparse-checkout-cone-mode: true
-      - name: Synthetic executor tests
+      - name: D2 recovery tests
         timeout-minutes: 2
-        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+        run: python3 -m unittest discover -s tests -p 'test_ols_r2_d2_result_recovery.py' -v
       - name: Recover byte-locked original D2 text result without recompute
         timeout-minutes: 3
         env:
