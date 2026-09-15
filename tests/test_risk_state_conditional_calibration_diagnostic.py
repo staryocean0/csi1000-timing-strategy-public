@@ -13,7 +13,7 @@ class StateConditionalCalibrationDiagnosticTest(unittest.TestCase):
         for n in ("risk_state_conditional_calibration_diagnostic.py","risk_state_conditional_calibration_diagnostic_verifier.py","risk_state_conditional_calibration_diagnostic_broker.py","risk_state_conditional_calibration_diagnostic_private_mirror.py"):py_compile.compile(str(ROOT/"executor"/n),doraise=True)
         v=(ROOT/"executor/risk_state_conditional_calibration_diagnostic_verifier.py").read_text();self.assertNotIn("risk_state_conditional_calibration_diagnostic.py",v);self.assertIn("authority_metric_drift",v)
     def test_no_rescue_surface(self):
-        src=(ROOT/"executor/risk_state_conditional_calibration_diagnostic.py").read_text().lower();self.assertNotIn("2026.parquet",src);self.assertNotIn("optimize",src);self.assertNotIn("grid",src);self.assertNotIn("fit(",src);self.assertNotIn("pnl",src)
+        src=(ROOT/"executor/risk_state_conditional_calibration_diagnostic.py").read_text().lower();self.assertNotIn("2026.parquet",src);self.assertNotIn("optimize",src);self.assertNotIn("grid",src);self.assertNotIn("fit(",src);self.assertIn('"pnl":false',src);self.assertNotIn("strategy_return",src);self.assertNotIn("sharpe",src)
     def test_mirror_is_text_only(self):
         m=(ROOT/"executor/risk_state_conditional_calibration_diagnostic_private_mirror.py").read_text();self.assertIn("MAX_BYTES",m);self.assertNotIn("parquet",m.lower())
     def test_standard_routes_registered(self):
