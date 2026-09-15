@@ -1,0 +1,64 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_c_causal_prefix_replay_protocol@1.0",
+  "status": "frozen_before_first_v0800_c_run",
+  "study": "V0800-C_CAUSAL_PREFIX_REPLAY",
+  "layer": "Layer2",
+  "parent_adjudication": {
+    "public_merge_sha": "cb2a6b009b3a220b3b162add7b37a0d9b0f599a8",
+    "document": "docs/research/TWO_WAVE_V0800_B1_ADJUDICATION_20260915.json",
+    "permission": "causal_prefix_replay_only"
+  },
+  "input": {
+    "source_repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "source_ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "file": "data/development/5m_offset_0.parquet",
+    "bytes": 3351411,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "allowed_start": "2015-01-05",
+    "allowed_end": "2020-12-31",
+    "fresh_oos": false,
+    "year_2026_read": false
+  },
+  "causal_kernel": {
+    "timeframe": "5m_offset_0",
+    "min_leg_bar_intervals": 4,
+    "max_unfinished_leg_bar_intervals": 48,
+    "pivot_measurement": "close_based_temporal_maturity",
+    "wave": "A_phase_low_high_low",
+    "continuity": "shared_anchor_strict_L-H-L-H-L"
+  },
+  "candidate_rhos": [1.25, 1.3333333333333333, 1.4142135623730951, 1.5],
+  "legacy_rho_2_evaluated": false,
+  "producer_contract": {
+    "implementation": "independent_incremental_state_machine",
+    "may_import_reference_TemporalMaturityAEngine": false,
+    "event_outputs": ["PIVOT_EVENTS.csv", "RESET_EVENTS.csv", "WAVE_EVENTS.csv", "STRICT_PAIR_EVENTS.csv"],
+    "event_visibility": "an event is emitted only on its causal confirmation bar"
+  },
+  "independent_verifier_contract": {
+    "reference_engine": "TemporalMaturityAEngine_from_two_wave_v0800_scale_map",
+    "comparison": "exact_event_set_and_confirmation_bar_equivalence",
+    "float_tolerance": 1e-12,
+    "required_zero_mismatches": ["pivot", "reset", "wave", "strict_pair", "channel_geometry", "same_scale_by_rho"],
+    "proof_interpretation": "append_only_exact_event_delta_equality_at_every_bar_implies_equal_cumulative_knowledge_at_every_prefix"
+  },
+  "pass_gate": {
+    "all_reference_events_present_once": true,
+    "no_early_event": true,
+    "no_post_confirmation_revision": true,
+    "all_candidate_rho_flags_exact": true,
+    "independent_verifier_status": "passed"
+  },
+  "authority": {
+    "rho_winner": null,
+    "rho_winner_selection": false,
+    "direction_thresholds": false,
+    "pair_state_publication": false,
+    "future_outcome_used": false,
+    "pnl_used": false,
+    "positions_used": false,
+    "trade_authority": false,
+    "production_authority": false,
+    "v0800_d_authorized": false
+  }
+}
