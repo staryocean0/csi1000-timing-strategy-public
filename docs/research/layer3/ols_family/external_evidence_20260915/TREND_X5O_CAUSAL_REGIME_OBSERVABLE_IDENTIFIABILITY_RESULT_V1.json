@@ -1,0 +1,69 @@
+{
+  "schema_id": "trend_x5o_causal_regime_observable_identifiability_result@1.0",
+  "status": "X5O_COMPLETE_NO_CAUSAL_REGIME_OBSERVABLE_MEETS_IDENTIFIABILITY_GATES",
+  "research_scope": "representation-layer regime-observable identifiability only",
+  "source": "Sina public native 60m index kline",
+  "reference_calibration_months": ["2025-09", "2025-10"],
+  "thresholds": {
+    "COMMON_VOL_SHIFT": 0.4764800439,
+    "XS_VOL_SHIFT_DISPERSION": 0.2938840410,
+    "CORRELATION_BREAK": 0.2519931305,
+    "SSE50_RELATIVE_VOL_SHIFT": 0.4854896549
+  },
+  "evaluation_blocks": [
+    ["2025-11","2025-12","2026-01"],
+    ["2025-12","2026-01","2026-02"],
+    ["2026-01","2026-02","2026-03"],
+    ["2026-02","2026-03","2026-04"],
+    ["2026-03","2026-04","2026-05"],
+    ["2026-04","2026-05","2026-06"],
+    ["2026-05","2026-06","2026-07"],
+    ["2026-06","2026-07","2026-08"]
+  ],
+  "common_regime_alert": {
+    "block_alert_fraction": [0.5750,0.6316,0.6384,0.5132,0.4303,0.4375,0.4677,0.4538],
+    "spearman_vs_q95_turnover_severity": 0.4048,
+    "first_structural_block_alert_fraction": 0.5750,
+    "identified": false,
+    "failed_reason": "rank association below preregistered 0.60 threshold"
+  },
+  "sse50_carrier_regime_alert": {
+    "block_alert_fraction": [0.2976,0.3202,0.3125,0.3246,0.3115,0.3250,0.3024,0.2385],
+    "spearman_vs_000016_normalized_ratio": 0.4910,
+    "spearman_vs_interaction_loss_severity": 0.1687,
+    "mar_may_alert_fraction": 0.3115,
+    "jun_aug_alert_fraction": 0.2385,
+    "identified": false
+  },
+  "per_observable_descriptive_association": {
+    "COMMON_VOL_SHIFT": {"rho_q95": -0.5952, "rho_000016_ratio": -0.3713, "rho_interaction_loss": 0.1325},
+    "XS_VOL_SHIFT_DISPERSION": {"rho_q95": 0.5476, "rho_000016_ratio": -0.0958, "rho_interaction_loss": -0.6266},
+    "CORRELATION_BREAK": {"rho_q95": 0.8333, "rho_000016_ratio": -0.3713, "rho_interaction_loss": -0.7350, "first_block_alert_fraction": 0.3730},
+    "SSE50_RELATIVE_VOL_SHIFT": {"rho_q95": 0.3333, "rho_000016_ratio": 0.4910, "rho_interaction_loss": 0.1687}
+  },
+  "interpretation": {
+    "regime_conditionality_exists": true,
+    "prospectively_identifiable_from_preregistered_return_geometry": false,
+    "correlation_break_is_diagnostic_clue_only": true,
+    "single_regime_switch_rule_supported": false,
+    "new_normalized_strength_law_authorized": false
+  },
+  "decision": {
+    "COMMON_REGIME_OBSERVABLE_IDENTIFIED": false,
+    "SSE50_CARRIER_REGIME_OBSERVABLE_IDENTIFIED": false,
+    "retune_observable_thresholds_on_x5o_outcomes_allowed": false,
+    "fit_regime_conditional_normalization_on_x5o_outcomes_allowed": false,
+    "recommended_next_action": "Pause unified dynamic normalized_strength development unless genuinely new exogenous regime information or alternate-clock evidence becomes available. Preserve X5O observables as diagnostics only."
+  },
+  "v1_action": "NO_CHANGE",
+  "x6_readiness": "HOLD_NOT_READY",
+  "market_outcomes_computed": false,
+  "trading_return_metrics_computed": false,
+  "strategy_logic_used": false,
+  "old_m4_m5_governed_2025_holdout_read": false,
+  "runtime_admission_changed": false,
+  "v1_state_boundary_changed": false,
+  "v1_strength_semantics_changed": false,
+  "production_authority": false,
+  "fresh_oos": false
+}

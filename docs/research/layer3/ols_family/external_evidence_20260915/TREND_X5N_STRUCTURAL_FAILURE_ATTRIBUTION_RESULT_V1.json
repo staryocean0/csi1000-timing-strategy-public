@@ -1,0 +1,73 @@
+{
+  "schema_id": "trend_x5n_structural_failure_attribution_result@1.0",
+  "status": "X5N_COMPLETE_REGIME_CONDITIONALITY_SUPPORTED_SINGLE_UNIFIED_STATEFUL_LAW_NOT_ESTABLISHED",
+  "research_scope": "representation-layer normalized_strength failure attribution only",
+  "frozen_subject": "ANCHORED_PARTIAL_DB0P12_F0P50_COOLDOWN2_SLOW25",
+  "subject_parameters_changed": false,
+  "gates_changed": false,
+  "rolling_regime_panel": [
+    {"months": ["2025-11","2025-12","2026-01"], "passed": 5, "failed": ["temporal","q95_turnover"], "ratio_000016": 1.205, "fast_slow_gap_q95": 1.854},
+    {"months": ["2025-12","2026-01","2026-02"], "passed": 6, "failed": ["temporal"], "ratio_000016": 1.212, "fast_slow_gap_q95": 1.793},
+    {"months": ["2026-01","2026-02","2026-03"], "passed": 6, "failed": ["temporal"], "ratio_000016": 1.177, "fast_slow_gap_q95": 2.059},
+    {"months": ["2026-02","2026-03","2026-04"], "passed": 6, "failed": ["temporal"], "ratio_000016": 1.330, "fast_slow_gap_q95": 1.850},
+    {"months": ["2026-03","2026-04","2026-05"], "passed": 6, "failed": ["interaction"], "ratio_000016": 2.423, "fast_slow_gap_q95": 2.130},
+    {"months": ["2026-04","2026-05","2026-06"], "passed": 4, "failed": ["temporal","interaction","q95_turnover"], "ratio_000016": 2.429, "fast_slow_gap_q95": 2.161},
+    {"months": ["2026-05","2026-06","2026-07"], "passed": 5, "failed": ["temporal","interaction"], "ratio_000016": 2.429, "fast_slow_gap_q95": 2.028},
+    {"months": ["2026-06","2026-07","2026-08"], "passed": 6, "failed": ["interaction"], "ratio_000016": 1.092, "fast_slow_gap_q95": 1.891}
+  ],
+  "early_block_attribution": {
+    "common_raw_strength_monthly": {"2025-11": 3.8142, "2025-12": 3.6080, "2026-01": 2.9917},
+    "q95_turnover_multiple_by_carrier": {"000852.SH": 2.094, "000688.SH": 2.427, "000300.SH": 2.270, "000905.SH": 2.056, "000016.SH": 2.625},
+    "temporal_improvement_by_carrier": {"000852.SH": 0.154, "000688.SH": 0.116, "000300.SH": 0.359, "000905.SH": 0.173, "000016.SH": 0.204},
+    "interpretation": "The early temporal/q95 failure is broad-based across carriers during a falling common raw-strength regime; q95 turnover exceeds 2x slow for all five carriers, so a single-carrier explanation is not supported."
+  },
+  "block_b_000016_attribution": {
+    "raw_monthly_ratio_000016": 1.296,
+    "normalized_monthly_ratio_000016": 2.423,
+    "temporal_improvement_000016": -0.870,
+    "other_carrier_temporal_improvements": {"000852.SH": 0.244, "000688.SH": 0.270, "000300.SH": 0.313, "000905.SH": 0.191},
+    "interpretation": "Block-B interaction reversal is concentrated in 000016.SH while the other four carriers improve, supporting carrier-specific regime decoupling rather than a market-wide normalization failure."
+  },
+  "carrier_composition_panel": {
+    "baseline_ratio_000016": 2.4231,
+    "jackknife_ratios": {"omit_000852": 2.2551, "omit_000688": 2.3804, "omit_000300": 2.4839, "omit_000905": 2.1074},
+    "strong_composition_attribution": false,
+    "conclusion": "NOT_SUPPORTED_AS_PRIMARY_DRIVER"
+  },
+  "common_estimator_panel": {
+    "peer_mean_counterfactual": {
+      "Tencent": {"ratio_000016": 2.3174, "ratio_reduction_vs_median": 0.0436, "interaction_reduction_vs_slow": -0.1807},
+      "Sina": {"ratio_000016": 2.3170, "ratio_reduction_vs_median": 0.0438, "interaction_reduction_vs_slow": -0.1802}
+    },
+    "strong_estimator_attribution": false,
+    "conclusion": "MEDIAN_VS_MEAN_NOT_SUPPORTED_AS_PRIMARY_DRIVER"
+  },
+  "clock_panel": {
+    "same_window_alternate_clock_for_000016_located": false,
+    "available_000016_assets": ["Sina native 60m", "Tencent native 60m"],
+    "conclusion": "CLOCK_STRUCTURE_NOT_IDENTIFIABLE_FOR_PRIMARY_FAILURE"
+  },
+  "attribution_summary": {
+    "market_regime_conditionality": "SUPPORTED",
+    "carrier_specific_regime_interaction_for_000016": "SUPPORTED",
+    "carrier_composition_as_primary_driver": "NOT_SUPPORTED",
+    "common_scale_median_estimator_as_primary_driver": "NOT_SUPPORTED",
+    "clock_structure": "NOT_IDENTIFIABLE",
+    "single_unified_stateful_normalization_law": "NOT_ESTABLISHED"
+  },
+  "decision": {
+    "retune_on_x5n_outcomes_allowed": false,
+    "promote_normalized_strength_representation": false,
+    "recommended_next_action": "Stop local parameter refinement. If research continues, test an explicit regime-conditional representation hypothesis or acquire independent alternate-clock evidence before any new candidate development."
+  },
+  "v1_action": "NO_CHANGE",
+  "x6_readiness": "HOLD_NOT_READY",
+  "trading_return_metrics_computed": false,
+  "strategy_logic_used": false,
+  "old_m4_m5_governed_2025_holdout_read": false,
+  "runtime_admission_changed": false,
+  "v1_state_boundary_changed": false,
+  "v1_strength_semantics_changed": false,
+  "production_authority": false,
+  "fresh_oos": false
+}

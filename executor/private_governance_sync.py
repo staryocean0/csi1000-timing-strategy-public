@@ -89,6 +89,53 @@ CONTRACTS: dict[str, dict[str, object]] = {
             },
         ),
     },
+    "layer3-ols-external-evidence-20260915-v1": {
+        "private_base_sha": "215662a7a07070a34473148e172bf56d17fefd62",
+        "private_branch": "sync/public-import/layer3-ols-external-evidence-20260915-v1",
+        "target_status": "added",
+        "targets": (
+            {
+                "source": "docs/research/layer3/ols_family/external_evidence_20260915/EVIDENCE_MANIFEST.json",
+                "target": "docs/imports/layer3_ols_external_evidence_20260915/EVIDENCE_MANIFEST.json",
+                "expected_public_blob": "5c35bc23fc3184548361b95c6ff7d18229156265",
+            },
+            {
+                "source": "docs/research/layer3/ols_family/external_evidence_20260915/README.md",
+                "target": "docs/imports/layer3_ols_external_evidence_20260915/README.md",
+                "expected_public_blob": "5f7d0ab37bae048b575019791b6f7aa63707d197",
+            },
+            {
+                "source": "docs/research/layer3/ols_family/external_evidence_20260915/TREND_X4_POST_X5O_UPDATE_V1.json",
+                "target": "docs/imports/layer3_ols_external_evidence_20260915/TREND_X4_POST_X5O_UPDATE_V1.json",
+                "expected_public_blob": "d14e982954c0f3702dc15aa0894380d6b4a20541",
+            },
+            {
+                "source": "docs/research/layer3/ols_family/external_evidence_20260915/TREND_X5M_FROZEN_ANCHORED_STRUCTURAL_VALIDATION_RESULT_V1.json",
+                "target": "docs/imports/layer3_ols_external_evidence_20260915/TREND_X5M_FROZEN_ANCHORED_STRUCTURAL_VALIDATION_RESULT_V1.json",
+                "expected_public_blob": "bd8cbb104eed4c0440095f98567aac684a72d3b0",
+            },
+            {
+                "source": "docs/research/layer3/ols_family/external_evidence_20260915/TREND_X5N_STRUCTURAL_FAILURE_ATTRIBUTION_RESULT_V1.json",
+                "target": "docs/imports/layer3_ols_external_evidence_20260915/TREND_X5N_STRUCTURAL_FAILURE_ATTRIBUTION_RESULT_V1.json",
+                "expected_public_blob": "fc73e3406eb922a80dea886a81827a14b0405871",
+            },
+            {
+                "source": "docs/research/layer3/ols_family/external_evidence_20260915/TREND_X5O_CAUSAL_REGIME_OBSERVABLE_IDENTIFIABILITY_PROTOCOL_V1.json",
+                "target": "docs/imports/layer3_ols_external_evidence_20260915/TREND_X5O_CAUSAL_REGIME_OBSERVABLE_IDENTIFIABILITY_PROTOCOL_V1.json",
+                "expected_public_blob": "8f8eb31ff4c94ebe55e8448e071f6110ac153307",
+            },
+            {
+                "source": "docs/research/layer3/ols_family/external_evidence_20260915/TREND_X5O_CAUSAL_REGIME_OBSERVABLE_IDENTIFIABILITY_RESULT_V1.json",
+                "target": "docs/imports/layer3_ols_external_evidence_20260915/TREND_X5O_CAUSAL_REGIME_OBSERVABLE_IDENTIFIABILITY_RESULT_V1.json",
+                "expected_public_blob": "5df03522db412818138c2acfcc45adbb6456630f",
+            },
+            {
+                "source": "docs/research/layer3/ols_family/external_evidence_20260915/TREND_X5O_POSTHOC_OBSERVABLE_SOURCE_AGREEMENT_V1.json",
+                "target": "docs/imports/layer3_ols_external_evidence_20260915/TREND_X5O_POSTHOC_OBSERVABLE_SOURCE_AGREEMENT_V1.json",
+                "expected_public_blob": "783da58689b92f5f05aa4432c26049f0a83eb122",
+            },
+        ),
+    },
 }
 
 
@@ -176,6 +223,10 @@ def self_test() -> None:
             _source_bytes(row)
         if sync_id == "layer3-ols-family-import-20260915-v1":
             prefix = "docs/imports/layer3_ols_family_20260915/"
+            if not all(name.startswith(prefix) for name in names):
+                raise GateError("governance_target_scope_drift")
+        if sync_id == "layer3-ols-external-evidence-20260915-v1":
+            prefix = "docs/imports/layer3_ols_external_evidence_20260915/"
             if not all(name.startswith(prefix) for name in names):
                 raise GateError("governance_target_scope_drift")
     _load_request()

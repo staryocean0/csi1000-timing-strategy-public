@@ -1,0 +1,15 @@
+{
+  "schema_id": "trend_x5o_posthoc_observable_source_agreement@1.0",
+  "status": "POST_HOC_SOURCE_AGREEMENT_DIAGNOSTIC_NOT_USED_FOR_X5O_PRIMARY_DECISION",
+  "observable": "CORRELATION_BREAK",
+  "providers": ["Sina public native 60m", "Tencent public native 60m"],
+  "window": ["2026-01-05", "2026-09-14"],
+  "common_timestamps": 680,
+  "pearson": 0.9999999434,
+  "median_absolute_difference": 0.0000182897,
+  "q95_absolute_difference": 0.0000829017,
+  "interpretation": "The strongest threshold-free X5O clue is not a single-provider artifact, but source agreement does not rescue the preregistered identifiability gate.",
+  "used_for_primary_identifiability_decision": false,
+  "threshold_change_authorized": false,
+  "product_adoption_allowed": false
+}

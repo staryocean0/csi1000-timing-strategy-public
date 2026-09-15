@@ -23,6 +23,7 @@ class PrivateGovernanceSyncTests(unittest.TestCase):
         mod = load_sync_module()
         self.assertIn("two-repo-control-plane-hardening-v1", mod.CONTRACTS)
         self.assertIn("layer3-ols-family-import-20260915-v1", mod.CONTRACTS)
+        self.assertIn("layer3-ols-external-evidence-20260915-v1", mod.CONTRACTS)
         legacy = mod.CONTRACTS["two-repo-control-plane-hardening-v1"]
         self.assertEqual(
             {row["target"] for row in legacy["targets"]},
@@ -48,12 +49,11 @@ class PrivateGovernanceSyncTests(unittest.TestCase):
             self.assertIn("Chat", text)
             self.assertIn("公库", text)
             self.assertIn("私库", text)
-        # Completed historical sync contracts remain structurally immutable, but
-        # their public source files may legitimately evolve afterward.  Do not
-        # rerun source-byte identity checks against the current working tree here.
+        # Completed historical sync contracts remain structurally immutable, while
+        # the one active fixed request may legitimately be in stage or merge phase.
         request, contract = mod._load_request()
-        self.assertEqual(request["phase"], "merge")
-        self.assertEqual(request["sync_id"], "layer3-ols-family-import-20260915-v1")
+        self.assertIn(request["phase"], {"stage", "merge"})
+        self.assertEqual(request["sync_id"], "layer3-ols-external-evidence-20260915-v1")
         self.assertEqual(request["private_base_sha"], contract["private_base_sha"])
         self.assertEqual(request["targets"], [row["target"] for row in contract["targets"]])
 
