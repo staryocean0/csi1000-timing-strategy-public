@@ -1,0 +1,66 @@
+{
+  "schema_id": "csi1000_layer3_ols_legacy_external_evidence@1.0",
+  "audit_date": "2026-09-15",
+  "authority": "external_evidence_only",
+  "source_repository": "staryocean0/factorlab-trend-reversion-regime-lab",
+  "source_snapshot_commit": "69e83973f6213d308a4b3afc6b3715b76e3d67b7",
+  "existing_migration_public_commit": "f68979008dd7b201be8328d8e8000c146eadf372",
+  "existing_migration_private_path": "docs/imports/layer3_ols_family_20260915/",
+  "audit_conclusion": {
+    "source_snapshot_is_latest_legacy_head_observed": true,
+    "existing_migration_already_covers_x5m_x5n_x5o_lineage": true,
+    "new_csi1000_pair_progresses_beyond_legacy_snapshot": true,
+    "legacy_repository_may_not_hold_current_authority": true,
+    "legacy_results_are_not_automatically_accepted_as_csi1000_science": true
+  },
+  "selected_evidence": [
+    {
+      "stage": "X5M",
+      "source_path": "docs/governance/TREND_X5M_FROZEN_ANCHORED_STRUCTURAL_VALIDATION_RESULT_V1.json",
+      "source_blob": "bd8cbb104eed4c0440095f98567aac684a72d3b0",
+      "local_snapshot": "TREND_X5M_FROZEN_ANCHORED_STRUCTURAL_VALIDATION_RESULT_V1.json",
+      "reason": "establishes that the anchored-partial normalized-strength candidate failed structural generalization and may not be retuned on those outcomes"
+    },
+    {
+      "stage": "X5N",
+      "source_path": "docs/governance/TREND_X5N_STRUCTURAL_FAILURE_ATTRIBUTION_RESULT_V1.json",
+      "source_blob": "fc73e3406eb922a80dea886a81827a14b0405871",
+      "local_snapshot": "TREND_X5N_STRUCTURAL_FAILURE_ATTRIBUTION_RESULT_V1.json",
+      "reason": "supports market-regime conditionality and a carrier-specific 000016 interaction while rejecting simple composition/estimator explanations"
+    },
+    {
+      "stage": "X5O",
+      "source_path": "docs/governance/TREND_X5O_CAUSAL_REGIME_OBSERVABLE_IDENTIFIABILITY_PROTOCOL_V1.json",
+      "source_blob": "8f8eb31ff4c94ebe55e8448e071f6110ac153307",
+      "local_snapshot": "TREND_X5O_CAUSAL_REGIME_OBSERVABLE_IDENTIFIABILITY_PROTOCOL_V1.json",
+      "reason": "preserves the preregistered causal-identifiability gates before the X5O result"
+    },
+    {
+      "stage": "X5O",
+      "source_path": "docs/governance/TREND_X5O_CAUSAL_REGIME_OBSERVABLE_IDENTIFIABILITY_RESULT_V1.json",
+      "source_blob": "5df03522db412818138c2acfcc45adbb6456630f",
+      "local_snapshot": "TREND_X5O_CAUSAL_REGIME_OBSERVABLE_IDENTIFIABILITY_RESULT_V1.json",
+      "reason": "records that no preregistered causal observable met the identification gates and no regime-switch rule was authorized"
+    },
+    {
+      "stage": "X5O",
+      "source_path": "docs/governance/TREND_X5O_POSTHOC_OBSERVABLE_SOURCE_AGREEMENT_V1.json",
+      "source_blob": "783da58689b92f5f05aa4432c26049f0a83eb122",
+      "local_snapshot": "TREND_X5O_POSTHOC_OBSERVABLE_SOURCE_AGREEMENT_V1.json",
+      "reason": "preserves the high Tencent/Sina source agreement diagnostic without turning it into a primary-gate rescue"
+    },
+    {
+      "stage": "X4_POST_X5O",
+      "source_path": "docs/governance/TREND_X4_POST_X5O_UPDATE_V1.json",
+      "source_blob": "d14e982954c0f3702dc15aa0894380d6b4a20541",
+      "local_snapshot": "TREND_X4_POST_X5O_UPDATE_V1.json",
+      "reason": "preserves the final NO_CHANGE / HOLD_NOT_READY representation decision"
+    }
+  ],
+  "explicit_non_scope": [
+    "accepting legacy external outcomes as CSI1000 current scientific authority",
+    "retuning thresholds from X5M/X5N/X5O outcomes",
+    "reviving the legacy repository as an active control plane",
+    "production or trading authority"
+  ]
+}
