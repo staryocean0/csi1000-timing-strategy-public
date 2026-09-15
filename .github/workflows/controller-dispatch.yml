@@ -58,7 +58,8 @@ jobs:
        github.event.issue.title == 'controller: ols-drawdown-d0-v1' ||
        github.event.issue.title == 'controller: ols-r2-d1-leadlag-v1' ||
        github.event.issue.title == 'controller: ols-r2-d2-exit-overlay-v1' ||
-       github.event.issue.title == 'controller: ols-maxdd-failure-atlas-v1')
+       github.event.issue.title == 'controller: ols-maxdd-failure-atlas-v1' ||
+       github.event.issue.title == 'controller: ols-maxdd-reentry-identification-v1')
     runs-on: ubuntu-24.04
     timeout-minutes: 2
     env:
@@ -186,6 +187,9 @@ jobs:
               ;;
             'controller: ols-maxdd-failure-atlas-v1')
               profile='ols-maxdd-failure-atlas-v1'
+              ;;
+            'controller: ols-maxdd-reentry-identification-v1')
+              profile='ols-maxdd-reentry-identification-v1'
               ;;
             *)
               echo 'Execution stopped: unapproved_controller_request' >&2
