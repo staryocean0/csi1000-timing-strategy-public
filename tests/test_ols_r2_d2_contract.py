@@ -53,6 +53,13 @@ class OlsR2D2ContractTests(unittest.TestCase):
         self.assertNotIn("GridSearch", engine)
         self.assertNotIn("optuna", engine.lower())
 
+    def test_verifier_reports_shared_broker_success_json(self):
+        verifier = VERIFIER.read_text()
+        self.assertIn('"schema_id": "ols_r2_d2_verification@1.0"', verifier)
+        self.assertIn('"status": "passed"', verifier)
+        self.assertIn('"production_authority": False', verifier)
+        self.assertNotIn('print("OLS_D2_VERIFIED")', verifier)
+
 
 if __name__ == "__main__":
     unittest.main()
