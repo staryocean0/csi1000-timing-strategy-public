@@ -34,17 +34,17 @@ def make_streaks(table):
     for h in HORIZONS:
         z=table[(table.horizon_minutes==h)&table.support_pass].reset_index(drop=True);start=None
         for i,r in z.iterrows():
-            neg=bool(r.ordering_gain<0)
-            if neg and start is None:start=i
-            if ((not neg and start is not None) or (neg and i==len(z)-1)):
-                end=i-1 if not neg else i;q=z.iloc[start:end+1];out.append({"horizon_minutes":h,"start_label":str(q.iloc[0].period_label),"end_label":str(q.iloc[-1].period_label),"length":int(len(q)),"mean_ordering_gain":float(q.ordering_gain.mean()),"min_ordering_gain":float(q.ordering_gain.min()),"mean_event_rate":float(q.event_rate.mean()),"mean_delta_gap":float(q.delta_gap_positive_minus_negative.mean()),"fraction_delta_gap_negative":float((q.delta_gap_positive_minus_negative<0).mean())});start=None
+            nonpositive=bool(r.ordering_gain<=0)
+            if nonpositive and start is None:start=i
+            if ((not nonpositive and start is not None) or (nonpositive and i==len(z)-1)):
+                end=i-1 if not nonpositive else i;q=z.iloc[start:end+1];out.append({"horizon_minutes":h,"start_label":str(q.iloc[0].period_label),"end_label":str(q.iloc[-1].period_label),"length":int(len(q)),"mean_ordering_gain":float(q.ordering_gain.mean()),"min_ordering_gain":float(q.ordering_gain.min()),"mean_event_rate":float(q.event_rate.mean()),"mean_delta_gap":float(q.delta_gap_positive_minus_negative.mean()),"fraction_delta_gap_negative":float((q.delta_gap_positive_minus_negative<0).mean())});start=None
     return pd.DataFrame(out)
 
 def summary(table,streaks):
     hs={};sets={}
     for h in HORIZONS:
-        z=table[(table.horizon_minutes==h)&table.support_pass];neg=z[z.ordering_gain<0];sets[h]=set(neg.period_label.astype(str));ss=streaks[streaks.horizon_minutes==h].sort_values(["length","mean_ordering_gain"],ascending=[False,True]);long=None if ss.empty else ss.iloc[0]
-        hs[str(h)]={"supported_endpoints":int(len(z)),"negative_endpoints":int(len(neg)),"positive_fraction":float((z.ordering_gain>=0).mean()),"median_ordering_gain":float(z.ordering_gain.median()),"weighted_mean_ordering_gain":float(np.average(z.ordering_gain,weights=z.rows)),"longest_negative_streak":0 if long is None else int(long.length),"longest_streak_start":None if long is None else str(long.start_label),"longest_streak_end":None if long is None else str(long.end_label),"longest_streak_mean_delta_gap":None if long is None else float(long.mean_delta_gap)}
+        z=table[(table.horizon_minutes==h)&table.support_pass];nonpositive=z[z.ordering_gain<=0];sets[h]=set(nonpositive.period_label.astype(str));ss=streaks[streaks.horizon_minutes==h].sort_values(["length","mean_ordering_gain"],ascending=[False,True]);long=None if ss.empty else ss.iloc[0]
+        hs[str(h)]={"supported_endpoints":int(len(z)),"nonpositive_endpoints":int(len(nonpositive)),"positive_fraction":float((z.ordering_gain>0).mean()),"median_ordering_gain":float(z.ordering_gain.median()),"weighted_mean_ordering_gain":float(np.average(z.ordering_gain,weights=z.rows)),"longest_nonpositive_streak":0 if long is None else int(long.length),"longest_streak_start":None if long is None else str(long.start_label),"longest_streak_end":None if long is None else str(long.end_label),"longest_streak_mean_delta_gap":None if long is None else float(long.mean_delta_gap)}
     u=sets[15]|sets[30];i=sets[15]&sets[30];return hs,sorted(i),float(len(i)/len(u)) if u else 0.0
 
 def main():
@@ -70,9 +70,10 @@ def main():
         for c in ("mean_ordering_gain","min_ordering_gain","mean_event_rate","mean_delta_gap","fraction_delta_gap_negative"):
             if not close(r[c],e[c]):raise RuntimeError(f"streak_value_mismatch:{c}")
     hs,shared,fraction=summary(expected,es);reported=json.loads((root/"SUMMARY.json").read_text())
-    if reported.get("horizons")!=hs or reported.get("shared_negative_labels")!=shared or not close(reported.get("shared_negative_fraction_of_union"),fraction):raise RuntimeError("summary_mismatch")
+    if reported.get("horizons")!=hs or reported.get("shared_nonpositive_labels")!=shared or not close(reported.get("shared_nonpositive_fraction_of_union"),fraction):raise RuntimeError("summary_mismatch")
+    if reported.get("streak_semantics")!="ordering_gain_le_0_matches_acceptance":raise RuntimeError("streak_semantics_mismatch")
     inp=json.loads((root/"INPUT_DATA_RECEIPT.json").read_text());model=json.loads((root/"MODEL_INPUT_RECEIPT.json").read_text())
     if inp.get("year_2026_read") is not False or inp.get("excluded_incomplete_days")!=excluded:raise RuntimeError("input_receipt_mismatch")
     if model.get("ordering_uses_raw_B_C_scores") is not True or model.get("new_training") is not False:raise RuntimeError("model_scope_mismatch")
-    print(json.dumps({"status":"passed","longest_streaks":{h:hs[h]["longest_negative_streak"] for h in hs},"shared_negative_fraction":fraction},sort_keys=True))
+    print(json.dumps({"status":"passed","longest_streaks":{h:hs[h]["longest_nonpositive_streak"] for h in hs},"shared_nonpositive_fraction":fraction},sort_keys=True))
 if __name__=="__main__":main()
