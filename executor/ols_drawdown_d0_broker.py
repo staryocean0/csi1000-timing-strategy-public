@@ -43,7 +43,7 @@ PROFILE = {
     "private_ref": PRIVATE_REF,
     "manifest_sha256": PROFILE_SHA256,
     "command": [
-        "d0/ols_drawdown_d0.py",
+        "d0/ols_drawdown_d0_session_adapter.py",
         "--inputs",
         "/work/inputs",
         "--out",
@@ -69,7 +69,7 @@ rb.VALIDATE_HOST_TIMEOUT_SECONDS = 330
 _SAFE_D0_CODE = re.compile(r"\bols_d0_[a-z0-9_:-]+\b")
 _SAFE_EXCEPTION = re.compile(r"^([A-Za-z_][A-Za-z0-9_.]*(?:Error|Exception))(?::|$)", re.MULTILINE)
 _SAFE_LOCATION = re.compile(
-    r'File "/work/d0/(ols_drawdown_d0(?:_verifier)?\.py|ols_drawdown_atlas\.py)", line ([0-9]+)'
+    r'File "/work/d0/(ols_drawdown_d0(?:_verifier|_session_adapter)?\.py|ols_drawdown_atlas\.py)", line ([0-9]+)'
 )
 
 
@@ -141,7 +141,11 @@ def prepare_inputs(api, root: Path, profile: dict) -> Path:
     profile_path = HERE / "ols_drawdown_d0_profile.json"
     if not profile_path.is_file() or profile_path.is_symlink() or sha256(profile_path) != PROFILE_SHA256:
         raise GateError("ols_d0_profile_identity_failed")
-    for name in ("ols_drawdown_d0.py", "ols_drawdown_d0_verifier.py"):
+    for name in (
+        "ols_drawdown_d0.py",
+        "ols_drawdown_d0_session_adapter.py",
+        "ols_drawdown_d0_verifier.py",
+    ):
         source = HERE / name
         if not source.is_file() or source.is_symlink():
             raise GateError("ols_d0_public_source_missing")
