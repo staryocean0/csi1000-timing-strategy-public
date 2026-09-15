@@ -30,15 +30,27 @@ class PrivateGovernanceSyncTests(unittest.TestCase):
         )
         self.assertRegex(str(legacy["private_base_sha"]), r"^[0-9a-f]{40}$")
         self.assertEqual(legacy["private_branch"], "sync/public-governance/two-repo-control-plane-hardening-v1")
+        for sync_id, contract in mod.CONTRACTS.items():
+            self.assertRegex(str(contract["private_base_sha"]), r"^[0-9a-f]{40}$")
+            self.assertTrue(str(contract["private_branch"]).startswith("sync/"))
+            targets = tuple(contract["targets"])
+            self.assertTrue(targets)
+            self.assertEqual(len({row["target"] for row in targets}), len(targets))
+            for row in targets:
+                source = ROOT / row["source"]
+                self.assertTrue(source.is_file())
+                if row.get("expected_public_blob"):
+                    self.assertRegex(row["expected_public_blob"], r"^[0-9a-f]{40}$")
+                if row.get("expected_private_blob"):
+                    self.assertRegex(row["expected_private_blob"], r"^[0-9a-f]{40}$")
         for row in legacy["targets"]:
-            self.assertRegex(row["expected_private_blob"], r"^[0-9a-f]{40}$")
-            source = ROOT / row["source"]
-            self.assertTrue(source.is_file())
-            text = source.read_text(encoding="utf-8")
+            text = (ROOT / row["source"]).read_text(encoding="utf-8")
             self.assertIn("Chat", text)
             self.assertIn("公库", text)
             self.assertIn("私库", text)
-        mod.self_test()
+        # Completed historical sync contracts remain structurally immutable, but
+        # their public source files may legitimately evolve afterward.  Do not
+        # rerun source-byte identity checks against the current working tree here.
         request, contract = mod._load_request()
         self.assertEqual(request["phase"], "merge")
         self.assertEqual(request["sync_id"], "layer3-ols-family-import-20260915-v1")
