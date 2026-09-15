@@ -14,10 +14,11 @@ class TemporalStabilityAuditContractTest(unittest.TestCase):
         self.assertIn('SYMBOL = "000852.SH"',runner)
         self.assertNotIn("2026.parquet",runner)
         self.assertNotIn("fit_ridge(",runner);self.assertNotIn("fit_platt(",runner)
-    def test_prereg_and_active_profile_match(self):
+    def test_prereg_remains_bound_to_original_v1_profile(self):
         pre=json.loads((ROOT/"docs/research/RISK_TOOL_V2_TEMPORAL_STABILITY_2015_2025_PREREG_20260915.json").read_text())
-        active=json.loads((ROOT/"docs/acceptance/risk_tool_v2/ACTIVE_TEMPORAL_STABILITY_PROFILE.json").read_text())
-        self.assertEqual(pre["active_acceptance_profile"],active["active_profile_id"])
+        v1=json.loads((ROOT/"docs/acceptance/risk_tool_v2/temporal_stability_profile_hierarchical_v1.json").read_text())
+        self.assertEqual(pre["active_acceptance_profile"],v1["profile_id"])
+        self.assertEqual(v1["profile_id"],"risk-tool-v2-temporal-stability-hierarchical-v1")
         self.assertEqual(pre["warmup_year"],2020)
         self.assertFalse(pre["scope"]["year_2026_read"])
     def test_mirror_is_text_only_and_success_only(self):
