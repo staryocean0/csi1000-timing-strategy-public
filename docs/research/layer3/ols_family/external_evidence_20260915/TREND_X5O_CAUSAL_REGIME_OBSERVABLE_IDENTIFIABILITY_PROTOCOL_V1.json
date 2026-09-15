@@ -1,0 +1,58 @@
+{
+  "schema_id": "trend_x5o_causal_regime_observable_identifiability_protocol@1.0",
+  "status": "FROZEN_BEFORE_X5O_OBSERVABLE_STATISTICS",
+  "research_scope": "representation-layer regime-observable identifiability only",
+  "objective": "Test whether strictly-causal observables independent of slope_t can identify normalization failure zones before any new normalized_strength law is developed.",
+  "source": "Sina public native 60m index kline",
+  "reference_calibration_months": ["2025-09", "2025-10"],
+  "evaluation_three_month_blocks": [
+    ["2025-11","2025-12","2026-01"],
+    ["2025-12","2026-01","2026-02"],
+    ["2026-01","2026-02","2026-03"],
+    ["2026-02","2026-03","2026-04"],
+    ["2026-03","2026-04","2026-05"],
+    ["2026-04","2026-05","2026-06"],
+    ["2026-05","2026-06","2026-07"],
+    ["2026-06","2026-07","2026-08"]
+  ],
+  "observable_family": {
+    "COMMON_VOL_SHIFT": "abs(log(peer-median rolling median abs 1-bar log-return over 5 bars / 20 bars))",
+    "XS_VOL_SHIFT_DISPERSION": "MAD across five carriers of log(rolling median abs-return 5/20 ratio)",
+    "CORRELATION_BREAK": "1 - median pairwise correlation of 1-bar log returns over prior 20 bars",
+    "SSE50_RELATIVE_VOL_SHIFT": "abs(log((000016 rolling median abs-return 5/20 ratio) / peer-median rolling median abs-return 5/20 ratio))"
+  },
+  "causality": {
+    "all_observables_use_t_minus_1_or_earlier": true,
+    "current_t_return_used": false,
+    "future_information_allowed": false,
+    "slope_t_used_in_observables": false,
+    "state_label_used_in_observables": false
+  },
+  "threshold_rule": "For each observable, freeze alert threshold at the 80th percentile of its valid causal values in 2025-09/10 reference months; no evaluation outcomes enter threshold estimation.",
+  "common_regime_alert": "COMMON_VOL_SHIFT OR XS_VOL_SHIFT_DISPERSION OR CORRELATION_BREAK exceeds its frozen threshold",
+  "carrier_regime_alert_000016": "SSE50_RELATIVE_VOL_SHIFT exceeds its frozen threshold",
+  "evaluation": {
+    "block_alert_fraction": "fraction of evaluation timestamps whose causal alert is true",
+    "common_failure_target": "X5N block q95 turnover multiple versus slow",
+    "carrier_failure_targets": ["000016 normalized monthly ratio", "negative interaction severity"],
+    "association_metric": "Spearman rank correlation across eight fixed blocks; descriptive only, no p-values"
+  },
+  "identifiability_gates": {
+    "COMMON_REGIME_OBSERVABLE_IDENTIFIED": "common alert fraction Spearman rho >= 0.60 with q95-turnover severity AND first structural block alert fraction >= 0.50",
+    "SSE50_CARRIER_REGIME_OBSERVABLE_IDENTIFIED": "carrier alert fraction Spearman rho >= 0.60 with 000016 ratio AND rho >= 0.60 with interaction-loss severity AND Mar-May alert fraction >= 0.50 AND Jun-Aug alert fraction < 0.50"
+  },
+  "forbidden": [
+    "retune_X5L_or_X5M_parameters",
+    "change_X5M_gates",
+    "fit_complex_classifier",
+    "search_observable_thresholds_on_evaluation_outcomes",
+    "promote_regime_conditional_normalization_law",
+    "trading_returns",
+    "strategy_logic",
+    "runtime_admission_change",
+    "v1_state_boundary_change",
+    "v1_strength_semantics_change"
+  ],
+  "production_authority": false,
+  "fresh_oos": false
+}
