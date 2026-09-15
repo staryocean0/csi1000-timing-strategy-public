@@ -1,0 +1,117 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_e_morphology_visual_audit_protocol@1.0",
+  "study": "V0800-E_MORPHOLOGY_VISUAL_AUDIT",
+  "parent_adjudication": "TWO_WAVE_V0800_D_ADJUDICATION_20260915",
+  "purpose": "audit whether threshold-sensitive two-wave labels match intended geometry at confirmation time without outcome information",
+  "input": {
+    "symbol": "000852.SH",
+    "timeframe": "5m_offset_0",
+    "source_repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "source_ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "file": "data/development/5m_offset_0.parquet",
+    "rows": 70114,
+    "bytes": 3351411,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "allowed_start": "2015-01-05",
+    "allowed_end": "2020-12-31",
+    "fresh_oos": false
+  },
+  "frozen_semantics": {
+    "continuity": "shared_anchor_strict_L-H-L-H-L",
+    "knowledge_time": "current_A_wave_confirmation_bar",
+    "operational_rho": 1.4142135623730951,
+    "operational_rho_symbolic": "sqrt(2)",
+    "taus": [0.05, 0.10, 0.15, 0.20],
+    "kappas": [1.25, 1.50, 2.00],
+    "grid_combinations": 12,
+    "bottom_authoritative_channel": true
+  },
+  "category_assignment": {
+    "exclusive_priority": [
+      "stable_consensus",
+      "kappa_sensitive",
+      "tau_sensitive",
+      "sign_conflict",
+      "persistent_uncertain"
+    ],
+    "stable_consensus": "all 12 grid states are identical and the common state is not Uncertain",
+    "kappa_sensitive": "at tau=0.10 the kappa=1.25 state is Uncertain while the kappa=2.00 state is UpTrend or DownTrend",
+    "tau_sensitive": "after excluding prior categories, at kappa=1.50 the tau=0.05 state differs from the tau=0.20 state",
+    "sign_conflict": "after excluding prior categories, at tau=0.10 the two one-wave descriptors are opposite UP versus DOWN",
+    "persistent_uncertain": "after excluding prior categories, all 12 grid states are Uncertain"
+  },
+  "sampling": {
+    "years": [2015, 2016, 2017, 2018, 2019, 2020],
+    "target_per_category_year": 2,
+    "selection_order": "ascending_sha256",
+    "selection_key": "sha256('V0800-E-v1|'+category+'|'+year+'|'+pair_id)",
+    "shortage_policy": "take_all_available_and_report_shortage",
+    "cherry_pick_allowed": false,
+    "maximum_cases": 60
+  },
+  "visual_window": {
+    "first_bar": "previous_A_wave_start_bar",
+    "last_bar": "current_A_wave_confirmation_bar",
+    "inclusive": true,
+    "bars_after_confirmation_allowed": false,
+    "pre_pair_padding_bars": 0
+  },
+  "visual_content": {
+    "native_bar_high_low": true,
+    "native_close_marker": true,
+    "five_pivot_markers": true,
+    "confirmation_bar_marker": true,
+    "two_bottom_authoritative_channels": true,
+    "parallel_top_lines": true,
+    "duration_ratio": true,
+    "g_previous": true,
+    "g_current": true,
+    "slope_magnitude_ratio": true,
+    "full_4x3_state_matrix": true,
+    "future_return": false,
+    "pnl": false,
+    "position": false,
+    "cost": false
+  },
+  "outputs": [
+    "AUDIT_CASES.csv",
+    "AUDIT_MANIFEST.json",
+    "AUDIT_REPORT.md",
+    "SUMMARY.json",
+    "INPUT_RECEIPT.json",
+    "visuals/*.svg"
+  ],
+  "verification": {
+    "independent_pair_and_grid_reconstruction": true,
+    "independent_category_assignment": true,
+    "independent_hash_sampling": true,
+    "svg_bar_group_indices_must_equal_full_allowed_prefix_window": true,
+    "svg_may_not_contain_bar_group_after_confirmation": true,
+    "selected_case_set_exact_match_required": true
+  },
+  "human_audit_questions": [
+    "Does the geometry visible at confirmation time support the assigned state semantics?",
+    "When kappa changes a label, does the slope-magnitude mismatch look materially different enough to justify that boundary?",
+    "When tau changes a label, does the bottom migration visually move between trend-like and range-like morphology?",
+    "Do persistent-Uncertain cases represent genuine ambiguity rather than an obvious missed state?",
+    "Do sign-conflict cases visually justify abstention?"
+  ],
+  "selection_policy": {
+    "tau_winner": null,
+    "kappa_winner": null,
+    "automatic_parameter_promotion": false,
+    "visual_audit_may_directly_install_winner": false,
+    "separate_post_audit_adjudication_required": true
+  },
+  "authority": {
+    "future_outcome_used": false,
+    "returns_used": false,
+    "pnl_used": false,
+    "positions_used": false,
+    "year_2026_read": false,
+    "direction_acceptance": false,
+    "state_publication_authority": false,
+    "trade_authority": false,
+    "production_authority": false
+  }
+}
