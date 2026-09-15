@@ -1,0 +1,71 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_15m_continuous_reliability_score_prereg@1.0",
+  "profile": "risk-v2-15m-continuous-reliability-score-v1",
+  "status": "frozen_before_score_evaluation",
+  "research_role": "consumed-data proxy validation; not fresh OOS",
+  "parent_authority": {
+    "run_id": "34926868278-1",
+    "private_branch": "runs/public-research/34926868278-1",
+    "path": "research/public-runs/34926868278-1-results/TEMPORAL_METRICS_2W_V2.csv",
+    "git_blob_sha1": "478f73c1fb9ac9c91d670e67733623e1450da953",
+    "bytes": 170908,
+    "sha256": "455a0f0d61993a933016e111aa1386eaf4ddf3ec6aeb9e28c109f08a559fd060"
+  },
+  "scope": {
+    "symbol": "000852.SH",
+    "horizon_minutes": 15,
+    "period_level": "weekly",
+    "hard_years": [2015,2016,2017,2018,2019,2021,2022,2023,2024,2025],
+    "development_years": [2015,2016,2017,2018,2019,2021,2022,2023],
+    "repeat_audit_years": [2024,2025],
+    "year_2026_read": false
+  },
+  "weekly_evaluable_support": {"rows_min": 20, "positive_min": 4, "negative_min": 4},
+  "score_definition": {
+    "history_evaluable_endpoints": 8,
+    "requires_full_history": true,
+    "current_endpoint_excluded": true,
+    "endpoint_health": "0.5*I(brier_gain>0)+0.5*I(logloss_gain>0)",
+    "recency_weight": "2^(-(lag-1)/4)",
+    "half_life_evaluable_endpoints": 4,
+    "score_range": [0.0,1.0],
+    "no_outcome_fit": true,
+    "no_candidate_family": true
+  },
+  "terciles": {
+    "cutpoints": [0.3333333333333333,0.6666666666666666],
+    "cutpoint_source": "development score distribution only; outcome-independent",
+    "repeat_audit_uses_frozen_development_cutpoints": true
+  },
+  "acceptance": {
+    "score_coverage_min": 0.95,
+    "minimum_hard_year_score_coverage_min": 0.80,
+    "development_min_scored_endpoints": 200,
+    "repeat_audit_min_scored_endpoints": 80,
+    "development_min_low_tercile": 30,
+    "development_min_high_tercile": 30,
+    "repeat_audit_min_low_tercile": 15,
+    "repeat_audit_min_high_tercile": 15,
+    "development_joint_success_auroc_gt": 0.5,
+    "repeat_audit_joint_success_auroc_gt": 0.5,
+    "development_spearman_brier_gt": 0.0,
+    "development_spearman_logloss_gt": 0.0,
+    "repeat_audit_spearman_brier_gt": 0.0,
+    "repeat_audit_spearman_logloss_gt": 0.0,
+    "development_high_joint_success_gt_low": true,
+    "development_high_median_brier_gt_low": true,
+    "development_high_median_logloss_gt_low": true,
+    "repeat_audit_high_joint_success_gt_low": true,
+    "repeat_audit_high_median_brier_gt_low": true,
+    "repeat_audit_high_median_logloss_gt_low": true,
+    "all_gates_required": true
+  },
+  "interpretation": {
+    "success": "supports a continuous reliability signal for 15m probability quality; does not by itself make 15m COMPLETE",
+    "failure": "reliability score unsupported in this fixed form; no post-result score redesign or threshold rescue in the same study",
+    "current_v3_authority_immutable": true
+  },
+  "forbidden": ["probability_refit","calibration_refit","ordering_change","severity_change","threshold_search","score_formula_search","2026_read","pnl","strategy_routing","production_authority"],
+  "new_training": false,
+  "production_authority": false
+}

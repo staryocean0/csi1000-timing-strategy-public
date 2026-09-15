@@ -40,6 +40,7 @@ jobs:
        github.event.issue.title == 'controller: risk-v2-15m-online-prior-calibration-v3' ||
        github.event.issue.title == 'controller: risk-v2-15m-hierarchical-prior-calibration-v4' ||
        github.event.issue.title == 'controller: risk-v2-15m-probability-validity-guard-v1' ||
+       github.event.issue.title == 'controller: risk-v2-15m-continuous-reliability-score-v1' ||
        github.event.issue.title == 'controller: overnight-carrier-materialization-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-dev-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-blackbox-v1')
@@ -113,6 +114,9 @@ jobs:
               ;;
             'controller: risk-v2-15m-probability-validity-guard-v1')
               profile='risk-v2-15m-probability-validity-guard-v1'
+              ;;
+            'controller: risk-v2-15m-continuous-reliability-score-v1')
+              profile='risk-v2-15m-continuous-reliability-score-v1'
               ;;
             'controller: overnight-carrier-materialization-v1')
               profile='overnight-carrier-materialization-v1'
