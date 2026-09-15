@@ -105,6 +105,27 @@ def summarize_level(rows: list[dict], cfg: dict) -> dict:
     }
 
 
+def hierarchical_state(profile: dict, global_support: bool, global_ordering: bool, global_cal: bool, levels: dict) -> dict:
+    order = profile.get("level_order", list(LEVELS))
+    completed: list[str] = []
+    if not global_support:
+        return {"acceptance_state": "INSUFFICIENT_SUPPORT", "current_bottleneck": "global.support", "next_optimization_target": "global.support", "completed_levels": completed, "blocked_lower_levels": order}
+    if not global_ordering:
+        return {"acceptance_state": "IN_PROGRESS", "current_bottleneck": "global.ordering", "next_optimization_target": "global.ordering", "completed_levels": completed, "blocked_lower_levels": order}
+    if not global_cal:
+        return {"acceptance_state": "IN_PROGRESS", "current_bottleneck": "global.calibration", "next_optimization_target": "global.calibration", "completed_levels": completed, "blocked_lower_levels": order}
+    for i, name in enumerate(order):
+        node = levels[name]
+        if not node["support_pass"]:
+            return {"acceptance_state": "INSUFFICIENT_SUPPORT", "current_bottleneck": f"{name}.support", "next_optimization_target": f"{name}.support", "completed_levels": completed, "blocked_lower_levels": order[i + 1:]}
+        if not node["ordering_pass"]:
+            return {"acceptance_state": "IN_PROGRESS", "current_bottleneck": f"{name}.ordering", "next_optimization_target": f"{name}.ordering", "completed_levels": completed, "blocked_lower_levels": order[i + 1:]}
+        if not node["calibration_pass"]:
+            return {"acceptance_state": "IN_PROGRESS", "current_bottleneck": f"{name}.calibration", "next_optimization_target": f"{name}.calibration", "completed_levels": completed, "blocked_lower_levels": order[i + 1:]}
+        completed.append(name)
+    return {"acceptance_state": "COMPLETE", "current_bottleneck": None, "next_optimization_target": None, "completed_levels": completed, "blocked_lower_levels": []}
+
+
 def evaluate_horizon(rows: list[dict], profile: dict, horizon: int) -> dict:
     hrs = [r for r in rows if r["horizon"] == horizon]
     globals_ = [r for r in hrs if r["level"] == "global"]
@@ -134,8 +155,9 @@ def evaluate_horizon(rows: list[dict], profile: dict, horizon: int) -> dict:
         grade = "TS-A_STABLE_PROBABILITY_COMPONENT"
     else:
         grade = "TS-B_STABLE_RANKING_CALIBRATION_GUARDED"
+    hierarchy = hierarchical_state(profile, global_support, global_ordering, global_cal, levels)
     return {
-        "horizon_minutes": horizon, "grade": grade,
+        "horizon_minutes": horizon, "grade": grade, **hierarchy,
         "global": {"support_pass": global_support, "ordering_pass": global_ordering, "calibration_pass": global_cal,
                    "ordering_gain": g["ordering_gain"], "bootstrap_lower": g["bootstrap_lower"],
                    "brier_gain": g["brier_gain"], "logloss_gain": g["logloss_gain"]},
@@ -153,8 +175,9 @@ def main() -> None:
     profile = json.loads(args.profile.read_text(encoding="utf-8"))
     rows = load_rows(args.metrics)
     horizons = profile["horizons_minutes"]
-    result = {"schema_id": "csi1000.risk_tool_temporal_stability_result@1.0", "profile_id": profile["profile_id"],
+    result = {"schema_id": "csi1000.risk_tool_temporal_stability_result@1.1", "profile_id": profile["profile_id"],
               "horizons": {str(h): evaluate_horizon(rows, profile, h) for h in horizons},
+              "optimization_policy": profile.get("optimization_policy", "all_hard_gates"),
               "production_authority": False}
     text = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:
