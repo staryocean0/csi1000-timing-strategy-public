@@ -1,8 +1,9 @@
 {
   "schema_id": "csi1000.risk_tool_temporal_stability_active_profile@1.0",
-  "active_profile_id": "risk-tool-v2-temporal-stability-hierarchical-v1",
-  "active_profile_path": "docs/acceptance/risk_tool_v2/temporal_stability_profile_hierarchical_v1.json",
-  "freeze_reason": "User approved top-down optimization: annual first, then quarterly, monthly, weekly; thresholds frozen before fine-grained 2015-2025 evaluation.",
+  "active_profile_id": "risk-tool-v2-temporal-stability-hierarchical-v2",
+  "active_profile_path": "docs/acceptance/risk_tool_v2/temporal_stability_profile_hierarchical_v2.json",
+  "freeze_reason": "Support-only authority run 34925874662-1 selected the shortest statistically measurable weekly-cadence window: trailing 2 market weeks. Profile v2 is frozen before any ordering/calibration evaluation under that window.",
+  "support_only_selection_authority_run": "34925874662-1",
   "post_result_switching_allowed": false,
   "production_authority": false
 }
