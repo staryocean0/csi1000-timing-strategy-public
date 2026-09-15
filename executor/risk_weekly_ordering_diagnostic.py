@@ -55,25 +55,25 @@ def streaks(table:pd.DataFrame):
         z=table[(table.horizon_minutes==h)&table.support_pass].reset_index(drop=True)
         start=None
         for i,r in z.iterrows():
-            neg=bool(r.ordering_gain<0)
-            if neg and start is None:start=i
-            end_now=(not neg and start is not None) or (neg and i==len(z)-1)
+            nonpositive=bool(r.ordering_gain<=0)
+            if nonpositive and start is None:start=i
+            end_now=(not nonpositive and start is not None) or (nonpositive and i==len(z)-1)
             if end_now:
-                end=i-1 if not neg else i;q=z.iloc[start:end+1]
+                end=i-1 if not nonpositive else i;q=z.iloc[start:end+1]
                 rows.append({"horizon_minutes":h,"start_label":str(q.iloc[0].period_label),"end_label":str(q.iloc[-1].period_label),"length":int(len(q)),"mean_ordering_gain":float(q.ordering_gain.mean()),"min_ordering_gain":float(q.ordering_gain.min()),"mean_event_rate":float(q.event_rate.mean()),"mean_delta_gap":float(q.delta_gap_positive_minus_negative.mean()),"fraction_delta_gap_negative":float((q.delta_gap_positive_minus_negative<0).mean())})
                 start=None
     return pd.DataFrame(rows)
 
 
 def summarize(table,streak_table):
-    horizons={};negative_sets={}
+    horizons={};nonpositive_sets={}
     for h in HORIZONS:
-        z=table[(table.horizon_minutes==h)&table.support_pass].copy();neg=z[z.ordering_gain<0];negative_sets[h]=set(neg.period_label.astype(str))
+        z=table[(table.horizon_minutes==h)&table.support_pass].copy();nonpositive=z[z.ordering_gain<=0];nonpositive_sets[h]=set(nonpositive.period_label.astype(str))
         ss=streak_table[streak_table.horizon_minutes==h].sort_values(["length","mean_ordering_gain"],ascending=[False,True])
         longest=None if ss.empty else ss.iloc[0].to_dict()
-        horizons[str(h)]={"supported_endpoints":int(len(z)),"negative_endpoints":int(len(neg)),"positive_fraction":float((z.ordering_gain>=0).mean()),"median_ordering_gain":float(z.ordering_gain.median()),"weighted_mean_ordering_gain":float(np.average(z.ordering_gain,weights=z.rows)),"longest_negative_streak":0 if longest is None else int(longest["length"]),"longest_streak_start":None if longest is None else longest["start_label"],"longest_streak_end":None if longest is None else longest["end_label"],"longest_streak_mean_delta_gap":None if longest is None else float(longest["mean_delta_gap"])}
-    union=negative_sets[15]|negative_sets[30];inter=negative_sets[15]&negative_sets[30]
-    return {"schema_id":"risk_tool_v2_weekly_ordering_diagnostic_summary@1.0","parent_authority_run":PARENT_RUN,"profile_id":PROFILE_ID,"horizons":horizons,"shared_negative_endpoint_count":len(inter),"negative_endpoint_union_count":len(union),"shared_negative_fraction_of_union":float(len(inter)/len(union)) if union else 0.0,"shared_negative_labels":sorted(inter),"candidate_search":False,"model_change":False,"calibration_change":False,"acceptance_threshold_change":False,"year_2026_read":False,"pnl":False,"production_authority":False}
+        horizons[str(h)]={"supported_endpoints":int(len(z)),"nonpositive_endpoints":int(len(nonpositive)),"positive_fraction":float((z.ordering_gain>0).mean()),"median_ordering_gain":float(z.ordering_gain.median()),"weighted_mean_ordering_gain":float(np.average(z.ordering_gain,weights=z.rows)),"longest_nonpositive_streak":0 if longest is None else int(longest["length"]),"longest_streak_start":None if longest is None else longest["start_label"],"longest_streak_end":None if longest is None else longest["end_label"],"longest_streak_mean_delta_gap":None if longest is None else float(longest["mean_delta_gap"])}
+    union=nonpositive_sets[15]|nonpositive_sets[30];inter=nonpositive_sets[15]&nonpositive_sets[30]
+    return {"schema_id":"risk_tool_v2_weekly_ordering_diagnostic_summary@1.0","parent_authority_run":PARENT_RUN,"profile_id":PROFILE_ID,"horizons":horizons,"shared_nonpositive_endpoint_count":len(inter),"nonpositive_endpoint_union_count":len(union),"shared_nonpositive_fraction_of_union":float(len(inter)/len(union)) if union else 0.0,"shared_nonpositive_labels":sorted(inter),"streak_semantics":"ordering_gain_le_0_matches_acceptance","candidate_search":False,"model_change":False,"calibration_change":False,"acceptance_threshold_change":False,"year_2026_read":False,"pnl":False,"production_authority":False}
 
 
 def run(inputs:Path,out:Path):
