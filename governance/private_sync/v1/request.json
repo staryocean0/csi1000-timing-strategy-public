@@ -1,14 +1,16 @@
 {
   "schema_id": "csi1000.private_governance_sync_request@1.0",
-  "sync_id": "layer3-ols-family-import-20260915-v1",
-  "phase": "merge",
-  "private_base_sha": "46e818ef51618e225be2d79a516424ff16231a1d",
+  "sync_id": "layer3-ols-external-evidence-20260915-v1",
+  "phase": "stage",
+  "private_base_sha": "215662a7a07070a34473148e172bf56d17fefd62",
   "targets": [
-    "docs/imports/layer3_ols_family_20260915/MIGRATION_MANIFEST.json",
-    "docs/imports/layer3_ols_family_20260915/README.md",
-    "docs/imports/layer3_ols_family_20260915/source_snapshot/trend_regime_baseline.py",
-    "docs/imports/layer3_ols_family_20260915/source_snapshot/trend_regime_consumer.py",
-    "docs/imports/layer3_ols_family_20260915/source_snapshot/trend_regime_profiles.py",
-    "docs/imports/layer3_ols_family_20260915/source_snapshot/trend_regime_representation.py"
+    "docs/imports/layer3_ols_external_evidence_20260915/EVIDENCE_MANIFEST.json",
+    "docs/imports/layer3_ols_external_evidence_20260915/README.md",
+    "docs/imports/layer3_ols_external_evidence_20260915/TREND_X4_POST_X5O_UPDATE_V1.json",
+    "docs/imports/layer3_ols_external_evidence_20260915/TREND_X5M_FROZEN_ANCHORED_STRUCTURAL_VALIDATION_RESULT_V1.json",
+    "docs/imports/layer3_ols_external_evidence_20260915/TREND_X5N_STRUCTURAL_FAILURE_ATTRIBUTION_RESULT_V1.json",
+    "docs/imports/layer3_ols_external_evidence_20260915/TREND_X5O_CAUSAL_REGIME_OBSERVABLE_IDENTIFIABILITY_PROTOCOL_V1.json",
+    "docs/imports/layer3_ols_external_evidence_20260915/TREND_X5O_CAUSAL_REGIME_OBSERVABLE_IDENTIFIABILITY_RESULT_V1.json",
+    "docs/imports/layer3_ols_external_evidence_20260915/TREND_X5O_POSTHOC_OBSERVABLE_SOURCE_AGREEMENT_V1.json"
   ]
 }
