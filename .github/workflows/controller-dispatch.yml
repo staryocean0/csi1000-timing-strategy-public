@@ -45,6 +45,7 @@ jobs:
        github.event.issue.title == 'controller: risk-v2-probability-reliability-output-contract-v1' ||
        github.event.issue.title == 'controller: risk-v2-probability-reliability-consumer-contract-v1' ||
        github.event.issue.title == 'controller: two-wave-v0800-duration-scale-map-v1' ||
+       github.event.issue.title == 'controller: two-wave-v0800-b1-strict-continuity-v1' ||
        github.event.issue.title == 'controller: overnight-carrier-materialization-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-dev-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-blackbox-v1')
@@ -133,6 +134,9 @@ jobs:
               ;;
             'controller: two-wave-v0800-duration-scale-map-v1')
               profile='two-wave-v0800-duration-scale-map-v1'
+              ;;
+            'controller: two-wave-v0800-b1-strict-continuity-v1')
+              profile='two-wave-v0800-b1-strict-continuity-v1'
               ;;
             'controller: overnight-carrier-materialization-v1')
               profile='overnight-carrier-materialization-v1'
