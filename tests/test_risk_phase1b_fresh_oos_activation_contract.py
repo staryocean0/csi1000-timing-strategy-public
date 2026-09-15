@@ -100,12 +100,18 @@ class FreshOosActivationContractTest(unittest.TestCase):
         text = (EXECUTOR / "risk_phase1b_fresh_oos_failure_mirror.py").read_text()
         self.assertIn("MAX_LOG_BYTES = 8192", text)
         self.assertIn('SAFE_MESSAGE = re.compile(r"[A-Za-z0-9_.:/-]{1,240}")', text)
+        self.assertIn("SAFE_EXCEPTION_NAME", text)
+        self.assertIn("TRACE_FRAME", text)
+        self.assertIn('"source_file": "risk_phase1b_fresh_oos_eval.py"', text)
+        self.assertIn('node["code"] = "REDACTED_MESSAGE"', text)
         self.assertIn('"market_values_exported": False', text)
         self.assertIn('"row_level_data_exported": False', text)
         self.assertIn('"model_outputs_exported": False', text)
         self.assertNotIn("read_parquet", text)
         self.assertNotIn("pandas", text)
         self.assertNotIn("/work/inputs", text)
+        self.assertNotIn("message] = message", text)
+        self.assertNotIn('node["message"]', text)
 
     def test_publish_mirrors_failure_code_before_generic_archive(self):
         broker = (EXECUTOR / "risk_phase1b_fresh_oos_broker.py").read_text()
