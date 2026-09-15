@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "risk_tool_v2_output_envelope@1.0",
+  "title": "Risk Tool 2.0 output envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "tool_id",
+    "horizon_minutes",
+    "ordering",
+    "probability",
+    "reliability",
+    "allowed_capabilities",
+    "authority"
+  ],
+  "properties": {
+    "schema_id": {"const": "risk_tool_v2_output_envelope@1.0"},
+    "tool_id": {"const": "risk-tool-v2-severity-persistence"},
+    "horizon_minutes": {"enum": [15, 30]},
+    "ordering": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "authorized"],
+      "properties": {
+        "value": {"type": "number"},
+        "authorized": {"const": true}
+      }
+    },
+    "probability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "surface"],
+      "properties": {
+        "value": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+        "surface": {"enum": ["diagnostic_only", "guarded_research", "research_probability"]}
+      }
+    },
+    "reliability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "band"],
+      "properties": {
+        "score": {"type": ["number", "null"], "minimum": 0.0, "maximum": 1.0},
+        "band": {"enum": ["UNSCORED", "LOW", "MID", "HIGH", "NOT_REQUIRED"]}
+      }
+    },
+    "allowed_capabilities": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "read_ordering",
+          "read_probability_diagnostic",
+          "interpret_probability_guarded_research",
+          "interpret_probability_research"
+        ]
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output_contract_run", "production_authority", "year_2026_read"],
+      "properties": {
+        "output_contract_run": {"const": "34945466654-1"},
+        "production_authority": {"const": false},
+        "year_2026_read": {"const": false}
+      }
+    }
+  }
+}
