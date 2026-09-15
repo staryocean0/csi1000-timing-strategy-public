@@ -1,0 +1,39 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_temporal_2week_performance_v2_prereg@1.0",
+  "task_id": "CSI1000-RISK-V2-TEMPORAL-2WEEK-PERFORMANCE-V2-20260915",
+  "active_acceptance_profile": "risk-tool-v2-temporal-stability-hierarchical-v2",
+  "weekly_window_selection_authority_run": "34925874662-1",
+  "weekly_trailing_market_weeks": 2,
+  "weekly_evaluation_cadence_market_weeks": 1,
+  "tool_state": {
+    "15m_calibration": "tail_L_4",
+    "15m_tail_anchor": 0.2312353159391616,
+    "15m_tail_limit": 4.0,
+    "15m_calibration_authority_run": "34920654435-1",
+    "30m_calibration": "frozen_phase1b_repeat_audit_platt_unchanged",
+    "raw_ordering_models_changed": false
+  },
+  "data": {
+    "symbol": "000852.SH",
+    "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],
+    "warmup_year": 2020,
+    "hard_gate_years": [2015,2016,2017,2018,2019,2021,2022,2023,2024,2025],
+    "year_2026_read": false
+  },
+  "rules": {
+    "global_annual_quarterly_monthly": "unchanged from profile v2",
+    "weekly_measurement": "each market-week endpoint uses current plus previous market week only",
+    "future_weeks_used": false,
+    "acceptance_threshold_change": false,
+    "performance_candidate_search": false,
+    "post_result_profile_switching": false
+  },
+  "scope": {
+    "pnl": false,
+    "strategy_threshold_search": false,
+    "new_training": false,
+    "calibration_refit": false,
+    "fresh_oos_claim": false,
+    "production_authority": false
+  }
+}
