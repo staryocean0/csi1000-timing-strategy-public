@@ -1,0 +1,37 @@
+name: OLS D2 result recovery controller
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: read
+  actions: write
+
+concurrency:
+  group: csi1000-ols-d2-result-recovery-controller-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    if: >-
+      github.repository == 'staryocean0/csi1000-timing-strategy-public' &&
+      github.event_name == 'issues' &&
+      github.event.action == 'opened' &&
+      github.event.issue.user.login == github.repository_owner &&
+      github.event.issue.title == 'controller: ols-r2-d2-result-recovery-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Dispatch reviewed recovery workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api \
+            --method POST \
+            repos/staryocean0/csi1000-timing-strategy-public/actions/workflows/ols-d2-result-recovery.yml/dispatches \
+            -f ref='cloud-workspace-v1'
+          echo 'Approved D2 result-recovery workflow_dispatch submitted.'

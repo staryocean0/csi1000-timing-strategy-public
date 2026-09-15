@@ -66,6 +66,15 @@ class TwoWaveV0800FStateStreamTest(unittest.TestCase):
         self.assertIn("eligible_pair_count_mismatch", text)
         self.assertIn("epoch_transition_boundary_verified", text)
 
+    def test_verifier_ratio_check_is_roundtrip_safe_without_weakening_state_check(self):
+        text = VERIFIER.read_text(encoding="utf-8")
+        self.assertIn('float_precision="round_trip"', text)
+        self.assertIn('for col in ("duration_ratio", "g_previous", "g_current")', text)
+        self.assertIn('derived = slope_ratio(float(row["g_previous"]), float(row["g_current"]))', text)
+        self.assertIn('math.isclose(reported, derived, rel_tol=1e-12, abs_tol=1e-12)', text)
+        self.assertNotIn('for col in ("duration_ratio", "g_previous", "g_current", "slope_magnitude_ratio")', text)
+        self.assertIn('"previous_descriptor", "current_descriptor", "state")', text)
+
     def test_broker_pins_consumed_development_identity(self):
         text = BROKER.read_text(encoding="utf-8")
         self.assertIn(f'PROFILE_NAME = "{PROFILE}"', text)

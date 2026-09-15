@@ -1,0 +1,40 @@
+name: OLS D2 first-run result recovery
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: csi1000-ols-d2-result-recovery
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    if: >-
+      github.repository == 'staryocean0/csi1000-timing-strategy-public' &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/cloud-workspace-v1' &&
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    environment: private-research
+    timeout-minutes: 8
+    steps:
+      - name: Checkout reviewed recovery broker only
+        timeout-minutes: 2
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            executor
+            tests
+          sparse-checkout-cone-mode: true
+      - name: D2 recovery tests
+        timeout-minutes: 2
+        run: python3 -m unittest discover -s tests -p 'test_ols_r2_d2_result_recovery.py' -v
+      - name: Recover byte-locked original D2 text result without recompute
+        timeout-minutes: 3
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/ols_r2_d2_result_recovery.py
