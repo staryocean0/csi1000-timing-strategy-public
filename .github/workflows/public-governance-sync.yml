@@ -26,17 +26,18 @@ jobs:
     environment: private-research
     timeout-minutes: 5
     steps:
-      - name: Checkout reviewed public governance sources only
+      - name: Checkout reviewed public sync sources only
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
           sparse-checkout: |
             executor
             governance/private_sync/v1
+            docs/research/layer3/ols_family
           sparse-checkout-cone-mode: true
       - name: Verify bounded sync contract before credentials
         run: python3 executor/private_governance_sync.py --self-test
-      - name: Apply fixed governance request
+      - name: Apply fixed bounded sync request
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
         run: python3 executor/private_governance_sync.py
