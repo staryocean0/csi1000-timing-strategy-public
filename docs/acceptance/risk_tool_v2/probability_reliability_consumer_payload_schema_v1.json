@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "csi1000.risk_tool_v2_probability_reliability_consumer_payload@1.0",
+  "title": "Risk Tool 2.0 Probability + Reliability consumer payload v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "horizon_minutes",
+    "ordering_score",
+    "recovery_probability",
+    "reliability_score",
+    "reliability_band",
+    "permissions",
+    "authority"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "risk_tool_v2_probability_reliability_consumer_payload@1.0"
+    },
+    "horizon_minutes": {
+      "enum": [15, 30]
+    },
+    "ordering_score": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "recovery_probability": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "reliability_score": {
+      "type": ["number", "null"],
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "reliability_band": {
+      "enum": ["UNSCORED", "LOW", "MID", "HIGH", "NOT_REQUIRED"]
+    },
+    "permissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ranking",
+        "probability_context",
+        "probability_research",
+        "hard_probability_threshold",
+        "strategy_routing",
+        "position_sizing",
+        "pnl_authority",
+        "production_authority"
+      ],
+      "properties": {
+        "ranking": {"type": "boolean"},
+        "probability_context": {"type": "boolean"},
+        "probability_research": {"type": "boolean"},
+        "hard_probability_threshold": {"type": "boolean"},
+        "strategy_routing": {"type": "boolean"},
+        "position_sizing": {"type": "boolean"},
+        "pnl_authority": {"type": "boolean"},
+        "production_authority": {"type": "boolean"}
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "temporal_v3_run",
+        "reliability_run",
+        "output_contract_run",
+        "year_2026_read",
+        "production_authority"
+      ],
+      "properties": {
+        "temporal_v3_run": {"const": "34930354449-1"},
+        "reliability_run": {
+          "type": ["string", "null"],
+          "enum": ["34942554638-1", null]
+        },
+        "output_contract_run": {"const": "34945466654-1"},
+        "year_2026_read": {"const": false},
+        "production_authority": {"const": false}
+      }
+    }
+  }
+}
