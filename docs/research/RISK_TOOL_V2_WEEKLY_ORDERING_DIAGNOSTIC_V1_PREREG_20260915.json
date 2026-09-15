@@ -1,0 +1,43 @@
+{
+  "schema_id": "csi1000.risk_tool_v2_weekly_ordering_diagnostic_v1_prereg@1.0",
+  "task_id": "CSI1000-RISK-V2-WEEKLY-ORDERING-DIAGNOSTIC-V1-20260915",
+  "parent_authority_run": "34926868278-1",
+  "target_bottleneck": "weekly.ordering",
+  "horizons_minutes": [15, 30],
+  "symbol": "000852.SH",
+  "weekly_measurement": {
+    "trailing_market_weeks": 2,
+    "cadence_market_weeks": 1,
+    "support_gate_source": "risk-tool-v2-temporal-stability-hierarchical-v2",
+    "ordering_negative_streak_limit": 6
+  },
+  "frozen_tool_state": {
+    "raw_B_C_models_unchanged": true,
+    "15m_tail_calibration_irrelevant_to_ordering": true,
+    "30m_unchanged": true
+  },
+  "diagnostic_questions": [
+    "Where do consecutive supported two-week endpoints have C-minus-B AUROC gain below zero?",
+    "Do the longest negative streaks align between 15m and 30m?",
+    "During failed endpoints, does model-C incremental score lift p_C-minus-p_B favor negatives over positives?",
+    "Are failed streaks primarily explained by event-rate or support changes despite support passing?"
+  ],
+  "outputs": [
+    "WEEKLY_ORDERING_BUCKETS.csv",
+    "NEGATIVE_STREAKS.csv",
+    "SUMMARY.json",
+    "INPUT_DATA_RECEIPT.json",
+    "MODEL_INPUT_RECEIPT.json"
+  ],
+  "scope": {
+    "candidate_search": false,
+    "model_change": false,
+    "calibration_change": false,
+    "acceptance_threshold_change": false,
+    "quarterly_or_monthly_optimization": false,
+    "year_2026_read": false,
+    "pnl": false,
+    "fresh_oos_claim": false,
+    "production_authority": false
+  }
+}
