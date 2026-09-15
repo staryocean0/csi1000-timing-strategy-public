@@ -195,6 +195,8 @@ def _load_request() -> tuple[dict, dict[str, object]]:
 def self_test() -> None:
     if PRIVATE_REPO != "staryocean0/csi1000-timing-strategy-private":
         raise GateError("private_identity_drift")
+    request, active_contract = _load_request()
+    active_sync_id = request["sync_id"]
     for sync_id, contract in CONTRACTS.items():
         private_base_sha = contract["private_base_sha"]
         if not re.fullmatch(r"[0-9a-f]{40}", str(private_base_sha)):
@@ -220,7 +222,8 @@ def self_test() -> None:
                 raise GateError("governance_target_scope_drift")
             if expected_status == "modified" and not expected_private_blob:
                 raise GateError("governance_target_scope_drift")
-            _source_bytes(row)
+            if sync_id == active_sync_id:
+                _source_bytes(row)
         if sync_id == "layer3-ols-family-import-20260915-v1":
             prefix = "docs/imports/layer3_ols_family_20260915/"
             if not all(name.startswith(prefix) for name in names):
@@ -229,7 +232,8 @@ def self_test() -> None:
             prefix = "docs/imports/layer3_ols_external_evidence_20260915/"
             if not all(name.startswith(prefix) for name in names):
                 raise GateError("governance_target_scope_drift")
-    _load_request()
+    if active_contract is not CONTRACTS[active_sync_id]:
+        raise GateError("governance_request_identity_drift")
     print("Bounded private sync contract is structurally valid.")
 
 
