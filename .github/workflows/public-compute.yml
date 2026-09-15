@@ -69,7 +69,7 @@ jobs:
       - name: Prepare fixed private inputs
         id: prepare
         if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1-calibration-diagnostic-20260914' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'risk-v2-historical-000852-2015-2019-v1' || inputs.profile == 'risk-v2-temporal-stability-2015-2025-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-blackbox-v1'
-        timeout-minutes: 8
+        timeout-minutes: 6
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
         run: |
@@ -98,7 +98,7 @@ jobs:
           fi
       - name: Compute without private credentials
         if: inputs.profile == 'handoff-verify-v1' || inputs.profile == 'risk-v2-severity-persistence-v1' || inputs.profile == 'risk-v2-phase1-calibration-diagnostic-20260914' || inputs.profile == 'risk-v2-phase1b-ordering-calibration-v1' || inputs.profile == 'risk-v2-historical-000852-2015-2019-v1' || inputs.profile == 'risk-v2-temporal-stability-2015-2025-v1' || inputs.profile == 'overnight-official-inventory-v1' || inputs.profile == 'overnight-carrier-materialization-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-dev-v1' || inputs.profile == 'overnight-continuous-tail-likelihood-blackbox-v1'
-        timeout-minutes: 20
+        timeout-minutes: 16
         run: |
           if [ '${{ inputs.profile }}' = 'handoff-verify-v1' ]; then
             python3 executor/research_broker.py compute handoff-verify-v1
@@ -153,7 +153,7 @@ jobs:
           fi
       - name: Return verified results privately
         if: always() && steps.prepare.outcome == 'success' && steps.cleanup.outcome == 'success'
-        timeout-minutes: 8
+        timeout-minutes: 6
         env:
           FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
         run: |
