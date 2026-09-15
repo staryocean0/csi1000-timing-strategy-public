@@ -30,6 +30,7 @@ jobs:
        github.event.issue.title == 'controller: risk-v2-15m-tail-robust-calibration-v2' ||
        github.event.issue.title == 'controller: risk-v2-weekly-support-diagnostic-v1' ||
        github.event.issue.title == 'controller: risk-v2-weekly-window-feasibility-v1' ||
+       github.event.issue.title == 'controller: risk-v2-temporal-stability-2week-v2' ||
        github.event.issue.title == 'controller: overnight-carrier-materialization-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-dev-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-blackbox-v1')
@@ -44,49 +45,21 @@ jobs:
         run: |
           set -euo pipefail
           case "$REQUEST_TITLE" in
-            'controller: runtime-smoke')
-              profile='runtime-smoke'
-              ;;
-            'controller: handoff-verify-v1')
-              profile='handoff-verify-v1'
-              ;;
-            'controller: risk-v2-severity-persistence-v1')
-              profile='risk-v2-severity-persistence-v1'
-              ;;
-            'controller: risk-v2-phase1b-ordering-calibration-v1')
-              profile='risk-v2-phase1b-ordering-calibration-v1'
-              ;;
-            'controller: risk-v2-historical-000852-2015-2019-v1')
-              profile='risk-v2-historical-000852-2015-2019-v1'
-              ;;
-            'controller: risk-v2-temporal-stability-2015-2025-v1')
-              profile='risk-v2-temporal-stability-2015-2025-v1'
-              ;;
-            'controller: risk-v2-15m-annual-calibration-diagnostic-v1')
-              profile='risk-v2-15m-annual-calibration-diagnostic-v1'
-              ;;
-            'controller: risk-v2-15m-tail-robust-calibration-v2')
-              profile='risk-v2-15m-tail-robust-calibration-v2'
-              ;;
-            'controller: risk-v2-weekly-support-diagnostic-v1')
-              profile='risk-v2-weekly-support-diagnostic-v1'
-              ;;
-            'controller: risk-v2-weekly-window-feasibility-v1')
-              profile='risk-v2-weekly-window-feasibility-v1'
-              ;;
-            'controller: overnight-carrier-materialization-v1')
-              profile='overnight-carrier-materialization-v1'
-              ;;
-            'controller: overnight-continuous-tail-likelihood-dev-v1')
-              profile='overnight-continuous-tail-likelihood-dev-v1'
-              ;;
-            'controller: overnight-continuous-tail-likelihood-blackbox-v1')
-              profile='overnight-continuous-tail-likelihood-blackbox-v1'
-              ;;
-            *)
-              echo 'Execution stopped: unapproved_controller_request' >&2
-              exit 64
-              ;;
+            'controller: runtime-smoke') profile='runtime-smoke' ;;
+            'controller: handoff-verify-v1') profile='handoff-verify-v1' ;;
+            'controller: risk-v2-severity-persistence-v1') profile='risk-v2-severity-persistence-v1' ;;
+            'controller: risk-v2-phase1b-ordering-calibration-v1') profile='risk-v2-phase1b-ordering-calibration-v1' ;;
+            'controller: risk-v2-historical-000852-2015-2019-v1') profile='risk-v2-historical-000852-2015-2019-v1' ;;
+            'controller: risk-v2-temporal-stability-2015-2025-v1') profile='risk-v2-temporal-stability-2015-2025-v1' ;;
+            'controller: risk-v2-15m-annual-calibration-diagnostic-v1') profile='risk-v2-15m-annual-calibration-diagnostic-v1' ;;
+            'controller: risk-v2-15m-tail-robust-calibration-v2') profile='risk-v2-15m-tail-robust-calibration-v2' ;;
+            'controller: risk-v2-weekly-support-diagnostic-v1') profile='risk-v2-weekly-support-diagnostic-v1' ;;
+            'controller: risk-v2-weekly-window-feasibility-v1') profile='risk-v2-weekly-window-feasibility-v1' ;;
+            'controller: risk-v2-temporal-stability-2week-v2') profile='risk-v2-temporal-stability-2week-v2' ;;
+            'controller: overnight-carrier-materialization-v1') profile='overnight-carrier-materialization-v1' ;;
+            'controller: overnight-continuous-tail-likelihood-dev-v1') profile='overnight-continuous-tail-likelihood-dev-v1' ;;
+            'controller: overnight-continuous-tail-likelihood-blackbox-v1') profile='overnight-continuous-tail-likelihood-blackbox-v1' ;;
+            *) echo 'Execution stopped: unapproved_controller_request' >&2; exit 64 ;;
           esac
           gh api \
             --method POST \
