@@ -1,0 +1,136 @@
+{
+  "schema_id": "csi1000.recognizer_r2_adjudication@1.0",
+  "date": "2026-09-17",
+  "issue": 337,
+  "readiness_gate_issue": 321,
+  "source_pr": 338,
+  "source_merge": "6c18b886efa080cab03b4474df1d0ee657c2e7ec",
+  "formal_run": {
+    "workflow_run_id": 35163544010,
+    "public_run_id": "35163544010-1",
+    "event": "workflow_dispatch",
+    "profile": "two-wave-recognizer-r2-eligible-counter-v1",
+    "private_source_ref": "7688ba57206dd29fbef88d8e57475255718471fe",
+    "receipt_status": "passed",
+    "delivery_status": "archive_uploaded_and_verified",
+    "manifest_sha256": "528c04e164952580773fd040ff6a7c22626359569078c87d11d06433745a6fcf",
+    "archive_sha256": "fc4e1fa804baea201c1fe7bb8c86c868c1a065fd7edba10b5be6a31c5b74d346",
+    "archive_bytes": 86495
+  },
+  "input": {
+    "symbol": "000852.SH",
+    "timeframe": "5m",
+    "development_period": "2015-2020",
+    "bars": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "data_role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+  },
+  "frozen_scale": {
+    "MIN_LEG": 4,
+    "MAX_UNFINISHED_LEG": 48,
+    "T0_bars": 21
+  },
+  "blind_zone_result": {
+    "nonedge_blind_episodes": 0,
+    "nonedge_blind_bars": 0,
+    "substantial_blind_episodes": 0,
+    "substantial_blind_bars": 0,
+    "r1_nonedge_episodes": 5,
+    "r1_nonedge_bars": 414,
+    "r1_recovered_bar_fraction": 1.0,
+    "r1_fully_recovered_episodes": 5,
+    "newly_blind_vs_R1_bars": 0,
+    "newly_blind_vs_R1_segments": 0,
+    "pivot_gap_minimum": 4,
+    "pivot_gap_below_MIN_LEG": 0,
+    "all_adjacent_pivot_gaps_ge_MIN_LEG": true
+  },
+  "baseline_metrics": {
+    "wave_count": 2503,
+    "median_duration": 21.0,
+    "median_amplitude": 0.010286858844350988,
+    "median_channel_height": 0.006555215973987671,
+    "low_amplitude_share": 0.2500998801438274,
+    "confirmation_delay_median": 4.0,
+    "confirmation_delay_p90": 7.0
+  },
+  "r1_metrics": {
+    "wave_count": 2704,
+    "median_duration": 22.0,
+    "median_amplitude": 0.01108954619305802,
+    "median_channel_height": 0.006799591008953776,
+    "low_amplitude_share": 0.23409763313609466,
+    "confirmation_delay_median": 4.0,
+    "confirmation_delay_p90": 7.0
+  },
+  "r2_metrics": {
+    "wave_count": 4345,
+    "median_duration": 14.0,
+    "median_amplitude": 0.0082006393846914,
+    "median_channel_height": 0.005207651245200395,
+    "low_amplitude_share": 0.3548906789413119,
+    "confirmation_delay_q25": 4.0,
+    "confirmation_delay_median": 4.0,
+    "confirmation_delay_q75": 4.0,
+    "confirmation_delay_p90": 4.0
+  },
+  "anti_oversegmentation": {
+    "wave_count_ratio": 1.7359168997203356,
+    "wave_count_ratio_max": 1.25,
+    "median_duration_ratio": 0.6666666666666666,
+    "median_duration_ratio_min": 0.75,
+    "median_amplitude_ratio": 0.7971956754509922,
+    "median_amplitude_ratio_min": 0.75,
+    "median_channel_height_ratio": 0.7944286299437476,
+    "median_channel_height_ratio_min": 0.75,
+    "low_amplitude_share_change": 0.10479079879748449,
+    "low_amplitude_share_change_max": 0.05,
+    "confirmation_delay_median_change": 0.0,
+    "confirmation_delay_median_change_max": 4,
+    "confirmation_delay_p90_change": -3.0,
+    "confirmation_delay_p90_change_max": 8,
+    "passed": false,
+    "failed_controls": [
+      "wave_count_ratio",
+      "median_duration_ratio",
+      "low_amplitude_share_change"
+    ]
+  },
+  "readiness_gates": {
+    "coverage": true,
+    "substantial_misses": true,
+    "residual_character": true,
+    "no_long_substantial": true,
+    "no_oversegmentation": false,
+    "causality": false,
+    "geometry_evidence": false,
+    "no_outcome_tuning": true,
+    "numeric_gate_pass": false
+  },
+  "manual_visual_review": {
+    "mandatory_former_R1_residual_pages": 5,
+    "all_five_reviewed": true,
+    "longest_wave_control_reviewed": true,
+    "former_R1_meaningful_swings_recovered": true,
+    "repeated_short_near_MIN_LEG_alternations_observed": true,
+    "longest_one_way_leg_preserved": true,
+    "renderer_legend_defect": "R2 renderer retained stale text 'vertical dotted = R1 confirmation' although candidate confirmations are R2",
+    "geometry_evidence_accepted": false
+  },
+  "mechanism_adjudication": {
+    "R2_hypothesis_partially_supported": "Separating an eligible counter removes the early-counter lock and recovers all five R1 residual gaps.",
+    "R2_failure": "Timestamp eligibility was treated as immediate extremum maturity. The first opposite observation at or after the four-bar occurrence distance can confirm on the same bar, causing systematic near-floor alternation and oversegmentation.",
+    "not_a_reset_order_result": true,
+    "next_preregistered_issue": 340,
+    "next_candidate": "MATURE_COUNTER_REARM"
+  },
+  "decision": "REJECT_R2_FOR_5M_READINESS",
+  "one_minute_admitted": false,
+  "authority": {
+    "signal": false,
+    "detector_repair": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
