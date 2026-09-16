@@ -4,31 +4,33 @@ Last updated: 2026-09-16
 
 ## Current state
 
-The OLS family is **not production-authorized**. The active research program remains the MaxDD-first failure-regime program defined by `OLS_MAXDD_RESEARCH_CHARTER_20260915.md`. **Phase C intervention authority remains closed.**
+The OLS family is **not production-authorized**. The active research program remains the MaxDD-first failure-regime program defined by `OLS_MAXDD_RESEARCH_CHARTER_20260915.md`.
 
-The only newly authorized continuation is the separately preregistered causal-identification study `ols-maxdd-sequence-hazard-v1` under `OLS_MAXDD_SEQUENCE_HAZARD_V1_PROTOCOL_20260916.md`.
+The preregistered sequence-hazard study has now completed successfully. Its authoritative verified run is `35043295079-1`, with `phase_c_reopen_authority=true`.
 
 ## Closed prior sequence
 
 - **D0 — drawdown diagnosis:** completed. Exit persistence is a material drawdown amplifier; large episodes often contain substantial fit-quality deterioration.
-- **D1 — R² lead/lag:** completed and supported as a diagnostic. Two consecutive active-authority R² declines have useful early-warning information.
+- **D1 — R² lead/lag:** completed and supported as a diagnostic.
 - **D2 — hard exit overlay:** completed and rejected. Authoritative status: `NOT_SUPPORTED_AS_D2_EXIT_OVERLAY_CANDIDATE`; `d2b_authority=false`.
 - **Phase A — MaxDD failure atlas:** completed by verified run `34978764073-1`; authoritative status `MECHANISM_ATLAS_COMPLETED`.
-- **Phase B — causal pre-segment re-entry identification:** completed by verified run `35040712447-1`; none of the eight frozen candidates passed the preregistered promotion gate; authoritative status `phase_c_authority=false`.
+- **Phase B — causal pre-segment re-entry identification:** completed by verified run `35040712447-1`; none of the eight frozen single-entry candidates passed; `phase_c_authority=false` for that experiment.
+- **Sequence-hazard v1 — state-path causal identification:** completed by verified run `35043295079-1`; two frozen candidates passed the preregistered promotion gate; `phase_c_reopen_authority=true`.
 
-## What remains established
+## What the sequence-hazard result establishes
 
-Phase A remains authoritative descriptive evidence that tail risk is concentrated in a small number of episodes, repeated participation/re-entry is associated with deeper drawdown episodes across all five frozen exit families, and fit-R²/path-efficiency collapse are severity markers, especially under frozen-midline persistence. These are episode-level mechanism findings, not a causal trading signal.
+The valid causal unit is not a generic single re-entry snapshot. The successful study instead uses one state-path checkpoint per recovered drawdown episode after two natural baseline segments have already completed while equity remains underwater.
 
-Phase B remains authoritative evidence that the tested **single-decision pre-segment snapshots** do not reliably identify which next segment will add further drawdown. Therefore none of those eight candidates may be converted into block-entry, cooldown, sizing, faster-exit, or risk-off rules under that experiment.
+Two preregistered sequence candidates are eligible for a separately preregistered Phase C intervention comparison:
 
-## New causal unit
+1. `seq_pe_collapse_burden` — accumulated path-efficiency collapse across the completed two-segment prefix.
+2. `seq_direction_flip` — direction reversal across the completed two-segment prefix.
 
-The sequence-hazard study changes only the research unit, not the strategy. It asks whether a still-open underwater episode can be recognized as persistently dangerous from its **causal completed-segment path prefix**.
+`seq_pe_collapse_burden` passed with positive primary rho in all five exit families, rho >= 0.25 in three, median family AUC about 0.667, positive annual rho in 5 of 6 sufficient family-year cells, and positive sequence-3 sensitivity rho in all five families.
 
-The primary checkpoint is one observation per recovered drawdown episode: the decision close before the first new segment that begins after two natural baseline segments have already completed within that same episode. Sequence length 2 is primary; length 3 is the only frozen sensitivity. Features, outcome, sufficiency rules and promotion gates were frozen before outcome reveal.
+`seq_direction_flip` passed with positive primary rho in all five exit families, rho >= 0.25 in four, median family AUC about 0.622, positive annual rho in 5 of 6 sufficient family-year cells, and positive sequence-3 sensitivity rho in four of five families.
 
-The study may measure cumulative loss/MAE burden, R²/PE collapse burden, damage acceleration, participation density and direction-change behavior across the completed prefix. It may not suppress trades or choose trading thresholds.
+This is a research-sample identification result, not fresh OOS and not a trading rule. Annual sufficiency remains sparse.
 
 ## Binding priority
 
@@ -38,10 +40,10 @@ The study may measure cumulative loss/MAE burden, R²/PE collapse burden, damage
 
 ## Current authority
 
-Authorized next study: **`ols-maxdd-sequence-hazard-v1`**.
+**Phase C intervention-research authority is reopened, but only for a new separately preregistered comparison built from the two eligible sequence-hazard candidates.**
 
-Protocol: `OLS_MAXDD_SEQUENCE_HAZARD_V1_PROTOCOL_20260916.md`.
+The next study may compare a bounded ladder of risk responses and must freeze all trigger construction, action semantics, MaxDD/tail gates, return-retention floors, and robustness checks before observing intervention outcomes.
 
-`phase_c_reopen_authority` is false before results and becomes true only if at least one frozen sequence candidate passes every preregistered cross-family, AUC, annual-stability, sequence-3 sensitivity and causal-availability condition. A pass would authorize only a separate preregistered intervention comparison.
+The sequence-hazard result itself does not authorize live block-entry, cooldown, sizing, faster exit, full risk-off, routing, leverage, deployment, or production behavior.
 
-No entry/exit/re-entry/sizing/routing/leverage/production change is authorized.
+No production or live-trading authority is granted.
