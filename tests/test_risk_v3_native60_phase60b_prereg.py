@@ -4,10 +4,7 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 PREREG=ROOT/"docs/research/RISK_TOOL_V3_NATIVE60_PHASE60B_VOLATILITY_CONTINUITY_MAP_PREREG_20260916.json"
-WORKFLOW=ROOT/".github/workflows/public-compute.yml"
-CONTROLLER=ROOT/".github/workflows/controller-dispatch.yml"
 SHA="cc1fe933fa4339f937d01d8f1d39f7d0ba86d8d3903806008c97afcd9675973b"
-PROFILE="risk-v3-native60-phase60b-volatility-continuity-map-v1"
 
 class Native60Phase60BPreregTests(unittest.TestCase):
     def setUp(self):
@@ -55,7 +52,7 @@ class Native60Phase60BPreregTests(unittest.TestCase):
         self.assertTrue(o["enabled"]); self.assertEqual(o["expected_pairs"],726)
         self.assertEqual(o["authority"],"secondary_descriptive_only"); self.assertTrue(o["excluded_from_primary_persistence"])
 
-    def test_exact_technical_gates_no_authority_and_route_absent(self):
+    def test_exact_technical_gates_no_authority_and_prereg_time_freeze(self):
         t=self.v["technical_acceptance"]
         self.assertTrue(all(t.values()))
         self.assertEqual(t["cc_finite_rows_eq_2181"],True); self.assertEqual(t["cc_am1_structural_null_rows_eq_727"],True)
@@ -64,8 +61,10 @@ class Native60Phase60BPreregTests(unittest.TestCase):
         self.assertEqual(r["technical_valid_status"],"NATIVE60_DESCRIPTIVE_MAP_COMPLETE")
         self.assertFalse(r["next_phase_authorized"]); self.assertTrue(r["no_observable_ranking"]); self.assertTrue(r["no_pass_fail_continuity_claim"])
         self.assertEqual(self.v["publication"]["verifier_success_token"],"passed")
-        self.assertNotIn(PROFILE,WORKFLOW.read_text()); self.assertNotIn(PROFILE,CONTROLLER.read_text())
-        self.assertFalse(self.v["execution_freeze"]["execution_profile_registered_at_prereg"])
-        self.assertFalse(self.v["execution_freeze"]["controller_route_registered_at_prereg"])
+        freeze=self.v["execution_freeze"]
+        self.assertFalse(freeze["execution_profile_registered_at_prereg"])
+        self.assertFalse(freeze["controller_route_registered_at_prereg"])
+        self.assertTrue(freeze["implementation_after_prereg_merge_only"])
+        self.assertFalse(freeze["row_level_read_before_prereg_freeze"])
 
 if __name__=="__main__": unittest.main()
