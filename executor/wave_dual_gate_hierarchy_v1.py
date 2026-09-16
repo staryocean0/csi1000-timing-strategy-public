@@ -169,7 +169,7 @@ def shape(bars,w):
     s,e=w['start_bar'],w['end_bar'];p=np.log(bars.close.to_numpy(float)[s:e+1])
     x=np.linspace(0,1,len(p));a,z=math.log(w['start_low']),math.log(w['end_low']);height=w['height_log']
     residual=(p-(a+x*(z-a)))/height
-    mid=float(np.interp(.5,x,p));sign=1 if z>=a else -1
+    mid=float(np.interp(.5,x,p));sign=1 if z>a else -1 if z<a else 0
     variation=float(np.abs(np.diff(p)).sum())
     return dict(shape='SHORT_WAVE' if e-s<8 else 'EARLY' if w['peak_phase']<1/3 else 'LATE' if w['peak_phase']>2/3 else 'MIDDLE',
         front_push=sign*(mid-p[0])/height,back_push=sign*(p[-1]-mid)/height,
@@ -189,6 +189,7 @@ def background(base,hier,close,t,T):
         chain.append(r)
     nodes=[visible(r['nodes'],t) for r in chain]
     left=max(n[0]['occurrence_bar'] for n in nodes);right=min(n[-1]['occurrence_bar'] for n in nodes)
+    left=max(left,right-12*T+1)  # Fixed recent historical support; no endpoint extrapolation.
     meta=dict(support_start=left,support_end=right,evidence_age=t-right,base_root=root['root_id'])
     if right-left+1<8:return dict(meta,status='INSUFFICIENT_SUPPORT')
     if t-right>T:return dict(meta,status='STALE')
@@ -207,7 +208,7 @@ def background(base,hier,close,t,T):
     P=float(np.median([w['duration'] for w in ws[-2:]]))
     if P>right-left:return dict(meta,status='PERIOD_OUTSIDE_SUPPORT')
     ps=base['pivots'] if j==0 else hier['graphs'][j-1][chain[j-1]['root_id']]['pivots']
-    ps=visible(ps,t)
+    ps=[p for p in visible(ps,t) if p['epoch']==ws[-1]['epoch'] and not p['left_censored']]
     if not ps:return dict(meta,status='UNRESOLVED_PHASE')
     direction='UP' if ps[-1]['kind']=='low' else 'DOWN'
     return dict(meta,status='RESOLVED',period=P,ratio=P/T,bucket=period_bucket(P,T),direction=direction)

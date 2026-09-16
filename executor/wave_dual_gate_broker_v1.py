@@ -19,7 +19,7 @@ HERE=Path(__file__).resolve().parent
 PROFILE='two-wave-dual-gates-v1'
 PRIVATE_REF='7688ba57206dd29fbef88d8e57475255718471fe'
 MANIFEST=HERE.parent/'docs/research/TWO_WAVE_DUAL_GATE_EXECUTION_MANIFEST_V1.json'
-SOURCES=('wave_dual_gate_probe_v1.py','wave_dual_gate_hierarchy_v1.py','wave_dual_gate_analysis_v1.py',
+SOURCES=('wave_dual_gate_protocol_v1.json','wave_dual_gate_audit_v1.py','wave_dual_gate_probe_v1.py','wave_dual_gate_hierarchy_v1.py','wave_dual_gate_analysis_v1.py',
     'wave_dual_gate_study_v1.py','wave_dual_gate_verifier_v1.py','wave_dual_gate_runtime_v1.py',
     'two_wave_v0800_semantics.py','two_wave_v0800_scale_map.py','wave_skeleton_context_v1.py')
 COMMAND=['dual_gate/wave_dual_gate_study_v1.py','--inputs','/work/inputs','--out','/results/study']
@@ -67,6 +67,23 @@ def publish(rb,profile):
     api.request(target,dict(message='Record bounded dual-gate result [skip ci]',branch=state['branch'],content=base64.b64encode(payload).decode()),method='PUT')
     returned=api.request(target+'?ref='+urllib.parse.quote(state['branch'],safe=''))
     if base64.b64decode(returned['content'])!=payload:raise rb.GateError('private_receipt_readback_failed')
+    # Fixed private-only readback views; no market rows or public artifacts.
+    mirrors={'execution_manifest.json':MANIFEST.read_bytes()}
+    if state.get('compute_success'):
+        report_path=results/'study'/'report.json'
+        if report_path.is_symlink() or not report_path.is_file() or report_path.stat().st_size>2_000_000:raise rb.GateError('report_mirror_size')
+        mirrors['report.json']=report_path.read_bytes()
+    else:
+        diagnostic={}
+        for logname in ('compute.log','controller_validation.log','compute_receipt.json'):
+            log=results/logname
+            if log.is_file() and not log.is_symlink():diagnostic[logname]=log.read_bytes()[-32000:].decode('utf-8',errors='replace')
+        mirrors['failure_diagnostic.json']=(json.dumps(diagnostic,ensure_ascii=False)+'\n').encode()
+    for name,raw in mirrors.items():
+        mirror_target=f'repos/{rb.PRIVATE_REPO}/contents/research/public-runs/{state["run_id"]}/{name}'
+        api.request(mirror_target,dict(message='Record fixed private dual-gate readback [skip ci]',branch=state['branch'],content=base64.b64encode(raw).decode()),method='PUT')
+        echo=api.request(mirror_target+'?ref='+urllib.parse.quote(state['branch'],safe=''))
+        if base64.b64decode(echo['content'])!=raw:raise rb.GateError('private_readback_view_failed')
     if not state.get('compute_success'):raise rb.GateError('compute_failed_consult_private_receipt')
     print('Dual-gate private archive and receipt verified; no production authority.')
 

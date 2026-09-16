@@ -62,6 +62,7 @@ jobs:
        github.event.issue.title == 'controller: two-wave-v0800-e-morphology-visual-audit-v1' ||
        github.event.issue.title == 'controller: two-wave-v0800-f-operational-state-stream-audit-v1' ||
        github.event.issue.title == 'controller: two-wave-v0800-g-bar-time-carrier-semantics-v1' ||
+       github.event.issue.title == 'controller: two-wave-dual-gates-v1' ||
        github.event.issue.title == 'controller: overnight-carrier-materialization-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-dev-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-blackbox-v1' ||
@@ -195,6 +196,9 @@ jobs:
               ;;
             'controller: two-wave-v0800-f-operational-state-stream-audit-v1')
               profile='two-wave-v0800-f-operational-state-stream-audit-v1'
+              ;;
+            'controller: two-wave-dual-gates-v1')
+              profile='two-wave-dual-gates-v1'
               ;;
             'controller: two-wave-v0800-g-bar-time-carrier-semantics-v1')
               profile='two-wave-v0800-g-bar-time-carrier-semantics-v1'

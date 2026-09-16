@@ -31,6 +31,8 @@ jobs:
           sparse-checkout: |
             executor
             tests
+            docs/research
+            .github/workflows
           sparse-checkout-cone-mode: true
       - name: Install repository-pinned public test dependencies
         timeout-minutes: 3
@@ -45,5 +47,5 @@ jobs:
           result = unittest.TextTestRunner(verbosity=2).run(suite)
           print('Public-source synthetic tests only. No market data or private repository access.')
           print(f'run={result.testsRun} skipped={len(result.skipped)}')
-          sys.exit(0 if result.wasSuccessful() and not result.skipped and result.testsRun >= 62 else 1)
+          sys.exit(0 if result.wasSuccessful() and not result.skipped and result.testsRun >= 73 else 1)
           PY

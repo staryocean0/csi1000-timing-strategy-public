@@ -92,12 +92,15 @@ def event_rows(bars,base,parents):
         record=dict(decision_bar=t,year=int(bars.timestamp.iloc[t].year),wave_id=w['wave_id'],nine=code,
                     relative_amplitude=w['height_log']/(rv[t]*math.sqrt(w['duration'])) if rv[t]>0 else float('nan'),
                     **shape(bars,w))
-        before=parent_context(base,parents,rid,w['start_bar']-1)
+        before=parent_context(base,parents,rid,prev['start_bar']-1)
+        record['pair_start_bar']=prev['start_bar']
+        record['formation_cutoff_bar']=prev['start_bar']-1
         record['background_before_formation']='UNKNOWN' if before is None else before['direction']
         record['same_scale']=max(prev['duration'],w['duration'])/min(prev['duration'],w['duration'])<=math.sqrt(2)+1e-12
         ctx=parent_context(base,parents,rid,t)
         if not record['same_scale']:record['status']='SCALE_MISMATCH'
         elif ctx is None:record['status']='NO_IDENTIFIED_PARENT'
+        elif ctx['period'] < 2*max(prev['duration'],w['duration']):record['status']='PARENT_NOT_COARSER'
         elif not math.isfinite(record['relative_amplitude']):record['status']='NO_VOLATILITY_SUPPORT'
         else:
             graph=ctx['graph'];root=rid+':e'+str(ctx['epoch'])
@@ -266,6 +269,12 @@ def gate_b(bars,base,hier,T,day_index):
     if report['verdict']=='RETAIN_FOR_INDEPENDENT_VALIDATION' and not (mci is not None and mci[0]>0):
         report['verdict']='INCONCLUSIVE' if mci is None else 'NOT_SUPPORTED'
         report['reason']='adjusted_mechanism_not_established'
+    from wave_dual_gate_audit_v1 import economics
+    economic_audit=economics(evaluation,bars.open.to_numpy(float),day_index,T)
+    report['calendar_economics']=economic_audit
+    if report['verdict']=='RETAIN_FOR_INDEPENDENT_VALIDATION' and not (economic_audit['interval'] is not None and economic_audit['interval'][0]>0):
+        report['verdict']='INCONCLUSIVE' if economic_audit['interval'] is None else 'NOT_SUPPORTED'
+        report['reason']='calendar_economics_not_established'
     return report,rows
 
 

@@ -80,7 +80,20 @@ def verify_prefixes(bars,ledgers,T,samples=24):
         b=base_inventory(prefix);h=hierarchy(b,1)
         expected=background(b,h,prefix.close.to_numpy(float),t,T)
         if encode(expected)!=encode(row['background']):raise ValueError('future suffix changes background')
-    return len(indices)
+    from wave_dual_gate_hierarchy_v1 import parent_context,shape
+    event_candidates=ledgers['events']
+    picks=np.unique(np.linspace(0,len(event_candidates)-1,min(samples,len(event_candidates)),dtype=int)) if event_candidates else []
+    fullbase=ledgers['base'];fullhier=ledgers['hierarchy_A']
+    for i in picks:
+        row=event_candidates[int(i)];t=row['decision_bar'];prefix=bars.iloc[:t+1].copy()
+        b=base_inventory(prefix);h=hierarchy(b,2);w=b['waves'][-1]
+        expected=parent_context(b,h,w['skeleton_root'],t)
+        observed=parent_context(fullbase,fullhier,w['skeleton_root'],t)
+        strip=lambda ctx:None if ctx is None else {k:v for k,v in ctx.items() if k!='graph'}
+        if encode(strip(expected))!=encode(strip(observed)):raise ValueError('future suffix changes A context')
+        if row['formation_cutoff_bar']!=row['pair_start_bar']-1:raise ValueError('formation clock contaminated')
+        if any(encode(shape(prefix,w)[k])!=encode(row[k]) for k in shape(prefix,w)):raise ValueError('future suffix changes shape')
+    return len(indices)+len(picks)
 
 
 def verify_results(bars,out,check_original=True):
@@ -109,6 +122,9 @@ def verify_results(bars,out,check_original=True):
         brier=sum((r['p'+str(j)]-r['target'])**2 for r in rs)/len(rs)
         loss=-sum(r['target']*math.log(max(1e-12,r['p'+str(j)]))+(1-r['target'])*math.log(max(1e-12,1-r['p'+str(j)])) for r in rs)/len(rs)
         if not math.isclose(brier,report['A']['pooled']['brier'][j],abs_tol=1e-12) or not math.isclose(loss,report['A']['pooled']['logloss'][j],abs_tol=1e-12):raise ValueError('independent scoring arithmetic mismatch')
+    from wave_dual_gate_audit_v1 import verify_probabilities,verify_trade_sequence
+    independent['probabilities_checked']=verify_probabilities(ledgers['events'],ledgers['oof'])
+    independent['exact_trade_sequences_checked']=verify_trade_sequence(bars,ledgers,report['T'])
     checked=verify_prefixes(bars,ledgers,report['T'])
     for key in ('A','B'):
         if report[key]['verdict'].startswith('RETAIN') and not report[key]['support_passed']:raise ValueError('unsupported acceptance')
