@@ -1,0 +1,120 @@
+{
+  "schema_id": "csi1000.two_wave_dual_gate_adjudication@1.0",
+  "study": "TWO_WAVE_DUAL_GATES_V1",
+  "date": "2026-09-16",
+  "public_run": "35065802258-1",
+  "public_source_sha": "e9ec03919df6fd45b47709249915c0007c9660c2",
+  "profile": "two-wave-dual-gates-v1",
+  "transport": {
+    "status": "passed",
+    "delivery_status": "archive_uploaded_and_verified",
+    "private_result_branch": "runs/public-research/35065802258-1",
+    "private_release_id": 389694986,
+    "report_sha256": "5cd4d2f5d601c5430d37e9f1a8bc703320a84ae09b8012edf5aff6d5f1c22973",
+    "new_training": true,
+    "production_authority": false
+  },
+  "data": {
+    "symbol": "000852.SH",
+    "timeframe": "5m_offset_0",
+    "years": [2015, 2020],
+    "rows": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+  },
+  "base_wave_reconstruction": {
+    "bars": 70114,
+    "pivots": 5471,
+    "waves": 2503,
+    "resets": 164
+  },
+  "gate_A_small_to_large": {
+    "verdict": "INCONCLUSIVE_POSITIVE_POINT_ESTIMATES",
+    "support_passed": false,
+    "all_strict_pairs": 2358,
+    "same_scale_pairs": 924,
+    "attrition": {
+      "scale_mismatch": 1434,
+      "no_identified_parent": 707,
+      "right_censored": 56,
+      "settled": 161,
+      "not_strict_pair_between_adjacent_base_waves": 144
+    },
+    "preformation_same_scale_background": {
+      "unknown": 725,
+      "up": 117,
+      "down": 82,
+      "known_fraction": 0.21536796536796536
+    },
+    "walk_forward_scored_events": 32,
+    "positives": 10,
+    "parent_groups": 11,
+    "independent_blocks_after_purge": 3,
+    "inference_events_after_purge": 21,
+    "test_years": {
+      "2018": "NO_TEST_EVENTS",
+      "2019": 25,
+      "2020": 7
+    },
+    "pooled": {
+      "A0_parent_only_brier": 0.23367113542453885,
+      "A1_plus_nine_and_amplitude_brier": 0.23105362431624796,
+      "A2_plus_internal_shape_brier": 0.22950984196950946,
+      "A0_parent_only_logloss": 0.6596320840973049,
+      "A1_plus_nine_and_amplitude_logloss": 0.6543514776097975,
+      "A2_plus_internal_shape_logloss": 0.6512167618661044
+    },
+    "interpretation": [
+      "Both Brier and LogLoss point estimates improve from A0 to A1 and from A0 to A2.",
+      "The preregistered support gate fails by a wide margin: only 32 scored walk-forward events, 10 positives, 11 parent groups and 3 inference blocks.",
+      "The point estimate is therefore a research clue, not accepted predictive evidence.",
+      "Most same-scale pairs have no known preformation coarse background, so the dominant limitation is causal parent-context coverage rather than an observed negative predictive result."
+    ],
+    "research_action": "PRESERVE_AS_PRIORITY_CANDIDATE_BUT_DO_NOT_ACCEPT_SIGNAL"
+  },
+  "gate_B_large_to_small": {
+    "verdict": "INCONCLUSIVE_ZERO_RESOLVED_CONTEXT",
+    "support_passed": false,
+    "T_bars": 21,
+    "evaluation_closed_trades": 949,
+    "baseline_fast_loss_rate": 0.39831401475237094,
+    "baseline_two_sided_fast_loss_rate": 0.1529535864978903,
+    "background_groups": {
+      "INSUFFICIENT_HIERARCHY": 849,
+      "NO_ROOT": 100
+    },
+    "resolved_cycle_contexts": 0,
+    "selected_trades": 0,
+    "coverage": 0.0,
+    "strength_cutoff": null,
+    "adjusted_mechanism": "INSUFFICIENT_COMMON_SUPPORT",
+    "min_leg_nodes_1_and_2_same_zero_coverage": true,
+    "interpretation": [
+      "The frozen hierarchy never produced a resolved 2-3T, 3-6T or >=6T background at any evaluated entry opportunity.",
+      "Therefore the run did not actually test the economic hypothesis of intermediate-cycle whipsaw versus much-slower dominant trend.",
+      "The zero selected-trade result and negative filtered-minus-baseline arithmetic are mechanical consequences of zero coverage, not evidence that top-down context is harmful.",
+      "The current B representation fails operational coverage and must not be rerun with post-result threshold relaxation under the same study identity."
+    ],
+    "research_action": "PAUSE_ECONOMIC_GATE;_REQUIRE_SEPARATE_HIERARCHY_AVAILABILITY_AUDIT_BEFORE_ANY_B2_TEST"
+  },
+  "overall_adjudication": {
+    "accepted_directional_rule": false,
+    "accepted_large_to_small_filter": false,
+    "decision": "CONTINUE_A_AS_PRIMARY_RESEARCH_DIRECTION;_B_ONLY_AS_SEPARATE_REPRESENTATION_REPAIR_NOT_AS_VALIDATED_FILTER",
+    "reason": "A shows directionally favorable but severely underpowered development evidence; B produced no resolved contexts and is not an interpretable market test.",
+    "do_not": [
+      "Do not call A predictive support.",
+      "Do not call B economically negative or positive from this run.",
+      "Do not loosen thresholds or hierarchy requirements inside this frozen study to rescue either gate.",
+      "Do not use the baseline trend proxy as trading authority.",
+      "Do not promote any publication, trading or production authority."
+    ]
+  },
+  "authority": {
+    "fresh_oos": false,
+    "direction_acceptance": false,
+    "state_publication_authority": false,
+    "trade_authority": false,
+    "production_authority": false
+  }
+}
