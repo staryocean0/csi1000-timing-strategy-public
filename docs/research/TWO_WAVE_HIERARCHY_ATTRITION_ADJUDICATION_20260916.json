@@ -1,0 +1,114 @@
+{
+  "schema_id": "csi1000.hierarchy_attrition_adjudication@1.0",
+  "date": "2026-09-16",
+  "status": "MIXED_CALENDAR_AND_REPRESENTATION_LIMIT",
+  "formal_run": {
+    "public_run_id": "35078958596-1",
+    "public_source_sha": "edef051a3a227d309ed2940bc391b3121efe87f9",
+    "profile": "two-wave-hierarchy-attrition-v1",
+    "receipt_status": "passed",
+    "archive_verified": true,
+    "new_training": false
+  },
+  "input": {
+    "symbol": "000852.SH",
+    "view": "5m_offset_0",
+    "period": ["2015-01-05", "2020-12-31"],
+    "rows": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+  },
+  "frozen_hierarchy": {
+    "recursive_minimum_nodes": 1,
+    "recursive_maximum_nodes": 24,
+    "base_resets": 164,
+    "base_roots": 145,
+    "recursive_parameters_changed_after_router_result": false
+  },
+  "capacity": {
+    "completed_C2": 46,
+    "observed_T2_over_T1_median": 3.0785714285714283,
+    "idealized_C3_count_proxy": 14.941995359628772,
+    "frozen_C3_sample_gate": 30,
+    "calendar_span_limited": true,
+    "completed_C3": 1,
+    "C3_realization_efficiency_vs_proxy": 0.06692546583850931,
+    "C3_stranded_input_wave_fraction": 0.9347826086956522,
+    "representation_fragmentation": true
+  },
+  "stages": {
+    "C1": {
+      "input_roots": 145,
+      "input_nodes": 2648,
+      "input_waves": 2503,
+      "pivots": 1336,
+      "usable_pivots": 1191,
+      "resets": 0,
+      "completed_waves": 473,
+      "output_roots": 91,
+      "roots_zero_wave": 54,
+      "roots_ge5_nodes_zero_wave": 28,
+      "invalidated_input_roots": 144,
+      "consumed_input_wave_fraction": 0.718337994406712,
+      "stranded_input_waves": 705,
+      "root_node_count_median": 11.0
+    },
+    "C2": {
+      "input_roots": 91,
+      "input_nodes": 564,
+      "input_waves": 473,
+      "pivots": 286,
+      "usable_pivots": 195,
+      "resets": 0,
+      "completed_waves": 46,
+      "output_roots": 19,
+      "roots_zero_wave": 72,
+      "roots_ge5_nodes_zero_wave": 25,
+      "invalidated_input_roots": 90,
+      "consumed_input_wave_fraction": 0.3298097251585624,
+      "stranded_input_waves": 317,
+      "root_node_count_median": 4.0
+    },
+    "C3": {
+      "input_roots": 19,
+      "input_nodes": 65,
+      "input_waves": 46,
+      "pivots": 30,
+      "usable_pivots": 11,
+      "resets": 0,
+      "completed_waves": 1,
+      "output_roots": 1,
+      "roots_zero_wave": 18,
+      "roots_one_wave": 1,
+      "roots_two_plus_waves": 0,
+      "roots_ge5_nodes_zero_wave": 3,
+      "invalidated_input_roots": 19,
+      "consumed_input_waves": 3,
+      "stranded_input_waves": 43,
+      "consumed_input_wave_fraction": 0.06521739130434782,
+      "root_node_count_median": 3.0,
+      "root_node_buckets": {"LT3": 9, "3_4": 6, "5_8": 3, "9_16": 1}
+    }
+  },
+  "interpretation": {
+    "diagnosis": "MIXED",
+    "calendar_span": "Even idealized adjacent-scale survival implies only about 15 C3 waves in six years, below the preregistered 30-wave gate.",
+    "representation": "Actual C3 realization is only about 6.7% of the idealized proxy; 93.5% of C2 input waves are stranded before becoming complete C3 waves.",
+    "recursive_resets": "No recursive C1/C2/C3 reset occurred; loss is dominated by inherited root/epoch fragmentation, short roots and unfinished root-local tails, not new high-level resets.",
+    "one_minute_same_span": "NOT_FIRST_REMEDY",
+    "longer_calendar_history": "NEEDED_AFTER_OR_ALONGSIDE_REPRESENTATION_REPAIR",
+    "rough_minimum_span_implication": "At the idealized ~15 C3 per six years, roughly twice the current calendar span would be needed merely to approach 30 C3 observations, subject to stationarity and after continuity repair."
+  },
+  "next_sequence": [
+    "Preregister a scale-specific continuity representation that does not automatically let a lower-level reset sever all higher-level context.",
+    "Validate causality and full-OHLC geometry before any outcome-based router rerun.",
+    "After representation fidelity passes, admit longer-calendar history at the same physical scale; preserve recent years as holdout when possible.",
+    "Only then rerun C2xC3 routing economics."
+  ],
+  "authority": {
+    "scale_law": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
