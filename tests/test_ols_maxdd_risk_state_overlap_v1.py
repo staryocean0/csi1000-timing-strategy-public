@@ -63,6 +63,12 @@ class OlsMaxddRiskStateOverlapV1Tests(unittest.TestCase):
         self.assertNotIn('z = z.merge(risk, on="bar_end"', features)
         self.assertNotIn('z = z.merge(probs, on="bar_end"', features)
 
+    def test_flat_control_coerces_joined_top_mask_before_inversion(self):
+        analysis = ANALYSIS.read_text()
+        self.assertIn('top_mask = p["top"].fillna(False).astype(bool)', analysis)
+        self.assertIn('flat = p[p["pos"].eq(0) & ~top_mask]', analysis)
+        self.assertNotIn('~p["top"].fillna(False)', analysis)
+
     def test_prereg_is_frozen_before_execution_and_no_trade_authority(self):
         text = PREREG.read_text()
         self.assertIn("FROZEN_BEFORE_EXECUTION_WIRING", text)
