@@ -187,17 +187,20 @@ def _prob_summary(ep: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def _closed_interval_mask(timestamps: pd.Series, start: pd.Timestamp, trough: pd.Timestamp) -> np.ndarray:
-    starts = np.flatnonzero(timestamps.eq(start).fillna(False).to_numpy(dtype=bool))
-    troughs = np.flatnonzero(timestamps.eq(trough).fillna(False).to_numpy(dtype=bool))
-    if len(starts) != 1 or len(troughs) != 1:
-        raise RuntimeError("ols_risk_overlap_control_interval_endpoint_missing")
-    i0 = int(starts[0])
-    i1 = int(troughs[0])
-    if i1 < i0:
-        raise RuntimeError("ols_risk_overlap_control_interval_reversed")
-    mask = np.zeros(len(timestamps), dtype=bool)
-    mask[i0:i1 + 1] = True
+def _top_tail_mask_from_native_episode_indices(trace: pd.DataFrame, q: pd.DataFrame) -> np.ndarray:
+    episodes = atlas._episodes(pd.to_numeric(trace["strategy_return"], errors="coerce").to_numpy(float))
+    ids = pd.to_numeric(q["episode_id"], errors="raise").astype(int)
+    if sorted(ids.tolist()) != list(range(1, len(episodes) + 1)):
+        raise RuntimeError("ols_risk_overlap_control_episode_identity_mismatch")
+    top_ids = sorted(ids[q["top_tail"].astype(bool)].tolist())
+    if len(top_ids) != TOP_N:
+        raise RuntimeError("ols_risk_overlap_control_top_tail_count_mismatch")
+    mask = np.zeros(len(trace), dtype=bool)
+    for episode_id in top_ids:
+        _, start_i, trough_i, _ = episodes[episode_id - 1]
+        if not (0 <= start_i <= trough_i < len(trace)):
+            raise RuntimeError("ols_risk_overlap_control_native_interval_invalid")
+        mask[start_i:trough_i + 1] = True
     return mask
 
 
@@ -219,13 +222,7 @@ def _control_summary(ep: pd.DataFrame, panel: pd.DataFrame, traces: dict[str, pd
         trace = traces[mode].copy()
         trace["pos"] = pd.to_numeric(trace["executable_position"], errors="coerce").fillna(0).astype(int)
         trace["ret"] = pd.to_numeric(trace["strategy_return"], errors="coerce").fillna(0.0)
-        top_15 = np.zeros(len(trace), dtype=bool)
-        for erow in q[q["top_tail"]].itertuples():
-            st = pd.Timestamp(erow.start_timestamp)
-            tr = pd.Timestamp(erow.trough_timestamp)
-            st = st.tz_localize(d0.TZ) if st.tzinfo is None else st.tz_convert(d0.TZ)
-            tr = tr.tz_localize(d0.TZ) if tr.tzinfo is None else tr.tz_convert(d0.TZ)
-            top_15 |= _closed_interval_mask(trace["timestamp"], st, tr)
+        top_15 = _top_tail_mask_from_native_episode_indices(trace, q)
         mapping = pd.DataFrame({"ols_timestamp": trace["timestamp"], "pos": trace["pos"], "top": top_15})
         p = panel.merge(mapping, on="ols_timestamp", how="left", validate="many_to_one")
         top_mask = p["top"].fillna(False).astype(bool)
