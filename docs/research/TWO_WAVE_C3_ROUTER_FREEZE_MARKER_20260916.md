@@ -1,0 +1,1 @@
+Freeze marker: no C3/router market outcome has been inspected. The source, fidelity gates, matched episode routing definition, and no-1m first-run decision are fixed before PR CI and any standard workflow_dispatch market run.
