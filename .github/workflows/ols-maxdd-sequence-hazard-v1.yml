@@ -1,0 +1,66 @@
+name: CSI1000 OLS MaxDD sequence-hazard bounded executor
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: csi1000-standard-executor
+  cancel-in-progress: false
+
+jobs:
+  execute:
+    if: >-
+      github.repository == 'staryocean0/csi1000-timing-strategy-public' &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/cloud-workspace-v1' &&
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    environment: private-research
+    timeout-minutes: 70
+    steps:
+      - name: Checkout reviewed public executor only
+        timeout-minutes: 3
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            executor
+            tests
+            docs/research
+            docs/acceptance
+            governance/private_sync
+            .github/workflows
+            governance/private_sync/v1
+          sparse-checkout-cone-mode: true
+      - name: Synthetic executor tests
+        timeout-minutes: 2
+        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Build public runtime before private credentials or data
+        timeout-minutes: 8
+        run: docker build --tag factorlab-runtime:local executor
+      - name: Prove isolated runtime with no private data
+        timeout-minutes: 2
+        run: python3 executor/broker.py runtime-smoke
+      - name: Prepare fixed private inputs
+        id: prepare
+        timeout-minutes: 6
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/ols_maxdd_sequence_hazard_v1_broker.py prepare ols-maxdd-sequence-hazard-v1
+      - name: Compute without private credentials
+        timeout-minutes: 35
+        run: python3 executor/ols_maxdd_sequence_hazard_v1_broker.py compute ols-maxdd-sequence-hazard-v1
+      - name: Stop owned container before credentials return
+        id: cleanup
+        if: always() && steps.prepare.outcome == 'success'
+        timeout-minutes: 1
+        run: python3 executor/ols_maxdd_sequence_hazard_v1_broker.py cleanup ols-maxdd-sequence-hazard-v1
+      - name: Return verified results privately
+        if: always() && steps.prepare.outcome == 'success' && steps.cleanup.outcome == 'success'
+        timeout-minutes: 6
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/ols_maxdd_sequence_hazard_v1_broker.py publish ols-maxdd-sequence-hazard-v1
