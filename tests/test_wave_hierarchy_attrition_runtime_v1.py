@@ -21,8 +21,10 @@ class AttritionRuntimeTests(unittest.TestCase):
    with self.assertRaises(Exception):verify(self.b,out)
  def test_workflow(self):
   s=(ROOT/'.github/workflows/public-compute.yml').read_text();self.assertEqual(s.count('          - two-wave-hierarchy-attrition-v1'),1);self.assertEqual(s.count('executor/wave_hierarchy_attrition_v1_broker.py'),4);self.assertEqual(s.count('FACTORLAB_PRIVATE_TOKEN'),4)
+  guards=[line for line in s.splitlines() if line.lstrip().startswith('if:') and "inputs.profile == 'two-wave-c3-router-v1'" in line]
+  self.assertEqual(len(guards),2);self.assertTrue(all("inputs.profile == 'two-wave-hierarchy-attrition-v1'" in line for line in guards))
  def test_controller(self):
-  s=(ROOT/'.github/workflows/controller-dispatch.yml').read_text();self.assertEqual(s.count('controller: two-wave-hierarchy-attrition-v1'),2)
+  s=(ROOT/'.github/workflows/controller-dispatch.yml').read_text();self.assertEqual(s.count('controller: two-wave-hierarchy-attrition-v1'),3);self.assertIn("github.event.issue.number == 312",s)
  def test_manifest(self):
   p=json.loads((ROOT/'docs/research/TWO_WAVE_HIERARCHY_ATTRITION_EXECUTION_MANIFEST_V1.json').read_text());self.assertFalse(p['new_training']);self.assertFalse(p['production_authority']);self.assertEqual(p['profile'],'two-wave-hierarchy-attrition-v1')
 if __name__=='__main__':unittest.main()
