@@ -21,8 +21,9 @@ class RegistrationTests(unittest.TestCase):
   with tempfile.TemporaryDirectory() as d:
    stage=Path(d)
    for name in b.SOURCES:shutil.copy2(ROOT/'executor'/name,stage/name)
-   code="import sys;sys.path=[r'%s']+[p for p in sys.path if 'site-packages' in p];import wave_recognizer_r2_v1_entry,wave_recognizer_r2_v1_verifier,wave_recognizer_r2_v1_runtime,wave_recognizer_r2_v1_visuals"%stage
-   x=subprocess.run([sys.executable,'-c',code],capture_output=True,text=True)
+   # Preserve Python stdlib/site-packages, prepend only the exact staged project sources.
+   code="import sys;sys.path.insert(0,r'%s');import wave_recognizer_r2_v1_entry,wave_recognizer_r2_v1_verifier,wave_recognizer_r2_v1_runtime,wave_recognizer_r2_v1_visuals"%stage
+   x=subprocess.run([sys.executable,'-c',code],capture_output=True,text=True,cwd=stage)
    self.assertEqual(x.returncode,0,x.stderr)
 
 if __name__=='__main__':unittest.main()
