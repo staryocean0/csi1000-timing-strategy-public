@@ -1,116 +1,128 @@
 # Risk Tool V2 — authority and workstream map — 2026-09-15
 
-> Coordination/read-only map. This document does **not** replace PRIVATE `CLOUD_CURRENT.json`, pinned run branches, preregistrations, or any scientific authority artifact. It exists to stop parallel agents from creating competing Risk Tool lines. Coordination anchor: public issue #173.
+> Coordination/read-only map. This document does **not** replace PRIVATE `CLOUD_CURRENT.json`, pinned run branches, preregistrations, or scientific authority artifacts. Coordination anchor: public issue #173.
 
 ## Unified ownership boundary
 
-All `risk-v2-*` research, diagnostics, contracts, bounded runtime integration, and the governed native-scale successor program belong to one Risk Tool program. Existing V2 authority/results are immutable; future work must extend them through separately reviewed research contracts.
+All `risk-v2-*` authority, diagnostics, consumer contracts, and the governed Risk Tool V3 native-scale successor line belong to one Risk Tool program. Existing V2 results remain immutable.
 
-Two previously parallel V2 lanes answer different questions and must not be post-hoc merged into one verdict:
+The successor program now follows a **top-down native-scale attribution order: 60m → 15m → 5m**.
 
-1. **Phase-1 / Phase-1b / fresh-OOS lane** — asks whether the frozen 5m-base risk representation generalizes to newly exposed data.
-2. **Temporal-stability / Reliability / consumer lane** — asks which historical 5m-base outputs are stable enough to expose to downstream research consumers, and under what permissions.
+This changes research priority, not past results.
 
-A third, successor research direction is now explicitly authorized as the next development lane:
+## Critical scale rule
 
-3. **Native K-line multi-scale lane (Risk Tool V3 research)** — rebuild the same risk-measurement philosophy natively on 15m and 60m K-lines, then study 5m × 15m × 60m cross-scale escalation and recovery. See `docs/research/RISK_TOOL_V3_NATIVE_KLINE_MULTISCALE_ROADMAP_20260915.md`.
+- Native-60m means the primitive observations are 60-minute K-lines.
+- Native-15m means the primitive observations are 15-minute K-lines.
+- Native-5m means the primitive observations are 5-minute K-lines.
+- Existing V2 “15m / 30m” authority refers to forecast horizons of the 5m-base tool and must never be relabeled as Native-15m / Native-30m tools.
 
-## Critical scale-semantics rule
+## Current immutable V2 authority
 
-For the successor lane, **15m and 60m mean the base K-line interval itself**.
-
-- Native-15m means returns, volatility, shocks, state transitions, state ages and labels are generated from a 15-minute K-line sequence.
-- Native-60m means the same objects are generated from a 60-minute K-line sequence.
-- They do **not** mean the current 5m tool predicting 15 or 60 minutes ahead.
-- Existing V2 15m/30m results are forecast horizons of the 5m-base tool and must never be relabeled as native 15m/30m Risk Tools.
-
-This distinction is non-negotiable for all future agents and implementations.
-
-## Current immutable V2 authority map
-
-| Surface | Authority run / location | Current reading | Boundary |
+| Surface | Authority | Current reading | Boundary |
 |---|---|---|---|
-| 2026 Phase-1b fresh-OOS | `34956326542-1` / `research/public-runs/34956326542-1-fresh-oos-summary.json` | `INSUFFICIENT_2026_SUPPORT` | Support gate stopped acceptance; no model-support or model-failure claim |
-| Fresh-OOS cohort attrition diagnostic | `34965394157-1` / `research/public-runs/34965394157-1-attrition.json` | `000688.SH` first zero at `physical_projected`; accepted physical carrier is 135,682 rows of `000852.SH` only | Diagnostic-only; parent fresh-OOS verdict unchanged |
-| Future source-family binding audit | `34970778993-1` / private mirrored `BINDING_AUDIT.json` | `SOURCE_FAMILY_BINDING_VALID` | Correct source-family / symbol-binding authority for future work; not a scientific model verdict |
-| Future-OOS V2 prereg | public merge `745b7a79c461a543b5e3ffd7884b7d86fc09f1f8` | window frozen from `2026-09-16` through `2027-03-31`; execution intentionally closed pending complete new snapshot | Does not consume future observations early |
-| Historical temporal v3 | `34930354449-1` / `ACCEPTANCE_RESULT_V3.json` | 30m `TS-A_STABLE_PROBABILITY_COMPONENT`, `COMPLETE`; 15m `TS-B_STABLE_RANKING_CALIBRATION_GUARDED`, `IN_PROGRESS` | These 15m/30m labels are forecast horizons of the native-5m V2 tool, not K-line base scales |
-| 15m continuous Reliability | `34942554638-1` / `RELIABILITY_RESULT.json` | supported; q33=`0.5170330932673238`, q67=`0.7096666848299501` | Reliability changes interpretation permissions only |
-| Probability + Reliability output contract | `34945466654-1` / `OUTPUT_CONTRACT_RESULT.json` | `DUAL_OUTPUT_CONTRACT_SUPPORTED` | Does not promote the 15m forecast horizon to COMPLETE |
-| Layer2→Layer3 consumer contract | `34954265620-1` / `CONSUMER_CONTRACT_RESULT.json` | `CONSUMER_CONTRACT_SUPPORTED`; 35 fixed cases passed | No hard threshold/routing/sizing/PnL/production authority |
-| PRIVATE runtime consumer adapter | PRIVATE `main`: `runtime/src/factor_lab/market_state/risk_probability_reliability_consumer_v1.py` | installed, fail-closed | Research consumer interface only |
+| 2026 Phase-1b fresh-OOS | run `34956326542-1` | `INSUFFICIENT_2026_SUPPORT` | Support gate stopped acceptance; not a model-failure verdict |
+| Fresh-OOS attrition | run `34965394157-1` | `000688.SH` first zero at `physical_projected` | Diagnostic-only; parent verdict unchanged |
+| Future carrier binding | run `34970778993-1` | `SOURCE_FAMILY_BINDING_VALID` | Future source-family identity only |
+| Future-OOS V2 prereg | merge `745b7a79c461a543b5e3ffd7884b7d86fc09f1f8` | 2026-09-16 through 2027-03-31; execution closed pending full future snapshot | No early reveal |
+| Historical temporal v3 | run `34930354449-1` | 30m `TS-A_STABLE_PROBABILITY_COMPONENT`, COMPLETE; 15m `TS-B_STABLE_RANKING_CALIBRATION_GUARDED`, IN_PROGRESS | Both are forecast horizons of native-5m V2 |
+| 15m Reliability | run `34942554638-1` | supported | Interpretation/permission overlay only |
+| Probability + Reliability output | run `34945466654-1` | `DUAL_OUTPUT_CONTRACT_SUPPORTED` | No hard threshold authority |
+| Layer2→Layer3 consumer contract | run `34954265620-1` | `CONSUMER_CONTRACT_SUPPORTED` | No routing/sizing/PnL/production authority |
 
-### Fresh-OOS support snapshot and resolved attrition location
+## Preserved Native-15m V3 evidence
 
-The frozen 2026 result is not a failed model test; it is an insufficient-support result.
+The Native-15m work performed before the top-down amendment remains authoritative for exactly what it tested:
 
-- 15m forecast horizon: 754 usable rows; `000688.SH=0`, `000852.SH=754`; 184 positive, 570 negative; 70 trading-day clusters.
-- 30m forecast horizon: 690 usable rows; `000688.SH=0`, `000852.SH=690`; 319 positive, 371 negative; 67 trading-day clusters.
-- Frozen support gates require total rows >=1200, each of two symbols >=500, positives >=100, negatives >=100, and trading-day clusters >=100.
+- Phase A carrier/semantic audit: valid Native-15m carrier foundation.
+- Phase B 2021–2023 descriptive risk map: complete.
+- Phase C1 576-candidate state-machine map: `NATIVE15_STATE_MACHINE_CANDIDATE_MAP_INSUFFICIENT`, `passing_count=0`, no C2 authority.
+- C1 gate-attribution diagnostic: complete; it showed that current severity separation and next-bar persistence gates were broadly satisfied, while fixed pooled/annual tail-event capture—especially pooled q95 capture—was the dominant incompatibility.
 
-The follow-up diagnostic `risk-v2-phase1b-fresh-oos-attrition-v1` independently reproduced those support snapshots and traced aggregate counts through the unchanged frozen pipeline. It found `000688.SH=0` already at `physical_projected`, before temporal filtering, normalization, state construction, episode construction, fresh cohort construction, or horizon labeling.
+These findings must not be rewritten as a successful Native-15m state machine, and the frozen C1 gates must not be relaxed post-result under the same test identity.
 
-The subsequent future carrier-binding audit repaired the future input-binding contract without rewriting the revealed parent test. The original fresh-OOS result remains immutable.
+The program is pausing further Native-15m parameter search until large-scale risk hierarchy is characterized from 60m downward.
 
-## Historical lane semantics
+## 2026-09-16 direction amendment: top-down risk attribution
 
-The 2015–2025 temporal hard-gate lane intentionally fixes the primary longitudinal carrier to `000852.SH`, because canonical 2015–2019 history exists only for that symbol. `000688.SH` is outside that historical hard-gate claim. Therefore:
+### Why the direction changed
 
-- historical 30m `COMPLETE` is not a 2026 fresh-OOS pass;
-- 2026 `INSUFFICIENT_2026_SUPPORT` does not silently revoke historical 30m authority;
-- neither lane may be used to rescue or invalidate the other after results are known.
+K-lines are lossy compression. A larger bar can hide a large amount of smaller-scale movement. A 60m candle can have a small body while containing violent intrabar oscillation.
 
-## Successor research direction: native multi-scale Risk Tool
+Therefore multi-scale Risk Tool research is not defined as “look at the same risk event from multiple resolutions.” It is defined as:
 
-The next active development direction is **not** to extend the current 5m tool to longer forecast horizons. It is to construct new, native K-line-base Risk Tools.
+> **Find the class of risk that survives aggregation at a large native scale, then open that bar and explain how smaller native bars generated it.**
 
-### Phase A — Native 15m
+### Hierarchy hypothesis to test
 
-- use a true 15m K-line sequence as the primitive observation stream;
-- prefer the existing DataHub-provided `15m_offset_5` view after a dedicated carrier/semantic audit;
-- recompute returns, realized volatility, background volatility, shock intensity, state transitions and persistence on 15m bars;
-- re-research all state-machine windows and thresholds from 15m data;
-- use the 5m V2 methodology as a process template only, not as a parameter template;
-- independently perform calibration, temporal stability, Reliability and OOS governance.
+- A genuine large-scale risk regime should normally leave stress structure in its constituent smaller bars.
+- A small-scale shock may die locally and fail to create a large-scale regime.
+- Large→small transmission is therefore expected to be stronger than small→large transmission, but this remains a hypothesis until measured.
 
-### Phase B — Native 60m
+## Active successor program: Native-60m first
 
-- first freeze a canonical 60m K-line carrier and session-boundary contract;
-- if an official/provider 60m view is unavailable, define a deterministic session-aware transformation from official 1m data before model research;
-- compute the entire risk state machine on 60m bars;
-- independently research thresholds, windows, persistence, calibration and stability;
-- do not mechanically scale 5m or 15m parameters.
+### Source contract
 
-### Phase C — Cross-scale stack
+Current PRIVATE data inventory lists:
 
-After both native tools earn their own scientific authority, study the joint state vector:
+- `data/index/1m_official.parquet`, 2015-01-05 through 2026-08-21;
+- provider-supplied `5m_offset_0` and `15m_offset_5` views;
+- no provider-supplied 60m view.
 
-`[Risk_5m, Risk_15m, Risk_60m]`
+Therefore the active Native-60m line must freeze a deterministic, session-aware transformation from `1m_official` into canonical 60m bars. It must not define 60m authority by casually aggregating 5m/15m bars.
 
-Primary targets are escalation, persistence, recovery ordering, scale disagreement and whether cross-scale state provides more stable Layer2 context than any single scale.
+### Information that must survive 60m construction
 
-This cross-scale layer remains measurement/state infrastructure and grants no trading authority by itself.
+Because candle body alone can hide intrabar risk, the canonical research representation should preserve:
+
+- OHLC;
+- absolute 60m body;
+- high-low range;
+- close-to-close return where causal;
+- intrabar 1m realized volatility / path energy within the exact 60m interval.
+
+### Intended A-share session geometry, subject to semantic audit
+
+The desired four wall-clock buckets are:
+
+- 09:30–10:30;
+- 10:30–11:30;
+- 13:00–14:00;
+- 14:00–15:00.
+
+No bucket may bridge the lunch break. Exact endpoint inclusion and timestamp labels must be frozen only after auditing the official 1m source semantics.
+
+## Active research sequence
+
+1. **Native-60m Phase 60-A:** audit `1m_official`, freeze deterministic 1m→60m membership and verify four complete bars per normal trading day.
+2. **Native-60m Phase 60-B:** descriptive continuity map using body, range, close-to-close magnitude, and intrabar 1m realized volatility/path energy.
+3. Test lag persistence, conditional next-bar risk, episode/run lengths, time-of-day slot effects, and year stability without optimizing thresholds.
+4. Only if meaningful 60m continuity is established: preregister candidate Native-60m risk-state definitions.
+5. **60m → 15m decomposition:** compare constituent 15m structure inside high-risk vs low-risk 60m bars.
+6. **15m → 5m decomposition:** explain finer stress structure conditional on the higher-scale state.
+7. Revisit Native-15m state design only after the top-down hierarchy is understood; prior C1 remains immutable.
 
 ## Current active bottlenecks
 
-1. **Native-15m carrier / semantic audit** — first executable task of the V3 lane.
-2. **Native-15m descriptive risk map** — quantify event frequency, severity, persistence and recovery before freezing thresholds.
-3. **Native-60m carrier definition** — confirm provider view or preregister deterministic 1m→60m construction with explicit lunch/session semantics.
-4. **15m historical weekly calibration in V2** — remains guarded; Reliability is a permission overlay, not a calibration refit.
-5. **Future-OOS V2** — remains intentionally closed until its preregistered future window has complete immutable data.
+1. **Native-60m canonical construction / semantic audit** from official 1m — active next task.
+2. **Native-60m volatility-continuity map** — first scientific question after construction is validated.
+3. **Native-15m state-machine C1** — closed as insufficient under its frozen gates; no C2 authority.
+4. **V2 15m weekly calibration** — still guarded; separate from native-scale V3.
+5. **Future-OOS V2** — intentionally closed until its full preregistered future window is available.
 
 ## Non-negotiable prohibitions
 
-- no confusing K-line base interval with prediction horizon;
-- no directly copying `RV_WINDOW=12`, `BG_WINDOW=48`, `SHOCK_SIGMA=3.0`, `HIGHVOL_RATIO=1.50`, or `RECOVERY_NORMAL_RATIO=1.10` into native 15m/60m as authoritative parameters;
-- no post-result refit, retuning, threshold rescue, cutoff extension, or substitute data inside frozen V2 contracts;
-- no rewriting V2 authority based on V3 experiments;
-- no claiming native-15m/native-60m support from existing 5m-base horizon results;
-- no hard probability thresholding, strategy routing, position sizing, PnL authority, or production authority without a new separately reviewed contract;
-- no direct Chat writes to PRIVATE; all private results/runtime changes use bounded reviewed PUBLIC broker/sync mechanisms.
+- no confusing native K-line scale with forecast horizon;
+- no copying 5m thresholds/windows into 60m as authority;
+- no rescuing Native-15m C1 by post-result gate or grid changes;
+- no defining 60m risk from candle body alone while discarding the available official-1m intrabar path;
+- no crossing the A-share lunch break inside a canonical 60m bar;
+- no 2026 threshold training unless separately preregistered;
+- no strategy routing, position sizing, PnL, or production authority from this research line;
+- no direct Chat writes to PRIVATE.
 
 ## Next governed action
 
-Start **Risk Tool V3 Phase A: Native-15m** with a carrier / timestamp / session / symbol semantic audit of the existing `15m_offset_5` source. After the carrier is frozen, produce a descriptive native-15m risk map before searching or freezing state thresholds.
+Start **Risk Tool V3 Native-60m Phase 60-A**: pin the official 1m carrier, independently audit its timestamp/session/OHLC semantics, and freeze the deterministic four-bars-per-day 1m→60m construction before any volatility threshold or state-machine search.
 
-Native-60m follows only after its K-line carrier semantics are frozen. Cross-scale 5m × 15m × 60m work begins only after both native-scale tools have independent validated state processes.
+After Phase 60-A passes, run a descriptive Native-60m continuity study. The primary question is whether large-scale risk intensity is temporally persistent enough to act as a Layer2 regime context, not whether it immediately improves trading.
