@@ -1,0 +1,141 @@
+{
+  "schema_id": "csi1000.multiscale_dual_gates_v2_protocol@1.0",
+  "study_id": "TWO_WAVE_MULTISCALE_DUAL_GATES_V2",
+  "issue": 302,
+  "date": "2026-09-16",
+  "base_commit": "0764fac793960ab1ca511f37f7b622fbfd553e31",
+  "prior_run": "35065802258-1",
+  "prior_results_used_for_parameter_selection": false,
+  "mathematical_carrier": {
+    "raw": "X0",
+    "base_skeleton": "S0 = connected confirmed base-wave lows",
+    "C0": "X0-S0",
+    "level1": "apply same causal low-node turning-point operator to S0; S1=level1-wave low skeleton; C1=S0-S1",
+    "level2": "apply same causal low-node turning-point operator to S1; S2=level2-wave low skeleton; C2=S1-S2",
+    "base_kernel": {
+      "min_leg_bars": 4,
+      "max_unfinished_leg_bars": 48,
+      "pivot_occurrence": "close",
+      "geometry": "wick at selected pivot bars"
+    },
+    "coarsening_kernel": {
+      "min_leg_nodes": 1,
+      "max_unfinished_nodes": 24,
+      "reason": "nearest causal coarsening on an already wave-sampled node stream; not a target period"
+    },
+    "target_period_bands_imposed": false,
+    "FFT_or_linear_filter_used": false,
+    "period": "median of up to last 3 completed waves in that level; one completed wave is minimum availability",
+    "amplitude": "max(channel_height_log, log(high)-min(log(start_low),log(end_low)))",
+    "direction": "active leg from last confirmed pivot kind: low->UP, high->DOWN",
+    "phase": "causal age/current recent period: EARLY<1/3, MIDDLE<2/3, else LATE",
+    "unresolved_is_not_weak": true
+  },
+  "fidelity_gate": {
+    "A": "at least 200 same-scale pair decisions with resolved C1 and >=20% C1 coverage",
+    "B": "at least 200 closed baseline trade decisions with both C1/C2 resolved and >=20% joint coverage",
+    "period_outputs": [
+      "T1/T0",
+      "T2/T1",
+      "T2/T0"
+    ],
+    "amplitude_outputs": [
+      "A1/A0",
+      "A2/A1",
+      "A2/A0"
+    ],
+    "outcomes_not_used_to_define_layers": true
+  },
+  "A": {
+    "unit": "same-scale strict base pair at current wave confirmation",
+    "target": "new C1 turning pivot occurrence strictly after decision within ceil(0.5*T1), settled by a later confirmed pivot beyond horizon",
+    "walk_forward": "train <= prior years with labels matured before first calendar bar of test year; test 2018,2019,2020",
+    "A0": [
+      "C1 direction",
+      "C1 phase",
+      "T1/T0 training-tertile",
+      "A1/A0 training-tertile"
+    ],
+    "A1_add": [
+      "nine-grid",
+      "abs slope ratio training-tertile",
+      "base-wave amplitude ratio training-tertile"
+    ],
+    "A2_add": [
+      "current wave internal shape EARLY/MIDDLE/LATE/SHORT"
+    ],
+    "estimator": "nested empirical probability with alpha=20 fixed",
+    "support": {
+      "scored": 200,
+      "positive": 30,
+      "negative": 30,
+      "parent_groups": 30,
+      "time_blocks": 30
+    },
+    "acceptance": "A2 vs A0 relative Brier improvement >=1%, lower LogLoss, >=2 test years same direction, moving-block 97.5% interval lower>0"
+  },
+  "B": {
+    "unit": "fixed T0 raw-close breakout opportunity, next raw open fill; T0=ceil median base-wave duration in 2015-2017",
+    "target": "fast loss: gross<0 and duration<=T0",
+    "B0": [
+      "trade side",
+      "volatility training-tertile"
+    ],
+    "B1_add": [
+      "C1 alignment",
+      "C1 phase",
+      "T1/T0 training-tertile",
+      "A1/A0 training-tertile"
+    ],
+    "B2_add": [
+      "C2 alignment",
+      "C2 phase",
+      "T2/T0 training-tertile",
+      "A2/A0 training-tertile",
+      "log(A2/A1) training-tertile"
+    ],
+    "financial_regimes": {
+      "C1_RISKY": "low-tertile A2/A1 and (C1 opposed OR C1 LATE)",
+      "C2_SUPPORTIVE": "high-tertile A2/A1 and C2 aligned and C2 not LATE"
+    },
+    "period_ratio_2_to_3_is_not_a_filter_parameter": true,
+    "support": {
+      "scored": 200,
+      "positive": 30,
+      "negative": 30,
+      "time_blocks": 30,
+      "regime_each": 50
+    },
+    "acceptance": "B2 vs B0 relative Brier improvement >=1%, lower LogLoss, >=2 years same direction, moving-block 97.5% interval lower>0, and C1_RISKY fast-loss > C2_SUPPORTIVE"
+  },
+  "inference": {
+    "time_blocks": "20 trading sessions; outcomes crossing block boundary excluded only from interval estimation",
+    "bootstrap": "circular moving blocks of 2 adjacent 20-session blocks",
+    "interval": "97.5% two-sided",
+    "development_only": true
+  },
+  "data": {
+    "symbol": "000852.SH",
+    "timeframe": "5m_offset_0",
+    "start": "2015-01-05",
+    "end": "2020-12-31",
+    "rows": 70114,
+    "bytes": 3351411,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+  },
+  "execution": {
+    "profile": "two-wave-multiscale-dual-gates-v2",
+    "workflow": "public-compute.yml workflow_dispatch cloud-workspace-v1",
+    "single_nonadaptive_run": true,
+    "fidelity_gates_interpretation_not_execution": true,
+    "new_training": true,
+    "production_authority": false
+  },
+  "authority": {
+    "direction_acceptance": false,
+    "state_publication_authority": false,
+    "trade_authority": false,
+    "production_authority": false
+  }
+}
