@@ -1,0 +1,123 @@
+{
+  "schema_id": "csi1000.wave_skeleton_context_protocol@1.0",
+  "study_id": "WAVE-SKELETON-CONTEXT-V1",
+  "stage": "S0_SOURCE_AND_CAUSAL_CONTRACT",
+  "research_issue": 277,
+  "upstream_open_issue": 274,
+  "source_base_commit": "3093f0352dc143515637c177e0ab0539c1e3e6a1",
+  "toolkit_parent_merge": "4c6e34371e3fe5f4b16ff60315b0d8964a682810",
+  "layer": "Layer2",
+  "user_question": "Use confirmed wave-bottom connections, not transform filters, to study where nine ordered child-wave combinations occur within coarser graphical structures.",
+  "hypotheses": {
+    "H1": "Child nine-grid distributions may differ conditional on previously observable coarse graphical context.",
+    "H0": "No robust conditional differences beyond sampling, dependence, extraction rules and qualification effects.",
+    "macro_trend_is_only_cause": "not assumed; cannot be proved by a same-price observational decomposition",
+    "no_macro_implies_identical_cycles": "idealized assumption, not a mathematical necessity",
+    "candidate_confounders": ["amplitude variation", "noise", "volatility variation", "phase and confirmation selection", "overlapping evidence", "nonstationarity"]
+  },
+  "skeleton": {
+    "input": "complete unfiltered wave_primitives_nine_grid@1.0 inventory",
+    "nodes": "wick lows at the close-selected pivot bars of confirmed complete A-waves",
+    "edge": "each original A-wave low-to-low bottom segment",
+    "edge_known_from_bar": "wave.confirmation_bar",
+    "earliest_consumer_bar": "known_from_bar+1",
+    "first_start_node_availability": "conservatively first complete wave confirmation; no earlier availability invented",
+    "two_clocks": ["original_bar_occurrence_for_geometry", "confirmation_bar_for_information"],
+    "interpolation_is_historical_geometry_only": true,
+    "forward_extension_or_regular_resampling": false,
+    "target_band_or_child_direction_filter_before_skeleton": false,
+    "gaps_and_resets": "never connect across root epoch or missing shared anchor; never revive old context after reset",
+    "physical_low_pass_or_unbiased_trend_claim": false
+  },
+  "parent_graph": {
+    "method": "causal temporal-maturity turning points on arriving confirmed lower-low nodes; low-high-low waves recursively formed on this polyline",
+    "parent_high_is_raw_kline_high": false,
+    "primary_min_leg_nodes": 2,
+    "primary_max_unfinished_nodes": 24,
+    "sensitivity_only_settings": [[1,12],[4,48]],
+    "maturity_clock": "node count, explicitly not uniformly spaced time or cycles per bar",
+    "geometry_clock": "original child-bar coordinates; store node spans separately",
+    "tau": 0.20,
+    "pair_rho": 1.4142135623730951,
+    "phase_codes": ["DOWN__DOWN","DOWN__RANGE","DOWN__UP","RANGE__DOWN","RANGE__RANGE","RANGE__UP","UP__DOWN","UP__RANGE","UP__UP"],
+    "meaning": "last completed confirmed coarse pair, not omniscient current market regime",
+    "top_bottom_names": "upper/lower consolidation or turn candidates, never confirmed ultimate tops/bottoms",
+    "monotone_or_unconfirmed_parent": "unresolved; never force a complete parent wave",
+    "new_parent_pivot_after_pair": "invalidate phase qualification until a new complete parent pair",
+    "parent_reset": "clear completed context",
+    "freshness_limit": "query_bar-parent_pair_confirmation <= 1.0*current_parent_duration_bars",
+    "minimum_scale_separation": "min(two parent durations)/max(two child durations) >= 2.0",
+    "scale_separation_is_known_before_child_formation": false,
+    "scale_qualification": "post-formation diagnostic; never used to choose a convenient parent or pretend an ex-ante signal",
+    "parameter_status": "explicit initial engineering hypothesis, not natural-frequency finding or empirical winner",
+    "G_carrier_modified": false
+  },
+  "information_views": {
+    "primary_pre_formation": {
+      "cutoff": "previous_child_wave.start_bar-1",
+      "evidence_rule": "all parent inputs and their confirmation evidence known at or before cutoff",
+      "tested_pair_support_excluded": true,
+      "interpretation": "pre-existing context of subsequently confirmed patterns; retrospective event selection, not a trading forecast or claim the pair start was recognizable then"
+    },
+    "diagnostic_pre_confirmation": {
+      "cutoff": "current_child_wave.confirmation_bar-1",
+      "tested_pair_support_excluded": false,
+      "interpretation": "causal but may share earlier tested-wave inputs; not independent causal attribution"
+    },
+    "diagnostic_at_confirmation": {
+      "cutoff": "current_child_wave.confirmation_bar",
+      "tested_pair_support_excluded": false,
+      "interpretation": "contemporaneous shared-source geometry; cannot substantiate macro causal explanation"
+    },
+    "join": "backward by known_from_bar within exact source/view/config/root chain; never nearest/forward or occurrence-time join",
+    "future_complete_parent_backlabels": false
+  },
+  "analysis": {
+    "unit": "confirmed strict child pair; event weighted, not bar-duration exposure weighted",
+    "cohorts": ["all strict pairs", "same-scale qualified child pairs"],
+    "outputs": ["raw nine-by-nine context counts", "P(child|context)", "P(context|child)", "known-context baseline and enrichment", "all-child marginal", "unknown/context-invalid reasons", "per-confirmation-year panels", "information-clock comparison"],
+    "zero_support": "null proportions, never invented zero probability",
+    "overlapping_pairs_independent": false,
+    "S0_pvalues_or_confidence_intervals": false,
+    "association_is_causation": false,
+    "no_future_return_or_pnl_objective": true
+  },
+  "acceptance_and_sequence": [
+    "S0: reviewed protocol, causal source APIs, synthetic causal/counterexample tests, PR and CI",
+    "S1: resolve upstream #274 baseline/input/visual dependencies; a frozen baseline descriptive pilot need not wait for a positive natural-cluster finding",
+    "S2: bind exact source/input/clock/output/resource manifests and independent verifier to standard workflow_dispatch; private receipt required",
+    "S3: equally detailed raw-OHLC and as-of skeleton/parent visual panels for all nine cells, unknowns and contradictory cases",
+    "S4: separately freeze dependence-aware null/sensitivity implementation before any inferential run; contrast pre-formation with overlapping views and amplitude/upper-envelope controls",
+    "S5: post-run descriptive/inferential adjudication; record unsupported and insufficient outcomes, no automatic production/trading authority"
+  ],
+  "required_synthetic_tests": ["prefix invariance", "future suffix invariance", "no interpolation backfill", "same-epoch/shared-anchor integrity", "parent reset and newer-pivot invalidation", "staleness and actual-time scale separation", "nine-cell accounting", "empty/invalid input fail-closed", "constant-center varying-amplitude counterexample", "integration with frozen lower-wave toolkit"],
+  "visual_plan": {
+    "evidence": "raw OHLC plus visible lower-wave pivots, all confirmed skeleton segments, parent pivot occurrence and confirmation markers, tested pair start/confirmation cutoffs",
+    "same_evidence_for_all_classes": true,
+    "as_of_screens": ["before formation", "before confirmation", "at confirmation"],
+    "not_yet_known_segments": "omit from causal view; retrospective teaching view must be separately watermarked",
+    "first_pack": "deterministic id-hash sampling, up to 3 cases per populated child-by-context cell; shortages explicit; include invalid-context cases",
+    "S0_real_images_rendered": false
+  },
+  "execution": {
+    "real_market_run_executed": false,
+    "runner_profile_registered": false,
+    "controller_created": false,
+    "candidate_data": {"symbol":"000852.SH","timeframe":"5m_offset_0","start":"2015-01-05","end":"2020-12-31","rows":70114,"bytes":3351411,"sha256":"bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48","role":"already_consumed_development_not_fresh_oos"},
+    "baseline_child_config": {"min_leg_bars":4,"max_unfinished_leg_bars":48,"target_period_bars":null},
+    "year_2026_allowed": false,
+    "private_direct_chat_mutation": false,
+    "public_artifacts_containing_private_rows": false,
+    "future_real_run_entry": "public-compute.yml workflow_dispatch cloud-workspace-v1 exact reviewed allowlisted profile",
+    "inference_model_and_resource_manifest": "not registered; separate pre-run gate mandatory"
+  },
+  "authority": {
+    "empirical_association_accepted": false,
+    "macro_causation_proven": false,
+    "natural_frequency_clusters_accepted": false,
+    "state_publication_authority": false,
+    "trade_authority": false,
+    "production_authority": false,
+    "private_scientific_authority_promoted": false
+  }
+}
