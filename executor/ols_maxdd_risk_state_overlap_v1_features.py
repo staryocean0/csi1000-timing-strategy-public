@@ -98,6 +98,12 @@ def _market_panel(raw5: pd.DataFrame, states: pd.DataFrame, cohort: pd.DataFrame
     z = raw5.copy().sort_values("timestamp", kind="stable").reset_index(drop=True)
     z["year"] = pd.to_datetime(z["trading_day"]).dt.year.astype(int)
     z["bar_end"] = z["timestamp"].dt.tz_convert(d0.TZ).dt.tz_localize(None)
+    counts = z.groupby("trading_day", sort=False).size()
+    if len(counts[counts != 48]):
+        raise RuntimeError("ols_risk_overlap_market_physical_day_not_48")
+    z["day_bar_index"] = z.groupby("trading_day", sort=False).cumcount()
+    if z[["trading_day", "day_bar_index"]].duplicated().any():
+        raise RuntimeError("ols_risk_overlap_duplicate_market_physical_bar")
     z["ret_5m"] = z.groupby("trading_day", sort=False)["close"].transform(lambda s: np.log(s).diff())
     z["abs_ret_5m"] = z["ret_5m"].abs()
     z["intrabar_log_range"] = np.log(z["high"] / z["low"])
@@ -119,23 +125,63 @@ def _market_panel(raw5: pd.DataFrame, states: pd.DataFrame, cohort: pd.DataFrame
         z[f"pe{w}"] = (net.abs() / gross.replace(0.0, np.nan)).reindex(z.index)
         z[f"rev{w}"] = valid.rolling(w, min_periods=w).apply(_rolling_reversal, raw=True).reindex(z.index)
 
+    # The frozen Risk source renders timestamp strings as naive wall-clock values,
+    # while the OLS carrier adapter normalizes timestamps through UTC+8.  Timestamp
+    # rendering is therefore not a stable cross-engine identity.  Both engines read
+    # the exact same pinned parquet carrier, whose physical contract is 48 ordered 5m
+    # bars per trading day.  Align by (trading_day, physical bar 0..47) and then prove
+    # identity again with the source close before accepting any Risk state.
     risk = states[states["symbol"].eq(SYMBOL)][
-        ["bar_end", "risk_state", "rv12", "bg_vol48", "vol_ratio", "shock_intensity", "shock"]
+        ["trading_day", "bar_end", "close", "risk_state", "rv12", "bg_vol48", "vol_ratio", "shock_intensity", "shock"]
     ].copy()
     risk["bar_end"] = pd.to_datetime(risk["bar_end"], errors="raise")
-    if risk["bar_end"].duplicated().any():
-        raise RuntimeError("ols_risk_overlap_duplicate_risk_bar")
-    z = z.merge(risk, on="bar_end", how="left", validate="one_to_one")
-    if z["risk_state"].isna().any():
+    risk = risk.sort_values(["trading_day", "bar_end"], kind="stable").reset_index(drop=True)
+    risk_counts = risk.groupby("trading_day", sort=False).size()
+    if len(risk_counts[risk_counts != 48]):
+        raise RuntimeError("ols_risk_overlap_risk_physical_day_not_48")
+    risk["day_bar_index"] = risk.groupby("trading_day", sort=False).cumcount()
+    if risk[["trading_day", "day_bar_index"]].duplicated().any():
+        raise RuntimeError("ols_risk_overlap_duplicate_risk_physical_bar")
+    risk = risk.rename(columns={"bar_end": "risk_bar_end", "close": "risk_close"})
+
+    z = z.merge(risk, on=["trading_day", "day_bar_index"], how="left", validate="one_to_one")
+    if z["risk_state"].isna().any() or z["risk_close"].isna().any():
         raise RuntimeError("ols_risk_overlap_risk_state_join_gap")
+    if not np.allclose(
+        z["close"].to_numpy(float),
+        z["risk_close"].to_numpy(float),
+        rtol=0.0,
+        atol=0.0,
+        equal_nan=False,
+    ):
+        raise RuntimeError("ols_risk_overlap_physical_bar_close_mismatch")
     z["risk_indicator"] = z["risk_state"].isin(["UNSAFE", "RECOVERING"]).astype(int)
     z["unsafe_indicator"] = z["risk_state"].eq("UNSAFE").astype(int)
 
-    probs = cohort[cohort["symbol"].eq(SYMBOL)][["bar_end", "recovery_probability_30m"]].copy()
+    # Probability is only defined on the frozen Risk cohort.  First map each cohort
+    # wall-clock key back onto the already-verified Risk physical bar, then attach by
+    # the same physical carrier key.  Missing probability remains missing by design.
+    risk_key = risk[["trading_day", "risk_bar_end", "day_bar_index"]].copy()
+    if risk_key[["trading_day", "risk_bar_end"]].duplicated().any():
+        raise RuntimeError("ols_risk_overlap_duplicate_risk_wallclock_bar")
+    probs = cohort[cohort["symbol"].eq(SYMBOL)][
+        ["trading_day", "bar_end", "recovery_probability_30m"]
+    ].copy()
     probs["bar_end"] = pd.to_datetime(probs["bar_end"], errors="raise")
-    if probs["bar_end"].duplicated().any():
+    if probs[["trading_day", "bar_end"]].duplicated().any():
         raise RuntimeError("ols_risk_overlap_duplicate_probability_bar")
-    z = z.merge(probs, on="bar_end", how="left", validate="one_to_one")
+    expected_prob_rows = len(probs)
+    probs = probs.merge(
+        risk_key,
+        left_on=["trading_day", "bar_end"],
+        right_on=["trading_day", "risk_bar_end"],
+        how="left",
+        validate="one_to_one",
+    )
+    if len(probs) != expected_prob_rows or probs["day_bar_index"].isna().any():
+        raise RuntimeError("ols_risk_overlap_probability_physical_key_gap")
+    probs = probs[["trading_day", "day_bar_index", "recovery_probability_30m"]]
+    z = z.merge(probs, on=["trading_day", "day_bar_index"], how="left", validate="one_to_one")
 
     for col in ("rv12_rms", "pe12", "pe24", "pe48", "rev12", "rev24", "rev48"):
         z[f"{col}_percentile"] = _pct_by_year(z, col)
@@ -235,4 +281,3 @@ def _prob_change(pre48: pd.DataFrame) -> float | None:
         return None
     split = len(q) // 2
     return float(q.iloc[split:].mean() - q.iloc[:split].mean())
-
