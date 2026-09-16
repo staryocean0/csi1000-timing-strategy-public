@@ -204,6 +204,24 @@ def _top_tail_mask_from_native_episode_indices(trace: pd.DataFrame, q: pd.DataFr
     return mask
 
 
+def _panel_with_physical_15m_index(panel: pd.DataFrame, trace: pd.DataFrame) -> pd.DataFrame:
+    p = panel.copy()
+    keys = ["trading_day", "session", "bucket"]
+    sizes = p.groupby(keys, sort=False, dropna=False).size()
+    if sizes.empty or not sizes.eq(3).all():
+        raise RuntimeError("ols_risk_overlap_control_physical_bucket_not_three")
+    p["ols_bar_index"] = p.groupby(keys, sort=False, dropna=False).ngroup()
+    grouped_close = p.groupby("ols_bar_index", sort=False)["close"].last().to_numpy(float)
+    if len(grouped_close) != len(trace) + 1:
+        raise RuntimeError("ols_risk_overlap_control_trace_bar_count_mismatch")
+    trace_close = pd.to_numeric(trace["close"], errors="coerce").to_numpy(float)
+    if not np.isfinite(trace_close).all() or not np.allclose(
+        grouped_close[: len(trace)], trace_close, rtol=0.0, atol=0.0, equal_nan=False
+    ):
+        raise RuntimeError("ols_risk_overlap_control_physical_close_mismatch")
+    return p
+
+
 def _control_summary(ep: pd.DataFrame, panel: pd.DataFrame, traces: dict[str, pd.DataFrame]) -> pd.DataFrame:
     rows = []
     for mode in EXIT_MODES:
@@ -223,8 +241,13 @@ def _control_summary(ep: pd.DataFrame, panel: pd.DataFrame, traces: dict[str, pd
         trace["pos"] = pd.to_numeric(trace["executable_position"], errors="coerce").fillna(0).astype(int)
         trace["ret"] = pd.to_numeric(trace["strategy_return"], errors="coerce").fillna(0.0)
         top_15 = _top_tail_mask_from_native_episode_indices(trace, q)
-        mapping = pd.DataFrame({"ols_timestamp": trace["timestamp"], "pos": trace["pos"], "top": top_15})
-        p = panel.merge(mapping, on="ols_timestamp", how="left", validate="many_to_one")
+        p = _panel_with_physical_15m_index(panel, trace)
+        mapping = pd.DataFrame({
+            "ols_bar_index": np.arange(len(trace), dtype=int),
+            "pos": trace["pos"].to_numpy(int),
+            "top": top_15,
+        })
+        p = p.merge(mapping, on="ols_bar_index", how="left", validate="many_to_one")
         top_mask = p["top"].fillna(False).astype(bool)
         flat = p[p["pos"].eq(0) & ~top_mask]
         rows.append({
@@ -252,9 +275,8 @@ def _control_summary(ep: pd.DataFrame, panel: pd.DataFrame, traces: dict[str, pd
             cumulative = float(np.prod(1.0 + trace.iloc[idx]["ret"].to_numpy(float)) - 1.0)
             if cumulative <= 0:
                 continue
-            stamps = set(trace.iloc[idx]["timestamp"].tolist())
-            pieces.append(panel[panel["ols_timestamp"].isin(stamps)])
-        positive = pd.concat(pieces, ignore_index=True) if pieces else panel.iloc[0:0]
+            pieces.append(p[p["ols_bar_index"].isin(idx.tolist())])
+        positive = pd.concat(pieces, ignore_index=True) if pieces else p.iloc[0:0]
         rows.append({
             "exit_mode": mode,
             "control": "PROFITABLE_POSITION_SEGMENT",
