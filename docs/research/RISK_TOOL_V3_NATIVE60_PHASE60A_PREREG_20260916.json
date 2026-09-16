@@ -1,0 +1,146 @@
+{
+  "canonical_60m_geometry": [
+    {
+      "ordinal": 1,
+      "slot": "AM1",
+      "wallclock": "09:30-10:30"
+    },
+    {
+      "ordinal": 2,
+      "slot": "AM2",
+      "wallclock": "10:30-11:30"
+    },
+    {
+      "ordinal": 3,
+      "slot": "PM1",
+      "wallclock": "13:00-14:00"
+    },
+    {
+      "ordinal": 4,
+      "slot": "PM2",
+      "wallclock": "14:00-15:00"
+    }
+  ],
+  "canonical_fields": {
+    "identity": [
+      "trading_day",
+      "symbol",
+      "slot",
+      "bar_start",
+      "bar_end",
+      "timestamp_convention",
+      "minute_count"
+    ],
+    "ohlc": {
+      "close": "last 1m close in canonical bucket",
+      "high": "max 1m high in canonical bucket",
+      "low": "min 1m low in canonical bucket",
+      "open": "first 1m open in canonical bucket"
+    },
+    "path_preservation": {
+      "body_abs_log": "abs(log(close/open))",
+      "intrabar_rv_1m": "sqrt(sum(log(close_1m/open_1m)^2))",
+      "range_log": "log(high/low)"
+    }
+  },
+  "controls": {
+    "calibration": false,
+    "model_fit": false,
+    "new_training": false,
+    "pnl": false,
+    "position_sizing": false,
+    "prediction_label_optimization": false,
+    "production_authority": false,
+    "risk_threshold_search": false,
+    "state_machine_installation": false,
+    "strategy_routing": false
+  },
+  "development_materialization": {
+    "end": "2023-12-31",
+    "start": "2021-01-01",
+    "symbol": "000852.SH",
+    "use_2024_2025_market_values": false,
+    "use_2026_market_values": false,
+    "years": [
+      2021,
+      2022,
+      2023
+    ]
+  },
+  "membership": {
+    "bar_crosses_lunch": false,
+    "complete_bucket_expected_1m_rows": 60,
+    "complete_day_expected_1m_rows": 240,
+    "complete_day_expected_60m_bars": 4,
+    "lunch_break_hard_boundary": true
+  },
+  "outputs": {
+    "private_aggregate": [
+      "study/NATIVE60_PHASE60A_AUDIT.json"
+    ],
+    "private_row_level": [
+      "study/NATIVE60_CANONICAL_60M.parquet"
+    ],
+    "public_market_values": false
+  },
+  "profile": "risk-v3-native60-phase60a-canonical-carrier-v1",
+  "purpose": "Construct and semantically audit a canonical Native-60m carrier directly from the official 1m source before any 60m risk-threshold/state research.",
+  "result_contract": {
+    "next_phase_authorized_only_if_valid": true,
+    "next_phase_if_valid": "native60_phase60b_volatility_continuity_map_preregister_separately",
+    "not_ready_status": "NATIVE60_CANONICAL_CARRIER_NOT_READY",
+    "valid_status": "NATIVE60_CANONICAL_CARRIER_VALID"
+  },
+  "roadmap_authority": {
+    "direction": "60m -> 15m -> 5m",
+    "principle": "large-scale native K-line risk first, then downward decomposition",
+    "public_merge": "aad39a825979042f9b2409e7e1fc2b7c3a4f6405"
+  },
+  "schema_id": "risk_tool_v3_native60_phase60a_prereg@1.0",
+  "source": {
+    "bytes": 13245274,
+    "coverage": {
+      "max_day": "2026-08-21",
+      "min_day": "2015-01-05"
+    },
+    "path": "data/index/1m_official.parquet",
+    "provider_60m_view_available": false,
+    "provider_transformation": "symbol filter only; original fields and legacy wallclock labels preserved",
+    "rows": 678401,
+    "sha256": "c06f936a86df71d5192728c981929b362da27f952cc31d0afd7bd889a58037ae",
+    "symbol": "000852.SH"
+  },
+  "task_id": "CSI1000-RISK-V3-NATIVE60-PHASE60A-CANONICAL-CARRIER-V1-20260916",
+  "technical_acceptance": {
+    "canonical_bars_per_complete_day_exact": 4,
+    "complete_bucket_minute_count_exact": 60,
+    "complete_day_share_min": 0.95,
+    "development_trading_days_min_each_year": 200,
+    "duplicate_symbol_timestamp_rows_max": 0,
+    "independent_verifier_exact_compare": true,
+    "ohlc_invalid_rows_max": 0,
+    "source_identity_exact": true,
+    "timestamp_parse_rate_min": 0.9999,
+    "unique_timestamp_convention_required": true
+  },
+  "timestamp_semantic_hypotheses": {
+    "end_labeled": {
+      "AM": "(09:30,11:30]",
+      "PM": "(13:00,15:00]",
+      "expected_clocks": [
+        "09:31..11:30",
+        "13:01..15:00"
+      ]
+    },
+    "failure_policy": "If neither or both conventions are compatible with the observed complete-day clock grid, the task is NOT_READY.",
+    "must_choose_exactly_one": true,
+    "start_labeled": {
+      "AM": "[09:30,11:30)",
+      "PM": "[13:00,15:00)",
+      "expected_clocks": [
+        "09:30..11:29",
+        "13:00..14:59"
+      ]
+    }
+  }
+}
