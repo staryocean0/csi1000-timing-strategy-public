@@ -1,0 +1,75 @@
+{
+  "data_ref": "1d760ea9525eb3688b70a4aa0f2b5b207af16a17",
+  "entry_rule_changed": false,
+  "exit_modes": [
+    "qualification_reset",
+    "first_opposite_close",
+    "two_opposite_closes",
+    "prior_extreme_break",
+    "frozen_midline_break"
+  ],
+  "exit_rule_changed": false,
+  "failure_atlas_authority_run": "34978764073-1",
+  "fresh_oos_claimed": false,
+  "morphology_windows_5m": [
+    12,
+    24,
+    48
+  ],
+  "ols_private_ref": "67effb80f51228f6129dca5c4f7971a0bb6c7f15",
+  "optimization_performed": false,
+  "parameter_search_performed": false,
+  "position_sizing_changed": false,
+  "pre_windows_5m": [
+    12,
+    48
+  ],
+  "primary_probability_horizon_minutes": 30,
+  "production_authority": false,
+  "profile": "ols-maxdd-risk-state-overlap-v1",
+  "protocol": "docs/research/layer3/ols_family/OLS_MAXDD_RISK_STATE_OVERLAP_V1_PREREG_20260916.md",
+  "relationship_thresholds": {
+    "conditional": {
+      "evaluable_years_min": 4,
+      "families_auc_J_ge_0_60_min": 4,
+      "median_family_auc_J_min": 0.65,
+      "median_family_increment_over_R_or_M_min": 0.05,
+      "median_year_increment_over_R_or_M_min": 0.03,
+      "years_auc_J_ge_0_60_min": 4
+    },
+    "strong": {
+      "evaluable_years_min": 4,
+      "families_auc_R_ge_0_60_min": 4,
+      "median_family_auc_R_min": 0.65,
+      "year_auc_R_floor": 0.45,
+      "years_auc_R_ge_0_60_min": 4
+    },
+    "year_evaluable": {
+      "non_top_min": 20,
+      "top_tail_min": 2
+    }
+  },
+  "risk_calibration_freeze_sha256": "74ecd25790123f026e29cba7bb84322aad8a385c10fe3d60ef0d75d52d1b1909",
+  "risk_model_freeze_sha256": "b81cae6208d96890c0fd83d47e4ea8c8a81ba55b41c78f58db29e9160f173551",
+  "risk_probability_semantics": "recovery_probability_not_high_risk_probability",
+  "risk_source_blob_sha1": "7a9f238442f5a4836c6f38dcafec4bc34526fc5c",
+  "risk_source_path": "runtime/research/risk_tool_v2_severity_persistence_v1/run_study.py",
+  "risk_source_private_ref": "3879de41a5ac7c12246b811f51d16dc8586b9dae",
+  "schema_id": "ols_maxdd_risk_state_overlap_profile@1.0",
+  "state_machine_authority": false,
+  "symbol": "000852.SH",
+  "threshold_search_performed": false,
+  "top_n": 20,
+  "volatility_bucket_quantiles": [
+    0.3333333333333333,
+    0.6666666666666666
+  ],
+  "years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ]
+}
