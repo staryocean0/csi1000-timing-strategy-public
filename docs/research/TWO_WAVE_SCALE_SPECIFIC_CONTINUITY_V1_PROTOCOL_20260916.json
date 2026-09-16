@@ -1,0 +1,17 @@
+{
+  "schema_id": "csi1000.scale_specific_continuity_protocol@1.0",
+  "study": "TWO-WAVE-SCALE-SPECIFIC-CONTINUITY-V1",
+  "research_issue": 315,
+  "downstream_recognition_gate": 321,
+  "source_basis": "387ce42ef7c30fb633ec65d3a15e87eaf584b165",
+  "data": {"symbol":"000852.SH","timeframe":"5m_offset_0","years":[2015,2020],"rows":70114,"sha256":"bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48","role":"PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"},
+  "frozen_base": {"min_leg":4,"max_unfinished_leg":48,"mutated":false},
+  "candidate": {"recursive_minimum":1,"recursive_maximum":24,"levels":3,"lower_roots_may_be_crossed":true,"lower_reset_metadata_preserved":true,"backfill":false,"target_period_band":null},
+  "representation_gate": {"frozen_physical_capacity_proxy":14.941995359628772,"required_fraction":0.5,"required_complete_C3":8},
+  "verifier": ["original_base_kernel_differential","candidate_prefix_replay","crossing_event_clock_and_count_rebuild","aggregate_reproduction"],
+  "visual_gate_before_economics": true,
+  "one_minute_admitted": false,
+  "outcome_or_pnl_used": false,
+  "new_training": false,
+  "authority": {"scale_law":false,"signal":false,"detector_repair":false,"router":false,"trade":false,"production":false}
+}

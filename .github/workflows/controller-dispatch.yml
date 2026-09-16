@@ -71,6 +71,7 @@ jobs:
        github.event.issue.title == 'controller: two-wave-c3-router-v1' ||
        github.event.issue.title == 'controller: two-wave-hierarchy-attrition-v1' ||
        github.event.issue.title == 'controller: two-wave-cycle-identifiability-v1' ||
+       github.event.issue.title == 'controller: two-wave-scale-specific-continuity-v1' ||
        github.event.issue.title == 'controller: overnight-carrier-materialization-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-dev-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-blackbox-v1' ||
@@ -213,6 +214,9 @@ jobs:
               ;;
             'controller: two-wave-cycle-identifiability-v1')
               profile='two-wave-cycle-identifiability-v1'
+              ;;
+            'controller: two-wave-scale-specific-continuity-v1')
+              profile='two-wave-scale-specific-continuity-v1'
               ;;
             'controller: two-wave-multiscale-dual-gates-v2')
               profile='two-wave-multiscale-dual-gates-v2'
