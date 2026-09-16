@@ -1,0 +1,51 @@
+name: Two-Wave dual-gate public source tests
+on:
+  pull_request:
+    branches: [cloud-workspace-v1]
+    paths:
+      - '.github/workflows/wave-dual-gate-source-tests.yml'
+      - 'executor/wave_dual_gate_*.py'
+      - 'tests/test_wave_dual_gate_*.py'
+      - 'executor/two_wave_v0800_semantics.py'
+      - 'executor/two_wave_v0800_scale_map.py'
+      - 'executor/wave_skeleton_context_v1.py'
+      - 'executor/requirements.txt'
+permissions:
+  contents: read
+concurrency:
+  group: dual-gate-public-source-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  synthetic-source-tests:
+    if: >-
+      github.repository == 'staryocean0/csi1000-timing-strategy-public' &&
+      github.event.repository.private == false &&
+      github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Checkout public source only
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            executor
+            tests
+            docs/research
+            .github/workflows
+          sparse-checkout-cone-mode: true
+      - name: Install repository-pinned public test dependencies
+        timeout-minutes: 3
+        run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt
+      - name: Synthetic tests and original-public-kernel differential; no skips accepted
+        timeout-minutes: 3
+        run: |
+          python3 - <<'PY'
+          import sys
+          import unittest
+          suite = unittest.defaultTestLoader.discover('tests', pattern='test_wave_dual_gate_*.py')
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          print('Public-source synthetic tests only. No market data or private repository access.')
+          print(f'run={result.testsRun} skipped={len(result.skipped)}')
+          sys.exit(0 if result.wasSuccessful() and not result.skipped and result.testsRun >= 73 else 1)
+          PY

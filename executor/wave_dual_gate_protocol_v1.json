@@ -1,0 +1,103 @@
+{
+  "schema_id": "csi1000.wave_dual_gate_final_protocol@1.0",
+  "study": "TWO_WAVE_DUAL_GATES_V1",
+  "parent_pr": 289,
+  "source_basis": "b7439b0121fe98ac2507da3408f7319c4398fd06",
+  "candidate_archive_role": "reviewed_not_run_as_second_winner_candidate",
+  "market_results_seen_before_freeze": false,
+  "data": {
+    "repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "path": "data/development/5m_offset_0.parquet",
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "rows": 70114,
+    "role": "PREVIOUSLY_CONSUMED_DEVELOPMENT",
+    "years": [
+      2015,
+      2020
+    ]
+  },
+  "A": {
+    "parent_minimum_nodes": 2,
+    "initial_training": [
+      2015,
+      2017
+    ],
+    "sequential_test_years": [
+      2018,
+      2019,
+      2020
+    ],
+    "bins": "training_only_tertiles",
+    "alpha": 20,
+    "primary": "A2_vs_A0",
+    "formation_cutoff": "previous_wave.start_bar-1",
+    "minimum_parent_child_ratio": 2,
+    "horizon": "ceil(0.5*latest_two_confirmed_parent_period_median)",
+    "labels": "new_occurrence_after_decision_settled_by_confirmed_post_horizon_pivot",
+    "support": {
+      "events": 200,
+      "positives": 30,
+      "negatives": 30,
+      "parent_groups": 30,
+      "time_blocks": 30
+    },
+    "acceptance": "relative_Brier_gain>=.01; LogLoss_gain>0; >=2_years_same_direction; 97.5pct_block_interval_lower>0"
+  },
+  "B": {
+    "base_T": "ceil(2015_2017_confirmed_child_period_median)",
+    "primary_minimum_nodes": 1,
+    "sensitivity_minimum_nodes": 2,
+    "recursive_reductions": 3,
+    "recent_common_support_max_bars": "12*T",
+    "right_edge_max_age": "T",
+    "cycle_buckets": [
+      "BELOW_2T",
+      "2T_TO_3T",
+      "ABOVE_3T_BELOW_6T",
+      "AT_LEAST_6T",
+      "UNRESOLVED"
+    ],
+    "dominance_threshold": 0.6,
+    "strength": "dominant_component_RMS/raw_minus_base_skeleton_RMS",
+    "strength_threshold": "median_all_resolved_training_entry_decisions_2015_2017_frozen",
+    "primary_cost_bps_per_side": 2,
+    "cost_sensitivity": [
+      0,
+      2,
+      5
+    ],
+    "strategy": "raw_close_T_breakout_next_raw_open_same_exit_opportunity_ledger",
+    "support": {
+      "total_closed": 200,
+      "selected_closed": 200,
+      "mid_cycle_closed": 200,
+      "slow_cycle_closed": 200,
+      "time_blocks_each": 30,
+      "coverage": 0.2
+    },
+    "whipsaw": "both_baseline_adjacent_fast_losses_and_actual_filtered_adjacent_fast_losses_recorded_separately",
+    "calendar_economics": "all_settled_open_to_open_increments_including_cross_block_trades; length2_circular_moving20session_blocks",
+    "causation_claim": false
+  },
+  "inference": {
+    "A_and_mechanism": "20_session_blocks_boundary_label_purge_cross_parent_group_exclusion; original_transitive_merge_count_retained",
+    "interval": "97.5pct_two_sided",
+    "interpretation": "development_feasibility_not_independent_fresh_OOS"
+  },
+  "execution": {
+    "profile": "two-wave-dual-gates-v1",
+    "workflow": ".github/workflows/public-compute.yml",
+    "event": "workflow_dispatch",
+    "ref": "cloud-workspace-v1",
+    "compute_seconds": 900,
+    "verify_seconds": 900,
+    "cpu": 4,
+    "memory": "12g",
+    "network": "none",
+    "private_direct_chat_write": false,
+    "archive_private_only": true
+  },
+  "new_training": true,
+  "production_authority": false
+}
