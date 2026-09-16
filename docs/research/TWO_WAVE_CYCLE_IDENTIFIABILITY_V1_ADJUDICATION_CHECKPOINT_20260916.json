@@ -1,0 +1,25 @@
+{
+  "schema_id": "csi1000.cycle_identifiability_adjudication_checkpoint@1.0",
+  "study_id": "TWO-WAVE-CYCLE-IDENTIFIABILITY-V1",
+  "formal_run": "35084682048-1",
+  "public_source_sha": "0e98f6bfa67b8a0c1e040fb69beeaa479d6f5d88",
+  "research_issue": 316,
+  "controller_issue": 319,
+  "primary_observed_failure_mode": "RESET_ROOT_BREAK",
+  "blind_episode_count": 146,
+  "reset_root_break_count": 144,
+  "Q1_blind_episode_count": 0,
+  "Q4_blind_episode_count": 126,
+  "hard_root_C2_blind_location": "UNRESOLVED",
+  "standalone_C2_phase_signal_accepted": false,
+  "next_gate_issue": 315,
+  "one_minute_same_span_requested_now": false,
+  "one_minute_future_faster_base_experiment_allowed_in_principle": true,
+  "authority": {
+    "signal": false,
+    "detector_repair": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
