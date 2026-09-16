@@ -128,9 +128,9 @@ class TwoWaveV0800GBarTimeCarrierTest(unittest.TestCase):
         self.assertIsNone(self.protocol["automatic_acceptance_rule"])
         self.assertTrue(self.protocol["post_run_adjudication_required"])
         note = NOTE.read_text(encoding="utf-8")
-        self.assertIn("confirmation_bar + 1", note)
+        self.assertIn("first_carrier_bar = c + 1", note)
         self.assertIn("hold-until-next-eligible", note)
-        self.assertIn("No fixed-bar expiry grid", note)
+        self.assertIn("does not run an expiry grid", note)
 
 
 if __name__ == "__main__":
