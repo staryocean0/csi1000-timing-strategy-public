@@ -1,0 +1,42 @@
+name: Verify standard executor test dependency fix
+
+on:
+  push:
+    branches:
+      - fix/standard-executor-test-deps-20260916
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: fix/standard-executor-test-deps-20260916
+          fetch-depth: 0
+      - name: Patch standard executor test dependency order
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('.github/workflows/public-compute.yml')
+          s = p.read_text()
+          anchor = "      - name: Synthetic executor tests\n        timeout-minutes: 2\n        run: python3 -m unittest discover -s tests -p 'test_*.py' -v\n"
+          assert s.count(anchor) == 1
+          replacement = "      - name: Install reviewed executor test dependencies\n        timeout-minutes: 4\n        run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt\n" + anchor
+          s = s.replace(anchor, replacement, 1)
+          assert s.count('secrets.FACTORLAB_PRIVATE_TOKEN') == 2
+          p.write_text(s)
+      - name: Run complete public contract tests
+        run: |
+          python3 -m pip install --disable-pip-version-check -r executor/requirements.txt
+          python3 -m unittest discover -s tests -p 'test_*.py' -v
+          test "$(git diff --name-only)" = '.github/workflows/public-compute.yml'
+      - name: Create verified engineering commit
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .github/workflows/public-compute.yml
+          git commit -m 'Install reviewed dependencies before standard executor tests'
+          git push origin HEAD:fix/standard-executor-test-deps-20260916
