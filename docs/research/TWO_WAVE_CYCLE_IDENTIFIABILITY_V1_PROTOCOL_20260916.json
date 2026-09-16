@@ -1,0 +1,93 @@
+{
+  "schema_id": "csi1000.cycle_identifiability_protocol@1.0",
+  "study_id": "TWO-WAVE-CYCLE-IDENTIFIABILITY-V1",
+  "issue": 316,
+  "question": "When does the frozen base-scale wave become hard to identify, and where do those blind zones occur inside C2 structure?",
+  "input": {
+    "symbol": "000852.SH",
+    "timeframe": "5m_offset_0",
+    "start": "2015-01-05",
+    "end": "2020-12-31",
+    "rows": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "role": "previously_consumed_development_not_fresh_oos"
+  },
+  "frozen_detector": {
+    "min_leg": 4,
+    "max_unfinished_leg": 48,
+    "extrema_occurrence": "close_selected",
+    "geometry": "wick_on_selected_bar",
+    "retuned": false
+  },
+  "higher_context": {
+    "carrier": "reviewed V2 graphical hierarchy",
+    "level": "C2",
+    "target_period_band": null
+  },
+  "maps": {
+    "retrospective": {
+      "future_complete_geometry_allowed": true,
+      "realtime_signal_claim": false,
+      "C2_location": [
+        "descriptor_UP_RANGE_DOWN",
+        "leg_UP_DOWN",
+        "phase_EARLY_MIDDLE_LATE"
+      ]
+    },
+    "causal_asof": {
+      "future_complete_geometry_allowed": false,
+      "metrics": [
+        "age_since_base_confirmation_over_T0",
+        "confirmations_last_T0",
+        "confirmations_last_2T0"
+      ],
+      "C2_location": [
+        "last_completed_C2_descriptor",
+        "current_confirmed_C2_leg",
+        "causal_C2_phase",
+        "descriptive_C2_amplitude_quartile"
+      ]
+    }
+  },
+  "identifiability": {
+    "primary_continuous_metrics": [
+      "base_occurrence_coverage_fraction",
+      "blind_episode_length_T0",
+      "blind_raw_log_range",
+      "blind_path_efficiency",
+      "causal_confirmation_age_T0",
+      "confirmation_density_T0"
+    ],
+    "blind_episode_reasons": [
+      "LEFT_CENSORED",
+      "RIGHT_CENSORED",
+      "RESET_ROOT_BREAK",
+      "ROOT_BREAK_UNFINISHED",
+      "UNFINISHED_WITHIN_CHAIN"
+    ],
+    "amplitude_reference": "empirical completed-base-wave amplitude quartiles; descriptive only"
+  },
+  "interpretation": {
+    "tiny_amplitude_concentration": "abstention may be desirable",
+    "substantial_amplitude_phase_concentration": "candidate higher-state signal and detector-repair target",
+    "phase_independent_root_fragmentation": "prioritize issue 315 continuity bridge",
+    "no_concentration": "record no stable rule"
+  },
+  "one_minute": {
+    "used": false,
+    "clarification": "A future 1m study may define a genuinely faster new base scale (for example 10x1m), not merely refine the current 5m physical T0."
+  },
+  "execution": {
+    "profile": "two-wave-cycle-identifiability-v1",
+    "workflow": "public-compute.yml workflow_dispatch",
+    "new_training": false,
+    "row_level_public": false
+  },
+  "authority": {
+    "signal": false,
+    "detector_repair": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
