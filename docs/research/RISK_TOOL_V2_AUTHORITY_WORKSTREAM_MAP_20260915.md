@@ -5,6 +5,7 @@
 ## Unified ownership boundary
 
 All `risk-v2-*` authority, diagnostics, consumer contracts, and the governed Risk Tool V3 native-scale successor line belong to one Risk Tool program. Existing V2 results remain immutable.
+Distinct authority and diagnostic lanes must not be post-hoc merged into one verdict.
 
 The successor program now follows a **top-down native-scale attribution order: 60m → 15m → 5m**.
 

@@ -73,7 +73,7 @@ class RiskFreshOosAttritionTest(unittest.TestCase):
         self.assertGreaterEqual(controller.count(PROFILE), 2)
 
     def test_authority_map_keeps_lanes_distinct(self) -> None:
-        text = (ROOT / "docs/research/RISK_TOOL_V2_AUTHORITY_WORKSTREAM_MAP_20260915.md").read_text()
+        text = (ROOT / "docs/research/RISK_TOOL_V2_AUTHORITY_WORKSTREAM_MAP_20260915.md").read_text(encoding="utf-8")
         for run in ("34956326542-1", "34930354449-1", "34942554638-1", "34945466654-1", "34954265620-1"):
             self.assertIn(run, text)
         self.assertIn("does **not** replace PRIVATE", text)
