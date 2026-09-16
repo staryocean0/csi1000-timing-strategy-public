@@ -1,0 +1,125 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_g_adjudication@1.0",
+  "study": "V0800-G_BAR_TIME_CARRIER_EXPIRY_SEMANTICS",
+  "profile": "two-wave-v0800-g-bar-time-carrier-semantics-v1",
+  "status": "post_run_adjudicated",
+  "verified_run": {
+    "public_run_id": "35043795953-1",
+    "public_source_sha": "afd9de82f514dc101d273c685fa541ff847ed5ff",
+    "delivery_status": "archive_uploaded_and_verified",
+    "private_source_ref": "67effb80f51228f6129dca5c4f7971a0bb6c7f15",
+    "manifest_sha256": "a6d02c7972848025f1b3023803957a290883a5656f2b227abebefb3066939f8c",
+    "summary_sha256": "8454469af679113f92ba5283b5aad13ed8511c9b4eeeb203763c766cac3d16d2",
+    "input_receipt_sha256": "811a1249819060cb8eb18ec944e93fc3670d97162924c482b4bf5adece2efd06"
+  },
+  "input": {
+    "role": "already_consumed_development_not_fresh_oos",
+    "symbol": "000852.SH",
+    "timeframe": "5m_offset_0",
+    "rows": 70114,
+    "bytes": 3351411,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "source_ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "allowed_start": "2015-01-05",
+    "allowed_end": "2020-12-31",
+    "substitute_data_used": false,
+    "year_2026_read": false
+  },
+  "frozen_morphology": {
+    "rho_symbolic": "sqrt(2)",
+    "tau": 0.2,
+    "kappa": 2.0,
+    "strict_event_count": 2358,
+    "eligible_event_count": 924,
+    "reset_count": 164,
+    "parameter_change_authorized": false
+  },
+  "verified_primary_carrier": {
+    "semantics": "current_first_until_next_strict_or_reset",
+    "knowledge_coordinate": "state_known_before_bar_begins",
+    "first_carrier_bar_formula": "confirmation_bar + 1",
+    "strict_event_supersedes_previous_carrier": true,
+    "uncertain_clears_previous_carrier": true,
+    "scale_mismatch_clears_previous_carrier": true,
+    "reset_clears_previous_carrier": true,
+    "decisive_event_count": 180,
+    "carrier_source_event_count": 180,
+    "carrier_bar_count": 4403,
+    "carrier_fraction_of_bars": 0.0627977294121003,
+    "carrier_bar_count_by_state": {
+      "DownTrend": 2024,
+      "Range": 474,
+      "UpTrend": 1905
+    },
+    "carrier_interval_count_by_state": {
+      "DownTrend": 79,
+      "Range": 23,
+      "UpTrend": 78
+    },
+    "minimum_carrier_lag_bars": 1,
+    "maximum_carrier_age_bars": 59,
+    "zero_length_decisive_event_count": 0,
+    "right_censored_interval_count": 0,
+    "primary_action_counts": {
+      "decisive_supersession_with_active_carrier": 20,
+      "uncertain_clear_with_active_carrier": 64,
+      "scale_mismatch_clear_with_active_carrier": 88,
+      "reset_clear_with_active_carrier": 8
+    }
+  },
+  "anti_control": {
+    "name": "hold_until_next_eligible",
+    "authority_candidate": false,
+    "carrier_bar_count": 9785,
+    "stale_or_extra_carried_bar_count": 5382,
+    "mismatch_events_ignored_with_active_carrier": 222,
+    "stale_or_extra_episode_count": 88,
+    "stale_or_extra_episode_length_bars": {
+      "median": 48.0,
+      "p75": 79.0,
+      "p90": 144.89999999999998,
+      "p99": 250.29999999999995,
+      "max": 259.0
+    }
+  },
+  "adjudication": {
+    "engineering_execution_verified": true,
+    "bar_time_carrier_semantics_accepted_for_research": true,
+    "accepted_carrier_semantics": "current_first_until_next_strict_or_reset",
+    "hold_until_next_eligible_rejected_as_authority_semantics": true,
+    "fixed_bar_expiry_added": false,
+    "fixed_bar_expiry_search_authorized": false,
+    "coverage_or_persistence_retuning_authorized": false,
+    "reason": "The primary carrier obeyed the preregistered next-bar knowledge boundary and all strict-event/reset invalidation rules. Every decisive event produced a nonzero carrier interval, natural age remained finite in the consumed Development sample, and the eligible-only anti-control created 5382 stale or extra carried bars across 88 stale episodes, including episodes as long as 259 bars. These diagnostics support current-first invalidation and materially reject skipping newer strict scale-mismatch evidence."
+  },
+  "scientific_boundary": {
+    "event_time_morphology_coherence_inherited_from_f": true,
+    "bar_time_carrier_semantics_coherent_for_research": true,
+    "direction_acceptance": false,
+    "state_publication_authority": false,
+    "trade_authority": false,
+    "production_authority": false,
+    "future_outcome_used": false,
+    "returns_used": false,
+    "pnl_used": false,
+    "positions_used": false,
+    "parameter_search_used": false,
+    "year_2026_read": false
+  },
+  "interpretation": {
+    "supported": "A confirmed decisive morphology event may be represented on the bar timeline beginning one bar after confirmation, and the carrier must be replaced or cleared after every later strict event or reset according to the frozen current-first rules.",
+    "not_supported": [
+      "UpTrend predicts positive future returns.",
+      "DownTrend predicts negative future returns.",
+      "Range predicts profitable or stable future behavior.",
+      "The 6.28 percent carrier coverage should be increased by retuning morphology or expiry parameters.",
+      "The event labels are ready for a published market-state feed.",
+      "The carrier is a trading strategy or has production authority."
+    ]
+  },
+  "next_gate": {
+    "automatically_opened": false,
+    "outcome_bearing_research_authorized_by_this_adjudication": false,
+    "requirement": "Any future outcome-bearing or publication gate must be separately preregistered against the accepted current-first carrier semantics and may not reinterpret this consumed Development run as fresh OOS evidence."
+  }
+}
