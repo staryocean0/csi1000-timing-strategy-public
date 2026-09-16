@@ -72,7 +72,11 @@ def _geometry(start, high, end):
     if not start['occurrence_bar'] < high['occurrence_bar'] < end['occurrence_bar']:
         raise ValueError('invalid ordered geometry')
     a, b, c = (math.log(_positive(n['price'], 'node price')) for n in (start, high, end))
-    h = b - a - (c-a) * (high['occurrence_bar']-start['occurrence_bar']) / duration
+    # Keep the frozen single-wave evaluation order: reassociation can move
+    # a g exactly on the tau boundary. Do not rescue this with a wider tau.
+    phase = (high['occurrence_bar']-start['occurrence_bar']) / duration
+    bottom_high = a + phase * (c-a)
+    h = b - bottom_high
     if h <= 0 or not math.isfinite(h):
         raise ValueError('nonpositive graphical channel height')
     return {'duration': duration, 'height_log': h, 's': (c-a)/duration, 'g': (c-a)/h}
@@ -203,6 +207,8 @@ class NodeMaturityEngine:
         self.waves.append(w); self.last_wave = w
 
     def append(self, node):
+        # Retained candidates must not be changed by a caller mutating its dict.
+        node = deepcopy(node)
         for k in ('index', 'occurrence_bar', 'known_from_bar'):
             _integer(node[k], k)
         _positive(node['price'], 'node price')
@@ -361,7 +367,8 @@ def build_atlas(inventory, config=ContextConfig()):
                           {'occurrence_bar': w['high_bar'], 'price': w['high']},
                           {'occurrence_bar': w['end_bar'], 'price': w['end_low']})
             desc.append(_descriptor(g['g'], tau))
-        if code != '__'.join(desc) or pair['pair_id'] in seen_pair_ids or pair['confirmation_bar'] != b['confirmation_bar']:
+        expected_pair_id = f"{a['wave_id']}__{b['wave_id']}"
+        if pair['pair_id'] != expected_pair_id or code != '__'.join(desc) or pair['pair_id'] in seen_pair_ids or pair['confirmation_bar'] != b['confirmation_bar']:
             raise ValueError('invalid child pair identity/geometry/clock')
         seen_pair_ids.add(pair['pair_id'])
         ds = (a['duration'], b['duration'])
