@@ -1,0 +1,132 @@
+{
+  "schema_id": "csi1000.multiscale_dual_gates_v2_adjudication@1.0",
+  "study_id": "TWO_WAVE_MULTISCALE_DUAL_GATES_V2",
+  "date": "2026-09-16",
+  "public_run": "35070765488-1",
+  "public_source_sha": "27406d94dabff621463252b7cb4dc7b431c4e885",
+  "profile": "two-wave-multiscale-dual-gates-v2",
+  "transport": {
+    "status": "passed",
+    "delivery_status": "archive_uploaded_and_verified",
+    "private_result_branch": "runs/public-research/35070765488-1",
+    "private_release_id": 389727092,
+    "report_sha256": "f40afc690f33f022e56b44234b99f9812efdf95479331894e60e21919fc7c9e0",
+    "new_training": true,
+    "production_authority": false
+  },
+  "data": {
+    "symbol": "000852.SH",
+    "timeframe": "5m_offset_0",
+    "years": [2015, 2020],
+    "rows": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+  },
+  "mathematical_carrier": {
+    "verdict": "SUBSTANTIALLY_ALIGNED_WITH_FINANCIAL_HYPOTHESIS_BUT_LEVEL2_COVERAGE_STILL_LIMITED",
+    "base_wave_count": 2503,
+    "same_scale_pair_decisions": 924,
+    "trade_decisions": 1918,
+    "pair_C1_coverage": 0.7077922077922078,
+    "pair_C1_C2_joint_coverage": 0.21536796536796537,
+    "trade_C1_coverage": 0.6058394160583942,
+    "trade_C1_C2_joint_coverage": 0.18196037539103233,
+    "fidelity_A_pass": true,
+    "fidelity_B_pass": false,
+    "period_ratios": {
+      "T1_over_T0": {"n": 473, "q25": 2.0, "median": 3.7142857142857144, "q75": 5.090909090909091},
+      "T2_over_T1": {"n": 46, "q25": 2.0, "median": 3.0785714285714283, "q75": 4.795628962295629},
+      "T2_over_T0": {"n": 46, "q25": 9.012403100775193, "median": 13.598119858989424, "q75": 18.82790697674419}
+    },
+    "amplitude_ratios": {
+      "A1_over_A0": {"n": 473, "q25": 0.8810862413228011, "median": 1.4950547806952132, "q75": 2.4346882613110923},
+      "A2_over_A1": {"n": 46, "q25": 1.1703342150951896, "median": 1.6110613160177891, "q75": 3.089690839562076},
+      "A2_over_A0": {"n": 46, "q25": 2.179493782342999, "median": 3.522721809533307, "q75": 5.304273175250836}
+    },
+    "interpretation": [
+      "The adjacent lower-frequency level is usually materially slower than the base level, but it is not fixed at 2-3x: the observed T1/T0 median is about 3.71 with a broad 2.00-5.09 interquartile range.",
+      "The second lower-frequency level is again slower: T2/T1 median is about 3.08 and T2/T0 median is about 13.60.",
+      "This supports using measured hierarchical graphical levels rather than imposing a 2-3x filter band.",
+      "C1 is causally available often enough for a substantive A test. C2 is real but still sparse at live trade decision times, so B remains coverage-limited under its preregistered 20% fidelity gate."
+    ]
+  },
+  "gate_A_small_to_large": {
+    "verdict": "NOT_SUPPORTED_FOR_THIS_FROZEN_FEATURE_SET",
+    "fidelity_passed": true,
+    "support_passed": true,
+    "scored_events": 200,
+    "positives": 70,
+    "parent_groups": 148,
+    "inference_events": 182,
+    "blocks": 30,
+    "pooled": {
+      "A0_parent_C1_only_brier": 0.2262279972123504,
+      "A1_plus_nine_slope_amplitude_brier": 0.22448908673275875,
+      "A2_plus_internal_shape_brier": 0.22423678168764552,
+      "A0_logloss": 0.6444890363961284,
+      "A1_logloss": 0.6406230285339302,
+      "A2_logloss": 0.6399481926682837,
+      "relative_brier_improvement_A2_vs_A0": 0.008801802883219058
+    },
+    "A2_vs_A0_brier_improvement_interval_97_5pct": [-0.0032159971786077314, 0.009083583304581241],
+    "year_direction": {"2018": "improved", "2019": "worsened", "2020": "improved"},
+    "interpretation": [
+      "The corrected C1 carrier passed its fidelity gate, so this is a materially better test than V1.",
+      "Nine-grid/slope/amplitude and internal shape improve pooled point estimates, but the A2 Brier improvement is about 0.88%, below the frozen 1% requirement, and the 97.5% block interval includes zero.",
+      "2019 worsens while 2018 and 2020 improve; the result therefore does not establish robust incremental prediction of C1 turns.",
+      "This rejects only the frozen minimal feature set as accepted predictive evidence on this consumed development sample; it does not prove that every possible small-wave morphology is uninformative."
+    ],
+    "research_action": "DO_NOT_PROMOTE_A;_PRESERVE_AS_DESCRIPTIVE_MICROSTRUCTURE_RESEARCH_ONLY_UNLESS_A_NEW_PREREGISTERED_MECHANISM_IS_PROPOSED"
+  },
+  "gate_B_large_to_small": {
+    "verdict": "INCONCLUSIVE_FIDELITY_MISS_WITH_DIRECTIONALLY_CONSISTENT_DESCRIPTIVE_CLUE",
+    "fidelity_passed": false,
+    "support_passed": false,
+    "trade_C1_C2_joint_coverage": 0.18196037539103233,
+    "frozen_fidelity_threshold": 0.20,
+    "both_levels_resolved_trade_decisions": 349,
+    "scored_trades": 120,
+    "blocks": 12,
+    "pooled": {
+      "B0_brier": 0.2387992177864588,
+      "B1_plus_C1_brier": 0.23854715846577085,
+      "B2_plus_C2_brier": 0.23845835598259352,
+      "B0_logloss": 0.6707370021667373,
+      "B1_logloss": 0.6700101281670423,
+      "B2_logloss": 0.6698466850683026
+    },
+    "descriptive_regimes": {
+      "C1_DOM_ALL": {"n": 60, "fast_loss_rate": 0.35, "two_sided_fast_loss_rate": 0.11666666666666667, "win_rate": 0.38333333333333336, "net_bps_mean": 22.40291870659526},
+      "C1_RISKY": {"n": 51, "fast_loss_rate": 0.35294117647058826, "two_sided_fast_loss_rate": 0.11764705882352941, "win_rate": 0.4117647058823529, "net_bps_mean": 28.379828934279903},
+      "C2_DOM_ALL": {"n": 14, "fast_loss_rate": 0.2857142857142857, "two_sided_fast_loss_rate": 0.0, "win_rate": 0.6428571428571429, "net_bps_mean": 45.97797439787206},
+      "C2_SUPPORTIVE": {"n": 2, "fast_loss_rate": 0.0, "two_sided_fast_loss_rate": 0.0, "win_rate": 1.0, "net_bps_mean": 297.95223345007685}
+    },
+    "interpretation": [
+      "The new mathematical carrier fixes the V1 zero-coverage failure and exposes real C1/C2 states, but the joint live-trade coverage is 18.20%, below the preregistered 20% fidelity threshold.",
+      "The descriptive direction is compatible with the financial hypothesis: C1-dominant trades have higher fast-loss and lower win rate than C2-dominant trades, but C2 samples are very small and the supportive subset has only two trades.",
+      "The incremental B1/B2 proper-score improvements are tiny and only 12 inference blocks are available, so the result cannot be treated as validated top-down routing evidence.",
+      "Do not relax the 20% gate after seeing the result. A future B study must first improve C2 causal availability by a separately preregistered representation change, not by outcome-driven retuning."
+    ],
+    "research_action": "PRESERVE_B_FINANCIAL_HYPOTHESIS;_IMPROVE_C2_CAUSAL_AVAILABILITY_IN_A_SEPARATE_FIDELITY_STUDY_BEFORE_RETESTING_ECONOMICS"
+  },
+  "overall_adjudication": {
+    "mathematical_translation_improved": true,
+    "A_accepted": false,
+    "B_accepted": false,
+    "decision": "V2_CARRIER_IS_USEFUL_RESEARCH_INFRASTRUCTURE;_A_FROZEN_PREDICTIVE_FEATURE_SET_NOT_SUPPORTED;_B_REMAINS_INCONCLUSIVE_PENDING_C2_COVERAGE",
+    "do_not": [
+      "Do not call the measured level ratios fixed natural frequencies.",
+      "Do not claim A is predictive from favorable pooled point estimates.",
+      "Do not claim B is validated from the descriptive C1/C2 regime ordering.",
+      "Do not lower the frozen 20% B fidelity gate after observing 18.20% coverage.",
+      "Do not promote direction, publication, trade or production authority."
+    ]
+  },
+  "authority": {
+    "fresh_oos": false,
+    "direction_acceptance": false,
+    "state_publication_authority": false,
+    "trade_authority": false,
+    "production_authority": false
+  }
+}
