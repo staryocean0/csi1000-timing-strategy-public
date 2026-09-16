@@ -69,14 +69,16 @@ class OlsMaxddRiskStateOverlapV1Tests(unittest.TestCase):
         self.assertIn('flat = p[p["pos"].eq(0) & ~top_mask]', analysis)
         self.assertNotIn('~p["top"].fillna(False)', analysis)
 
-    def test_top_tail_control_interval_uses_exact_endpoints_not_between(self):
+    def test_top_tail_controls_reuse_native_failure_atlas_indices(self):
         analysis = ANALYSIS.read_text()
-        self.assertIn("def _closed_interval_mask", analysis)
-        self.assertIn('timestamps.eq(start).fillna(False).to_numpy(dtype=bool)', analysis)
-        self.assertIn('timestamps.eq(trough).fillna(False).to_numpy(dtype=bool)', analysis)
-        self.assertIn("ols_risk_overlap_control_interval_endpoint_missing", analysis)
-        self.assertIn("ols_risk_overlap_control_interval_reversed", analysis)
-        self.assertIn('top_15 |= _closed_interval_mask(trace["timestamp"], st, tr)', analysis)
+        self.assertIn("def _top_tail_mask_from_native_episode_indices", analysis)
+        self.assertIn('episodes = atlas._episodes(pd.to_numeric(trace["strategy_return"]', analysis)
+        self.assertIn("ols_risk_overlap_control_episode_identity_mismatch", analysis)
+        self.assertIn("ols_risk_overlap_control_top_tail_count_mismatch", analysis)
+        self.assertIn("ols_risk_overlap_control_native_interval_invalid", analysis)
+        self.assertIn("mask[start_i:trough_i + 1] = True", analysis)
+        self.assertIn("top_15 = _top_tail_mask_from_native_episode_indices(trace, q)", analysis)
+        self.assertNotIn("def _closed_interval_mask", analysis)
         self.assertNotIn('trace["timestamp"].between(st, tr)', analysis)
 
     def test_prereg_is_frozen_before_execution_and_no_trade_authority(self):
