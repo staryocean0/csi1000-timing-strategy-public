@@ -26,8 +26,10 @@ class C3RouterRuntimeTests(unittest.TestCase):
  def test_workflow_registered_once(self):
   s=(ROOT/'.github/workflows/public-compute.yml').read_text();self.assertEqual(s.count('          - two-wave-c3-router-v1'),1);self.assertEqual(s.count('FACTORLAB_PRIVATE_TOKEN'),4)
   self.assertEqual(s.count('executor/wave_c3_router_v1_broker.py'),4)
+ def test_broker_uses_exact_c3_runtime_path(self):
+  s=(ROOT/'executor/wave_c3_router_v1_broker.py').read_text();self.assertIn("command[index]='/work/c3_router/wave_c3_router_v1_runtime.py'",s);self.assertNotIn('/work/multiscale_v2/wave_multiscale_dual_gates_v2_runtime.py',s)
  def test_controller_registered(self):
-  s=(ROOT/'.github/workflows/controller-dispatch.yml').read_text();self.assertEqual(s.count('controller: two-wave-c3-router-v1'),2)
+  s=(ROOT/'.github/workflows/controller-dispatch.yml').read_text();self.assertEqual(s.count('controller: two-wave-c3-router-v1'),3);self.assertIn("github.event.issue.number == 307",s)
  def test_one_minute_not_admitted(self):
   p=json.loads((ROOT/'docs/research/TWO_WAVE_C3_ROUTER_PLAN_20260916.json').read_text());self.assertFalse(p['one_minute_required_for_first_run']);self.assertIsNone(p['period_ratio_target_band'])
 if __name__=='__main__':unittest.main()

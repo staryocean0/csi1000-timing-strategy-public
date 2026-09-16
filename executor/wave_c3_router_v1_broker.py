@@ -117,7 +117,7 @@ def main():
     def docker_command(work,results,path,validator=False):
         command=original_docker(work,results,path,validator)
         index=command.index('/run_research_in_container.py')
-        command[index]='/work/multiscale_v2/wave_multiscale_dual_gates_v2_runtime.py'
+        command[index]='/work/c3_router/wave_c3_router_v1_runtime.py'
         return command
     rb.prepare_inputs=prepare_inputs;rb.load_state=checked_state;rb.docker_command=docker_command
     rb.COMPUTE_HOST_TIMEOUT_SECONDS=960;rb.VALIDATE_HOST_TIMEOUT_SECONDS=960
