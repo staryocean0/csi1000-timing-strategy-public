@@ -1,0 +1,150 @@
+{
+  "schema_id": "csi1000.two_wave_v0800_g_bar_time_carrier_semantics_protocol@1.0",
+  "study": "V0800-G_BAR_TIME_CARRIER_EXPIRY_SEMANTICS",
+  "profile": "two-wave-v0800-g-bar-time-carrier-semantics-v1",
+  "status": "preregistered_candidate_not_execution_authority",
+  "parent_adjudication": {
+    "file": "docs/research/TWO_WAVE_V0800_F_ADJUDICATION_20260915.json",
+    "merge_commit": "5b356a53fcfc8dd2d8e4b4b69eb18735e2b8b74d",
+    "verified_f_run": "34984126303-1",
+    "verified_f_summary_sha256": "5c723173677ac64f5bd777b6e06b3311c51e33624f0e157bbfac561befe6af9c",
+    "f_event_time_state_machine_coherent_for_next_gate": true,
+    "f_bar_time_state_authority": false
+  },
+  "input": {
+    "role": "already_consumed_development_not_fresh_oos",
+    "symbol": "000852.SH",
+    "timeframe": "5m_offset_0",
+    "source_repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "source_ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "file": "data/development/5m_offset_0.parquet",
+    "rows": 70114,
+    "bytes": 3351411,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "allowed_start": "2015-01-05",
+    "allowed_end": "2020-12-31",
+    "year_2026_allowed": false,
+    "substitute_data_allowed": false
+  },
+  "frozen_morphology": {
+    "pivot_kernel": "v0.4.3_causal_temporal_maturity_A_engine",
+    "min_leg": 4,
+    "max_unfinished_leg": 48,
+    "continuity": "shared_anchor_strict_L-H-L-H-L",
+    "event_knowledge_time": "close_of_current_A_wave_confirmation_bar",
+    "bottom_authoritative_channel": true,
+    "rho_symbolic": "sqrt(2)",
+    "rho": 1.4142135623730951,
+    "tau": 0.2,
+    "kappa": 2.0,
+    "parameter_search_allowed": false,
+    "expected_strict_pair_count": 2358,
+    "expected_eligible_pair_count": 924,
+    "expected_reset_count": 164
+  },
+  "bar_time_coordinate": {
+    "carrier_semantics": "state_known_before_bar_begins",
+    "event_confirmed_at_close_of_bar": true,
+    "same_confirmation_bar_is_not_carried": true,
+    "first_possible_carrier_bar_formula": "confirmation_bar + 1",
+    "reason": "The event needs the full confirmation bar. Delaying the carrier to the next bar makes the bar-indexed value available before that bar begins and avoids same-bar knowledge ambiguity."
+  },
+  "primary_carrier_candidate": {
+    "name": "current_first_until_next_strict_or_reset",
+    "carrier_states": ["Range", "UpTrend", "DownTrend"],
+    "event_states_that_clear_without_new_carrier": ["Uncertain", "NoStateScaleMismatch"],
+    "start_rule": "A decisive strict event at confirmation bar c may create a carrier beginning at bar c+1.",
+    "supersession_rule": "Every later strict event is newer morphology evidence and supersedes the previous carrier at that later event close, regardless of same-scale eligibility.",
+    "strict_boundary_rule": "If the next strict event confirms at bar d, the old carrier may still be present at the open of bar d, but it must be replaced or cleared beginning bar d+1.",
+    "uncertain_rule": "An eligible Uncertain strict event clears any prior decisive carrier beginning the following bar.",
+    "scale_mismatch_rule": "A NoStateScaleMismatch strict event clears any prior decisive carrier beginning the following bar.",
+    "reset_rule": "A reset at bar r clears any prior carrier beginning bar r+1; no carrier may cross epochs.",
+    "end_of_data_rule": "A final unresolved carrier may remain through the last observed bar but is marked right-censored and must not be interpreted as a completed duration.",
+    "fixed_bar_expiry": null,
+    "fixed_bar_expiry_search_allowed": false,
+    "publication_authority": false
+  },
+  "counterfactual_diagnostics": {
+    "hold_until_next_eligible": {
+      "status": "anti_control_only_not_authority_candidate",
+      "purpose": "Measure stale continuity that would be created by skipping strict scale-mismatch events.",
+      "may_influence_primary_rule": false
+    },
+    "event_only_no_carry": {
+      "status": "control_only",
+      "purpose": "Retain the F event-time baseline for comparison with the candidate carrier coverage.",
+      "may_influence_primary_rule": false
+    },
+    "fixed_bar_expiry_grid": {
+      "status": "not_evaluated",
+      "reason": "No semantically justified expiry length is frozen. If natural carrier ages are pathological, a later preregistered gate is required rather than selecting a cap from this run."
+    }
+  },
+  "row_level_output": {
+    "file": "BAR_CARRIER.csv",
+    "expected_rows": 70114,
+    "columns": [
+      "bar_index",
+      "timestamp",
+      "carrier_epoch",
+      "carrier_state",
+      "source_pair_id",
+      "source_confirmation_bar",
+      "source_confirmation_time",
+      "carrier_age_bars",
+      "no_state_reason"
+    ],
+    "private_only": true
+  },
+  "aggregate_outputs": ["SUMMARY.json", "INPUT_RECEIPT.json"],
+  "audit_metrics": [
+    "strict_event_count",
+    "eligible_event_count",
+    "reset_count",
+    "carrier_bar_count",
+    "carrier_fraction_of_bars",
+    "carrier_bar_count_by_state",
+    "carrier_interval_count_by_state",
+    "carrier_age_bars_quantiles_by_state",
+    "carrier_bar_count_by_year_and_state",
+    "clear_event_count_by_reason",
+    "right_censored_interval_count",
+    "hold_until_next_eligible_stale_crossing_event_count",
+    "hold_until_next_eligible_extra_bar_quantiles",
+    "maximum_source_confirmation_bar_minus_carrier_bar"
+  ],
+  "invariants": {
+    "exact_primary_strict_event_universe": true,
+    "exact_reset_universe": true,
+    "carrier_source_must_be_decisive_strict_event": true,
+    "source_confirmation_bar_strictly_before_carrier_bar": true,
+    "no_same_confirmation_bar_carry": true,
+    "no_carrier_crosses_later_strict_event_close": true,
+    "uncertain_clears_prior_carrier": true,
+    "scale_mismatch_clears_prior_carrier": true,
+    "no_carrier_crosses_reset": true,
+    "no_carrier_crosses_epoch": true,
+    "right_censored_terminal_interval_marked_in_summary": true,
+    "no_future_bar_or_outcome_dependency": true
+  },
+  "automatic_acceptance_rule": null,
+  "post_run_adjudication_required": true,
+  "forbidden": {
+    "year_2026": true,
+    "future_returns": true,
+    "pnl": true,
+    "positions": true,
+    "transaction_costs": true,
+    "trade_simulation": true,
+    "strategy_routing": true,
+    "parameter_tuning": true,
+    "coverage_optimization": true,
+    "persistence_optimization": true,
+    "fixed_expiry_search": true,
+    "direction_acceptance": true,
+    "state_publication_authority": true,
+    "trade_authority": true,
+    "production_authority": true
+  },
+  "next_decision": "Audit whether the current-first bar-open carrier is causally exact and semantically non-stale, and whether its natural strict/reset-bounded age distribution is acceptable. A separate post-run adjudication is required before any bar-time publication authority or any later outcome-bearing study."
+}
