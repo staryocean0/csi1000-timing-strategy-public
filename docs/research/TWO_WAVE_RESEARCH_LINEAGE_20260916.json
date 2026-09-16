@@ -1,7 +1,7 @@
 {
   "schema_id": "csi1000.two_wave_research_lineage@1.0",
   "scope": "Layer2_Two_Wave_public_control_plane_thread_only",
-  "as_of_date": "2026-09-16",
+  "as_of_date": "2026-09-17",
   "public_repository": "staryocean0/csi1000-timing-strategy-public",
   "public_branch": "cloud-workspace-v1",
   "private_repository": "staryocean0/csi1000-timing-strategy-private",
@@ -46,22 +46,107 @@
       "implementation": "executor/wave_skeleton_context_v1.py",
       "tests": "tests/test_wave_skeleton_context_v1.py",
       "hypothesis": "Different child nine-grid combinations may occur with different frequencies in prior confirmed coarse graphical contexts.",
-      "critical_controls": ["dual clocks", "pre-formation context excludes tested pair", "separate overlapping diagnostic snapshots", "amplitude-driven false-trend counterexample", "root and parent reset/unknown/staleness", "event rather than independent-bar inference"],
+      "critical_controls": [
+        "dual clocks",
+        "pre-formation context excludes tested pair",
+        "separate overlapping diagnostic snapshots",
+        "amplitude-driven false-trend counterexample",
+        "root and parent reset/unknown/staleness",
+        "event rather than independent-bar inference"
+      ],
       "S0_validation_evidence": "merge PR and completion comment on issue 277; do not infer empirical acceptance from source CI",
       "real_run_receipt": null,
       "real_visual_pack": null,
       "empirical_association_adjudication": null,
       "private_scientific_authority_promotion": null
+    },
+    {
+      "order": 5,
+      "name": "5m_base_wave_recognizer_readiness_gate",
+      "issue": 321,
+      "purpose": "Do not admit 1m until the current 5m recognizer has rare, predominantly low-information residual blind structure without oversegmentation.",
+      "frozen_carrier": {
+        "symbol": "000852.SH",
+        "timeframe": "5m",
+        "period": "2015-2020",
+        "bars": 70114,
+        "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+        "data_role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+      },
+      "one_minute_admitted": false,
+      "status": "OPEN"
+    },
+    {
+      "order": 6,
+      "name": "recognizer_R1_progress_aware_reset",
+      "formal_run": "35112136370-1",
+      "result": "Large coverage improvement but five non-edge Q3/Q4 residual gaps remained, totaling 414 bars.",
+      "frozen_after_run": true,
+      "readiness_passed": false
+    },
+    {
+      "order": 7,
+      "name": "R1_residual_event_clock_audit",
+      "issue": 334,
+      "formal_trace_run": "35122489224-1",
+      "five_case_mechanisms": {
+        "EARLY_COUNTER_LOCK": 4,
+        "SAME_BAR_EVIDENCE_SKIPPED": 1
+      },
+      "manual_OHLC_review_completed": true,
+      "conclusion": "Residuals were meaningful movement. Dominant R1 defect was an ineligible early opposite counter monopolizing the counter slot; one reset-order boundary case was separately preserved.",
+      "R1_modified": false
+    },
+    {
+      "order": 8,
+      "name": "recognizer_R2_eligible_counter_shadow",
+      "issue": 337,
+      "source_pr": 338,
+      "source_merge": "6c18b886efa080cab03b4474df1d0ee657c2e7ec",
+      "formal_workflow_run": 35163544010,
+      "formal_public_run_id": "35163544010-1",
+      "formal_receipt_status": "passed",
+      "adjudication": "docs/research/TWO_WAVE_RECOGNIZER_R2_ADJUDICATION_20260917.json",
+      "blind_result": "All five R1 residual episodes / 414 bars recovered; non-edge blind bars became zero; pivot gaps remained >=4.",
+      "failure": "Frozen no-oversegmentation gate failed: wave-count ratio 1.7359, median-duration ratio 0.6667, low-amplitude-share change +0.10479.",
+      "decision": "REJECT_R2_FOR_5M_READINESS",
+      "renderer_correction_note": "R2 evidence renderer retained one stale R1-confirmation legend phrase; geometry evidence was not accepted.",
+      "one_minute_admitted": false,
+      "authority_promoted": false
+    },
+    {
+      "order": 9,
+      "name": "recognizer_R3_mature_counter_rearm",
+      "issue": 340,
+      "stage": "PREREGISTERED_BEFORE_REAL_RUN",
+      "hypothesis": "Occurrence separation and extremum survival are distinct causal clocks. Reject an ineligible early counter only after its own maturity, rearm, and allow a later counter to confirm only after that later counter also survives MIN_LEG bars.",
+      "adds_market_calibrated_amplitude_threshold": false,
+      "changes_MIN_LEG_or_MAX_UNFINISHED_LEG": false,
+      "changes_reset_order": false,
+      "real_run": null,
+      "adjudication": null,
+      "authority_promoted": false
     }
   ],
-  "remaining_order": [
-    "Finish source review and CI for S0; record exact merge and run evidence in issue 277",
-    "Resolve #274 baseline identity/single-wave/nine-grid evidence dependencies",
-    "Freeze independent verifier and exact standard-run resource/input/output manifests",
-    "Run only approved public-compute.yml workflow_dispatch and verify private receipt",
-    "Review equally detailed causal OHLC/skeleton/context screenshots including contradictions and missing contexts",
-    "Freeze and execute dependence-aware inferential controls separately from descriptive pilot",
-    "Write post-run adjudication, keeping insufficient/unsupported outcomes visible"
+  "active_recognizer_remaining_order": [
+    "Implement R3 MATURE_COUNTER_REARM source-only and independent replay verifier exactly as issue 340 freezes it",
+    "Pass synthetic early-counter, counter-supersession, monotone, pivot-gap, reset-order and causal-prefix counterexamples before any real run",
+    "Register a fixed standard public-compute profile without increasing the two credential boundaries",
+    "Run one unchanged consumed 5m 2015-2020 carrier through real workflow_dispatch",
+    "Read the private verified aggregate and mandatory full-OHLC evidence",
+    "Adjudicate R3 against the unchanged issue 321 thresholds and preserve failure if any",
+    "Admit 1m only if the 5m readiness gate actually passes"
   ],
-  "closed_capabilities": ["future-return/PnL objective", "trading route", "production use", "future final-top/bottom backlabels", "direct Chat private writes", "project-level authority takeover"]
+  "other_open_research_threads": [
+    "Issue 274 real multiscale single-wave/nine-grid acceptance remains pending",
+    "Issue 277 skeleton/context study remains at S0 until controlled real evidence is produced"
+  ],
+  "closed_capabilities": [
+    "future-return/PnL objective",
+    "trading route",
+    "production use",
+    "future final-top/bottom backlabels",
+    "direct Chat private writes",
+    "project-level authority takeover"
+  ]
 }
