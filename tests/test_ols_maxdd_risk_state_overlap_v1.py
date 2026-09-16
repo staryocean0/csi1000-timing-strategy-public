@@ -69,6 +69,16 @@ class OlsMaxddRiskStateOverlapV1Tests(unittest.TestCase):
         self.assertIn('flat = p[p["pos"].eq(0) & ~top_mask]', analysis)
         self.assertNotIn('~p["top"].fillna(False)', analysis)
 
+    def test_top_tail_control_interval_uses_exact_endpoints_not_between(self):
+        analysis = ANALYSIS.read_text()
+        self.assertIn("def _closed_interval_mask", analysis)
+        self.assertIn('timestamps.eq(start).fillna(False).to_numpy(dtype=bool)', analysis)
+        self.assertIn('timestamps.eq(trough).fillna(False).to_numpy(dtype=bool)', analysis)
+        self.assertIn("ols_risk_overlap_control_interval_endpoint_missing", analysis)
+        self.assertIn("ols_risk_overlap_control_interval_reversed", analysis)
+        self.assertIn('top_15 |= _closed_interval_mask(trace["timestamp"], st, tr)', analysis)
+        self.assertNotIn('trace["timestamp"].between(st, tr)', analysis)
+
     def test_prereg_is_frozen_before_execution_and_no_trade_authority(self):
         text = PREREG.read_text()
         self.assertIn("FROZEN_BEFORE_EXECUTION_WIRING", text)

@@ -187,6 +187,20 @@ def _prob_summary(ep: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def _closed_interval_mask(timestamps: pd.Series, start: pd.Timestamp, trough: pd.Timestamp) -> np.ndarray:
+    starts = np.flatnonzero(timestamps.eq(start).fillna(False).to_numpy(dtype=bool))
+    troughs = np.flatnonzero(timestamps.eq(trough).fillna(False).to_numpy(dtype=bool))
+    if len(starts) != 1 or len(troughs) != 1:
+        raise RuntimeError("ols_risk_overlap_control_interval_endpoint_missing")
+    i0 = int(starts[0])
+    i1 = int(troughs[0])
+    if i1 < i0:
+        raise RuntimeError("ols_risk_overlap_control_interval_reversed")
+    mask = np.zeros(len(timestamps), dtype=bool)
+    mask[i0:i1 + 1] = True
+    return mask
+
+
 def _control_summary(ep: pd.DataFrame, panel: pd.DataFrame, traces: dict[str, pd.DataFrame]) -> pd.DataFrame:
     rows = []
     for mode in EXIT_MODES:
@@ -211,7 +225,7 @@ def _control_summary(ep: pd.DataFrame, panel: pd.DataFrame, traces: dict[str, pd
             tr = pd.Timestamp(erow.trough_timestamp)
             st = st.tz_localize(d0.TZ) if st.tzinfo is None else st.tz_convert(d0.TZ)
             tr = tr.tz_localize(d0.TZ) if tr.tzinfo is None else tr.tz_convert(d0.TZ)
-            top_15 |= trace["timestamp"].between(st, tr).to_numpy()
+            top_15 |= _closed_interval_mask(trace["timestamp"], st, tr)
         mapping = pd.DataFrame({"ols_timestamp": trace["timestamp"], "pos": trace["pos"], "top": top_15})
         p = panel.merge(mapping, on="ols_timestamp", how="left", validate="many_to_one")
         top_mask = p["top"].fillna(False).astype(bool)
