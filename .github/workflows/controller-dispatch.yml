@@ -34,6 +34,7 @@ jobs:
        github.event.issue.title == 'controller: risk-v3-native15-carrier-semantic-audit-v1' ||
        github.event.issue.title == 'controller: risk-v3-native15-descriptive-risk-map-v1' ||
        github.event.issue.title == 'controller: risk-v3-native15-state-machine-candidates-v1' ||
+       github.event.issue.title == 'controller: risk-v3-native15-c1-gate-attribution-v1' ||
        github.event.issue.title == 'controller: risk-v2-historical-000852-2015-2019-v1' ||
        github.event.issue.title == 'controller: risk-v2-temporal-stability-2015-2025-v1' ||
        github.event.issue.title == 'controller: risk-v2-15m-annual-calibration-diagnostic-v1' ||
@@ -109,6 +110,9 @@ jobs:
               ;;
             'controller: risk-v3-native15-state-machine-candidates-v1')
               profile='risk-v3-native15-state-machine-candidates-v1'
+              ;;
+            'controller: risk-v3-native15-c1-gate-attribution-v1')
+              profile='risk-v3-native15-c1-gate-attribution-v1'
               ;;
             'controller: risk-v2-historical-000852-2015-2019-v1')
               profile='risk-v2-historical-000852-2015-2019-v1'
