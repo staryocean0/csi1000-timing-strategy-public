@@ -214,7 +214,8 @@ def _control_summary(ep: pd.DataFrame, panel: pd.DataFrame, traces: dict[str, pd
             top_15 |= trace["timestamp"].between(st, tr).to_numpy()
         mapping = pd.DataFrame({"ols_timestamp": trace["timestamp"], "pos": trace["pos"], "top": top_15})
         p = panel.merge(mapping, on="ols_timestamp", how="left", validate="many_to_one")
-        flat = p[p["pos"].eq(0) & ~p["top"].fillna(False)]
+        top_mask = p["top"].fillna(False).astype(bool)
+        flat = p[p["pos"].eq(0) & ~top_mask]
         rows.append({
             "exit_mode": mode,
             "control": "FLAT_MARKET",
