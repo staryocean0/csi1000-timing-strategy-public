@@ -91,7 +91,7 @@ class TwoWaveV0800GBarTimeCarrierTest(unittest.TestCase):
         self.assertIn("ignore_scale_mismatch=True", producer)
         self.assertIn('"authority_candidate": False', producer)
 
-    def test_broker_is_pinned_but_not_routed_in_source_only_phase(self):
+    def test_broker_is_pinned_and_standard_route_is_exact(self):
         text = BROKER.read_text(encoding="utf-8")
         self.assertIn(f'PROFILE_NAME = "{PROFILE}"', text)
         self.assertIn('SOURCE_REF = "152ae1ef11a04bb3b434da25025794db7a706c81"', text)
@@ -103,8 +103,15 @@ class TwoWaveV0800GBarTimeCarrierTest(unittest.TestCase):
         self.assertIn('"production_authority": False', text)
         workflow = WORKFLOW.read_text(encoding="utf-8")
         controller = CONTROLLER.read_text(encoding="utf-8")
-        self.assertNotIn(PROFILE, workflow)
-        self.assertNotIn(CONTROLLER_TITLE, controller)
+        self.assertEqual(workflow.count(f"          - {PROFILE}"), 1)
+        for phase in ("prepare", "compute", "cleanup", "publish"):
+            self.assertIn(f"python3 executor/two_wave_v0800_g_bar_time_carrier_broker.py {phase} {PROFILE}", workflow)
+        self.assertEqual(workflow.count("python3 executor/two_wave_v0800_g_bar_time_carrier_private_mirror.py"), 1)
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertEqual(controller.count(CONTROLLER_TITLE), 2)
+        self.assertIn(f"profile='{PROFILE}'", controller)
+        self.assertIn("github.event.issue.number == 227", controller)
+        self.assertNotIn(f"github.event.issue.number == 227 &&\n        github.event.issue.title == '{CONTROLLER_TITLE}'", controller)
 
     def test_private_mirror_is_aggregate_only_and_fail_closed(self):
         text = MIRROR.read_text(encoding="utf-8")
