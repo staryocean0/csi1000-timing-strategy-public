@@ -55,6 +55,7 @@ on:
           - two-wave-blindspot-relocation-v1
           - two-wave-recognizer-r1-progress-reset-v1
           - two-wave-r1-residual-clock-audit-v1
+          - two-wave-recognizer-r2-eligible-counter-v1
           - overnight-official-inventory-v1
           - overnight-carrier-materialization-v1
           - overnight-continuous-tail-likelihood-dev-v1
@@ -652,3 +653,25 @@ jobs:
           else
             exit 2
           fi
+      - name: Prepare fixed recognizer R2 inputs
+        id: r2_prepare
+        if: inputs.profile == 'two-wave-recognizer-r2-eligible-counter-v1'
+        timeout-minutes: 6
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/wave_recognizer_r2_v1_broker.py prepare two-wave-recognizer-r2-eligible-counter-v1
+      - name: Compute and verify recognizer R2 without credentials
+        if: inputs.profile == 'two-wave-recognizer-r2-eligible-counter-v1' && steps.r2_prepare.outcome == 'success'
+        timeout-minutes: 34
+        run: python3 executor/wave_recognizer_r2_v1_broker.py compute two-wave-recognizer-r2-eligible-counter-v1
+      - name: Stop recognizer R2 container before credentials return
+        id: r2_cleanup
+        if: always() && inputs.profile == 'two-wave-recognizer-r2-eligible-counter-v1' && steps.r2_prepare.outcome == 'success'
+        timeout-minutes: 1
+        run: python3 executor/wave_recognizer_r2_v1_broker.py cleanup two-wave-recognizer-r2-eligible-counter-v1
+      - name: Publish bounded recognizer R2 results privately
+        if: always() && inputs.profile == 'two-wave-recognizer-r2-eligible-counter-v1' && steps.r2_prepare.outcome == 'success' && steps.r2_cleanup.outcome == 'success'
+        timeout-minutes: 6
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/wave_recognizer_r2_v1_broker.py publish two-wave-recognizer-r2-eligible-counter-v1
