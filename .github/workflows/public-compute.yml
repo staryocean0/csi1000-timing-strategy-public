@@ -19,6 +19,7 @@ on:
           - risk-v3-native15-descriptive-risk-map-v1
           - risk-v3-native15-state-machine-candidates-v1
           - risk-v3-native60-phase60a-canonical-carrier-v1
+          - risk-v3-native60-phase60b-volatility-continuity-map-v1
           - risk-v3-native15-c1-gate-attribution-v1
           - risk-v2-historical-000852-2015-2019-v1
           - risk-v2-temporal-stability-2015-2025-v1
@@ -549,3 +550,57 @@ jobs:
           else
             exit 2
           fi
+  execute_native60b:
+    if: >-
+      github.repository == 'staryocean0/csi1000-timing-strategy-public' &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/cloud-workspace-v1' &&
+      github.event_name == 'workflow_dispatch' &&
+      inputs.profile == 'risk-v3-native60-phase60b-volatility-continuity-map-v1'
+    runs-on: ubuntu-24.04
+    environment: private-research
+    timeout-minutes: 40
+    steps:
+      - name: Checkout reviewed public executor only
+        timeout-minutes: 3
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            executor
+            tests
+            docs/research
+            .github/workflows
+          sparse-checkout-cone-mode: true
+      - name: Synthetic executor tests
+        timeout-minutes: 2
+        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Build public runtime before private credentials or data
+        timeout-minutes: 8
+        run: docker build --tag factorlab-runtime:local executor
+      - name: Prove isolated runtime with no private data
+        timeout-minutes: 2
+        run: python3 executor/broker.py runtime-smoke
+      - name: Prepare fixed private inputs
+        id: prepare60b
+        timeout-minutes: 6
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: python3 executor/risk_v3_native60_phase60b_volatility_continuity_map_broker.py prepare risk-v3-native60-phase60b-volatility-continuity-map-v1
+      - name: Compute without private credentials
+        id: compute60b
+        timeout-minutes: 25
+        run: python3 executor/risk_v3_native60_phase60b_volatility_continuity_map_broker.py compute risk-v3-native60-phase60b-volatility-continuity-map-v1
+      - name: Stop owned container before credentials return
+        id: cleanup60b
+        if: always() && steps.prepare60b.outcome == 'success'
+        timeout-minutes: 1
+        run: python3 executor/risk_v3_native60_phase60b_volatility_continuity_map_broker.py cleanup risk-v3-native60-phase60b-volatility-continuity-map-v1
+      - name: Return verified results privately
+        if: always() && steps.prepare60b.outcome == 'success' && steps.cleanup60b.outcome == 'success'
+        timeout-minutes: 6
+        env:
+          FACTORLAB_PRIVATE_TOKEN: ${{ secrets.FACTORLAB_PRIVATE_TOKEN }}
+        run: |
+          python3 executor/risk_v3_native60_phase60b_volatility_continuity_map_broker.py publish risk-v3-native60-phase60b-volatility-continuity-map-v1
+          python3 executor/risk_v3_native60_phase60b_volatility_continuity_map_private_mirror.py
