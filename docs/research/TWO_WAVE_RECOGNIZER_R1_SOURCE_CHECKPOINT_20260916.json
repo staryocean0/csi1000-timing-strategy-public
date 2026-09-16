@@ -1,0 +1,18 @@
+{
+  "schema_id": "csi1000.recognizer_R1_source_checkpoint@1.0",
+  "issue": 330,
+  "readiness_issue": 321,
+  "implementation_commit": "077f033efb9a67a6a3e92e5783f19b3e779f7b37",
+  "parent_relocation_run": "35104182684-1",
+  "local_public_tests": {"count": 729, "failed": 0, "skipped": 0, "seconds": 31.310},
+  "R1_specialized_tests": 20,
+  "private_market_run_executed": false,
+  "original_detector_modified": false,
+  "candidate_change": "R1 progress clock only: max(last_pivot_occurrence, candidate_occurrence), same pre-bar >48 comparison; counter excluded; MIN_LEG=4 unchanged",
+  "verification": ["separate candidate array state-machine replay", "original baseline replay", "independent difference-array blind coverage and numerical gates", "8 prefix wave/pivot/reset comparisons", "private complete OHLC image provenance and tamper checks"],
+  "manual_visual_acceptance": false,
+  "new_training": false,
+  "production_authority": false,
+  "one_minute_admitted": false,
+  "next_gate": "reviewed PR plus latest-head Ubuntu CI before standard workflow_dispatch"
+}
