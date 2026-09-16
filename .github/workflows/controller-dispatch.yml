@@ -25,7 +25,9 @@ jobs:
          (github.event.issue.number == 307 &&
           github.event.issue.title == 'controller: two-wave-c3-router-v1') ||
          (github.event.issue.number == 312 &&
-          github.event.issue.title == 'controller: two-wave-hierarchy-attrition-v1')))) &&
+          github.event.issue.title == 'controller: two-wave-hierarchy-attrition-v1') ||
+         (github.event.issue.number == 326 &&
+          github.event.issue.title == 'controller: two-wave-blindspot-relocation-v1')))) &&
       github.event.issue.user.login == github.repository_owner &&
       (github.event.issue.title == 'controller: runtime-smoke' ||
        github.event.issue.title == 'controller: handoff-verify-v1' ||

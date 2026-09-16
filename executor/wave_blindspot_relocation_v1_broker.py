@@ -19,7 +19,7 @@ HERE=Path(__file__).resolve().parent
 PROFILE='two-wave-blindspot-relocation-v1'
 PRIVATE_REF='7688ba57206dd29fbef88d8e57475255718471fe'
 MANIFEST=HERE.parent/'docs/research/TWO_WAVE_BLINDSPOT_RELOCATION_EXECUTION_MANIFEST_V1.json'
-SOURCES=('wave_blindspot_relocation_v1.py','wave_blindspot_relocation_v1_entry.py','wave_blindspot_relocation_v1_verifier.py','wave_blindspot_relocation_v1_runtime.py','wave_scale_specific_continuity_v1.py','wave_cycle_identifiability_v1.py','wave_multiscale_dual_gates_v2.py','wave_dual_gate_hierarchy_v1.py','wave_dual_gate_probe_v1.py','two_wave_v0800_scale_map.py','two_wave_v0800_semantics.py')
+SOURCES=('wave_blindspot_relocation_v1.py','wave_blindspot_relocation_v1_entry.py','wave_blindspot_relocation_v1_verifier.py','wave_blindspot_relocation_v1_runtime.py','wave_scale_specific_continuity_v1.py','wave_scale_specific_continuity_v1_verifier.py','wave_cycle_identifiability_v1.py','wave_multiscale_dual_gates_v2.py','wave_dual_gate_hierarchy_v1.py','wave_dual_gate_probe_v1.py','two_wave_v0800_scale_map.py','two_wave_v0800_semantics.py')
 COMMAND=['blindspot_relocation/wave_blindspot_relocation_v1_entry.py','--inputs','/work/inputs','--out','/results/study']
 VERIFY=['blindspot_relocation/wave_blindspot_relocation_v1_verifier.py','--inputs','/work/inputs','--results','/results/study']
 
