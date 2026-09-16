@@ -14,8 +14,20 @@ from wave_blindspot_relocation_v1_entry import clean, load_market
 from wave_cycle_identifiability_v1 import analyze as old_identifiability
 from wave_dual_gate_hierarchy_v1 import base_inventory
 from wave_scale_specific_continuity_v1 import continuity_hierarchy
-from wave_scale_specific_continuity_v1_verifier import verify_original_base
 
+
+def verify_original_base(bars, base):
+    from two_wave_v0800_scale_map import TemporalMaturityAEngine
+    waves,pivots,resets=TemporalMaturityAEngine(bars).run()
+    a=[(p["kind"],p["occurrence_bar"],p["confirmation_bar"],p["epoch"],p["left_censored"]) for p in pivots]
+    b=[(p["kind"],p["occurrence_bar"],p["known_from_bar"],p["epoch"],p["left_censored"]) for p in base["pivots"]]
+    if a!=b: raise ValueError("frozen base pivot mismatch")
+    if [(r["bar_index"],r["epoch"]) for r in resets]!=[(r["known_from_bar"],r["epoch"]) for r in base["resets"]]: raise ValueError("frozen base reset mismatch")
+    if len(waves)!=len(base["waves"]): raise ValueError("frozen base wave count mismatch")
+    cols=("start_bar","high_bar","end_bar","start_low","high","end_low")
+    for ref,row in zip(waves,base["waves"]):
+        if any(getattr(ref.wave,k)!=row[k] for k in cols) or ref.wave.confirmation_bar!=row["known_from_bar"]: raise ValueError("frozen base OHLC-anchor mismatch")
+    return {"base_pivots_checked":len(pivots),"base_waves_checked":len(waves),"base_resets_checked":len(resets)}
 
 def _prepared(stage):
     return {
