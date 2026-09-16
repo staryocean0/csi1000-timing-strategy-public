@@ -1,0 +1,18 @@
+{
+  "schema_id": "csi1000.blindspot_relocation_v1_protocol@1.0",
+  "study_id": "TWO-WAVE-BLINDSPOT-RELOCATION-V1",
+  "research_issue": 324,
+  "continuity_source_run": "35091108702-1",
+  "input": {"symbol":"000852.SH","timeframe":"5m_offset_0","years":[2015,2020],"rows":70114,"sha256":"bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48","role":"PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"},
+  "frozen_base_detector": {"min_leg":4,"max_unfinished_leg":48},
+  "blind_population": {"blind_fraction":0.16610092135664775,"episodes":146,"reset_root_break":144,"amplitude_quartiles":{"Q1":0,"Q2":5,"Q3":15,"Q4":126}},
+  "continuous_hierarchy": {"C1":672,"C2":170,"C3":39,"base_ledger_unchanged":true},
+  "maps": {"retrospective":"completed continuous C2/C3 occurrence morphology only","causal_asof":"then-confirmed descriptor/leg/phase/amplitude/age/crossing metadata only"},
+  "primary_estimand": "blindness concentration relative to all-bar exposure, not raw blind counts",
+  "detector_repair_in_this_run": false,
+  "one_minute_admitted": false,
+  "outcomes_used": false,
+  "downstream_readiness_gate": 321,
+  "new_training": false,
+  "authority": {"signal":false,"detector_repair":false,"router":false,"trade":false,"production":false}
+}

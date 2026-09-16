@@ -1,0 +1,33 @@
+name: Two-Wave blindspot relocation source tests
+on:
+  pull_request:
+    branches: [cloud-workspace-v1]
+    paths:
+      - '.github/workflows/wave-blindspot-relocation-source-tests.yml'
+      - '.github/workflows/public-compute.yml'
+      - '.github/workflows/controller-dispatch.yml'
+      - 'executor/wave_blindspot_relocation_v1*.py'
+      - 'executor/wave_scale_specific_continuity_v1.py'
+      - 'executor/wave_cycle_identifiability_v1.py'
+      - 'tests/test_wave_blindspot_relocation*.py'
+      - 'docs/research/TWO_WAVE_BLINDSPOT_RELOCATION_*'
+permissions:
+  contents: read
+jobs:
+  source-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt
+      - name: Run blindspot relocation contracts
+        run: |
+          python3 - <<'PY'
+          import sys,unittest
+          suite=unittest.defaultTestLoader.discover('tests',pattern='test_wave_blindspot_relocation*.py')
+          result=unittest.TextTestRunner(verbosity=2).run(suite)
+          print(f'run={result.testsRun} skipped={len(result.skipped)}')
+          sys.exit(0 if result.wasSuccessful() and not result.skipped and result.testsRun >= 14 else 1)
+          PY

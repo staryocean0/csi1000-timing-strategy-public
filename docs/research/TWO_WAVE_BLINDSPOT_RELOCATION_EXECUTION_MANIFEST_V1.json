@@ -1,0 +1,42 @@
+{
+  "schema_id": "csi1000.blindspot_relocation_execution@1.0",
+  "profile": "two-wave-blindspot-relocation-v1",
+  "private_ref": "7688ba57206dd29fbef88d8e57475255718471fe",
+  "sources": {
+    "wave_blindspot_relocation_v1.py": {
+      "git_blob_sha1": "ac1a7af48bd7c01c3bb9011c028ab37b3f01dd6b"
+    },
+    "wave_blindspot_relocation_v1_entry.py": {
+      "git_blob_sha1": "0cc5d347117e85124e52a637c8cc4e41a6c8453b"
+    },
+    "wave_blindspot_relocation_v1_verifier.py": {
+      "git_blob_sha1": "f2321e48bf705d639d1bf05a783dbea5886be0d0"
+    },
+    "wave_blindspot_relocation_v1_runtime.py": {
+      "git_blob_sha1": "431673f5e4f181cb3b5d47d12b3f51cf83056218"
+    },
+    "wave_scale_specific_continuity_v1.py": {
+      "git_blob_sha1": "dc4f0dcc7328966a8282204555c47bb643cd45b5"
+    },
+    "wave_cycle_identifiability_v1.py": {
+      "git_blob_sha1": "b30f9a682f68b76a1f5d359a6dbb6c610637c75d"
+    },
+    "wave_multiscale_dual_gates_v2.py": {
+      "git_blob_sha1": "244376f66de50aae8804cedb34b09a6adb442a05"
+    },
+    "wave_dual_gate_hierarchy_v1.py": {
+      "git_blob_sha1": "fd644ee897fce0ceeb925258da9d62deec826352"
+    },
+    "wave_dual_gate_probe_v1.py": {
+      "git_blob_sha1": "c3d0224a27b163fdbee39ab1c8939dce49705d3a"
+    },
+    "two_wave_v0800_scale_map.py": {
+      "git_blob_sha1": "3d370052c68b5b7caa778210a744c0c5b7c6c112"
+    },
+    "two_wave_v0800_semantics.py": {
+      "git_blob_sha1": "504e21105860acc5c655f7703728e7b014d78316"
+    }
+  },
+  "new_training": false,
+  "production_authority": false
+}
