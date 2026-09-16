@@ -51,6 +51,18 @@ class OlsMaxddRiskStateOverlapV1Tests(unittest.TestCase):
         self.assertIn("RISK_SOURCE_BLOB", broker)
         self.assertIn("CALIBRATION_FREEZE.json", broker)
 
+    def test_risk_join_uses_physical_carrier_identity_not_rendered_timestamp(self):
+        features = FEATURES.read_text()
+        self.assertIn('z["day_bar_index"] = z.groupby("trading_day", sort=False).cumcount()', features)
+        self.assertIn('risk["day_bar_index"] = risk.groupby("trading_day", sort=False).cumcount()', features)
+        self.assertIn('on=["trading_day", "day_bar_index"]', features)
+        self.assertIn("ols_risk_overlap_physical_bar_close_mismatch", features)
+        self.assertIn("ols_risk_overlap_probability_physical_key_gap", features)
+        self.assertIn("rtol=0.0", features)
+        self.assertIn("atol=0.0", features)
+        self.assertNotIn('z = z.merge(risk, on="bar_end"', features)
+        self.assertNotIn('z = z.merge(probs, on="bar_end"', features)
+
     def test_prereg_is_frozen_before_execution_and_no_trade_authority(self):
         text = PREREG.read_text()
         self.assertIn("FROZEN_BEFORE_EXECUTION_WIRING", text)
