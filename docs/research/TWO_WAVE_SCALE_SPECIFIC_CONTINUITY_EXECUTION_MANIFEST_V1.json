@@ -1,0 +1,36 @@
+{
+  "schema_id": "csi1000.scale_specific_continuity_execution@1.0",
+  "profile": "two-wave-scale-specific-continuity-v1",
+  "private_ref": "7688ba57206dd29fbef88d8e57475255718471fe",
+  "sources": {
+    "wave_scale_specific_continuity_v1.py": {
+      "git_blob_sha1": "dc4f0dcc7328966a8282204555c47bb643cd45b5"
+    },
+    "wave_scale_specific_continuity_v1_entry.py": {
+      "git_blob_sha1": "4194a00ad2f9224a60281e47b388c59436159d5f"
+    },
+    "wave_scale_specific_continuity_v1_verifier.py": {
+      "git_blob_sha1": "fb7762852e5304b7be8eda7469bed3a18d9cc901"
+    },
+    "wave_scale_specific_continuity_v1_runtime.py": {
+      "git_blob_sha1": "3dff38bd4246de58734a971e8d9ae9d14791c5c4"
+    },
+    "wave_multiscale_dual_gates_v2.py": {
+      "git_blob_sha1": "244376f66de50aae8804cedb34b09a6adb442a05"
+    },
+    "wave_dual_gate_hierarchy_v1.py": {
+      "git_blob_sha1": "fd644ee897fce0ceeb925258da9d62deec826352"
+    },
+    "wave_dual_gate_probe_v1.py": {
+      "git_blob_sha1": "c3d0224a27b163fdbee39ab1c8939dce49705d3a"
+    },
+    "two_wave_v0800_scale_map.py": {
+      "git_blob_sha1": "3d370052c68b5b7caa778210a744c0c5b7c6c112"
+    },
+    "two_wave_v0800_semantics.py": {
+      "git_blob_sha1": "504e21105860acc5c655f7703728e7b014d78316"
+    }
+  },
+  "new_training": false,
+  "production_authority": false
+}
