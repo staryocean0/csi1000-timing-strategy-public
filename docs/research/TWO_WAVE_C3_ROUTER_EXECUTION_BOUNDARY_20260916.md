@@ -1,0 +1,1 @@
+No C3/router market outcome has been inspected. First implementation may add one further recursive graphical level and a two-arm T0/T1 router analysis only. It may not alter the frozen lower-level wave kernel, prior V2 adjudication, or admit one-minute data in this run.
