@@ -26,6 +26,7 @@ class RuntimeTests(unittest.TestCase):
   self.assertEqual(set(w['on']),{'workflow_dispatch'})
   self.assertEqual(w['on']['workflow_dispatch']['inputs']['profile']['options'].count('two-wave-blindspot-relocation-v1'),1)
   c=(ROOT/'.github/workflows/controller-dispatch.yml').read_text()
-  self.assertEqual(c.count("'controller: two-wave-blindspot-relocation-v1'"),2)
+  self.assertEqual(c.count("'controller: two-wave-blindspot-relocation-v1'"),3)
+  self.assertIn("github.event.issue.number == 326",c)
   self.assertEqual(c.count("profile='two-wave-blindspot-relocation-v1'"),1)
 if __name__=='__main__':unittest.main()
