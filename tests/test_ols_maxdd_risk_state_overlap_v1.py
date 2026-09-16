@@ -81,6 +81,19 @@ class OlsMaxddRiskStateOverlapV1Tests(unittest.TestCase):
         self.assertNotIn("def _closed_interval_mask", analysis)
         self.assertNotIn('trace["timestamp"].between(st, tr)', analysis)
 
+    def test_control_join_uses_physical_15m_identity_not_trace_timestamp_text(self):
+        analysis = ANALYSIS.read_text()
+        self.assertIn("def _panel_with_physical_15m_index", analysis)
+        self.assertIn('p["ols_bar_index"] = p.groupby(keys, sort=False, dropna=False).ngroup()', analysis)
+        self.assertIn("ols_risk_overlap_control_physical_bucket_not_three", analysis)
+        self.assertIn("ols_risk_overlap_control_trace_bar_count_mismatch", analysis)
+        self.assertIn("ols_risk_overlap_control_physical_close_mismatch", analysis)
+        self.assertIn('"ols_bar_index": np.arange(len(trace), dtype=int)', analysis)
+        self.assertIn('p = p.merge(mapping, on="ols_bar_index"', analysis)
+        self.assertIn('p[p["ols_bar_index"].isin(idx.tolist())]', analysis)
+        self.assertNotIn('mapping = pd.DataFrame({"ols_timestamp"', analysis)
+        self.assertNotIn('panel[panel["ols_timestamp"].isin(stamps)]', analysis)
+
     def test_prereg_is_frozen_before_execution_and_no_trade_authority(self):
         text = PREREG.read_text()
         self.assertIn("FROZEN_BEFORE_EXECUTION_WIRING", text)
