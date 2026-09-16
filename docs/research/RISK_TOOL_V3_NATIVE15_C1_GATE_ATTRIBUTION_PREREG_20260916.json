@@ -1,0 +1,75 @@
+{
+  "analysis": {
+    "allowed_inputs": [
+      "verified C1 full candidate map JSON",
+      "verified C1 mirrored summary JSON"
+    ],
+    "forbidden_inputs": [
+      "market data",
+      "2024 market values",
+      "2025 market values",
+      "2026 market values",
+      "new candidate grid",
+      "new thresholds"
+    ],
+    "gate_universe": "exact gate_checks keys already stored per C1 candidate",
+    "nearest_candidate_max": 12,
+    "nearest_candidate_surface": [
+      "parameters",
+      "failed_gate_names",
+      "gate_values",
+      "ranking_components"
+    ],
+    "ordering": "ascending failed_gate_count, then existing frozen C1 ranking order",
+    "outputs": [
+      "per-gate pass/fail counts and rates",
+      "histogram of failed-gate count per candidate",
+      "exact failure-set counts",
+      "minimum failed-gate count",
+      "up to 12 candidates from the minimum-failure set ordered by the frozen C1 ranking order"
+    ]
+  },
+  "controls": {
+    "c2_authority": false,
+    "calibration": false,
+    "candidate_recompute_from_prices": false,
+    "gate_change": false,
+    "grid_expansion": false,
+    "market_data_read": false,
+    "model_fit": false,
+    "pnl": false,
+    "position_sizing": false,
+    "production_authority": false,
+    "state_machine_installation": false,
+    "strategy_routing": false,
+    "threshold_change": false
+  },
+  "parent_c1": {
+    "full_result_bytes": 3416644,
+    "full_result_member": "study/NATIVE15_STATE_MACHINE_CANDIDATE_MAP.json",
+    "full_result_sha256": "ba7a3e6447077c9583ba6d89501e58acfb57f9cff4bb02d9e5e05954909e1749",
+    "private_ref": "runs/public-research/35041411237-1",
+    "private_release_tag": "public-research-run-35041411237-1",
+    "public_run_id": "35041411237-1",
+    "release_asset_bytes": 214802,
+    "release_asset_name": "results.tar.gz",
+    "release_asset_sha256": "a0388daa1ff62f92951354c4b6c026db6f8357c2e85b668d471983716c87e352",
+    "required_candidate_count": 576,
+    "required_next_phase_authorized": false,
+    "required_passing_count": 0,
+    "required_shortlist_count": 0,
+    "required_status": "NATIVE15_STATE_MACHINE_CANDIDATE_MAP_INSUFFICIENT",
+    "summary_blob_sha": "1e62642f03747dd51811c8909f82ae69de356cd9",
+    "summary_path": "research/public-runs/35041411237-1-native15-phase-c1.json"
+  },
+  "profile": "risk-v3-native15-c1-gate-attribution-v1",
+  "purpose": "Read-only attribution of why the verified Native-15m C1 candidate family produced 0/576 passing candidates. Operates only on the verified C1 candidate-map result; no market data read and no scientific rescue.",
+  "result_contract": {
+    "interpretation": "Diagnostic attribution only. Any scientific family/gate revision requires a separately preregistered task.",
+    "next_phase_authorized": false,
+    "result_file": "study/NATIVE15_C1_GATE_ATTRIBUTION.json",
+    "status": "NATIVE15_C1_GATE_ATTRIBUTION_COMPLETE"
+  },
+  "schema_id": "risk_tool_v3_native15_c1_gate_attribution_prereg@1.0",
+  "task_id": "CSI1000-RISK-V3-NATIVE15-C1-GATE-ATTRIBUTION-V1-20260916"
+}
