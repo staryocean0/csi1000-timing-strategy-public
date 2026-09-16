@@ -87,6 +87,9 @@ jobs:
             .github/workflows
             governance/private_sync/v1
           sparse-checkout-cone-mode: true
+      - name: Install reviewed executor test dependencies
+        timeout-minutes: 1
+        run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt
       - name: Synthetic executor tests
         timeout-minutes: 2
         run: python3 -m unittest discover -s tests -p 'test_*.py' -v
