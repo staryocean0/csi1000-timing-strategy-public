@@ -24,7 +24,7 @@ jobs:
           s = p.read_text()
           anchor = "      - name: Synthetic executor tests\n        timeout-minutes: 2\n        run: python3 -m unittest discover -s tests -p 'test_*.py' -v\n"
           assert s.count(anchor) == 1
-          replacement = "      - name: Install reviewed executor test dependencies\n        timeout-minutes: 4\n        run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt\n" + anchor
+          replacement = "      - name: Install reviewed executor test dependencies\n        timeout-minutes: 1\n        run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt\n" + anchor
           s = s.replace(anchor, replacement, 1)
           assert s.count('secrets.FACTORLAB_PRIVATE_TOKEN') == 2
           p.write_text(s)
