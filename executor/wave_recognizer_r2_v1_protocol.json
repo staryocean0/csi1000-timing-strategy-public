@@ -1,0 +1,53 @@
+{
+  "schema_id": "csi1000.recognizer_r2_protocol@1.0",
+  "issue": 337,
+  "name": "ELIGIBLE_COUNTER_SHADOW",
+  "data": {
+    "symbol": "000852.SH",
+    "timeframe": "5m",
+    "years": [2015, 2020],
+    "rows": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+  },
+  "frozen_semantics": {
+    "MIN_LEG": 4,
+    "MAX_UNFINISHED_LEG": 48,
+    "r1_progress_aware_reset_unchanged": true,
+    "reset_ordering_unchanged": true,
+    "candidate_update_unchanged": true,
+    "eligible_counter_requires_occurrence_gap_ge_4": true,
+    "confirm_only_from_eligible_counter": true,
+    "same_bar_second_confirmation": false,
+    "retrospective_replay": false
+  },
+  "readiness_issue": 321,
+  "gates": {
+    "nonedge_blind_fraction_max": 0.02,
+    "q3_q4_blind_episodes_max": 5,
+    "q3_q4_blind_bar_fraction_max": 0.0025,
+    "residual_q1_episode_share_min": 0.90,
+    "q3_q4_long_run_T0_max": 1.5,
+    "wave_count_ratio_max": 1.25,
+    "median_duration_ratio_min": 0.75,
+    "median_amplitude_ratio_min": 0.75,
+    "median_channel_height_ratio_min": 0.75,
+    "low_amplitude_share_change_max": 0.05,
+    "confirmation_delay_median_change_max": 4,
+    "confirmation_delay_p90_change_max": 8,
+    "adjacent_confirmed_pivot_gap_min": 4
+  },
+  "required_outputs": [
+    "aggregate_readiness_metrics",
+    "R1_blind_recovery",
+    "new_blind_vs_R1",
+    "anti_oversegmentation",
+    "pivot_gap_audit",
+    "per_year_stability",
+    "deterministic_full_OHLC_visual_pack"
+  ],
+  "one_minute_admitted": false,
+  "outcomes_used": false,
+  "new_training": false,
+  "production_authority": false
+}

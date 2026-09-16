@@ -1,0 +1,37 @@
+name: Two-Wave recognizer R2 source tests
+on:
+  pull_request:
+    branches: [cloud-workspace-v1]
+    paths:
+      - '.github/workflows/wave-recognizer-r2-source-tests.yml'
+      - '.github/workflows/public-compute.yml'
+      - '.github/workflows/controller-dispatch.yml'
+      - 'executor/wave_recognizer_r2_v1*.py'
+      - 'executor/wave_recognizer_r1_v1*.py'
+      - 'executor/wave_multiscale_dual_gates_v2.py'
+      - 'executor/wave_dual_gate_hierarchy_v1.py'
+      - 'executor/wave_dual_gate_probe_v1.py'
+      - 'executor/two_wave_v0800_scale_map.py'
+      - 'executor/two_wave_v0800_semantics.py'
+      - 'tests/test_wave_recognizer_r2*.py'
+      - 'docs/research/TWO_WAVE_RECOGNIZER_R2_*'
+permissions:
+  contents: read
+jobs:
+  source-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt
+      - name: Run recognizer R2 contracts
+        run: |
+          python3 - <<'PY'
+          import sys,unittest
+          suite=unittest.defaultTestLoader.discover('tests',pattern='test_wave_recognizer_r2*.py')
+          result=unittest.TextTestRunner(verbosity=2).run(suite)
+          print(f'run={result.testsRun} skipped={len(result.skipped)}')
+          sys.exit(0 if result.wasSuccessful() and not result.skipped and result.testsRun >= 15 else 1)
+          PY
