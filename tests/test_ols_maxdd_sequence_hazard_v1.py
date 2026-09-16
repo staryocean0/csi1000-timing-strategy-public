@@ -10,6 +10,8 @@ ENGINE = ROOT / "executor" / "ols_maxdd_sequence_hazard_v1.py"
 VERIFIER = ROOT / "executor" / "ols_maxdd_sequence_hazard_v1_verifier.py"
 BROKER = ROOT / "executor" / "ols_maxdd_sequence_hazard_v1_broker.py"
 PROTOCOL = ROOT / "docs" / "research" / "layer3" / "ols_family" / "OLS_MAXDD_SEQUENCE_HAZARD_V1_PROTOCOL_20260916.md"
+WORKFLOW = ROOT / ".github" / "workflows" / "ols-maxdd-sequence-hazard-v1.yml"
+CONTROLLER = ROOT / ".github" / "workflows" / "ols-maxdd-sequence-hazard-v1-controller.yml"
 EXPECTED_SHA = "71fe62797e9ec9f9f106e313b1adcbd5424915c9ed9d51ceb0a06319c8bf4282"
 
 
@@ -60,6 +62,19 @@ class SequenceHazardContractTest(unittest.TestCase):
             self.assertIn(name, broker)
         self.assertIn('"status":"passed"', verifier.replace(" ", ""))
         self.assertIn('phase_c_reopen_authority', verifier)
+
+    def test_bounded_executor_matches_standard_security_envelope(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        controller = CONTROLLER.read_text(encoding="utf-8")
+        self.assertIn("group: csi1000-standard-executor", workflow)
+        self.assertIn("environment: private-research", workflow)
+        self.assertIn("persist-credentials: false", workflow)
+        self.assertEqual(workflow.count("secrets.FACTORLAB_PRIVATE_TOKEN"), 2)
+        self.assertIn("Compute without private credentials", workflow)
+        self.assertIn("Stop owned container before credentials return", workflow)
+        self.assertIn("github.event.issue.user.login == github.repository_owner", controller)
+        self.assertIn("controller: ols-maxdd-sequence-hazard-v1", controller)
+        self.assertIn("actions: write", controller)
 
 
 if __name__ == "__main__":
