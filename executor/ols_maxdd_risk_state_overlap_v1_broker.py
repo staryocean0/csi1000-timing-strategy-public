@@ -66,6 +66,10 @@ _PRIVATE_TEXT_MIRROR = (
 )
 _SAFE_CODE = re.compile(r"\bols_risk_overlap_[a-z0-9_:-]+\b")
 _SAFE_EXCEPTION = re.compile(r"^([A-Za-z_][A-Za-z0-9_.]*(?:Error|Exception))(?::|$)", re.MULTILINE)
+_SAFE_PUBLIC_FRAME = re.compile(
+    r'File "[^"\r\n]*/(ols_maxdd_risk_state_overlap_v1(?:_features|_analysis|_verifier)?\.py)", '
+    r'line ([0-9]{1,6}), in ([A-Za-z_][A-Za-z0-9_]*)'
+)
 
 
 def _blobsha(raw: bytes) -> str:
@@ -207,21 +211,25 @@ def _safe_failure_diagnostic() -> None:
         return
     codes: set[str] = set()
     exceptions: set[str] = set()
+    frames: set[str] = set()
     for path in (root / "results" / "compute.log", root / "results" / "controller_validation.log"):
         if not path.is_file() or path.is_symlink() or path.stat().st_size > 65536:
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
         codes.update(_SAFE_CODE.findall(text))
         exceptions.update(_SAFE_EXCEPTION.findall(text))
+        for filename, line, function in _SAFE_PUBLIC_FRAME.findall(text):
+            frames.add(f"{filename}:{int(line)}:{function}")
     print(
         "OLS_RISK_OVERLAP_SAFE_DIAGNOSTIC="
         + json.dumps(
             {
-                "available": bool(codes or exceptions),
+                "available": bool(codes or exceptions or frames),
                 "compute_exit_code": state.get("compute_exit_code"),
                 "validation_exit_code": state.get("validation_exit_code"),
                 "codes": sorted(codes),
                 "exception_classes": sorted(exceptions),
+                "public_frames": sorted(frames)[:8],
             },
             sort_keys=True,
             separators=(",", ":"),
