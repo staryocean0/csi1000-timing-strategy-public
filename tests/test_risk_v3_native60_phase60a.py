@@ -47,13 +47,15 @@ class Native60Phase60ATests(unittest.TestCase):
         self.assertIn('set(range(571,691))|set(range(781,901))',s)
         self.assertIn('set(range(570,690))|set(range(780,900))',s)
 
-    def test_verifier_is_independent_and_exact(self):
+    def test_verifier_is_independent_exact_and_uses_standard_success_protocol(self):
         s=VERIFIER.read_text();ast.parse(s)
         self.assertNotIn("import risk_v3_native60_phase60a",s)
         self.assertIn("independently_recompute",s)
         self.assertIn("assert_frame_equal",s)
         self.assertIn("verifier_audit_exact_compare_failed",s)
         self.assertIn('ds.field("trading_day")>=DEV_START',s)
+        self.assertIn('return {"status":"passed"',s)
+        self.assertNotIn('return {"status":"verified"',s)
 
     def test_broker_and_mirror_are_bounded(self):
         b=BROKER.read_text();m=MIRROR.read_text();ast.parse(b);ast.parse(m)
