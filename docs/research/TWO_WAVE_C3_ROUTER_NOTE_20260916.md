@@ -1,0 +1,1 @@
+For the first C3/router experiment, keep the already-audited 5m Development input. One-minute data is not required merely to increase the number of higher-level cycles over the same date range. If one-minute data later covers a longer history or is used to define a separate finer base strategy, admit it in a separate protocol.
