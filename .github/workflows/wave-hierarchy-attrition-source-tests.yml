@@ -1,0 +1,29 @@
+name: Two-Wave hierarchy attrition source tests
+on:
+  pull_request:
+    branches: [cloud-workspace-v1]
+    paths:
+      - 'executor/wave_hierarchy_attrition_v1*.py'
+      - 'tests/test_wave_hierarchy_attrition*.py'
+      - 'docs/research/TWO_WAVE_HIERARCHY_ATTRITION_EXECUTION_MANIFEST_V1.json'
+      - '.github/workflows/public-compute.yml'
+      - '.github/workflows/controller-dispatch.yml'
+permissions:
+  contents: read
+jobs:
+  source-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt
+      - run: |
+          python3 - <<'PY'
+          import sys,unittest
+          suite=unittest.defaultTestLoader.discover('tests',pattern='test_wave_hierarchy_attrition*.py')
+          result=unittest.TextTestRunner(verbosity=2).run(suite)
+          print(f'run={result.testsRun} skipped={len(result.skipped)}')
+          sys.exit(0 if result.wasSuccessful() and not result.skipped and result.testsRun>=11 else 1)
+          PY
