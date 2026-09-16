@@ -1,0 +1,36 @@
+{
+  "schema_id": "csi1000.wave_dual_gate_execution@1.0",
+  "profile": "two-wave-dual-gates-v1",
+  "private_ref": "7688ba57206dd29fbef88d8e57475255718471fe",
+  "sources": {
+    "wave_dual_gate_probe_v1.py": {
+      "git_blob_sha1": "c3d0224a27b163fdbee39ab1c8939dce49705d3a"
+    },
+    "wave_dual_gate_hierarchy_v1.py": {
+      "git_blob_sha1": "683add013078b6e5a06fb05099bd5cfd29275cac"
+    },
+    "wave_dual_gate_analysis_v1.py": {
+      "git_blob_sha1": "68d2e1d6b96e1b677bde3a6483c5d97c217efda8"
+    },
+    "wave_dual_gate_study_v1.py": {
+      "git_blob_sha1": "e291ca392965e8dd54f5b90039e0c5e55aa6af90"
+    },
+    "wave_dual_gate_verifier_v1.py": {
+      "git_blob_sha1": "0ce9d6a2260f80d882b5425476c6f4f08d5e7146"
+    },
+    "wave_dual_gate_runtime_v1.py": {
+      "git_blob_sha1": "6e655f89d7298e5aac6d30ab4c5c665a6cbb068a"
+    },
+    "two_wave_v0800_semantics.py": {
+      "git_blob_sha1": "504e21105860acc5c655f7703728e7b014d78316"
+    },
+    "two_wave_v0800_scale_map.py": {
+      "git_blob_sha1": "3d370052c68b5b7caa778210a744c0c5b7c6c112"
+    },
+    "wave_skeleton_context_v1.py": {
+      "git_blob_sha1": "8e11c6b3ca4160301953335c1d3bff706a6adc2d"
+    }
+  },
+  "new_training": true,
+  "production_authority": false
+}
