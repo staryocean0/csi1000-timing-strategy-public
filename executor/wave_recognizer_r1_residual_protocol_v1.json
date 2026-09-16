@@ -1,0 +1,84 @@
+{
+  "schema_id": "csi1000.r1_residual_audit_protocol@1.0",
+  "research_issue": 334,
+  "readiness_issue": 321,
+  "upstream_issue": 330,
+  "source_base": "57d4b90686a72ed8a82c69b24513a29254c10f22",
+  "frozen_R1_run": "35112136370-1",
+  "frozen_R1_source": "61e5dcdf143be4b9a5a7bb8bcae1c4a3f2a63af7",
+  "frozen_R1_blob": "32ffb3db77a7861f88ba6332809072d00b3a78a6",
+  "purpose": "Observe all five remaining gaps and every newly blind bar without modifying the recognizer.",
+  "data": {
+    "repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "path": "data/development/5m_offset_0.parquet",
+    "symbol": "000852.SH",
+    "timeframe": "5m_offset_0",
+    "years": [2015, 2020],
+    "rows": 70114,
+    "bytes": 3351411,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+  },
+  "frozen_population": {
+    "R1_waves": 2704,
+    "R1_resets": 5,
+    "residual_episodes": 5,
+    "residual_bars": 414,
+    "old_blind_bars_remaining": 322,
+    "new_blind_bars": 92
+  },
+  "questions": [
+    "Does the timeout guard skip a same-bar candidate update or otherwise valid opposite confirmation?",
+    "Does an early opposite extremum retain an occurrence gap below four despite a long elapsed interval and internal variation?",
+    "How are missing bars split before reset, at reset and after reset/bootstrap?",
+    "Where do all 92 newly blind bars lie relative to those boundaries?",
+    "What do the five raw OHLC paths and recovered/longest-wave controls actually show?"
+  ],
+  "clock_contract": {
+    "reset": "pre-price now - max(last_confirmed_pivot_occurrence, candidate_occurrence) > 48",
+    "confirmation": "counter_occurrence - candidate_occurrence >= 4",
+    "changed_detector_or_counterfactual_repair": false,
+    "same_bar_predicates": "diagnostic only; never applied to the R1 state",
+    "event_trace": "all pre/post snapshots on original bar coordinates; exact equality to frozen pivot/reset/wave ledgers required",
+    "gap_and_new_bar_labels": "retrospective occurrence accounting, not previously available trading signals",
+    "EARLY_COUNTER_LOCK_label": "observed invariant plus duration; not itself proof of a general causal mechanism"
+  },
+  "verification": {
+    "R1_source_blob_checked": true,
+    "direct_frozen_reset_observer": true,
+    "independent_difference_array_masks": true,
+    "independent_same_bar_branch_predicates": true,
+    "prefixes": "eight whole-history cutoffs plus immediately before and at every R1 reset",
+    "all_raw_trace_candles_verified": true,
+    "exact_fixed_market_population_required": true,
+    "same_source_report_reproduction_not_called_independent_science": true
+  },
+  "visuals": {
+    "renderer": "unchanged wave_recognizer_r1_v1_visuals.py",
+    "selection": "all substantial residuals, twelve deterministic former gaps, both dataset edges and longest-wave control",
+    "expected_existing_pages": 20,
+    "compression": "lossless gzip-base64 JSONL with each SVG byte count and SHA256; decode and verify before rendering",
+    "manual_acceptance": false,
+    "generated_pack_is_not_visual_adjudication": true
+  },
+  "execution": {
+    "profile": "two-wave-r1-residual-clock-audit-v1",
+    "workflow": ".github/workflows/public-compute.yml",
+    "event": "workflow_dispatch",
+    "ref": "cloud-workspace-v1",
+    "compute_timeout_seconds": 900,
+    "verification_timeout_seconds": 900,
+    "cpus": 4,
+    "memory_gib": 12,
+    "network": "none",
+    "private_trace_destination": "verified private result archive only",
+    "private_readback": "fixed run aggregate, image index and bounded lossless SVG view",
+    "direct_Chat_private_write": false
+  },
+  "new_training": false,
+  "outcomes_used": false,
+  "one_minute_admitted": false,
+  "R2_selected": false,
+  "authority": {"signal": false, "detector_repair": false, "router": false, "trade": false, "production": false}
+}
