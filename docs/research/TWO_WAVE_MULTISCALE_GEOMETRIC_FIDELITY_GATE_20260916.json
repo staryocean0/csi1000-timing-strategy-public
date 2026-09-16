@@ -1,0 +1,58 @@
+{
+  "schema_id": "csi1000.two_wave_multiscale_geometric_fidelity_gate@1.0",
+  "date": "2026-09-16",
+  "purpose": "Validate whether the mathematical multiresolution construction faithfully carries the user's financial hypothesis before any new A/B economic test.",
+  "upstream": {
+    "dual_gate_run": "35065802258-1",
+    "dual_gate_adjudication": "docs/research/TWO_WAVE_DUAL_GATE_ADJUDICATION_20260916.json",
+    "reframe": "docs/research/TWO_WAVE_MULTISCALE_GEOMETRIC_DECOMPOSITION_REFRAME_20260916.md"
+  },
+  "objects": {
+    "X0": "raw log price",
+    "S0": "causal low-point skeleton from confirmed base waves",
+    "C0": "X0-S0, base-wave internal component",
+    "S1": "causal low-point skeleton extracted from S0 using the same graphical wave principle",
+    "C1": "S0-S1, first lower-frequency band",
+    "S2": "causal low-point skeleton extracted from S1",
+    "C2": "S1-S2, second lower-frequency band"
+  },
+  "period_rule": {
+    "T0": "measured from actual confirmed base waves",
+    "T1": "measured from actual confirmed S0 waves",
+    "T2": "measured from actual confirmed S1 waves",
+    "preimpose_2_to_3_ratio": false,
+    "test": "report empirical T1/T0 and T2/T0 distributions before any outcome analysis"
+  },
+  "level_descriptors": ["period", "amplitude", "direction", "causal_phase_or_unresolved", "amplitude_per_period"],
+  "primary_fidelity_questions": [
+    "Can C1 and C2 be causally constructed at base-level decision times with nontrivial coverage?",
+    "Do identified adjacent levels have stable period-ratio distributions without outcome-conditioned tuning?",
+    "Do full K-line visual examples support that each recursive layer is a genuine coarser graphical wave rather than a bookkeeping artifact?",
+    "Can absent, unconfirmed, stale and weak components be distinguished rather than collapsed together?"
+  ],
+  "B_structural_hypothesis_after_fidelity": {
+    "whipsaw_regime": "C1 strong/adverse or near its own turn while C2 is weak/unresolved",
+    "persistence_regime": "C1 weak while C2 is strong, directionally aligned and not near its own turn",
+    "economic_test_authorized_now": false
+  },
+  "A_structural_hypothesis_after_fidelity": {
+    "parent": "the same first-lower-frequency graphical wave used by the decomposition",
+    "incremental_child_information": ["nine-grid", "two-wave slopes/amplitudes", "current-wave internal shape"],
+    "target": "new future parent phase change/turn after child confirmation",
+    "predictive_test_authorized_now": false
+  },
+  "acceptance_before_A_or_B_reopens": {
+    "causal_prefix_invariance": true,
+    "equal_evidence_visual_review_all_levels": true,
+    "report_period_ratio_distributions": true,
+    "report_level_coverage_and_missing_reasons": true,
+    "no_future_outcome_used_to_choose_levels_or_thresholds": true,
+    "no_claim_that_variance_share_alone_equals_financial_dominance": true
+  },
+  "authority": {
+    "direction_acceptance": false,
+    "state_publication_authority": false,
+    "trade_authority": false,
+    "production_authority": false
+  }
+}
