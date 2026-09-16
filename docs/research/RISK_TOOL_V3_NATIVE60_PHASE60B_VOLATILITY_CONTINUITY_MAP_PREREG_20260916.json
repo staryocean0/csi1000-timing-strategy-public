@@ -1,0 +1,325 @@
+{
+  "compression_diagnostics": {
+    "high_path_energy_definition": "intrabar_rv_1m >= global q90(intrabar_rv_1m)",
+    "low_body_definition": "body_abs_log <= global q50(body_abs_log)",
+    "no_winner_selection": true,
+    "pairwise_tail_overlap": {
+      "conditional_A_given_B": "|A_high intersect B_high| / |B_high|",
+      "conditional_B_given_A": "|A_high intersect B_high| / |A_high|",
+      "high_rule": "x >= global tail cutpoint",
+      "jaccard": "|A_high intersect B_high| / |A_high union B_high|",
+      "report_all_unordered_observable_pairs": true,
+      "thresholds": [
+        "q90",
+        "q95"
+      ],
+      "universe": "pairwise intersection of finite observations"
+    },
+    "report": [
+      "share_all_bars_low_body_and_wide_range",
+      "share_low_body_bars_that_are_wide_range",
+      "share_all_bars_low_body_and_high_path_energy",
+      "share_low_body_bars_that_are_high_path_energy"
+    ],
+    "wide_range_definition": "range_log >= global q90(range_log)"
+  },
+  "controls": {
+    "calibration": false,
+    "choose_best_observable": false,
+    "model_fit": false,
+    "new_training": false,
+    "pnl": false,
+    "position_sizing": false,
+    "production_authority": false,
+    "state_machine_installation": false,
+    "strategy_routing": false,
+    "threshold_search": false,
+    "use_2024_2025_market_values": false,
+    "use_2026_market_values": false
+  },
+  "execution_freeze": {
+    "controller_route_registered_at_prereg": false,
+    "execution_profile_registered_at_prereg": false,
+    "implementation_after_prereg_merge_only": true,
+    "row_level_read_before_prereg_freeze": false
+  },
+  "lag_persistence": {
+    "correlation_null_rule": "null when pair_n < 2 or either paired vector has zero variance",
+    "cross_lunch_transition_explicit": "AM2->PM1",
+    "expected_pair_counts": {
+      "body_abs_log": {
+        "lag1": 2181,
+        "lag2": 1454,
+        "lag3": 727
+      },
+      "cc_abs_logret_within_day": {
+        "lag1": 1454,
+        "lag2": 727,
+        "lag3": 0
+      },
+      "intrabar_rv_1m": {
+        "lag1": 2181,
+        "lag2": 1454,
+        "lag3": 727
+      },
+      "range_log": {
+        "lag1": 2181,
+        "lag2": 1454,
+        "lag3": 727
+      }
+    },
+    "lag1_transition_expected_pair_counts": {
+      "body_abs_log": {
+        "AM1->AM2": 727,
+        "AM2->PM1": 727,
+        "PM1->PM2": 727
+      },
+      "cc_abs_logret_within_day": {
+        "AM1->AM2": 0,
+        "AM2->PM1": 727,
+        "PM1->PM2": 727
+      },
+      "intrabar_rv_1m": {
+        "AM1->AM2": 727,
+        "AM2->PM1": 727,
+        "PM1->PM2": 727
+      },
+      "range_log": {
+        "AM1->AM2": 727,
+        "AM2->PM1": 727,
+        "PM1->PM2": 727
+      }
+    },
+    "lag1_transition_strata": [
+      "AM1->AM2",
+      "AM2->PM1",
+      "PM1->PM2"
+    ],
+    "lags_bars": [
+      1,
+      2,
+      3
+    ],
+    "primary_boundary": "same_trading_day_only",
+    "report_per_observable_per_lag": [
+      "pair_n",
+      "pearson",
+      "spearman",
+      "next_value_mean_by_current_state",
+      "next_value_median_by_current_state",
+      "q90_high_to_high_probability",
+      "q95_high_to_high_probability"
+    ],
+    "state_conditioning_uses_global_cutpoints": true,
+    "tail_conditioning_uses_global_cutpoints": true
+  },
+  "marginal_map": {
+    "by_slot": {
+      "cc_am1_behavior": "n=0 and numeric summaries null with structural_null_reason",
+      "enabled": true,
+      "report": [
+        "n",
+        "mean",
+        "median",
+        "quantiles",
+        "global_state_shares",
+        "global_q90_share",
+        "global_q95_share"
+      ],
+      "slots": [
+        "AM1",
+        "AM2",
+        "PM1",
+        "PM2"
+      ]
+    },
+    "by_year": {
+      "enabled": true,
+      "report": [
+        "n",
+        "mean",
+        "median",
+        "quantiles",
+        "global_state_shares",
+        "global_q90_share",
+        "global_q95_share"
+      ]
+    },
+    "report": [
+      "n",
+      "mean",
+      "median",
+      "std_population",
+      "quantiles"
+    ],
+    "std_ddof": 0
+  },
+  "observables": {
+    "parallel_no_winner_selection": true,
+    "primary": [
+      {
+        "finite_expected": 2908,
+        "name": "body_abs_log",
+        "source": "canonical.body_abs_log"
+      },
+      {
+        "finite_expected": 2908,
+        "name": "range_log",
+        "source": "canonical.range_log"
+      },
+      {
+        "am1_policy": "structural_null_not_imputed",
+        "definition": "abs(log(close_t / close_t_minus_1)) only when t_minus_1 is the immediately preceding canonical bar in the same trading_day",
+        "finite_expected": 2181,
+        "name": "cc_abs_logret_within_day"
+      },
+      {
+        "finite_expected": 2908,
+        "name": "intrabar_rv_1m",
+        "source": "canonical.intrabar_rv_1m"
+      }
+    ]
+  },
+  "parent_authority": {
+    "alternate_carrier_forbidden": true,
+    "canonical_parquet": {
+      "archive_member": "study/NATIVE60_CANONICAL_60M.parquet",
+      "bars_per_day": 4,
+      "bytes": 165623,
+      "rows": 2908,
+      "sha256": "4414d08c6e256fcb7d151018b935d26363be04920990c7b1c56880c8ec7e0467",
+      "timestamp_convention": "end_labeled",
+      "trading_days": 727
+    },
+    "must_use_parent_parquet_directly": true,
+    "private_ref": "runs/public-research/35053098772-1",
+    "public_research_run_id": "35053098772-1",
+    "rebuild_from_1m_forbidden": true,
+    "receipt_path": "research/public-runs/35053098772-1.json",
+    "required_status": "NATIVE60_CANONICAL_CARRIER_VALID",
+    "safe_result_path": "research/public-runs/35053098772-1-native60-phase60a.json"
+  },
+  "preregistration_date": "2026-09-16",
+  "profile": "risk-v3-native60-phase60b-volatility-continuity-map-v1",
+  "publication": {
+    "independent_verifier_required": true,
+    "private_aggregate_json_only": true,
+    "raw_parent_parquet_publication": false,
+    "row_level_output_publication": false,
+    "verifier_success_token": "passed"
+  },
+  "quantile_contract": {
+    "grid": [
+      0.1,
+      0.25,
+      0.5,
+      0.75,
+      0.9,
+      0.95,
+      0.99
+    ],
+    "method": "linear",
+    "population": "all finite development observations for each observable, pooled across 2021-2023",
+    "state_cutpoints": {
+      "high_min": "q75",
+      "low_max": "q25"
+    },
+    "state_rules": {
+      "high": "x >= q75",
+      "low": "x <= q25",
+      "mid": "q25 < x < q75"
+    },
+    "tail_rules": {
+      "q90_high": "x >= q90",
+      "q95_high": "x >= q95"
+    },
+    "ties": "inclusive_at_cutpoint"
+  },
+  "research_question": "Using only the frozen Phase 60-A canonical 60m carrier for 000852.SH in 2021-2023, describe whether multiple 60m volatility/severity observables exhibit within-session persistence and quantify how much body-only compression can miss wide-range or high-path-energy bars. This phase is descriptive and must not choose a winning observable, threshold, state machine, or trading rule.",
+  "result_contract": {
+    "nature": "descriptive_mechanistic_only",
+    "next_phase": "requires_separate_preregistration_after_phase60b_readback",
+    "next_phase_authorized": false,
+    "no_observable_ranking": true,
+    "no_pass_fail_continuity_claim": true,
+    "technical_invalid_status": "NATIVE60_DESCRIPTIVE_MAP_NOT_READY",
+    "technical_valid_status": "NATIVE60_DESCRIPTIVE_MAP_COMPLETE"
+  },
+  "roadmap_authority": {
+    "direction": "60m -> 15m -> 5m",
+    "parent_phase": "60-A",
+    "path": "docs/research/RISK_TOOL_V3_NATIVE_KLINE_MULTISCALE_ROADMAP_20260915.md",
+    "phase": "60-B"
+  },
+  "schema_id": "csi1000.risk_tool_v3_native60_phase60b_volatility_continuity_map_prereg@1.0",
+  "scope": {
+    "expected_rows": 2908,
+    "expected_slots": [
+      "AM1",
+      "AM2",
+      "PM1",
+      "PM2"
+    ],
+    "expected_trading_days_by_year": {
+      "2021": 243,
+      "2022": 242,
+      "2023": 242
+    },
+    "holdout_years_sealed": [
+      2024,
+      2025,
+      2026
+    ],
+    "lunch_boundary_preserved": true,
+    "overnight_not_part_of_primary_analysis": true,
+    "symbol": "000852.SH",
+    "years": [
+      2021,
+      2022,
+      2023
+    ]
+  },
+  "secondary_overnight_diagnostic": {
+    "authority": "secondary_descriptive_only",
+    "body_range_rv_report": "pearson and spearman between PM2 value and next AM1 value for body_abs_log, range_log, intrabar_rv_1m",
+    "close_report": "describe abs(log(next_AM1.close / current_PM2.close)) and its mean/median conditional on current PM2 low/mid/high state of each primary observable",
+    "enabled": true,
+    "excluded_from_primary_persistence": true,
+    "excluded_from_state_or_threshold_authority": true,
+    "expected_pairs": 726,
+    "pairing": "each observed PM2 bar to the AM1 bar of the next observed trading_day; no calendar-day imputation"
+  },
+  "tail_episode_map": {
+    "episode_definition": "maximal contiguous sequence of threshold-high canonical bars within one trading_day",
+    "no_acceptance_gate": true,
+    "overnight_continuation_forbidden": true,
+    "report": [
+      "high_bar_count",
+      "episode_count",
+      "run_length_counts",
+      "mean_run_length",
+      "median_run_length",
+      "max_run_length"
+    ],
+    "thresholds": [
+      "q90",
+      "q95"
+    ]
+  },
+  "task_id": "CSI1000-RISK-V3-NATIVE60-PHASE60B-VOLATILITY-CONTINUITY-MAP-V1-20260916",
+  "technical_acceptance": {
+    "bars_per_day_eq_4": true,
+    "cc_am1_structural_null_rows_eq_727": true,
+    "cc_finite_rows_eq_2181": true,
+    "each_year_complete_days_ge_200": true,
+    "no_alternate_data_source": true,
+    "only_symbol_000852": true,
+    "only_years_2021_2023": true,
+    "parent_authority_exact": true,
+    "parent_canonical_identity_exact": true,
+    "required_source_observables_finite": true,
+    "rows_eq_2908": true,
+    "slots_exact": true,
+    "trading_days_eq_727": true
+  }
+}
