@@ -1,0 +1,28 @@
+{
+  "schema_id": "csi1000.two_wave_c3_router_status@1.0",
+  "date": "2026-09-16",
+  "status": "PREREGISTERED_NOT_RUN",
+  "source_head_before_doc": "d0de72173c82f0d0737386e54cec8b7b1f043293",
+  "preregistration_commit": "67d72ce069f7f885177dafea1879a5ad15695601",
+  "one_minute_data": {
+    "required_now": false,
+    "reason": "higher bar resolution does not mechanically increase the number of independent C2/C3 cycles over the same calendar span when the physical base scale is held fixed",
+    "useful_later_for": ["finer within-wave morphology", "turn confirmation timing sensitivity", "a separate higher-frequency base strategy"],
+    "more_useful_for_c3_sample_size": ["longer calendar history", "additional independent comparable instruments if separately preregistered"],
+    "one_minute_with_longer_history": "potentially useful because of the longer history, not because one-minute bars themselves create more high-level cycles"
+  },
+  "next_gates": [
+    "C3 recursive fidelity and T3/T2 distribution on existing 5m Development",
+    "C2xC3 nine-cell causal context coverage",
+    "matched T0-vs-T1 router feasibility only if C3/context coverage passes"
+  ],
+  "period_bands_preset": false,
+  "router_outcomes_seen": false,
+  "authority": {
+    "scale_law_accepted": false,
+    "router_accepted": false,
+    "direction": false,
+    "trade": false,
+    "production": false
+  }
+}
