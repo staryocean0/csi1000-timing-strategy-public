@@ -80,12 +80,12 @@ def _episodes(bars,covered,ref):
     return rows
 
 def _metrics(waves,bars,baseline_q1):
-    amplitudes=[];dur=[];delay=[]; years=Counter()
+    amplitudes=[];dur=[];delay=[];heights=[]; years=Counter()
     for w in waves:
-        amplitudes.append(amp(w));dur.append(w['duration']);delay.append(w.get('confirmation_delay',w['known_from_bar']-w['end_bar']))
+        amplitudes.append(amp(w));heights.append(w['height_log']);dur.append(w['duration']);delay.append(w.get('confirmation_delay',w['known_from_bar']-w['end_bar']))
         years[str(int(bars.timestamp.iloc[w['known_from_bar']].year))]+=1
     return dict(count=len(waves),waves_per_year=dict(sorted(years.items())),duration=_summary(dur),amplitude=_summary(amplitudes),
-                confirmation_delay=_summary(delay),low_amplitude_share=float(np.mean(np.asarray(amplitudes)<=baseline_q1)) if amplitudes else None)
+                channel_height=_summary(heights),confirmation_delay=_summary(delay),low_amplitude_share=float(np.mean(np.asarray(amplitudes)<=baseline_q1)) if amplitudes else None)
 def _old_blind_recovery(base_cov,cand_cov):
     episodes=_runs(~base_cov);nonedge=[(s,e) for s,e in episodes if s>0 and e<len(base_cov)-1]
     bars=sum(e-s+1 for s,e in nonedge); recovered=sum(int(cand_cov[s:e+1].sum()) for s,e in nonedge)
@@ -95,17 +95,20 @@ def _old_blind_recovery(base_cov,cand_cov):
 def analyze(bars):
     base=base_inventory(bars); cand=candidate_inventory(bars); n=len(bars)
     base_cov=_coverage(base['waves'],n); cand_cov=_coverage(cand['waves'],n)
-    ref=np.asarray([amp(w) for w in base['waves']],float); q1=float(np.quantile(ref,.25)); T0=int(round(np.median([w['duration'] for w in base['waves']])))
+    ref=np.asarray([amp(w) for w in base['waves']],float); q1=float(np.quantile(ref,.25)); initial=[w['duration'] for w in base['waves'] if int(bars.timestamp.iloc[w['known_from_bar']].year)<=2017]
+    if not initial: raise ValueError('no frozen initial-period reference')
+    T0=max(2,int(math.ceil(np.median(initial))))
     eps=_episodes(bars,cand_cov,ref); nonedge=[r for r in eps if not r['edge']]
     blind_bars=sum(r['bars'] for r in nonedge); substantial=[r for r in nonedge if r['amplitude_quartile'] in ('Q3','Q4')]
     substantial_bars=sum(r['bars'] for r in substantial); q1n=sum(r['amplitude_quartile']=='Q1' for r in nonedge)
     bm=_metrics(base['waves'],bars,q1);cm=_metrics(cand['waves'],bars,q1)
     anti=dict(wave_count_ratio=cm['count']/bm['count'],median_duration_ratio=cm['duration']['median']/bm['duration']['median'],
               median_amplitude_ratio=cm['amplitude']['median']/bm['amplitude']['median'],
+              median_channel_height_ratio=cm['channel_height']['median']/bm['channel_height']['median'],
               low_amplitude_share_change=cm['low_amplitude_share']-bm['low_amplitude_share'],
               confirmation_delay_median_change=cm['confirmation_delay']['median']-bm['confirmation_delay']['median'],
               confirmation_delay_p90_change=cm['confirmation_delay']['p90']-bm['confirmation_delay']['p90'])
-    anti_pass=(anti['wave_count_ratio']<=1.25 and anti['median_duration_ratio']>=.75 and anti['median_amplitude_ratio']>=.75 and
+    anti_pass=(anti['wave_count_ratio']<=1.25 and anti['median_duration_ratio']>=.75 and anti['median_amplitude_ratio']>=.75 and anti['median_channel_height_ratio']>=.75 and
                anti['low_amplitude_share_change']<=.05 and anti['confirmation_delay_median_change']<=4 and anti['confirmation_delay_p90_change']<=8)
     gates=dict(coverage=blind_bars/n<=.02,substantial_misses=len(substantial)<=5 and substantial_bars/n<=.0025,
                residual_character=(q1n/len(nonedge)>=.90 if nonedge else True),
@@ -119,5 +122,10 @@ def analyze(bars):
         longest_substantial_blind_bars=max([r['bars'] for r in substantial],default=0),old_blind_recovery=_old_blind_recovery(base_cov,cand_cov),
         baseline_metrics=bm,candidate_metrics=cm,anti_oversegmentation=anti,readiness_gates=gates,
         numeric_gate_pass=all(v for k,v in gates.items() if k not in ('causality','geometry_evidence')),
-        residual_substantial_example_ids=ids,one_minute_admitted=False,outcomes_used=False,
+        residual_substantial_example_ids=ids,
+        baseline_reference=dict(T0_basis='2015_2017_completed_base_median_ceil',amplitude_quartiles=np.quantile(ref,[.25,.5,.75]).tolist()),
+        edge_censoring=dict(episodes=sum(r['edge'] for r in eps),bars=sum(r['bars'] for r in eps if r['edge']),all_blind_fraction=float((~cand_cov).mean())),
+        residual_nonedge_episodes=[dict(id=hashlib.sha256(f"{r['start']}:{r['end']}:{r['amplitude_quartile']}".encode()).hexdigest()[:16],bars=r['bars'],amplitude_quartile=r['amplitude_quartile'],raw_log_range=r['raw_log_range'],reason='RESET_BREAK' if any(r['start']<=x['bar_index']<=r['end'] for x in cand['resets']) else 'UNFINISHED_OR_CROSS_RESET_CHAIN') for r in nonedge],
+        per_year=[dict(year=int(y),bars=int((bars.timestamp.dt.year==y).sum()),baseline_blind_bars=int(((bars.timestamp.dt.year.to_numpy()==y)&~base_cov).sum()),candidate_blind_bars=int(((bars.timestamp.dt.year.to_numpy()==y)&~cand_cov).sum())) for y in sorted(set(bars.timestamp.dt.year))],
+        one_minute_admitted=False,outcomes_used=False,new_training=False,
         authority=dict(signal=False,detector_repair=False,router=False,trade=False,production=False)),cand,base

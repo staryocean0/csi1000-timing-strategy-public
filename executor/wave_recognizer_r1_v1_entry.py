@@ -30,5 +30,7 @@ def write_results(out,report):
 def main():
  p=argparse.ArgumentParser();p.add_argument('--inputs',required=True);p.add_argument('--out',required=True);a=p.parse_args()
  if Path(a.inputs)!=Path('/work/inputs') or Path(a.out)!=Path('/results/study'):raise ValueError('fixed paths only')
- report,_,_=analyze(load_market(a.inputs));write_results(a.out,report)
+ bars=load_market(a.inputs);report,candidate,base=analyze(bars);write_results(a.out,report)
+ from wave_recognizer_r1_v1_visuals import write_pack
+ write_pack(Path(a.out)/'visuals',bars,candidate,base)
 if __name__=='__main__':main()
