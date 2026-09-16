@@ -63,10 +63,14 @@ class FrozenRepositoryTests(unittest.TestCase):
     def test_manifest_and_actual_isolated_import_closure(self):
         from wave_recognizer_r1_residual_broker_v1 import load_profile,SOURCES
         self.assertFalse(load_profile()['new_training'])
+        # -I excludes user site, where GitHub's pinned pip dependencies may live.
+        # Admit only installed package directories; never the original repo.
+        sites=sorted({str(Path(m.__file__).resolve().parent.parent) for m in (np,pd)})
+        self.assertTrue(all(Path(s).name in ('site-packages','dist-packages') for s in sites))
         with tempfile.TemporaryDirectory() as d:
             for name in SOURCES:shutil.copy2(ROOT/'executor'/name,Path(d)/name)
-            code='import sys;sys.path.insert(0,sys.argv[1]);import wave_recognizer_r1_residual_audit_v1 as a;import wave_recognizer_r1_residual_verifier_v1;import wave_recognizer_r1_v1_visuals;a.assert_source_identity()'
-            r=subprocess.run([sys.executable,'-I','-c',code,d],cwd=d,capture_output=True,text=True,timeout=20)
+            code='import sys,json;sys.path[:0]=[sys.argv[1]]+json.loads(sys.argv[2]);import wave_recognizer_r1_residual_audit_v1 as a;import wave_recognizer_r1_residual_verifier_v1;import wave_recognizer_r1_v1_visuals;a.assert_source_identity()'
+            r=subprocess.run([sys.executable,'-I','-c',code,d,json.dumps(sites)],cwd=d,capture_output=True,text=True,timeout=20)
             self.assertEqual(r.returncode,0,r.stderr)
     def test_runtime_rejects_scope_relaxation(self):
         from wave_recognizer_r1_residual_runtime_v1 import validate,COMMAND,VERIFY
