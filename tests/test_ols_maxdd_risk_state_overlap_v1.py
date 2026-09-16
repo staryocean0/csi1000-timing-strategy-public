@@ -51,6 +51,49 @@ class OlsMaxddRiskStateOverlapV1Tests(unittest.TestCase):
         self.assertIn("RISK_SOURCE_BLOB", broker)
         self.assertIn("CALIBRATION_FREEZE.json", broker)
 
+    def test_risk_join_uses_physical_carrier_identity_not_rendered_timestamp(self):
+        features = FEATURES.read_text()
+        self.assertIn('z["day_bar_index"] = z.groupby("trading_day", sort=False).cumcount()', features)
+        self.assertIn('risk["day_bar_index"] = risk.groupby("trading_day", sort=False).cumcount()', features)
+        self.assertIn('on=["trading_day", "day_bar_index"]', features)
+        self.assertIn("ols_risk_overlap_physical_bar_close_mismatch", features)
+        self.assertIn("ols_risk_overlap_probability_physical_key_gap", features)
+        self.assertIn("rtol=0.0", features)
+        self.assertIn("atol=0.0", features)
+        self.assertNotIn('z = z.merge(risk, on="bar_end"', features)
+        self.assertNotIn('z = z.merge(probs, on="bar_end"', features)
+
+    def test_flat_control_coerces_joined_top_mask_before_inversion(self):
+        analysis = ANALYSIS.read_text()
+        self.assertIn('top_mask = p["top"].fillna(False).astype(bool)', analysis)
+        self.assertIn('flat = p[p["pos"].eq(0) & ~top_mask]', analysis)
+        self.assertNotIn('~p["top"].fillna(False)', analysis)
+
+    def test_top_tail_controls_reuse_native_failure_atlas_indices(self):
+        analysis = ANALYSIS.read_text()
+        self.assertIn("def _top_tail_mask_from_native_episode_indices", analysis)
+        self.assertIn('episodes = atlas._episodes(pd.to_numeric(trace["strategy_return"]', analysis)
+        self.assertIn("ols_risk_overlap_control_episode_identity_mismatch", analysis)
+        self.assertIn("ols_risk_overlap_control_top_tail_count_mismatch", analysis)
+        self.assertIn("ols_risk_overlap_control_native_interval_invalid", analysis)
+        self.assertIn("mask[start_i:trough_i + 1] = True", analysis)
+        self.assertIn("top_15 = _top_tail_mask_from_native_episode_indices(trace, q)", analysis)
+        self.assertNotIn("def _closed_interval_mask", analysis)
+        self.assertNotIn('trace["timestamp"].between(st, tr)', analysis)
+
+    def test_control_join_uses_physical_15m_identity_not_trace_timestamp_text(self):
+        analysis = ANALYSIS.read_text()
+        self.assertIn("def _panel_with_physical_15m_index", analysis)
+        self.assertIn('p["ols_bar_index"] = p.groupby(keys, sort=False, dropna=False).ngroup()', analysis)
+        self.assertIn("ols_risk_overlap_control_physical_bucket_not_three", analysis)
+        self.assertIn("ols_risk_overlap_control_trace_bar_count_mismatch", analysis)
+        self.assertIn("ols_risk_overlap_control_physical_close_mismatch", analysis)
+        self.assertIn('"ols_bar_index": np.arange(len(trace), dtype=int)', analysis)
+        self.assertIn('p = p.merge(mapping, on="ols_bar_index"', analysis)
+        self.assertIn('p[p["ols_bar_index"].isin(idx.tolist())]', analysis)
+        self.assertNotIn('mapping = pd.DataFrame({"ols_timestamp"', analysis)
+        self.assertNotIn('panel[panel["ols_timestamp"].isin(stamps)]', analysis)
+
     def test_prereg_is_frozen_before_execution_and_no_trade_authority(self):
         text = PREREG.read_text()
         self.assertIn("FROZEN_BEFORE_EXECUTION_WIRING", text)

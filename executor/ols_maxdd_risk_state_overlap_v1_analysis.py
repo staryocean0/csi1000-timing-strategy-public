@@ -187,6 +187,41 @@ def _prob_summary(ep: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def _top_tail_mask_from_native_episode_indices(trace: pd.DataFrame, q: pd.DataFrame) -> np.ndarray:
+    episodes = atlas._episodes(pd.to_numeric(trace["strategy_return"], errors="coerce").to_numpy(float))
+    ids = pd.to_numeric(q["episode_id"], errors="raise").astype(int)
+    if sorted(ids.tolist()) != list(range(1, len(episodes) + 1)):
+        raise RuntimeError("ols_risk_overlap_control_episode_identity_mismatch")
+    top_ids = sorted(ids[q["top_tail"].astype(bool)].tolist())
+    if len(top_ids) != TOP_N:
+        raise RuntimeError("ols_risk_overlap_control_top_tail_count_mismatch")
+    mask = np.zeros(len(trace), dtype=bool)
+    for episode_id in top_ids:
+        _, start_i, trough_i, _ = episodes[episode_id - 1]
+        if not (0 <= start_i <= trough_i < len(trace)):
+            raise RuntimeError("ols_risk_overlap_control_native_interval_invalid")
+        mask[start_i:trough_i + 1] = True
+    return mask
+
+
+def _panel_with_physical_15m_index(panel: pd.DataFrame, trace: pd.DataFrame) -> pd.DataFrame:
+    p = panel.copy()
+    keys = ["trading_day", "session", "bucket"]
+    sizes = p.groupby(keys, sort=False, dropna=False).size()
+    if sizes.empty or not sizes.eq(3).all():
+        raise RuntimeError("ols_risk_overlap_control_physical_bucket_not_three")
+    p["ols_bar_index"] = p.groupby(keys, sort=False, dropna=False).ngroup()
+    grouped_close = p.groupby("ols_bar_index", sort=False)["close"].last().to_numpy(float)
+    if len(grouped_close) != len(trace) + 1:
+        raise RuntimeError("ols_risk_overlap_control_trace_bar_count_mismatch")
+    trace_close = pd.to_numeric(trace["close"], errors="coerce").to_numpy(float)
+    if not np.isfinite(trace_close).all() or not np.allclose(
+        grouped_close[: len(trace)], trace_close, rtol=0.0, atol=0.0, equal_nan=False
+    ):
+        raise RuntimeError("ols_risk_overlap_control_physical_close_mismatch")
+    return p
+
+
 def _control_summary(ep: pd.DataFrame, panel: pd.DataFrame, traces: dict[str, pd.DataFrame]) -> pd.DataFrame:
     rows = []
     for mode in EXIT_MODES:
@@ -205,16 +240,16 @@ def _control_summary(ep: pd.DataFrame, panel: pd.DataFrame, traces: dict[str, pd
         trace = traces[mode].copy()
         trace["pos"] = pd.to_numeric(trace["executable_position"], errors="coerce").fillna(0).astype(int)
         trace["ret"] = pd.to_numeric(trace["strategy_return"], errors="coerce").fillna(0.0)
-        top_15 = np.zeros(len(trace), dtype=bool)
-        for erow in q[q["top_tail"]].itertuples():
-            st = pd.Timestamp(erow.start_timestamp)
-            tr = pd.Timestamp(erow.trough_timestamp)
-            st = st.tz_localize(d0.TZ) if st.tzinfo is None else st.tz_convert(d0.TZ)
-            tr = tr.tz_localize(d0.TZ) if tr.tzinfo is None else tr.tz_convert(d0.TZ)
-            top_15 |= trace["timestamp"].between(st, tr).to_numpy()
-        mapping = pd.DataFrame({"ols_timestamp": trace["timestamp"], "pos": trace["pos"], "top": top_15})
-        p = panel.merge(mapping, on="ols_timestamp", how="left", validate="many_to_one")
-        flat = p[p["pos"].eq(0) & ~p["top"].fillna(False)]
+        top_15 = _top_tail_mask_from_native_episode_indices(trace, q)
+        p = _panel_with_physical_15m_index(panel, trace)
+        mapping = pd.DataFrame({
+            "ols_bar_index": np.arange(len(trace), dtype=int),
+            "pos": trace["pos"].to_numpy(int),
+            "top": top_15,
+        })
+        p = p.merge(mapping, on="ols_bar_index", how="left", validate="many_to_one")
+        top_mask = p["top"].fillna(False).astype(bool)
+        flat = p[p["pos"].eq(0) & ~top_mask]
         rows.append({
             "exit_mode": mode,
             "control": "FLAT_MARKET",
@@ -240,9 +275,8 @@ def _control_summary(ep: pd.DataFrame, panel: pd.DataFrame, traces: dict[str, pd
             cumulative = float(np.prod(1.0 + trace.iloc[idx]["ret"].to_numpy(float)) - 1.0)
             if cumulative <= 0:
                 continue
-            stamps = set(trace.iloc[idx]["timestamp"].tolist())
-            pieces.append(panel[panel["ols_timestamp"].isin(stamps)])
-        positive = pd.concat(pieces, ignore_index=True) if pieces else panel.iloc[0:0]
+            pieces.append(p[p["ols_bar_index"].isin(idx.tolist())])
+        positive = pd.concat(pieces, ignore_index=True) if pieces else p.iloc[0:0]
         rows.append({
             "exit_mode": mode,
             "control": "PROFITABLE_POSITION_SEGMENT",
