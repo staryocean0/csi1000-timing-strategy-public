@@ -1,0 +1,131 @@
+{
+  "schema_id": "csi1000.blindspot_relocation_v1_adjudication@1.0",
+  "study_issue": 324,
+  "readiness_gate_issue": 321,
+  "controller_issue": 326,
+  "formal_run": "35104182684-1",
+  "public_source_sha": "68553cc3e9df578d274dc295e474c5abb47548f4",
+  "input": {
+    "symbol": "000852.SH",
+    "timeframe": "5m",
+    "years": [2015, 2020],
+    "bars": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "data_role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+  },
+  "execution": {
+    "workflow_dispatch": true,
+    "compute_success": true,
+    "independent_verifier_success": true,
+    "cleanup_success": true,
+    "private_publish_success": true,
+    "new_training": false,
+    "outcomes_used": false
+  },
+  "population": {
+    "T0_bars": 21,
+    "base_waves": 2503,
+    "base_resets": 164,
+    "blind_bars": 11646,
+    "blind_fraction": 0.16610092135664775,
+    "blind_episodes": 146,
+    "reset_root_break_episodes": 144,
+    "reset_root_break_bars": 11610,
+    "reset_root_break_fraction_of_blind_bars": 0.9969088098918083,
+    "boundary_censored_bars": 36,
+    "continuous_C2_waves": 170,
+    "continuous_C3_waves": 39
+  },
+  "reset_root_break_episode_amplitude": {
+    "Q1": 0,
+    "Q2": 4,
+    "Q3": 14,
+    "Q4": 126
+  },
+  "exact_episode_relocation": {
+    "C2": {
+      "episodes_any_overlap": 143,
+      "episodes_majority_overlap": 143,
+      "unresolved_majority_episode": 1,
+      "overlap_fraction_median": 1.0,
+      "overlap_fraction_q10": 0.6081858407079646,
+      "majority_descriptor_counts": {"UP": 62, "DOWN": 61, "RANGE": 20, "UNRESOLVED": 1},
+      "majority_phase_counts": {"EARLY": 50, "MIDDLE": 49, "LATE": 44, "UNRESOLVED": 1},
+      "majority_crossing_counts": {"2PLUS": 94, "1": 49, "UNRESOLVED": 1}
+    },
+    "C3": {
+      "episodes_any_overlap": 142,
+      "episodes_majority_overlap": 142,
+      "unresolved_majority_episodes": 2,
+      "overlap_fraction_median": 1.0,
+      "overlap_fraction_q10": 0.9110056925996206,
+      "majority_descriptor_counts": {"UP": 72, "DOWN": 57, "RANGE": 13, "UNRESOLVED": 2},
+      "majority_phase_counts": {"EARLY": 46, "MIDDLE": 46, "LATE": 50, "UNRESOLVED": 2},
+      "majority_crossing_counts": {"2PLUS": 133, "1": 9, "UNRESOLVED": 2}
+    }
+  },
+  "retrospective_exposure_normalized_lifts": {
+    "scope_note": "Frozen blind-bar population includes the 144 RESET_ROOT_BREAK episodes plus 36 boundary-censored blind bars; RESET_ROOT_BREAK supplies 99.6909% of blind bars.",
+    "C2": {
+      "crossing": {"2PLUS": 1.9059684432844728, "1": 1.0681850745845787, "0": 0.0},
+      "descriptor": {"RANGE": 1.1441338145256144, "DOWN": 1.0294896118090113, "UP": 0.9336759580758359},
+      "phase": {"MIDDLE": 1.0593165701266438, "EARLY": 0.9882676059597366, "LATE": 0.9486921373157056},
+      "amplitude": {"Q2": 1.1350455406983064, "Q4": 1.0692720720599713, "Q3": 0.8766855959824006, "Q1": 0.8343232233043715}
+    },
+    "C3": {
+      "crossing": {"2PLUS": 1.1767512056105565, "1": 0.3460647223505904, "0": 0.0},
+      "descriptor": {"DOWN": 1.0120207063708129, "UP": 1.0090925180216939, "RANGE": 0.9383527812605629},
+      "leg": {"DOWN": 1.0930607162909303, "UP": 0.9276195932308715},
+      "phase": {"LATE": 1.0426541657048867, "MIDDLE": 0.9907810022553751, "EARLY": 0.9762940313334357},
+      "amplitude": {"Q4": 1.1741015196258164, "Q1": 1.0196383362281718, "Q3": 1.004947511849191, "Q2": 0.6517915058823116}
+    },
+    "joint": {
+      "descriptor_top": [
+        {"C2": "RANGE", "C3": "UP", "lift": 1.2559810688472546},
+        {"C2": "RANGE", "C3": "DOWN", "lift": 1.196740529411252},
+        {"C2": "DOWN", "C3": "DOWN", "lift": 1.1928405678034506}
+      ],
+      "phase_top": [
+        {"C2": "LATE", "C3": "LATE", "lift": 1.233560053886087},
+        {"C2": "EARLY", "C3": "EARLY", "lift": 1.1452884036671784}
+      ]
+    }
+  },
+  "causal_asof_exposure_normalized_lifts": {
+    "C2": {
+      "resolved_all_bar_fraction": 0.9894172347890579,
+      "resolved_blind_bar_fraction": 0.993560020607934,
+      "descriptor": {"DOWN": 1.0596816438849386, "UP": 1.0031225054203716, "RANGE": 0.8040273009685197},
+      "leg": {"UP": 1.0310102747663281, "DOWN": 0.9735220921110814},
+      "phase": {"LATE": 1.091228217949152, "MIDDLE": 0.9899526381919752, "EARLY": 0.6388972687249267},
+      "crossing": {"2PLUS": 1.2196095435355259, "1": 0.9588261882711862, "0": 0.9281593977420111},
+      "supported_high_lift_cells": [
+        {"descriptor": "DOWN", "leg": "UP", "phase": "LATE", "crossing": "2PLUS", "bars": 2488, "blind_bars": 833, "lift": 2.015684628480143},
+        {"descriptor": "UP", "leg": "UP", "phase": "MIDDLE", "crossing": "2PLUS", "bars": 1897, "blind_bars": 512, "lift": 1.624914778624492},
+        {"descriptor": "DOWN", "leg": "DOWN", "phase": "LATE", "crossing": "2PLUS", "bars": 1434, "blind_bars": 381, "lift": 1.5995719614255113}
+      ]
+    },
+    "C3": {
+      "resolved_all_bar_fraction": 0.903799526485438,
+      "resolved_blind_bar_fraction": 0.878413189077795,
+      "descriptor": {"DOWN": 1.1786752470593325, "UP": 0.8198580232741316, "RANGE": 0.6990425472222647},
+      "leg": {"DOWN": 1.0205564378488134, "UP": 0.9200288298706977},
+      "phase": {"MIDDLE": 1.1666653344779907, "LATE": 0.8989577885783355, "EARLY": 0.7984832161262755},
+      "crossing": {"1": 1.0955614079893852, "2PLUS": 1.006304375640877, "0": 0.41310863484249194},
+      "supported_high_lift_cells": [
+        {"descriptor": "DOWN", "leg": "UP", "phase": "MIDDLE", "crossing": "2PLUS", "bars": 3236, "blind_bars": 989, "lift": 1.8399911628729428},
+        {"descriptor": "DOWN", "leg": "UP", "phase": "MIDDLE", "crossing": "1", "bars": 1344, "blind_bars": 391, "lift": 1.7514810674828063},
+        {"descriptor": "DOWN", "leg": "DOWN", "phase": "MIDDLE", "crossing": "1", "bars": 2401, "blind_bars": 612, "lift": 1.5345718263963946}
+      ]
+    }
+  },
+  "adjudication": {
+    "relocation_succeeded": true,
+    "single_simple_bottom_range_rule_supported": false,
+    "primary_structural_finding": "Blindness is strongly associated with higher-scale structures that have crossed lower-scale boundaries; causal concentration is strongest in C2 late/multi-crossing and C3 DOWN/middle states.",
+    "detector_repair_authority": false,
+    "one_minute_readiness": false,
+    "next_step": "Preregister a small recognizer-repair candidate family from causal-asof mechanisms only, then evaluate against readiness gate #321 with anti-oversegmentation controls."
+  },
+  "authority": {"signal": false, "detector_repair": false, "router": false, "trade": false, "production": false}
+}
