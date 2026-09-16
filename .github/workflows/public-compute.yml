@@ -49,6 +49,7 @@ on:
           - two-wave-dual-gates-v1
           - two-wave-multiscale-dual-gates-v2
           - two-wave-c3-router-v1
+          - two-wave-hierarchy-attrition-v1
           - overnight-official-inventory-v1
           - overnight-carrier-materialization-v1
           - overnight-continuous-tail-likelihood-dev-v1
@@ -198,6 +199,8 @@ jobs:
             python3 executor/wave_multiscale_dual_gates_v2_broker.py prepare two-wave-multiscale-dual-gates-v2
           elif [ '${{ inputs.profile }}' = 'two-wave-c3-router-v1' ]; then
             python3 executor/wave_c3_router_v1_broker.py prepare two-wave-c3-router-v1
+          elif [ '${{ inputs.profile }}' = 'two-wave-hierarchy-attrition-v1' ]; then
+            python3 executor/wave_hierarchy_attrition_v1_broker.py prepare two-wave-hierarchy-attrition-v1
           elif [ '${{ inputs.profile }}' = 'two-wave-dual-gates-v1' ]; then
             python3 executor/wave_dual_gate_broker_v1.py prepare two-wave-dual-gates-v1
           elif [ '${{ inputs.profile }}' = 'two-wave-v0800-g-bar-time-carrier-semantics-v1' ]; then
@@ -309,6 +312,8 @@ jobs:
             python3 executor/wave_multiscale_dual_gates_v2_broker.py compute two-wave-multiscale-dual-gates-v2
           elif [ '${{ inputs.profile }}' = 'two-wave-c3-router-v1' ]; then
             python3 executor/wave_c3_router_v1_broker.py compute two-wave-c3-router-v1
+          elif [ '${{ inputs.profile }}' = 'two-wave-hierarchy-attrition-v1' ]; then
+            python3 executor/wave_hierarchy_attrition_v1_broker.py compute two-wave-hierarchy-attrition-v1
           elif [ '${{ inputs.profile }}' = 'two-wave-dual-gates-v1' ]; then
             python3 executor/wave_dual_gate_broker_v1.py compute two-wave-dual-gates-v1
           elif [ '${{ inputs.profile }}' = 'two-wave-v0800-g-bar-time-carrier-semantics-v1' ]; then
@@ -421,6 +426,8 @@ jobs:
             python3 executor/wave_multiscale_dual_gates_v2_broker.py cleanup two-wave-multiscale-dual-gates-v2
           elif [ '${{ inputs.profile }}' = 'two-wave-c3-router-v1' ]; then
             python3 executor/wave_c3_router_v1_broker.py cleanup two-wave-c3-router-v1
+          elif [ '${{ inputs.profile }}' = 'two-wave-hierarchy-attrition-v1' ]; then
+            python3 executor/wave_hierarchy_attrition_v1_broker.py cleanup two-wave-hierarchy-attrition-v1
           elif [ '${{ inputs.profile }}' = 'two-wave-dual-gates-v1' ]; then
             python3 executor/wave_dual_gate_broker_v1.py cleanup two-wave-dual-gates-v1
           elif [ '${{ inputs.profile }}' = 'two-wave-v0800-g-bar-time-carrier-semantics-v1' ]; then
@@ -570,6 +577,8 @@ jobs:
             python3 executor/wave_multiscale_dual_gates_v2_broker.py publish two-wave-multiscale-dual-gates-v2
           elif [ '${{ inputs.profile }}' = 'two-wave-c3-router-v1' ]; then
             python3 executor/wave_c3_router_v1_broker.py publish two-wave-c3-router-v1
+          elif [ '${{ inputs.profile }}' = 'two-wave-hierarchy-attrition-v1' ]; then
+            python3 executor/wave_hierarchy_attrition_v1_broker.py publish two-wave-hierarchy-attrition-v1
           elif [ '${{ inputs.profile }}' = 'two-wave-dual-gates-v1' ]; then
             python3 executor/wave_dual_gate_broker_v1.py publish two-wave-dual-gates-v1
           elif [ '${{ inputs.profile }}' = 'two-wave-v0800-g-bar-time-carrier-semantics-v1' ]; then
