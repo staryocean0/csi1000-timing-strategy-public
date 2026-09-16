@@ -1,0 +1,67 @@
+{
+  "schema_id": "csi1000.two_wave_research_lineage@1.0",
+  "scope": "Layer2_Two_Wave_public_control_plane_thread_only",
+  "as_of_date": "2026-09-16",
+  "public_repository": "staryocean0/csi1000-timing-strategy-public",
+  "public_branch": "cloud-workspace-v1",
+  "private_repository": "staryocean0/csi1000-timing-strategy-private",
+  "does_not_replace_project_CLOUD_CURRENT": true,
+  "narrative_rule": "Record hypothesis, definition, source validation, actual run receipt, visual review and scientific adjudication separately; append corrections without rewriting frozen history.",
+  "ordered_lineage": [
+    {
+      "order": 1,
+      "name": "V0800_C_to_G",
+      "question": "Causal single A-wave and strict two-wave geometry; consensus event stream; bar-time carrier semantics.",
+      "historical_G_merge_reference": "061a1e83dc218e80bf3df496b1b600936ddb625a",
+      "current_change_modifies_frozen_sources_or_results": false,
+      "does_not_authorize_arbitrary_multiscale_or_trade": true
+    },
+    {
+      "order": 2,
+      "name": "single_wave_primitives_and_lossless_nine_grid",
+      "source_pr": 273,
+      "source_merge": "4c6e34371e3fe5f4b16ff60315b0d8964a682810",
+      "public_synthetic_ci_run": 35054995277,
+      "scope_completed": "source/configuration/full-OHLC renderer/nine-grid descriptors and synthetic tests",
+      "real_multi_frequency_scan_completed": false,
+      "six_examples_are_complete_new_tool_acceptance": false
+    },
+    {
+      "order": 3,
+      "name": "real_multiscale_single_wave_and_nine_grid_acceptance",
+      "issue": 274,
+      "status_at_this_checkpoint": "OPEN_EMPIRICAL_WORK_PENDING",
+      "natural_frequency_clusters_accepted": false,
+      "selected_periods": [],
+      "dependency_policy": "New graph-context study may preregister and validate source now. Actual baseline study requires input/wave/visual dependencies; a positive natural-cluster discovery is not a prerequisite or promised result."
+    },
+    {
+      "order": 4,
+      "name": "confirmed_low_skeleton_and_causal_nine_grid_context",
+      "issue": 277,
+      "study_id": "WAVE-SKELETON-CONTEXT-V1",
+      "stage": "S0_SOURCE_AND_CAUSAL_CONTRACT",
+      "protocol": "docs/research/WAVE_SKELETON_CONTEXT_V1_PROTOCOL_20260916.json",
+      "narrative": "docs/research/WAVE_SKELETON_CONTEXT_V1_20260916.md",
+      "implementation": "executor/wave_skeleton_context_v1.py",
+      "tests": "tests/test_wave_skeleton_context_v1.py",
+      "hypothesis": "Different child nine-grid combinations may occur with different frequencies in prior confirmed coarse graphical contexts.",
+      "critical_controls": ["dual clocks", "pre-formation context excludes tested pair", "separate overlapping diagnostic snapshots", "amplitude-driven false-trend counterexample", "root and parent reset/unknown/staleness", "event rather than independent-bar inference"],
+      "S0_validation_evidence": "merge PR and completion comment on issue 277; do not infer empirical acceptance from source CI",
+      "real_run_receipt": null,
+      "real_visual_pack": null,
+      "empirical_association_adjudication": null,
+      "private_scientific_authority_promotion": null
+    }
+  ],
+  "remaining_order": [
+    "Finish source review and CI for S0; record exact merge and run evidence in issue 277",
+    "Resolve #274 baseline identity/single-wave/nine-grid evidence dependencies",
+    "Freeze independent verifier and exact standard-run resource/input/output manifests",
+    "Run only approved public-compute.yml workflow_dispatch and verify private receipt",
+    "Review equally detailed causal OHLC/skeleton/context screenshots including contradictions and missing contexts",
+    "Freeze and execute dependence-aware inferential controls separately from descriptive pilot",
+    "Write post-run adjudication, keeping insufficient/unsupported outcomes visible"
+  ],
+  "closed_capabilities": ["future-return/PnL objective", "trading route", "production use", "future final-top/bottom backlabels", "direct Chat private writes", "project-level authority takeover"]
+}
