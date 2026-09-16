@@ -1,0 +1,70 @@
+{
+  "schema_id": "csi1000.two_wave_dual_gate_execution_checkpoint@1.0",
+  "scope": "public_control_plane_pointers_only",
+  "study": "TWO_WAVE_DUAL_GATES_V1",
+  "source_pr": 289,
+  "controller_issue": 299,
+  "source_merge": "e9ec03919df6fd45b47709249915c0007c9660c2",
+  "tested_source_head": "bb84a60931fb3d4caa99629d5ad02842059a27b0",
+  "source_ci_runs": [
+    35065630728,
+    35065630838
+  ],
+  "dedicated_source_test_count": 73,
+  "run_id": 35065802258,
+  "run_attempt": 1,
+  "event": "workflow_dispatch",
+  "workflow": ".github/workflows/public-compute.yml",
+  "branch": "cloud-workspace-v1",
+  "profile": "two-wave-dual-gates-v1",
+  "run_head_sha": "e9ec03919df6fd45b47709249915c0007c9660c2",
+  "run_status": "completed",
+  "run_conclusion": "success",
+  "phases": {
+    "prepare": "success",
+    "compute_and_verify": "success",
+    "cleanup": "success",
+    "private_publish": "success"
+  },
+  "private_evidence": {
+    "repository": "staryocean0/csi1000-timing-strategy-private",
+    "branch": "runs/public-research/35065802258-1",
+    "snapshot_commit": "1cf70f05c087fa6b3be673d53fc1b1808f8dc1cf",
+    "receipt": "research/public-runs/35065802258-1.json",
+    "aggregate": "research/public-runs/35065802258-1/report.json",
+    "manifest": "research/public-runs/35065802258-1/execution_manifest.json",
+    "receipt_status": "passed",
+    "delivery_status": "archive_uploaded_and_verified",
+    "source_manifest_sha256": "75fe88ab5bbd81282fa52b9b32ee2d48efedfef769d286ff5a785eff5d3160fa",
+    "aggregate_sha256": "5cd4d2f5d601c5430d37e9f1a8bc703320a84ae09b8012edf5aff6d5f1c22973",
+    "aggregate_git_blob": "94172d083c1b17ef3d9c14991bd81b853920ce9f",
+    "release_id": 389694986,
+    "asset_id": 567385556,
+    "archive_bytes": 1589981,
+    "archive_sha256": "b8972c8d5965018cdf8d5752c9146d97c070ff7ca814a2f52c0863155daaf60c",
+    "release_digest_matches_receipt": true
+  },
+  "scientific_outcome_locations": [
+    "private_report.A.verdict",
+    "private_report.B.verdict",
+    "private_report.B_min_leg_2_sensitivity.verdict"
+  ],
+  "private_aggregate_review_completed": true,
+  "row_level_results_read_by_chat": false,
+  "public_market_results_published": false,
+  "verifier_scope": "original_kernel_differential_plus_independent_label_probability_trade_checks_and_prefix_spots; report_reexecution_is_reproducibility",
+  "new_training": true,
+  "fresh_oos": false,
+  "state_publication_authority": false,
+  "trade_authority": false,
+  "production_authority": false,
+  "predecessors": [
+    273,
+    279
+  ],
+  "open_upstream_issues": [
+    274,
+    277
+  ],
+  "next_step": "Read private support, coverage and outcome fields before choosing a separately preregistered next experiment. Do not retune this completed run or equate pipeline success with scientific acceptance."
+}
