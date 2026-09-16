@@ -1,0 +1,41 @@
+{
+  "schema_id": "csi1000.blindspot_relocation_v1_protocol@1.0",
+  "study_id": "TWO-WAVE-BLINDSPOT-RELOCATION-V1",
+  "purpose": "Relocate the frozen base-scale blind episodes into the passed scale-specific continuity C2/C3 representation before any detector repair.",
+  "input": {
+    "symbol": "000852.SH",
+    "timeframe": "5m_offset_0",
+    "years": [2015, 2020],
+    "rows": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+  },
+  "frozen_base_detector": {"min_leg": 4, "max_unfinished_leg": 48},
+  "continuity_source_run": "35091108702-1",
+  "continuity_representation_passed": true,
+  "maps": {
+    "retrospective": "completed continuous C2/C3 occurrence morphology only; never a live signal",
+    "causal_asof": "only then-confirmed C2/C3 direction, leg, phase, amplitude, age and reset-crossing metadata"
+  },
+  "blind_episode_definition": "exact frozen occurrence gaps from cycle-identifiability v1; no repair in this run",
+  "primary_questions": [
+    "What fraction of the 144 RESET_ROOT_BREAK episodes can now be located inside continuous C2 and C3?",
+    "Are substantial-amplitude blind bars concentrated by C2/C3 descriptor, leg, phase, amplitude or crossing metadata?",
+    "Is the concentration stable enough to justify a preregistered recognizer-repair mechanism?"
+  ],
+  "outputs": [
+    "coverage of blind bars/episodes by continuous C2 and C3",
+    "blind-bar and blind-episode concentration tables versus all-bar exposure",
+    "C2xC3 joint state exposure where both are available",
+    "causal confirmation-density tables around blind episodes",
+    "aggregate examples selected deterministically for later OHLC visual audit"
+  ],
+  "interpretation": {
+    "no_stable_concentration": "do not force a state rule; repair root continuity at base representation level",
+    "stable_phase_or_state_concentration": "may define the next recognizer-repair candidate but not a trading signal",
+    "amplitude_only": "prefer abstention if residual blindness is genuinely low-amplitude"
+  },
+  "one_minute_admitted": false,
+  "outcomes_used": false,
+  "authority": {"signal": false, "detector_repair": false, "router": false, "trade": false, "production": false}
+}
