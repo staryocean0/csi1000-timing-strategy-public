@@ -1,131 +1,165 @@
 # Risk Tool V3 — Native K-line Multi-Scale Roadmap — 2026-09-15
 
-## Purpose
+## Direction amendment — 2026-09-16
 
-This document freezes the next research direction for the Risk Tool program. It exists to prevent a recurring semantic mistake: **15m / 60m in this roadmap mean the K-line base interval itself, not a forecast horizon measured from the existing 5m tool.**
+The program is now explicitly **top-down in scale** for risk attribution:
 
-The current Risk Tool V2 remains the governed 5-minute-base implementation and is not modified by this roadmap.
+> **Native-60m → Native-15m → Native-5m**
 
-## Non-negotiable scale semantics
+This amendment changes the research order and attribution logic, not any frozen V2 result or prior Native-15m result.
 
-For every native scale `S` in `{5m, 15m, 60m}`:
+The purpose is not to use different K-line scales as three views of the same already-defined event. The purpose is to let each native K-line scale reveal the class of risk that survives aggregation at that scale, then decompose larger-scale risk into smaller-scale structure.
 
-- the input market series is a sequence of K-lines whose bar interval is exactly `S`;
-- returns are computed from consecutive `S`-minute bars;
-- short-horizon realized volatility is computed from native `S`-minute returns;
-- background volatility is computed from native `S`-minute returns;
-- shock intensity is defined on an `S`-minute bar;
-- state transitions (`NORMAL`, `UNSAFE`, `RECOVERING`) advance one native `S`-minute bar at a time;
-- shock age / persistence is measured in native `S`-minute bars and only converted to clock time for reporting;
-- labels and future-recovery questions are defined after the native state machine exists; they do not define the K-line scale.
+The earlier Native-15m work is preserved as valid evidence. Its carrier audit and descriptive map remain useful, and its C1 state-machine candidate result remains immutably `NATIVE15_STATE_MACHINE_CANDIDATE_MAP_INSUFFICIENT`. The C1 attribution showed that severity separation and next-bar persistence were broadly present, while pooled q95 event-capture gates were the dominant incompatibility. That result is not rescued or rewritten. Native-15m parameter search is paused while the program establishes the larger-scale risk hierarchy first.
 
-Therefore:
+## Core principle: K-lines are lossy compression
 
-- **Native-15m Risk Tool != 5m Risk Tool with a 15-minute forecast horizon.**
-- **Native-60m Risk Tool != 5m Risk Tool with a 60-minute forecast horizon.**
-- Existing 15m/30m forecast-horizon results inside Risk Tool V2 remain 5m-base results.
+A K-line is not a neutral container. Aggregating a finer path into a larger bar compresses information.
 
-## Program structure
+For a 60-minute interval, a large amount of 1m/5m/15m movement can occur inside the bar even when the final 60m open-to-close body is small. Therefore the Native-60m research object must not be reduced to candle body alone.
 
-### V2 — Native 5m base (existing authority)
+A canonical 60m research bar should preserve, at minimum:
 
-The existing Risk Tool V2 is the benchmark / parent methodology. It provides the research template:
+- open, high, low, close;
+- absolute 60m body `|log(close/open)|`;
+- 60m high-low range `log(high/low)`;
+- close-to-close 60m return where causally available;
+- an **intrabar path-energy / realized-volatility measure computed from the official 1m path** inside that exact 60m bar.
 
-1. define a native-bar shock measure;
-2. define recent-vs-background volatility;
-3. build a causal `NORMAL -> UNSAFE -> RECOVERING -> NORMAL` state machine;
-4. measure state age / persistence;
-5. build frozen prediction components;
-6. calibrate and test temporal stability;
-7. validate Reliability / consumer permissions;
-8. reserve genuinely fresh OOS data for final confirmation.
+The intrabar path measure exists specifically to avoid calling a violent up-and-down hour “low risk” merely because its close returned near its open.
 
-V2 scientific results and authority are immutable. V3 may learn from the V2 research process but may not rewrite V2.
+## Non-negotiable native-scale semantics
 
-### V3-A — Native 15m Risk Tool
+For every scale `S` in `{5m, 15m, 60m}`:
 
-Build a new risk sensor whose **base observations are 15-minute K-lines**.
+- the primitive observation stream is made of K-lines whose base interval is exactly `S`;
+- state and persistence advance in native bars of that scale;
+- `Native-15m` is not a 15-minute forecast horizon of the 5m tool;
+- `Native-60m` is not a 60-minute forecast horizon of the 5m tool;
+- existing V2 15m/30m results remain forecast horizons of the native-5m V2 tool.
 
-Initial data anchor:
+## Scale hierarchy hypothesis
 
-- prefer the existing DataHub-provided `15m_offset_5` view because it is an original supplied view, not an ad-hoc local resample;
-- verify exact source identity, timestamp semantics, session coverage, missing bars, symbol binding, and historical range before any model fitting;
-- no 2026 threshold/model training unless a later preregistration explicitly opens a permitted development window.
+The program will test, rather than assume, a directional hierarchy:
 
-Research the following from the native-15m data rather than inheriting V2 values:
+1. **Large-scale risk may transmit downward.** If a genuine 60m risk regime exists, the constituent 15m and 5m bars should usually contain observable stress structure.
+2. **Small-scale risk need not transmit upward.** A short 5m shock may be absorbed inside a larger bar and leave little or no 60m regime signature.
+3. Therefore attribution should start from the largest research scale, establish whether the large-scale state has continuity, and only then peel the bar open into smaller scales.
 
-- shock definition and candidate shock thresholds;
-- short-volatility lookback in native 15m bars;
-- background-volatility lookback in native 15m bars;
-- high-volatility / recovering / normal transition thresholds;
-- minimum state persistence / hysteresis if needed;
-- age buckets in native 15m bars;
-- recovery/persistence prediction horizons suitable for the native-15m state process;
-- temporal stability, probability calibration and reliability rules.
+This is a scientific hypothesis, not yet authority.
 
-The V2 constants `RV_WINDOW=12`, `BG_WINDOW=48`, `SHOCK_SIGMA=3.0`, `HIGHVOL_RATIO=1.50`, and `RECOVERY_NORMAL_RATIO=1.10` are **benchmarks only**. They are not automatically authorized native-15m parameters.
+## Existing Native-5m authority
 
-### V3-B — Native 60m Risk Tool
+Risk Tool V2 remains the governed native-5m implementation. Its scientific results and consumer permissions are unchanged. V3 can use its research discipline as a benchmark, but must not assume that its windows, thresholds, or event semantics are scale-invariant.
 
-Build a separate risk sensor whose **base observations are 60-minute K-lines**.
+## Preserved Native-15m evidence
 
-Before model work, freeze a canonical 60m K-line carrier contract:
+Completed Native-15m work is retained:
 
-- use an official/provider 60m view if such a view is available and semantically valid;
-- otherwise define one deterministic, session-aware transformation from the official 1m source into canonical 60m bars and freeze that transformation before any threshold search;
-- do not casually aggregate 5m bars during model development;
-- explicitly define how the A-share lunch break and partial trading-hour geometry map into 60m bars;
-- verify bar count, bar boundaries, timestamps and no-lookahead semantics.
+- carrier semantics on `15m_offset_5` were verified;
+- the 2021–2023 descriptive map was completed;
+- the 576-candidate C1 state-machine map returned 0 formal passes under the frozen gate set;
+- a result-only attribution diagnostic showed that the principal incompatibility was pooled/annual fixed-tail event capture, while current severity separation and next-bar persistence gates were broadly satisfied.
 
-Then research the same conceptual components as V3-A, but independently in native 60m bars. No assumption is made that 15m thresholds/windows scale linearly into 60m.
+Interpretation boundary: this does **not** prove that Native-15m risk lacks persistence. It proves only that the frozen C1 acceptance definition did not produce an authorized Native-15m state machine. Further Native-15m design is deferred until the 60m hierarchy is understood.
 
-Expected scientific role (hypothesis, not authority): the native-60m tool may behave more like a persistent risk-regime / market-weather sensor than a rapid event alarm. This must be tested rather than assumed.
+## Active program: Native-60m first
 
-### V3-C — Cross-scale Risk Stack
+### Data source
 
-Only after Native-15m and Native-60m each have their own frozen and validated state processes, study their interaction with the existing Native-5m tool.
+The current PRIVATE inventory provides an official `1m_official` source through 2026-08-21 and provider-supplied 5m/15m views, but no provider-supplied 60m view. Therefore the Native-60m line will define one deterministic, session-aware **official-1m → canonical-60m** transformation before any threshold research.
 
-Primary questions:
+No 5m or 15m resampling is allowed to define 60m authority when the official 1m source is available.
 
-- how often does 5m `UNSAFE` escalate into 15m `UNSAFE`?
-- how often does 15m `UNSAFE` escalate into 60m `UNSAFE`?
-- during 60m `UNSAFE`, does the incidence / persistence of 5m shocks increase materially?
-- in recovery, which scale normalizes first and what are the typical lags?
-- what information exists in scale disagreement (for example, 5m unsafe while 15m/60m normal)?
-- can the three-scale state vector provide more stable Layer2 context than any single scale alone?
+### Proposed A-share 60m session geometry to audit and freeze
 
-The cross-scale stack is a Layer2 measurement/state project. It grants no strategy-routing, position-sizing, PnL or production authority by itself.
+Subject to verification of the official 1m timestamp semantics, the intended wall-clock intervals are:
 
-## Research sequence
+- 09:30–10:30;
+- 10:30–11:30;
+- 13:00–14:00;
+- 14:00–15:00.
 
-The governed sequence is:
+The lunch break is a hard boundary. No 60m bar may bridge 11:30–13:00. Exact endpoint inclusion and timestamp labeling must be frozen only after the 1m source semantics are independently audited.
 
-1. **Native-15m carrier audit / semantic freeze.**
-2. **Native-15m descriptive map:** event frequency, severity, persistence and recovery distributions.
-3. **Native-15m state-machine parameter research and freeze.**
-4. **Native-15m model / calibration / temporal-stability pipeline following the V2 governance pattern.**
-5. **Native-60m carrier construction or provider-view audit / semantic freeze.**
-6. **Native-60m descriptive map and state-machine research.**
-7. **Native-60m model / calibration / temporal-stability pipeline.**
-8. **Cross-scale 5m × 15m × 60m escalation/recovery analysis.**
-9. Only after the above: define any Layer3 consumer contract for multi-scale outputs.
+### Phase 60-A — carrier construction / semantic audit
+
+Before studying risk:
+
+- pin exact `1m_official` bytes/SHA256 and symbol binding;
+- verify 1m timestamp, OHLC, trading-day and session semantics;
+- freeze deterministic 1m→60m bar membership;
+- verify expected 1m member count per complete 60m bar;
+- verify four canonical bars per complete trading day;
+- preserve no-lookahead semantics;
+- materialize only aggregate audit outputs until the construction contract is accepted.
+
+### Phase 60-B — large-scale volatility continuity map
+
+The first scientific question is **not** “which threshold wins?” It is:
+
+> Does native 60m risk intensity show clear temporal continuity, and which 60m risk observable carries that continuity most faithfully?
+
+On the permitted development window, describe without selecting a winner:
+
+- distribution of 60m body magnitude;
+- distribution of 60m high-low range;
+- distribution of 60m close-to-close absolute return;
+- distribution of 60m intrabar 1m realized volatility / path energy;
+- correlation and disagreement among those measures;
+- lag-1 / lag-2 / lag-3 persistence of each measure;
+- conditional next-bar risk intensity after low / middle / high quantile states;
+- run-length / episode distributions for high-risk quantile states;
+- time-of-day slot effects across the four native 60m bars;
+- year-by-year stability on development years.
+
+This phase is descriptive and mechanistic. It must not install a state machine or optimize a trading objective.
+
+### Phase 60-C — 60m risk-state research
+
+Only if Phase 60-B establishes meaningful continuity should the project define candidate 60m state variables and transition rules. Those rules may use body, range, intrabar realized volatility, or a preregistered combination; they must not be forced to mimic the 5m state machine.
+
+## Downward decomposition after 60m characterization
+
+Once 60m high-risk and low-risk regimes have a frozen descriptive definition, the next question becomes conditional decomposition:
+
+> **What do the constituent 15m and 5m bars look like inside high-risk versus low-risk 60m bars?**
+
+This decomposition should measure, among other things:
+
+- number and ordering of large 15m/5m moves inside the hour;
+- whether the hour is trend-like or violently mean-reverting;
+- concentration of intrabar realized variance;
+- whether stress is front-loaded, persistent, or late-emerging;
+- how often a small-scale shock dies locally versus contributes to a large-scale regime.
+
+The objective is risk attribution and hierarchy, not immediate trading.
+
+## Governed research sequence
+
+The active sequence is now:
+
+1. **Native-60m canonical carrier construction / semantic audit from official 1m.**
+2. **Native-60m volatility-continuity map.**
+3. If continuity is supported, **Native-60m risk-state candidate research.**
+4. **60m → 15m decomposition:** characterize constituent 15m structure conditional on 60m risk level.
+5. **15m → 5m decomposition:** characterize finer structure conditional on the higher-scale context.
+6. Revisit Native-15m state design using the large-scale hierarchy as explanatory context; do not rescue the frozen C1 result.
+7. Only after scale-specific states are independently validated: formal cross-scale Layer2 output contract.
 
 ## Development / audit discipline
 
-Where data coverage permits, preserve the established temporal discipline:
-
-- development / threshold discovery on permitted historical development years;
-- repeat audit on later untouched historical years;
-- genuinely fresh OOS reserved and preregistered before reveal;
-- no post-result parameter rescue;
-- every scale keeps separate parameter identity, model identity and authority status.
-
-A successful 5m result does not authorize 15m or 60m. A successful 15m result does not authorize 60m. Each native scale must earn its own authority.
+- 2021–2023 may be used as the currently consumed development window where the relevant source supports it.
+- 2024–2025 remain reserved for separately preregistered repeat-audit questions unless already consumed by the exact prior contract being referenced.
+- 2026 is not automatically opened for threshold training.
+- Failed or insufficient results remain immutable.
+- No threshold, gate, or candidate family may be changed after observing a frozen result and then presented as the same test.
+- No strategy routing, sizing, PnL, or production authority is granted by this roadmap.
 
 ## Design principle
 
-The goal is not to copy the 5m numbers twice. The goal is to reproduce the **research logic** at each K-line scale and let each scale reveal its own risk personality.
+The program now treats multi-scale risk as a **hierarchical attribution problem**:
 
-In short:
+> First identify what risk looks like when it survives compression into a large K-line. Then open that large bar and explain how the smaller bars produced it.
 
-> 5m, 15m and 60m are three native K-line risk sensors from the same methodological family, not one 5m sensor observed at three future horizons.
+The active direction is therefore **60m → 15m → 5m**, not 5m → 15m → 60m.
