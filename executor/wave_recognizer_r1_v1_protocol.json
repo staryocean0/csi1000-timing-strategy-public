@@ -1,0 +1,51 @@
+{
+  "schema_id": "csi1000.recognizer_R1_protocol@1.0",
+  "issue": 330,
+  "readiness_issue": 321,
+  "parent_relocation_run": "35104182684-1",
+  "candidate": "PROGRESS_AWARE_RESET",
+  "min_leg": 4,
+  "max_unfinished": 48,
+  "reset_clock": "before current bar; max(last confirmed pivot occurrence, live candidate occurrence); counter excluded",
+  "shape": "unchanged close-selected L-H-L with wick geometry",
+  "T0_reference": "ceil(median 2015-2017 baseline completed duration), frozen baseline expected 21",
+  "data_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+  "data_rows": 70114,
+  "data_years": [
+    2015,
+    2020
+  ],
+  "one_minute_admitted": false,
+  "outcomes_used": false,
+  "new_training": false,
+  "production_authority": false,
+  "numeric_limits": {
+    "blind_fraction_nonedge": 0.02,
+    "Q3Q4_episodes": 5,
+    "Q3Q4_bar_fraction": 0.0025,
+    "residual_Q1_episode_fraction": 0.9,
+    "max_substantial_length_T0": 1.5,
+    "wave_count_ratio_max": 1.25,
+    "median_duration_ratio_min": 0.75,
+    "median_amplitude_and_height_ratio_min": 0.75,
+    "low_amplitude_share_increase_max": 0.05,
+    "median_confirmation_delay_increase_max": 4,
+    "p90_confirmation_delay_increase_max": 8
+  },
+  "visual_plan": "12 deterministic former blind zones; every Q3/Q4 residual; up to6 each Q1/Q2; all edges; longest-wave control; <=240 candles/page; manual review is separate",
+  "private_outputs": [
+    "report.json",
+    "manifest.json",
+    "visuals/index.json",
+    "visuals/case-<hash>-<page>.svg"
+  ],
+  "private_readback": "aggregate report, visual index, first24 SVG pages only; full pack in private release",
+  "resources": {
+    "cpu": 4,
+    "memory": "12GiB",
+    "network": "none",
+    "compute_timeout": 900,
+    "verify_timeout": 900
+  },
+  "decision": "numeric success alone cannot pass #321; geometry/causality independent; do not request1m before full gate"
+}
