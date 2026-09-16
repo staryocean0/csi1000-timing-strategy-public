@@ -1,0 +1,1 @@
+Study start marker: execute C3 recursive fidelity first on the audited 5m Development carrier; only if C3/router coverage passes, evaluate the C2×C3 nine-cell two-arm router. No one-minute input is admitted in this first run.
