@@ -1,0 +1,113 @@
+{
+  "schema_id": "csi1000.cycle_identifiability_adjudication@1.0",
+  "study_id": "TWO-WAVE-CYCLE-IDENTIFIABILITY-V1",
+  "research_issue": 316,
+  "controller_issue": 319,
+  "formal_run": {
+    "run_id": "35084682048-1",
+    "public_source_sha": "0e98f6bfa67b8a0c1e040fb69beeaa479d6f5d88",
+    "profile": "two-wave-cycle-identifiability-v1",
+    "receipt_status": "passed",
+    "delivery_status": "archive_uploaded_and_verified",
+    "report_sha256": "9bdd63414240438a2674648e1f65f8770f63c1e2ef2154da6d5749a08303f1ac",
+    "new_training": false,
+    "production_authority": false
+  },
+  "input": {
+    "symbol": "000852.SH",
+    "timeframe": "5m_offset_0",
+    "start": "2015-01-05",
+    "end": "2020-12-31",
+    "rows": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+  },
+  "base": {
+    "T0_bars": 21,
+    "base_waves": 2503,
+    "base_resets": 164,
+    "covered_bars": 58468,
+    "blind_bars": 11646,
+    "occurrence_coverage_fraction": 0.8338990786433522,
+    "blind_fraction": 0.16610092135664775,
+    "blind_episodes": 146
+  },
+  "blind_episode_result": {
+    "reason_counts": {
+      "LEFT_CENSORED": 1,
+      "RESET_ROOT_BREAK": 144,
+      "RIGHT_CENSORED": 1
+    },
+    "reset_root_break_fraction": 0.9863013698630136,
+    "amplitude_quartile_counts": {
+      "Q2": 5,
+      "Q3": 15,
+      "Q4": 126
+    },
+    "Q4_fraction": 0.863013698630137,
+    "Q3_or_Q4_fraction": 0.9657534246575342,
+    "Q1_count": 0,
+    "episode_length_bars": {
+      "median": 72.0,
+      "q25": 63.0,
+      "q75": 82.75,
+      "q90": 111.0
+    },
+    "episode_length_T0": {
+      "median": 3.4285714285714284,
+      "q25": 3.0,
+      "q75": 3.9404761904761907,
+      "q90": 5.285714285714286
+    },
+    "raw_log_range": {
+      "median": 0.033476391041038694,
+      "q25": 0.02337754418572741,
+      "q75": 0.053341629799663476,
+      "q90": 0.0715601666094191
+    },
+    "path_efficiency": {
+      "median": 0.310170161985695,
+      "q25": 0.1995839146680028,
+      "q75": 0.4329781429031174
+    }
+  },
+  "retrospective_C2": {
+    "completed_C2_waves": 46,
+    "overlap_conflicts": 0,
+    "all_blind_episodes_C2_location": "UNRESOLVED",
+    "blind_bars_inside_completed_hard_root_C2_cells": 0,
+    "interpretation": "The current hard-root C2 representation disappears at the same base root breaks that create nearly all blind episodes. Therefore this run cannot honestly assign those blind episodes to completed-C2 UP/RANGE/DOWN or early/middle/late morphology. Zero blind bars inside completed C2 cells is a representation-selection fact, not evidence that C2 phase has no effect."
+  },
+  "causal_C2": {
+    "resolved_bars": 12674,
+    "interpretation": "Within bars where C2 is causally resolved, base confirmation density is heterogeneous across descriptor/leg/phase/amplitude cells. Some late-phase cells have no-confirmation-last-T0 fractions above 0.30, but the pattern is not monotone or sufficiently uniform across cells to accept a standalone C2-phase signal from this run.",
+    "illustrative_predeclared_metric_examples": [
+      {"descriptor":"UP","leg":"DOWN","phase":"LATE","amplitude_quartile":"Q1","bars":200,"no_confirmation_last_T0_fraction":0.44},
+      {"descriptor":"DOWN","leg":"DOWN","phase":"MIDDLE","amplitude_quartile":"Q3","bars":133,"no_confirmation_last_T0_fraction":0.39097744360902253},
+      {"descriptor":"DOWN","leg":"UP","phase":"LATE","amplitude_quartile":"Q4","bars":384,"no_confirmation_last_T0_fraction":0.3697916666666667},
+      {"descriptor":"UP","leg":"UP","phase":"LATE","amplitude_quartile":"Q1","bars":921,"no_confirmation_last_T0_fraction":0.3344191096634093}
+    ],
+    "phase_signal_accepted": false
+  },
+  "adjudication": {
+    "tiny_amplitude_abstention_is_primary_explanation": false,
+    "substantial_amplitude_blindness_present": true,
+    "root_fragmentation_is_primary_observed_failure_mode": true,
+    "C2_phase_concentration_testable_with_current_hard_root_retrospective_map": false,
+    "standalone_C2_phase_signal_accepted": false,
+    "detector_repair_authorized": false,
+    "next_research_gate": 315,
+    "next_step": "Evaluate scale-specific higher-level continuity while preserving all lower-level reset metadata and causal clocks; only after a continuous higher-level carrier passes geometry/visual acceptance should blind episodes be re-located within C2 morphology."
+  },
+  "one_minute_data": {
+    "requested_now": false,
+    "reason": "The immediate failure is structural root fragmentation, not inadequate within-bar resolution. User clarification is preserved: a later 1m experiment may define a genuinely faster base scale such as 10x1m, which is distinct from refining the present 5m T0."
+  },
+  "authority": {
+    "signal": false,
+    "detector_repair": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
