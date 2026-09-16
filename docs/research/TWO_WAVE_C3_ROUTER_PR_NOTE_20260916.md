@@ -1,0 +1,1 @@
+Intended PR scope: one additional causal graphical level C3, measured T3/T2/T3/T0 distributions, C2×C3 causal context coverage, and a matched-episode T0-vs-T1 routing feasibility study. No market outcomes were read before freezing this branch.
