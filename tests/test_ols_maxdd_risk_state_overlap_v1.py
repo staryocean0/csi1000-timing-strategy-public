@@ -13,6 +13,8 @@ ENGINE = ROOT / "executor" / "ols_maxdd_risk_state_overlap_v1.py"
 VERIFIER = ROOT / "executor" / "ols_maxdd_risk_state_overlap_v1_verifier.py"
 BROKER = ROOT / "executor" / "ols_maxdd_risk_state_overlap_v1_broker.py"
 PREREG = ROOT / "docs" / "research" / "layer3" / "ols_family" / "OLS_MAXDD_RISK_STATE_OVERLAP_V1_PREREG_20260916.md"
+PUBLIC_COMPUTE = ROOT / ".github" / "workflows" / "public-compute.yml"
+CONTROLLER = ROOT / ".github" / "workflows" / "controller-dispatch.yml"
 
 
 class OlsMaxddRiskStateOverlapV1Tests(unittest.TestCase):
@@ -57,6 +59,20 @@ class OlsMaxddRiskStateOverlapV1Tests(unittest.TestCase):
         self.assertIn("### `WEAK`", text)
         self.assertIn("Reliability is not market risk", text)
         self.assertIn("No filter, state machine", ENGINE.read_text())
+
+    def test_standard_runner_and_controller_route_exact_profile(self):
+        workflow = PUBLIC_COMPUTE.read_text()
+        controller = CONTROLLER.read_text()
+        profile = "ols-maxdd-risk-state-overlap-v1"
+        broker = "executor/ols_maxdd_risk_state_overlap_v1_broker.py"
+        self.assertIn(f"- {profile}", workflow)
+        for phase in ("prepare", "compute", "cleanup", "publish"):
+            self.assertIn(f"python3 {broker} {phase} {profile}", workflow)
+        self.assertEqual(workflow.count("FACTORLAB_PRIVATE_TOKEN:"), 2)
+        self.assertIn(f"controller: {profile}", controller)
+        self.assertIn(f"profile='{profile}'", controller)
+        self.assertIn("public-compute.yml/dispatches", controller)
+        self.assertIn("-f ref='cloud-workspace-v1'", controller)
 
 
 if __name__ == "__main__":
