@@ -28,6 +28,10 @@ class C3RouterRuntimeTests(unittest.TestCase):
   self.assertEqual(s.count('executor/wave_c3_router_v1_broker.py'),4)
  def test_controller_registered(self):
   s=(ROOT/'.github/workflows/controller-dispatch.yml').read_text();self.assertEqual(s.count('controller: two-wave-c3-router-v1'),2)
+ def test_broker_uses_exact_c3_runtime_path(self):
+  text=(ROOT/'executor/wave_c3_router_v1_broker.py').read_text()
+  self.assertIn("command[index]='/work/c3_router/wave_c3_router_v1_runtime.py'",text)
+  self.assertNotIn("command[index]='/work/multiscale_v2/wave_multiscale_dual_gates_v2_runtime.py'",text)
  def test_one_minute_not_admitted(self):
   p=json.loads((ROOT/'docs/research/TWO_WAVE_C3_ROUTER_PLAN_20260916.json').read_text());self.assertFalse(p['one_minute_required_for_first_run']);self.assertIsNone(p['period_ratio_target_band'])
 if __name__=='__main__':unittest.main()
