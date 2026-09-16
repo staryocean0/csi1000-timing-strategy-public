@@ -26,6 +26,7 @@ jobs:
           profile='risk-v3-native60-phase60b-volatility-continuity-map-v1'
           broker='risk_v3_native60_phase60b_volatility_continuity_map_broker.py'
           mirror='risk_v3_native60_phase60b_volatility_continuity_map_private_mirror.py'
+          input_expr='$'+'{{ inputs.profile }}'
 
           marker='\n  execute_native60b:\n'
           assert s.count(marker)==1
@@ -41,18 +42,16 @@ jobs:
               assert s.count(anchor)==count, (anchor, s.count(anchor))
               s=s.replace(anchor,anchor+extra,count)
 
-          insert_after(
-            "          elif [ '${{ inputs.profile }}' = 'risk-v3-native60-phase60a-canonical-carrier-v1' ]; then\n            python3 executor/risk_v3_native60_phase60a_broker.py prepare risk-v3-native60-phase60a-canonical-carrier-v1\n",
-            "          elif [ '${{ inputs.profile }}' = 'risk-v3-native60-phase60b-volatility-continuity-map-v1' ]; then\n            python3 executor/"+broker+" prepare "+profile+"\n")
-          insert_after(
-            "          elif [ '${{ inputs.profile }}' = 'risk-v3-native60-phase60a-canonical-carrier-v1' ]; then\n            python3 executor/risk_v3_native60_phase60a_broker.py compute risk-v3-native60-phase60a-canonical-carrier-v1\n",
-            "          elif [ '${{ inputs.profile }}' = 'risk-v3-native60-phase60b-volatility-continuity-map-v1' ]; then\n            python3 executor/"+broker+" compute "+profile+"\n")
-          insert_after(
-            "          elif [ '${{ inputs.profile }}' = 'risk-v3-native60-phase60a-canonical-carrier-v1' ]; then\n            python3 executor/risk_v3_native60_phase60a_broker.py cleanup risk-v3-native60-phase60a-canonical-carrier-v1\n",
-            "          elif [ '${{ inputs.profile }}' = 'risk-v3-native60-phase60b-volatility-continuity-map-v1' ]; then\n            python3 executor/"+broker+" cleanup "+profile+"\n")
-          insert_after(
-            "          elif [ '${{ inputs.profile }}' = 'risk-v3-native60-phase60a-canonical-carrier-v1' ]; then\n            python3 executor/risk_v3_native60_phase60a_broker.py publish risk-v3-native60-phase60a-canonical-carrier-v1\n            python3 executor/risk_v3_native60_phase60a_private_mirror.py\n",
-            "          elif [ '${{ inputs.profile }}' = 'risk-v3-native60-phase60b-volatility-continuity-map-v1' ]; then\n            python3 executor/"+broker+" publish "+profile+"\n            python3 executor/"+mirror+"\n")
+          def clause(name, phase, script):
+              return f"          elif [ '{input_expr}' = '{name}' ]; then\n            python3 executor/{script} {phase} {name}\n"
+
+          phase60a='risk-v3-native60-phase60a-canonical-carrier-v1'
+          insert_after(clause(phase60a,'prepare','risk_v3_native60_phase60a_broker.py'),clause(profile,'prepare',broker))
+          insert_after(clause(phase60a,'compute','risk_v3_native60_phase60a_broker.py'),clause(profile,'compute',broker))
+          insert_after(clause(phase60a,'cleanup','risk_v3_native60_phase60a_broker.py'),clause(profile,'cleanup',broker))
+          publish_anchor=clause(phase60a,'publish','risk_v3_native60_phase60a_broker.py')+"            python3 executor/risk_v3_native60_phase60a_private_mirror.py\n"
+          publish_extra=clause(profile,'publish',broker)+"            python3 executor/"+mirror+"\n"
+          insert_after(publish_anchor,publish_extra)
 
           assert s.count('secrets.FACTORLAB_PRIVATE_TOKEN')==2
           assert s.count("python3 executor/"+broker+" prepare "+profile)==1
