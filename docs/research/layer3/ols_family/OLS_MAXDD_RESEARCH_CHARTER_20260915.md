@@ -1,6 +1,6 @@
 # OLS Layer3 — MaxDD-first research charter
 
-Status: **ACTIVE AUTHORITY FOR THE NEXT OLS RESEARCH THREAD**
+Status: **ACTIVE AUTHORITY FOR THE OLS MAXDD-FIRST RESEARCH THREAD**
 
 ## 1. Why this thread exists
 
@@ -12,9 +12,9 @@ The prior D0→D1→D2 sequence is closed as follows:
 
 This does **not** erase the diagnostic information found in D1. It means only that the tested action mapping was too coarse and too costly.
 
-## 2. New research objective
+## 2. Research objective
 
-The research objective is now elevated from testing a particular R² exit trigger to understanding and controlling the strategy's failure regimes.
+The research objective is elevated from testing a particular R² exit trigger to understanding and controlling the strategy's failure regimes.
 
 **Primary objective: reduce maximum drawdown and tail drawdown.**
 
@@ -26,7 +26,7 @@ The ordering is binding. A candidate with higher return but essentially unchange
 
 > In which causally observable market/model states does the frozen OLS explosive-channel tool produce its largest losses, what mechanisms are common across those states, and what is the lightest intervention that can reduce those losses without unnecessarily discarding profitable trend continuation?
 
-This question is broader than any one proposed trigger. The following are candidate explanatory variables, not presumed answers:
+The following are candidate explanatory variables, not presumed answers:
 
 - fit R² level;
 - R² persistence / consecutive declines;
@@ -42,13 +42,9 @@ This question is broader than any one proposed trigger. The following are candid
 - time since a recent model-quality collapse;
 - speed and stability of model-confidence recovery.
 
-No item above is privileged in advance.
-
 ## 4. Failure-regime framing
 
-The first job is not to design an exit. It is to identify recurrent failure regimes.
-
-The investigation must distinguish at least these mechanisms when supported by the data:
+The program distinguishes at least these mechanisms when supported by the data:
 
 1. **Acute structural break** — a previously strong local linear fit collapses rapidly.
 2. **Chronic weak-fit / slow degradation** — the model remains marginally usable for a long period while equity remains underwater.
@@ -56,17 +52,17 @@ The investigation must distinguish at least these mechanisms when supported by t
 4. **Re-entry / churn amplification** — the equity drawdown contains repeated fresh same-tool entries, position flips, or short-lived segments rather than one persistent bad trade.
 5. **Exit-persistence amplification** — otherwise similar failure conditions generate materially different losses under different frozen exit families.
 
-These are working archetypes. Phase A must measure them rather than assume them.
+Verified Phase A established that tail risk is concentrated in a small number of episodes, repeated participation is a cross-family mechanism, and R²/PE collapse are material severity markers. Authority-window switching did not emerge as a general top-tail driver. These findings motivate Phase B but do not themselves define a trading rule.
 
 ## 5. Research hierarchy
 
 ### Phase A — failure atlas and mechanism attribution
 
-Build a cross-exit-family episode atlas for all drawdown episodes and a detailed top-tail view. Quantify the observable state path before and during each episode. Contrast the deepest episodes with ordinary drawdowns. No trading rule changes are permitted.
+Completed by verified run `34978764073-1`, authoritative status `MECHANISM_ATLAS_COMPLETED`. Phase A was descriptive/mechanistic and changed no trading rule.
 
 ### Phase B — causal early-identification study
 
-Only after Phase A identifies stable common mechanisms may a new preregistration test whether those mechanisms can be recognized before loss expansion. Candidate rules may include persistence, collapse magnitude, confidence-state hysteresis, churn/re-entry state, or combinations. Thresholds must be preregistered or derived from a strictly separated development procedure; no outcome-driven rescue tuning.
+After Phase A identified stable common mechanisms, Phase B may test whether those mechanisms can be recognized before the next baseline segment expands loss. Candidate state features may include churn/re-entry state, prior confidence damage, apparent confidence recovery and existing underwater state. Thresholds for trading actions are not selected in Phase B.
 
 ### Phase C — intervention ladder
 
@@ -90,22 +86,21 @@ For later intervention phases, decision priority is:
 4. gross-return retention and opportunity cost;
 5. total gross return.
 
-The exact quantitative gates for an intervention experiment must be frozen before that experiment runs.
-
-Phase A is diagnostic and therefore has no promotion threshold for a trading rule.
+Exact quantitative gates must be frozen before each experiment runs. Phase B uses its own preregistered mechanism-promotion gate and does not alter trading.
 
 ## 7. Anti-overfitting and governance boundaries
 
 - 2020–2025 remain consumed research years; no claim of fresh OOS is allowed.
-- The frozen OLS entry and five baseline exit families remain unchanged during Phase A.
-- Phase A must not search exit thresholds, R² thresholds, PE thresholds, cooldown lengths, sizing, leverage, routing, or production parameters.
+- The frozen OLS entry and five baseline exit families remain unchanged during Phases A and B.
+- Phase B must not search trading thresholds, cooldown lengths, sizing, leverage, routing, or production parameters.
 - 2024 Q4 may be used as an important case study but may not become the sole design target. Findings must be compared across years and episodes.
 - Negative findings and failure regimes must be preserved.
-- No D2b authority exists. Any future intervention study requires a new preregistered profile.
+- No D2b authority exists.
+- Any future Phase C intervention requires a new preregistered profile and frozen risk-first gates.
 - No production/trading authority is granted by this charter.
 
 ## 8. Current authority
 
-The next authorized action is **Phase A: OLS MaxDD Failure Atlas v1**.
+The next authorized action is **Phase B: `ols-maxdd-reentry-identification-v1`** under `OLS_MAXDD_PHASE_B_REENTRY_IDENTIFICATION_PROTOCOL_20260915.md`.
 
-Its task is to produce a verified descriptive mechanism atlas, not a new trading rule.
+Its task is to establish or reject causally observable pre-segment failure-state mechanisms. It does not suppress trades or modify the strategy.

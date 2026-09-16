@@ -2,8 +2,14 @@
 
 Profile: `ols-maxdd-failure-atlas-v1`
 
-Status: **PREREGISTERED; IMPLEMENTATION/EXECUTION IN PROGRESS**
+Status: **COMPLETED AND VERIFIED**
 
-Authority: `OLS_MAXDD_RESEARCH_CHARTER_20260915.md` and `OLS_FAMILY_CURRENT_AUTHORITY.md`.
+Authoritative run: `34978764073-1`.
 
-This phase is descriptive/mechanistic only. It does not modify frozen OLS entry/exit rules and grants no trading, routing, sizing, leverage, D2b, or production authority.
+Authoritative result: `MECHANISM_ATLAS_COMPLETED`.
+
+Authority: `OLS_MAXDD_RESEARCH_CHARTER_20260915.md`.
+
+Phase A remained descriptive/mechanistic only and did not modify frozen OLS entry/exit rules or grant trading, routing, sizing, leverage, D2b, or production authority.
+
+The verified atlas supports advancing to the separately preregistered Phase B causal-identification study `ols-maxdd-reentry-identification-v1`. Phase A does not itself authorize any intervention.
