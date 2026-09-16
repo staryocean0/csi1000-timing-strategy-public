@@ -26,21 +26,7 @@ The ordering is binding. A candidate with higher return but essentially unchange
 
 > In which causally observable market/model states does the frozen OLS explosive-channel tool produce its largest losses, what mechanisms are common across those states, and what is the lightest intervention that can reduce those losses without unnecessarily discarding profitable trend continuation?
 
-The following are candidate explanatory variables, not presumed answers:
-
-- fit R² level;
-- R² persistence / consecutive declines;
-- 3/4/5-bar cumulative R² deterioration;
-- recent peak-to-current R² collapse;
-- R² instability / collapse-and-recovery behavior;
-- path-efficiency level and deterioration;
-- slope / trend strength;
-- W12/W24 authority and authority-window switching;
-- direction conflict;
-- exit-trigger density;
-- position flips, fresh entries and re-entry/churn density;
-- time since a recent model-quality collapse;
-- speed and stability of model-confidence recovery.
+Candidate explanatory variables include fit R², path efficiency, deterioration persistence and magnitude, slope/trend strength, authority state, direction conflict, exit density, fresh entries/re-entry/churn, time since model-quality damage, and confidence recovery. No candidate is privileged in advance.
 
 ## 4. Failure-regime framing
 
@@ -52,7 +38,9 @@ The program distinguishes at least these mechanisms when supported by the data:
 4. **Re-entry / churn amplification** — the equity drawdown contains repeated fresh same-tool entries, position flips, or short-lived segments rather than one persistent bad trade.
 5. **Exit-persistence amplification** — otherwise similar failure conditions generate materially different losses under different frozen exit families.
 
-Verified Phase A established that tail risk is concentrated in a small number of episodes, repeated participation is a cross-family mechanism, and R²/PE collapse are material severity markers. Authority-window switching did not emerge as a general top-tail driver. These findings motivate Phase B but do not themselves define a trading rule.
+Verified Phase A established that tail risk is concentrated in a small number of episodes, repeated participation is a cross-family episode-level mechanism, and R²/PE collapse are material severity markers. Authority-window switching did not emerge as a general top-tail driver.
+
+Verified Phase B then tested whether frozen causal snapshots immediately before a new executable segment could identify which underwater re-entry would extend drawdown. None of the eight preregistered candidates passed the promotion gate. This separates an episode-level mechanism from a usable pre-segment causal identifier.
 
 ## 5. Research hierarchy
 
@@ -62,15 +50,19 @@ Completed by verified run `34978764073-1`, authoritative status `MECHANISM_ATLAS
 
 ### Phase B — causal early-identification study
 
-After Phase A identified stable common mechanisms, Phase B may test whether those mechanisms can be recognized before the next baseline segment expands loss. Candidate state features may include churn/re-entry state, prior confidence damage, apparent confidence recovery and existing underwater state. Thresholds for trading actions are not selected in Phase B.
+Completed by verified run `35040712447-1`, authoritative status `PHASE_B_IDENTIFICATION_COMPLETED` with `phase_c_authority=false`.
+
+The tested causal unit was the decision close immediately before a new executable baseline segment. The frozen candidates covered re-entry ordinal, lagged drawdown, prior R²/PE collapse, re-entry speed, false-confidence constructions, and a churn-damage interaction. None passed the frozen cross-family promotion gate.
+
+Phase B therefore closes this specific single-entry-snapshot formulation. It may not be rescue-tuned after outcome reveal.
 
 ### Phase C — intervention ladder
 
-Only after Phase B establishes usable early identification may actions be compared. The action set should be ordered from least to most destructive:
+**Not currently authorized.**
+
+Only after a future preregistered causal-identification study establishes a usable early identifier may actions be compared. The eventual action ladder remains:
 
 `continue -> block new entry/addition -> reduce risk -> re-entry cooldown/hysteresis -> faster exit -> full risk-off`.
-
-The purpose is to locate the lightest intervention that materially reduces MaxDD.
 
 ### Phase D — return recovery under a risk floor
 
@@ -86,21 +78,23 @@ For later intervention phases, decision priority is:
 4. gross-return retention and opportunity cost;
 5. total gross return.
 
-Exact quantitative gates must be frozen before each experiment runs. Phase B uses its own preregistered mechanism-promotion gate and does not alter trading.
+Exact quantitative gates must be frozen before each experiment runs.
 
 ## 7. Anti-overfitting and governance boundaries
 
 - 2020–2025 remain consumed research years; no claim of fresh OOS is allowed.
-- The frozen OLS entry and five baseline exit families remain unchanged during Phases A and B.
-- Phase B must not search trading thresholds, cooldown lengths, sizing, leverage, routing, or production parameters.
-- 2024 Q4 may be used as an important case study but may not become the sole design target. Findings must be compared across years and episodes.
+- The frozen OLS entry and five baseline exit families remain unchanged unless a later intervention protocol explicitly authorizes a comparison.
 - Negative findings and failure regimes must be preserved.
-- No D2b authority exists.
-- Any future Phase C intervention requires a new preregistered profile and frozen risk-first gates.
+- D2 may not be rescue-tuned; D2b authority remains false.
+- Phase B's failed candidate definitions and promotion gate may not be altered post hoc and rerun as the same experiment.
+- 2024 Q4 may be used as a case study but may not become the sole design target.
+- Any future Phase C intervention requires a successful separately preregistered causal-identification parent plus a new intervention profile with frozen risk-first gates.
 - No production/trading authority is granted by this charter.
 
 ## 8. Current authority
 
-The next authorized action is **Phase B: `ols-maxdd-reentry-identification-v1`** under `OLS_MAXDD_PHASE_B_REENTRY_IDENTIFICATION_PROTOCOL_20260915.md`.
+Phase A and Phase B are complete. **No Phase C intervention authority exists.**
 
-Its task is to establish or reject causally observable pre-segment failure-state mechanisms. It does not suppress trades or modify the strategy.
+A continuation of the MaxDD-first thread must begin with a new preregistered causal-identification question rather than an intervention. The next valid scientific direction may change the causal unit from a single pre-segment snapshot to a state-path / sequence-hazard formulation if that formulation, features, outcomes, sufficiency rules, and promotion gates are frozen before outcome reveal.
+
+No current authority exists to suppress trades, impose cooldowns, resize positions, accelerate exits, or change production behavior.
