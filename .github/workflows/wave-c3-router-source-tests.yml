@@ -1,0 +1,29 @@
+name: Two-Wave C3 router source tests
+on:
+  pull_request:
+    branches: [cloud-workspace-v1]
+    paths:
+      - 'executor/wave_c3_router_v1*.py'
+      - 'tests/test_wave_c3_router*_v1.py'
+      - 'docs/research/TWO_WAVE_C3_ROUTER*'
+      - '.github/workflows/public-compute.yml'
+      - '.github/workflows/controller-dispatch.yml'
+permissions:
+  contents: read
+jobs:
+  source-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt
+      - run: |
+          python3 - <<'PY'
+          import sys,unittest
+          s=unittest.defaultTestLoader.discover('tests',pattern='test_wave_c3_router*_v1.py')
+          r=unittest.TextTestRunner(verbosity=2).run(s)
+          print(f'run={r.testsRun} skipped={len(r.skipped)}')
+          sys.exit(0 if r.wasSuccessful() and not r.skipped and r.testsRun>=15 else 1)
+          PY
