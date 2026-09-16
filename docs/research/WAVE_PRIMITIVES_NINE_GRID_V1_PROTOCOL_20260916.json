@@ -1,0 +1,125 @@
+{
+  "schema_id": "csi1000.wave_primitives_nine_grid_protocol@1.0",
+  "status": "SOURCE_ONLY_REUSABLE_TOOLS_AND_DIAGNOSTIC_PLAN",
+  "user_scope": "Preserve single-wave extraction as a first-class tool; retain all nine ordered two-wave descriptors; investigate period concentration without outcomes.",
+  "layer": "Layer2",
+  "lineage": {
+    "public_repository": "staryocean0/csi1000-timing-strategy-public",
+    "base_branch": "cloud-workspace-v1",
+    "base_commit": "1db31b194c548545852a0ba6e600b655da819ed8",
+    "legacy_G_adjudication_merge": "061a1e83dc218e80bf3df496b1b600936ddb625a",
+    "frozen_C_to_G_modified": false,
+    "legacy_consensus_retained_as_comparator": true
+  },
+  "single_wave": {
+    "phase": "A_low_high_low_only",
+    "pivot_occurrence_basis": "close_extrema",
+    "geometry_price_basis": "raw_wick_low_high_at_selected_close_pivot_bars",
+    "definition": "L0-H0-L1; start < high < end <= confirmation",
+    "duration": "end_bar-start_bar",
+    "price_space": "log",
+    "bottom_slope_s": "(log(L1)-log(L0))/duration",
+    "height_h": "log(H0)-bottom_line(high_bar)",
+    "migration_g": "s*duration/h",
+    "g_is_slope_per_bar": false,
+    "confirmed_events_append_only": true,
+    "bootstrap_pivot_left_censored": true,
+    "unconfirmed_terminal_candidate_not_counted_as_wave": true,
+    "force_wave_at_target_period": false
+  },
+  "configuration": {
+    "bar_view": ["symbol", "timeframe", "bar_minutes", "source_id", "timestamp_role=bar_close"],
+    "resampling": "not performed; each timeframe requires its own audited supplied view",
+    "clock": "trading_bar_index; nominal trading minutes and calendar elapsed minutes stored separately",
+    "legacy_extraction": {"min_leg_bars": 4, "max_unfinished_leg_bars": 48},
+    "maturity_definition": "counter_extremum_occurrence-candidate_occurrence >= min_leg_bars",
+    "reset_definition": "now-last_confirmed_pivot_occurrence > max_unfinished_leg_bars",
+    "target_period_bars": "optional N; frequency_cycles_per_bar=1/N",
+    "target_period_band": "[ceil(N/period_lower_factor),floor(N*period_upper_factor)] inclusive",
+    "default_period_factors": [1.4142135623730951, 1.4142135623730951],
+    "period_band_is_centered_future_window": false,
+    "target_band_is_filter_not_new_extremum_detector": true,
+    "target_band_filter_may_bridge_intervening_waves": false,
+    "nonbaseline_detector_settings_require_new_validation": true
+  },
+  "nine_combinations": [
+    "DOWN__DOWN", "DOWN__RANGE", "DOWN__UP",
+    "RANGE__DOWN", "RANGE__RANGE", "RANGE__UP",
+    "UP__DOWN", "UP__RANGE", "UP__UP"
+  ],
+  "composition": {
+    "order": "previous_wave__current_wave",
+    "descriptor": "abs(g)<=tau => RANGE; g>tau => UP; g<-tau => DOWN",
+    "tau": 0.20,
+    "pair_rho": 1.4142135623730951,
+    "legacy_kappa": 2.0,
+    "strict_continuity": "same epoch, shared occurrence and low price, causal order; L0-H0-L1-H1-L2",
+    "primitive_pair_code": "retained for all valid strict pairs",
+    "qualified_pair_code": "populated only if both waves in target band and pair same-scale",
+    "scale_mismatch": "separate qualification reason; not a tenth directional combination",
+    "speed": "chronological abs(s_current)/abs(s_previous); signed slope delta also stored",
+    "migration_ratio": "stored separately, never called raw speed",
+    "speed_relation": "faster/equal/slower only for same non-RANGE descriptor; numeric equality rtol=1e-9 atol=1e-12, not a tuned scientific gate",
+    "zero_denominator": "ratio null, not infinity",
+    "legacy_Uncertain": "retained as comparator; never erases the primitive pair",
+    "UP_DOWN_means_confirmed_market_top": false,
+    "DOWN_UP_means_confirmed_market_bottom": false,
+    "earliest_consumer_bar": "current.confirmation_bar+1",
+    "nine_state_bar_carrier_authorized": false
+  },
+  "period_diagnostic_plan": {
+    "role": "descriptive duration distribution, not spectral power or predictive periodicity",
+    "proposed_detector_settings": [[2,24],[4,48],[8,96],[16,192]],
+    "primary_legacy_setting": [4,48],
+    "histogram_edges": "4*2**(i/2), i=0..16; bins half-open except final right edge",
+    "density": "count/(all_wave_count*log2(upper/lower)); underflow and overflow explicit",
+    "population": "all extracted confirmed waves before target-band or pair filtering",
+    "stratify": ["native timeframe", "detector setting", "confirmation year"],
+    "exact_duplicate_policy": "deduplicate repeated settings; same source/view/start/high/end counted once in union",
+    "overlapping_structures_are_independent": false,
+    "candidate_modes": "strict interior density maxima only; boundary peaks and flat tops not promoted",
+    "natural_cluster_acceptance_requires": [
+      "cross-year stability", "maturity/reset sensitivity", "bin-origin/bin-width sensitivity",
+      "censoring and overlapping-structure review", "preregistered null comparison",
+      "equal-evidence OHLC visual review and separate post-run adjudication"
+    ],
+    "number_of_clusters_fixed": false,
+    "automatic_scale_selection": false,
+    "selected_periods": [],
+    "unproven_alternative": "No robust natural clusters may exist; retain a continuous scale variable."
+  },
+  "visual_contract": {
+    "first_class_single_wave_renderer": "executor/two_wave_toolkit_visuals_v1.py",
+    "all_classes_same_raw_evidence": true,
+    "bars": "every OHLC candle from wave start through confirmation inclusive",
+    "show": ["L0-H0-L1", "bottom and parallel upper channel", "timestamps", "confirmation", "s", "g", "internal descriptor"],
+    "show_post_confirmation_bars": false,
+    "wick_extremum_equivalence_claim": false,
+    "previous_six_examples_are_complete_new_tool_acceptance": false
+  },
+  "execution": {
+    "real_market_scan_executed": false,
+    "runner_profile_registered": false,
+    "controller_created": false,
+    "private_direct_mutation_allowed": false,
+    "future_real_run": "reviewed public-compute.yml workflow_dispatch only",
+    "permitted_baseline_input_candidate": {
+      "symbol": "000852.SH", "timeframe": "5m_offset_0", "start": "2015-01-05", "end": "2020-12-31",
+      "rows": 70114, "bytes": 3351411,
+      "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+      "data_role": "already_consumed_development_not_fresh_oos"
+    },
+    "additional_timeframe_inputs": "not admitted until exact native-view identity and clock contract are frozen",
+    "row_level_destination": "private only through reviewed workflow/broker",
+    "source_only_CI": "synthetic data only; default-engine parity, prefix invariance, nine-grid completeness and full-OHLC rendering"
+  },
+  "authority": {
+    "natural_frequency_clusters_accepted": false,
+    "direction_acceptance": false,
+    "state_publication_authority": false,
+    "trade_authority": false,
+    "production_authority": false,
+    "outcome_gate_opened": false,
+    "year_2026_admitted": false
+  }
+}
