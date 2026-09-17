@@ -52,10 +52,11 @@
     {
       "issue": 353,
       "stage": "S2_SCALE_DOMINANCE_DESIGN",
-      "status": "REFERENCE_PROTOCOL_SOURCE_IMPLEMENTED_PACKET_REGISTRATION_NEXT",
+      "status": "BLIND_PACKET_PROFILE_REGISTERED_MARKET_PACKET_RUN_NEXT",
       "checkpoint": "docs/research/TWO_WAVE_SCALE_DOMINANCE_SYNTHETIC_CHECKPOINT_20260917.json",
       "reference_issue": 359,
-      "reference_checkpoint": "docs/research/TWO_WAVE_SCALE_REFERENCE_SOURCE_CHECKPOINT_20260917.json"
+      "reference_checkpoint": "docs/research/TWO_WAVE_SCALE_REFERENCE_SOURCE_CHECKPOINT_20260917.json",
+      "packet_checkpoint": "docs/research/TWO_WAVE_SCALE_REFERENCE_PACKET_REGISTRATION_CHECKPOINT_20260917.json"
     }
   ],
   "future_only": {
@@ -93,10 +94,11 @@
     "synthetic_diagnostic": "IMPLEMENTED",
     "market_thresholds": null,
     "real_market_reference_labels": "NOT_YET_FROZEN",
-    "next": "REGISTER_FIXED_BLIND_PACKET_PROFILE",
+    "next": "RUN_FIXED_BLIND_PACKET_PROFILE",
     "reference_protocol": "FROZEN",
     "reference_source_contract": "IMPLEMENTED",
-    "market_packet_profile": "NOT_YET_REGISTERED",
-    "primary_reference_labels": "NOT_YET_FROZEN"
+    "market_packet_profile": "REGISTERED_NOT_RUN",
+    "primary_reference_labels": "NOT_YET_FROZEN",
+    "market_packet_run": null
   }
 }
