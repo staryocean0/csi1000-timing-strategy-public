@@ -1,0 +1,93 @@
+{
+  "schema_id": "csi1000.scale_dominance_market_adjudication@1.0",
+  "date": "2026-09-17",
+  "research_issue": 372,
+  "parent_issue": 353,
+  "decision": "DIAGNOSTIC_MEASUREMENT_AND_THRESHOLD_FREE_JOIN_COMPLETED_MULTI_AXIS_CALIBRATION_NEEDED",
+  "formal_run": {
+    "workflow_run": "35216237190",
+    "public_run": "35216237190-1",
+    "event": "workflow_dispatch",
+    "status": "success",
+    "public_source_sha": "ad4458b41d57000731200e39aa5c0539937c7549",
+    "profile": "two-wave-scale-dominance-diagnostic-measurement-v1",
+    "receipt_status": "passed",
+    "delivery_status": "archive_uploaded_and_verified",
+    "manifest_sha256": "5e3f5ec43b100fb238d6809390fa4db6e2028f53bc07e236f117c19e9d04a841",
+    "diagnostics_sha256": "aed0b65305f06d36dfd679df4ee75feb48b246a40e3a5e39831cefedf2ee3baa",
+    "diagnostic_summary_sha256": "6384fe2e284fba2ff34951fedd06d2f10b655fe6b7e0cd6699bfb3a6c10d7b84",
+    "archive_sha256": "4f01923fb4a5f944154f2e31dc20232e2e07203b62503df285068e36c9ed167d",
+    "archive_bytes": 234506
+  },
+  "measurement_contract": {
+    "panels": 192,
+    "phase_rows": 960,
+    "anchor_context_eligible_days": 1414,
+    "anchor_context_exclusions": {
+      "context_causal_flat_fill": 43,
+      "context_support": 1
+    },
+    "blind_inventory_sha256": "5ab33685531475b3ad6cf4f69590c0af0925836679043d24ce2a44127ab7d4d1",
+    "reference_labels_visible_to_compute": false,
+    "reference_labels_joined_in_formal_run": false,
+    "future_suffix_used": false,
+    "dominance_state_assigned": false,
+    "numeric_state_thresholds": null,
+    "hysteresis_or_persistence_selected": false
+  },
+  "post_run_join": {
+    "final_reference_labels_sha256": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be",
+    "threshold_free_join_sha256": "bcd47f37b169374b78bfebf230b4aa7537567d8ea92cc55c135ebdba42cc66a8",
+    "future_audit_revealed": false,
+    "threshold_selected": false,
+    "classifier_fit": false,
+    "composite_score_created": false,
+    "feature_weights_selected": false,
+    "outcomes_used": false,
+    "all_opaque_panels_matched": true
+  },
+  "reference_counts": {
+    "AMBIGUOUS_MULTI_SCALE": 13,
+    "CURRENT_SCALE_DEVELOPING": 61,
+    "CURRENT_SCALE_NOT_DOMINANT": 24,
+    "CURRENT_SCALE_SUPPORTED": 75,
+    "DATA_INVALID_EDGE": 19
+  },
+  "primary_supported_vs_not_dominant_oriented_auc": {
+    "tortuosity_median": 0.9422222222222222,
+    "delta_bic_median": 0.7833333333333333,
+    "sse_improvement_median": 0.7766666666666666,
+    "norm_rmse_median": 0.69,
+    "best_second_gap_median": 0.6366666666666667,
+    "turn_relative_minute_range": 0.5316666666666667,
+    "shape_agreement_max": 0.4666666666666667
+  },
+  "developing_vs_not_dominant_oriented_auc": {
+    "tortuosity_median": 0.9870218579234973,
+    "norm_rmse_median": 0.9596994535519126,
+    "delta_bic_median": 0.6564207650273224,
+    "sse_improvement_median": 0.6359289617486339
+  },
+  "scientific_interpretation": {
+    "raw_diagnostics_have_discriminatory_content": true,
+    "single_monotone_dominance_axis_supported": false,
+    "morphology_and_scale_dominance_must_remain_separate": true,
+    "data_validity_guard_must_remain_separate": true,
+    "phase_shape_agreement_is_primary_discriminator": false,
+    "current_family_solves_data_invalid_guard": false,
+    "next_gate": "STATE_MORPHOLOGY_CONDITIONAL_CALIBRATION_PLUS_SEPARATE_VALIDITY_GUARD_PREREGISTRATION"
+  },
+  "history_guard": {
+    "prior_25_lineage_sha256": "f3473706d0676979df0504876fccdee8c7ff8f103e04af124e7e1f2b25446b7a"
+  },
+  "authority": {
+    "numeric_threshold_selected": false,
+    "R4_selected": false,
+    "one_minute_strategy_admitted": false,
+    "router_pnl": false,
+    "signal": false,
+    "trade": false,
+    "production": false,
+    "private_CLOUD_CURRENT_modified": false
+  }
+}
