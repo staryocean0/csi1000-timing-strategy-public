@@ -45,12 +45,14 @@
     {
       "issue": 352,
       "stage": "S1_DATA_CONSTRUCTION_AND_COMMON_SUPPORT",
-      "status": "PROVENANCE_CODE_BOUND_BINARY_QUALIFICATION_PENDING"
+      "status": "COMPLETED_QUALIFIED_WITH_EXPECTED_UNSUPPORTED_BUCKETS",
+      "formal_run": "35191936364-1",
+      "adjudication": "docs/research/TWO_WAVE_SEGMENTATION_CARRIER_QUALIFICATION_ADJUDICATION_20260917.json"
     },
     {
       "issue": 353,
       "stage": "S2_SCALE_DOMINANCE_DESIGN",
-      "status": "SOURCE_DESIGN_OPEN_EMPIRICAL_WORK_BLOCKED_BY_S1"
+      "status": "SOURCE_DESIGN_OPEN_S1_SATISFIED_REFERENCE_AND_SYNTHETIC_IMPLEMENTATION_NEXT"
     }
   ],
   "future_only": {
@@ -73,5 +75,15 @@
   "frozen_control_plane_blobs": {
     ".github/workflows/public-compute.yml": "4ff3e711c41d94039926d3115a0d90496f59dfdc",
     ".github/workflows/controller-dispatch.yml": "0af89aa3d5056deac95638e574346a800ae4496e"
+  },
+  "S1_completion": {
+    "issue": 352,
+    "decision": "S1_CARRIER_CONSTRUCTION_AND_COMMON_SUPPORT_QUALIFIED",
+    "formal_run": "35191936364-1",
+    "supported_reconstruction_compared": 333978,
+    "supported_reconstruction_mismatches": 0,
+    "common_complete_eligible_days": 1458,
+    "block_for_issue353": "SATISFIED",
+    "does_not_authorize_aliasing_or_dominance_claim": true
   }
 }
