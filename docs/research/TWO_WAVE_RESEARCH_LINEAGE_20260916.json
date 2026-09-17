@@ -210,13 +210,26 @@
       "R4_selected": false,
       "one_minute_strategy_admitted": false,
       "authority_promoted": false
+    },
+    {
+      "order": 15,
+      "name": "scale_dominance_synthetic_diagnostics_v1",
+      "issue": 353,
+      "source_base": "0af9109723cb95e8a2d2eba9b682c63cabbae6a7",
+      "checkpoint": "docs/research/TWO_WAVE_SCALE_DOMINANCE_SYNTHETIC_CHECKPOINT_20260917.json",
+      "result": "docs/research/TWO_WAVE_SCALE_DOMINANCE_SYNTHETIC_RESULT_20260917.json",
+      "status": "SYNTHETIC_DIAGNOSTIC_IMPLEMENTED_NO_MARKET_THRESHOLDS",
+      "real_market_reference_labels": "NOT_YET_FROZEN",
+      "market_run": null,
+      "R4_selected": false,
+      "authority_promoted": false
     }
   ],
   "active_recognizer_remaining_order": [
-    "S1/#352 completed: fixed 1m/5m-offset development carriers are construction-qualified on supported physical time with zero reconstruction mismatches; unsupported buckets remain explicit.",
-    "Issue353/S2 is now the active design lane: implement/falsify causal morphology + current-scale dominance diagnostics on candidate-independent synthetic/reference controls before any market threshold selection.",
-    "Freeze independent graphical reference and ambiguity rules, including all-window denominators, before empirical dominance calibration.",
-    "Only after reference validity may one representation/detector revision or persistence rule be preregistered and formally evaluated.",
+    "S1/#352 is qualified and closed; fixed carrier construction is no longer the active blocker.",
+    "Issue353 S2 diagnostics separate supplied causal morphology hypotheses from path-support evidence; no final dominance threshold exists.",
+    "Next freeze a candidate-independent real-market graphical reference/ambiguity protocol on qualified common physical support before empirical state calibration.",
+    "After reference validity, measure threshold-free score distributions and failure modes; only then preregister persistence/state boundaries.",
     "Faster/slower routing,1m strategy admission,router/PnL and production authority remain downstream and inactive."
   ],
   "other_open_research_threads": [

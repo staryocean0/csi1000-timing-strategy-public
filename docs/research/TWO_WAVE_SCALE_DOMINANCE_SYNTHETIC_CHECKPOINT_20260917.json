@@ -1,0 +1,55 @@
+{
+  "schema_id": "csi1000.scale_dominance_synthetic_checkpoint@1.0",
+  "date": "2026-09-17",
+  "research_issue": 353,
+  "source_base": "0af9109723cb95e8a2d2eba9b682c63cabbae6a7",
+  "status": "SYNTHETIC_DIAGNOSTIC_IMPLEMENTED_NO_MARKET_THRESHOLDS",
+  "diagnostic_role": "SUPPLIED_CAUSAL_MORPHOLOGY_HYPOTHESIS_SUPPORT_NOT_PIVOT_SEARCH",
+  "source_blobs": {
+    "executor/wave_scale_dominance_diagnostics_v1.py": "8c8a07a0f3ed206cf7ec845efd5f4e14b035aea6",
+    "executor/wave_scale_dominance_synthetic_v1.py": "4007e28e2d2947352549fafdf9186146dbf64995",
+    "docs/research/TWO_WAVE_SCALE_DOMINANCE_MONITOR_PROTOCOL_20260917.json": "d41639ea8d6ec542e9c4cecbb27689429a2f2d5a"
+  },
+  "background_models": [
+    "LEVEL",
+    "ONE_LEG_TREND"
+  ],
+  "current_scale_model": "SUPPLIED_TURN_PIECEWISE_LINEAR_HINGE",
+  "reported_components": [
+    "SSE_RATIO_TO_BACKGROUND",
+    "DELTA_R2_VS_BACKGROUND",
+    "DELTA_BIC_VS_BACKGROUND",
+    "NORMALIZED_RMSE",
+    "RESIDUAL_LAG1",
+    "ROBUST_OUTLIER_SCORE",
+    "TORTUOSITY",
+    "SUPPORT"
+  ],
+  "classification_thresholds": null,
+  "persistence_hysteresis": null,
+  "synthetic_findings": {
+    "amplitude_invariance": "low/high amplitude clean waves keep same reference geometry and tortuosity; both are near-perfect supplied-scale fits",
+    "same_range_fast_structure": "same log range as high-amplitude clean wave but tortuosity 12 vs2 and broad-piecewise SSE ratio about0.998",
+    "monotone": "one-leg trend is retained as developing/insufficient rather than forced into a completed wave",
+    "non_sinusoidal": "valid asymmetric wave has strong model improvement despite structured residuals; residual whiteness is not a standalone rejection rule",
+    "mixed": "intermediate model evidence and higher tortuosity are preserved as ambiguity evidence without an automatic state",
+    "jump": "isolated jump is exposed by robust residual-outlier evidence rather than reinterpreted as scale",
+    "near_constant": "numerical-support guard is explicit and not an amplitude-based market routing rule",
+    "transition": "clean prefix evidence degrades after faster suffix while the earlier prefix diagnostic remains unchanged",
+    "offset": "offset diagnostics vary and remain sensitivity-only; no aliasing conclusion"
+  },
+  "real_market_reference_labels": "NOT_YET_FROZEN",
+  "real_market_run": null,
+  "prior_14_lineage_sha256": "13a551e678a9c93f94d53f681b73efdf62d85b22e76113f8e19b6adb38adec9d",
+  "outcomes_used": false,
+  "R4_selected": false,
+  "one_minute_strategy_admitted": false,
+  "router_pnl": false,
+  "production_authority": false,
+  "numerical_stability": {
+    "bic_rmse_floor": 1e-12,
+    "bic_variance_floor": 1e-24,
+    "role": "NUMERIC_ONLY_NOT_MARKET_THRESHOLD",
+    "reason": "Canonicalize sub-1e-12 log-price residual fits across BLAS/platform round-off"
+  }
+}
