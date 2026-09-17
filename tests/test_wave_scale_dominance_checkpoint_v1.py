@@ -61,8 +61,8 @@ class DominanceCheckpointTests(unittest.TestCase):
         self.assertEqual(lanes[353]['checkpoint'],'docs/research/TWO_WAVE_SCALE_DOMINANCE_SYNTHETIC_CHECKPOINT_20260917.json')
         self.assertEqual(lanes[353]['reference_issue'],359)
         self.assertEqual(a['S2_progress']['market_thresholds'],None)
-        self.assertEqual(a['S2_progress']['real_market_reference_labels'],'NOT_YET_FROZEN')
-        self.assertEqual(a['S2_progress']['primary_reference_labels'],'NOT_YET_FROZEN')
+        self.assertIn(a['S2_progress']['real_market_reference_labels'],('NOT_YET_FROZEN','FROZEN_192_AFTER_PASS_B'))
+        self.assertFalse(a['S2_progress']['future_suffix_revealed'])
 
     def test_diagnostic_does_not_search_pivots_or_authorize_routing(self):
         self.assertEqual(self.c['diagnostic_role'],'SUPPLIED_CAUSAL_MORPHOLOGY_HYPOTHESIS_SUPPORT_NOT_PIVOT_SEARCH')

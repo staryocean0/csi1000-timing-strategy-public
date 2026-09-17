@@ -52,14 +52,15 @@
     {
       "issue": 353,
       "stage": "S2_SCALE_DOMINANCE_DESIGN",
-      "status": "V3_BLIND_PACKET_VERIFIED_PRIMARY_PASS_A_NEXT",
+      "status": "PRIMARY_REFERENCE_LABELS_FROZEN_DIAGNOSTIC_MEASUREMENT_REGISTRATION_NEXT",
       "checkpoint": "docs/research/TWO_WAVE_SCALE_DOMINANCE_SYNTHETIC_CHECKPOINT_20260917.json",
       "reference_issue": 359,
       "reference_checkpoint": "docs/research/TWO_WAVE_SCALE_REFERENCE_SOURCE_CHECKPOINT_20260917.json",
       "packet_checkpoint": "docs/research/TWO_WAVE_SCALE_REFERENCE_PACKET_REGISTRATION_CHECKPOINT_20260917.json",
       "reference_amendment_issue": 363,
       "verifier_parity_issue": 366,
-      "annotation_issue": 369
+      "annotation_issue": 369,
+      "annotation_adjudication": "docs/research/TWO_WAVE_SCALE_REFERENCE_ANNOTATION_ADJUDICATION_20260917.json"
     }
   ],
   "future_only": {
@@ -96,12 +97,12 @@
   "S2_progress": {
     "synthetic_diagnostic": "IMPLEMENTED",
     "market_thresholds": null,
-    "real_market_reference_labels": "NOT_YET_FROZEN",
-    "next": "PRIMARY_PASS_A_BLIND_ANNOTATION_ALL_192",
+    "real_market_reference_labels": "FROZEN_192_AFTER_PASS_B",
+    "next": "REGISTER_POST_REFERENCE_DIAGNOSTIC_ONLY_MARKET_MEASUREMENT",
     "reference_protocol": "FROZEN",
     "reference_source_contract": "IMPLEMENTED",
     "market_packet_profile": "V3_VERIFIED",
-    "primary_reference_labels": "NOT_YET_FROZEN",
+    "primary_reference_labels": "FROZEN_192_SHA256_6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be",
     "market_packet_run": "35209602753-1_PASSED",
     "market_packet_v1_failure": "context_causal_flat_fill_before_inventory_or_panels",
     "reference_amendment": "ANCHOR_CONTEXT_ELIGIBILITY_BEFORE_HASH_RANKING",
@@ -111,6 +112,11 @@
     "v2_panel_geometry_independent_check": "NOT_REACHED",
     "reference_verifier_amendment": "ISSUE_366_REASON_TAXONOMY_ONLY",
     "v3_independent_panel_verification": "PASSED_192_576",
-    "future_suffix_revealed": false
+    "future_suffix_revealed": false,
+    "annotation_issue": 369,
+    "pass_a_sha256": "3914201bccf2d1396eeab668a74686a17c055fd170b33bdebbca66c051a721df",
+    "final_reference_labels_sha256": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be",
+    "pass_b_downgrades": 0,
+    "diagnostic_scores_measured": false
   }
 }

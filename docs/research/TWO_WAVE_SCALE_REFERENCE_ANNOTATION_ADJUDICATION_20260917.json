@@ -1,0 +1,66 @@
+{
+  "schema_id": "csi1000.scale_reference_annotation_adjudication@1.0",
+  "date": "2026-09-17",
+  "research_issue": 369,
+  "parent_issue": 359,
+  "packet_run": "35209602753-1",
+  "packet_source_sha": "892cbd196f5d467921f9228e7dda6f2d6eb0f81e",
+  "status": "PRIMARY_REFERENCE_LABELS_FROZEN_PASS_B_COMPLETE",
+  "pass_a": {
+    "rows": 192,
+    "sha256": "3914201bccf2d1396eeab668a74686a17c055fd170b33bdebbca66c051a721df",
+    "b300_exposed_before_seal": false
+  },
+  "pass_b": {
+    "rows": 192,
+    "confirmations": 192,
+    "downgrades": 0,
+    "promotions": 0,
+    "final_sha256": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be"
+  },
+  "final_state_counts": {
+    "CURRENT_SCALE_SUPPORTED": 75,
+    "CURRENT_SCALE_DEVELOPING": 61,
+    "CURRENT_SCALE_NOT_DOMINANT": 24,
+    "AMBIGUOUS_MULTI_SCALE": 13,
+    "INSUFFICIENT_SUPPORT": 0,
+    "DATA_INVALID_EDGE": 19
+  },
+  "final_reason_counts": {
+    "COHERENT_BROAD_TURN": 75,
+    "COHERENT_DEVELOPING_LEG": 61,
+    "REPEATED_SHORTER_STRUCTURE": 24,
+    "MIXED_SCALE_COMPETITION": 13,
+    "DISCONTINUITY_OR_OUTLIER": 19,
+    "MULTIPLE_COMPATIBLE_SEGMENTATIONS": 0,
+    "INSUFFICIENT_GEOMETRIC_INFORMATION": 0,
+    "DATA_SUPPORT_FAILURE": 0
+  },
+  "blindness": {
+    "full_inventory_seen": false,
+    "calendar_date_seen": false,
+    "future_suffix_seen": false,
+    "dominance_scores_seen": false,
+    "candidate_or_R_outputs_seen": false,
+    "outcomes_or_pnl_seen": false
+  },
+  "schema_validation": {
+    "rows_validated": 192,
+    "validator": "wave_scale_reference_sampling_v2.validate_annotation",
+    "passed": true
+  },
+  "public_boundary": "AGGREGATE_COUNTS_AND_HASHES_ONLY_NO_PANEL_LABEL_MAPPING",
+  "private_evidence_location_role": "CONTROLLED_LOCAL_NON_REPOSITORY_EVIDENCE",
+  "reference_labels_frozen": true,
+  "future_audit_can_backfill_labels": false,
+  "diagnostic_scores_measured": false,
+  "numeric_state_thresholds": null,
+  "threshold_selection_authorized_same_run": false,
+  "R4_selected": false,
+  "one_minute_strategy_admitted": false,
+  "router_pnl": false,
+  "production_authority": false,
+  "history_guard": {
+    "prior_23_lineage_sha256": "9e0a6b20f64a8bdc946dd941ce9bbe05a7ec937f5c47ccf2b140001f12f56baa"
+  }
+}

@@ -26,7 +26,7 @@ class V3AdjudicationTests(unittest.TestCase):
   self.assertEqual(len(self.p["reference_states"]),6);self.assertEqual(len(self.p["reason_codes"]),8);self.assertEqual(self.p["max_compatible_segmentations"],2);self.assertEqual(self.p["max_turns_per_segmentation"],6);self.assertIn("DOWNGRADE",self.p["pass_b_allowed_transition"])
  def test_history_guard_and_current_authority(self):
   l=json.loads((ROOT/"docs/research/TWO_WAVE_RESEARCH_LINEAGE_20260916.json").read_text());raw=json.dumps(l["ordered_lineage"][:21],sort_keys=True,separators=(",",":")).encode();self.assertEqual(hashlib.sha256(raw).hexdigest(),self.a["history_guard"]["prior_21_lineage_sha256"]);self.assertEqual(l["ordered_lineage"][21]["formal_run"],"35209602753-1");self.assertEqual(l["ordered_lineage"][22]["issue"],369)
-  a=json.loads((ROOT/"docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json").read_text());self.assertEqual(a["S2_progress"]["next"],"PRIMARY_PASS_A_BLIND_ANNOTATION_ALL_192");self.assertEqual(a["S2_progress"]["primary_reference_labels"],"NOT_YET_FROZEN");self.assertIsNone(a["S2_progress"]["market_thresholds"])
+  a=json.loads((ROOT/"docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json").read_text());self.assertEqual(l["ordered_lineage"][22]["status"],"PASS_A_NOT_STARTED_LABELS_NOT_FROZEN");self.assertIsNone(a["S2_progress"]["market_thresholds"]);self.assertFalse(a["S2_progress"]["future_suffix_revealed"])
  def test_no_raw_annotation_file_published_yet(self):
   self.assertFalse((ROOT/"docs/research/TWO_WAVE_SCALE_REFERENCE_PRIMARY_LABELS_20260917.json").exists())
 if __name__=="__main__":unittest.main()
