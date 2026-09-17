@@ -1,0 +1,106 @@
+{
+  "schema_id": "csi1000.scale_validity_market_protocol@1.0",
+  "date": "2026-09-17",
+  "research_issue": 376,
+  "parent_issue": 353,
+  "profile": "two-wave-scale-validity-diagnostic-measurement-v1",
+  "source_base": "bcd90340691c34e6b97ba72a88367e5bde9d191b",
+  "data_role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_REFERENCE_ONLY",
+  "symbol": "000852.SH",
+  "period": [
+    "2015-01-05",
+    "2020-12-31"
+  ],
+  "external_repository": "staryocean0/factorlab-two-wave-strategy-lab",
+  "external_ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+  "files": {
+    "1m_official.parquet": {
+      "bytes": 12842573,
+      "sha256": "755217afce9dec383e48cd46d591402fa90dc50897abeb3dc7097c9a18a109d4",
+      "git_blob_sha1": "bd2aab00b58c1d31865ed596e99e8f531c5c9ddb",
+      "declared_rows": 350561
+    },
+    "5m_offset_0.parquet": {
+      "bytes": 3351411,
+      "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+      "git_blob_sha1": "30eddf3020d311fb409660a8c296f6309383745f",
+      "declared_rows": 70114
+    },
+    "5m_offset_1.parquet": {
+      "bytes": 3226743,
+      "sha256": "4523615193c177dda2f63a69dd32a2d21e2b15c78283de2d242dd6cd695fc284",
+      "git_blob_sha1": "263c90cf31564885348325db419ee9c85ae4943a",
+      "declared_rows": 67192
+    },
+    "5m_offset_2.parquet": {
+      "bytes": 3223863,
+      "sha256": "737548b04ca93fdbfafda806c5f98051b0521e868d71bcab00f23c062ef8ee82",
+      "git_blob_sha1": "770fd0f2faf987f2bc8acf2c43b73f9f8357461c",
+      "declared_rows": 67192
+    },
+    "5m_offset_3.parquet": {
+      "bytes": 3225315,
+      "sha256": "20a8a4aba19f60946e5781947f658d0b16a2d8758e6318b43c0a0ececdd09282",
+      "git_blob_sha1": "db0b84fda202b280774a55acb141438933183bf9",
+      "declared_rows": 67193
+    },
+    "5m_offset_4.parquet": {
+      "bytes": 3227705,
+      "sha256": "ceba69dce07223ba92204dc4994991eeabcaf62aacfb9869fd9403da43694b1b",
+      "git_blob_sha1": "0820a02b12180d7afba58ba77a150e1f003ac476",
+      "declared_rows": 67191
+    }
+  },
+  "carrier_qualification_run": "35191936364-1",
+  "expected_common_complete_eligible_days": 1458,
+  "fixed_reference": {
+    "packet_run": "35209602753-1",
+    "panels": 192,
+    "blind_inventory_sha256": "5ab33685531475b3ad6cf4f69590c0af0925836679043d24ce2a44127ab7d4d1",
+    "final_reference_labels_sha256": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be",
+    "labels_supplied_to_compute": false,
+    "future_suffix_supplied_to_compute": false
+  },
+  "sample_contract": {
+    "anchor_context_eligible_days": 1414,
+    "anchor_context_exclusions": {
+      "context_causal_flat_fill": 43,
+      "context_support": 1
+    },
+    "same_v2_sampling_namespace": true,
+    "post_score_resampling": false,
+    "contexts_trading_minutes": [
+      300
+    ],
+    "five_5m_offsets": true
+  },
+  "validity_feature_contract": {
+    "one_minute_close_jump_concentration": "max_abs_dlog_close / sum_abs_dlog_close",
+    "one_minute_close_range_concentration": "max_abs_dlog_close / (max_log_close-min_log_close)",
+    "largest_jump_clock": "relative minute of post-jump close bar",
+    "jump_persistence_ratio": "median signed distance from pre-jump level divided by jump magnitude over up to next10 already-observed trading minutes; undefined if fewer than3 post-jump observations",
+    "phase_wick_only_concentration": "max excess log high/low beyond previous/current closes divided by phase OHLC log range",
+    "phase_jump_location_range": "max-min of five phase largest close-jump relative minutes",
+    "phase_jump_location_agreement": "maximum number of phase jump locations within +/-5 trading minutes of one phase location",
+    "distance_to_1m_jump": "min/q25/median/q75/max absolute relative-minute distance for five phase jump locations",
+    "near_constant_handling": "ratios with zero denominator are null; near_constant explicit",
+    "validity_state_assignment": false
+  },
+  "reference_labels_visible_to_compute": false,
+  "future_suffix_used": false,
+  "threshold_selection_in_run": false,
+  "numeric_validity_thresholds": null,
+  "outcomes_used": false,
+  "R4_selected": false,
+  "one_minute_strategy_admitted": false,
+  "router_pnl": false,
+  "new_training": false,
+  "production_authority": false,
+  "limits": {
+    "result_bytes_max": 33554432,
+    "compute_seconds": 600,
+    "verification_seconds": 600,
+    "cpus": 4,
+    "memory_gib": 12
+  }
+}
