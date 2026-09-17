@@ -19,8 +19,10 @@ def _token(prefix,s,e,extra=''):
 def _r2_floor_cases(r2):
     rows=[]
     for w in r2['waves']:
-        if w['duration']!=MIN_LEG:continue
-        rows.append(dict(id=_token('R2FLOOR',w['start_bar'],w['end_bar'],w['wave_id']),kind='R2_MIN_LEG_DURATION_CONTROL',start=w['start_bar'],end=w['end_bar'],wave_id=w['wave_id']))
+        up_leg=w['high_bar']-w['start_bar'];down_leg=w['end_bar']-w['high_bar']
+        # MIN_LEG constrains adjacent pivots, not the full two-leg L-H-L duration.
+        if min(up_leg,down_leg)!=MIN_LEG:continue
+        rows.append(dict(id=_token('R2FLOOR',w['start_bar'],w['end_bar'],w['wave_id']),kind='R2_MIN_LEG_LEG_CONTROL',start=w['start_bar'],end=w['end_bar'],wave_id=w['wave_id'],up_leg_bars=up_leg,down_leg_bars=down_leg))
     return sorted(rows,key=lambda r:r['id'])[:8]
 
 
@@ -60,6 +62,6 @@ def write_pack(directory,bars,candidate,base,r2):
         entries.append(dict(p,file=name,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw)))
     index=dict(schema_id='csi1000.recognizer_R3_visuals@1.0',mode='historical_geometry_with_asof_cutoff',manual_acceptance=False,panels=entries,
                mandatory_former_R1_residual_pages=sum(p['kind']=='FORMER_R1_RESIDUAL' for p in panels),
-               r2_min_leg_control_pages=sum(p['kind']=='R2_MIN_LEG_DURATION_CONTROL' for p in panels))
+               r2_min_leg_control_pages=sum(p['kind']=='R2_MIN_LEG_LEG_CONTROL' for p in panels))
     (directory/'index.json').write_text(json.dumps(index,sort_keys=True)+'\n')
     return index

@@ -5,9 +5,9 @@
   "sources": {
     "wave_recognizer_r3_v1.py": {"git_blob_sha1": "2815b9a74f45066040e042fdf5670e64af469f5c"},
     "wave_recognizer_r3_v1_entry.py": {"git_blob_sha1": "7c03ab2aa8908df28e439d8748f935bcfb9ed791"},
-    "wave_recognizer_r3_v1_verifier.py": {"git_blob_sha1": "326342adb056c2a137bb6df215f844117a78156d"},
+    "wave_recognizer_r3_v1_verifier.py": {"git_blob_sha1": "b4d3d0fa583d64e7839ded1a16945a5dec9ad064"},
     "wave_recognizer_r3_v1_runtime.py": {"git_blob_sha1": "55c2ccff323b5714fcdc6a8a130f2e72100011f6"},
-    "wave_recognizer_r3_v1_visuals.py": {"git_blob_sha1": "6999d66f31af9fd2c99d2d4fd7ee474e9e5894ca"},
+    "wave_recognizer_r3_v1_visuals.py": {"git_blob_sha1": "f8e3245005542a615a63ed688536a2d7ecd19235"},
     "wave_recognizer_r3_v1_protocol.json": {"git_blob_sha1": "00d3fd7fd2d52805b1c99015c2dc12f9e592a23f"},
     "wave_recognizer_r2_v1.py": {"git_blob_sha1": "fa58977b5640e8b29e1a1771b797575180699bc6"},
     "wave_recognizer_r2_v1_visuals.py": {"git_blob_sha1": "605533e9712632cff414b0a8108be893ec9f4323"},

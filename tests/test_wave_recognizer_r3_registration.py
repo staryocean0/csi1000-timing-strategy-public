@@ -108,10 +108,10 @@ class R3RegistrationTests(unittest.TestCase):
             done=subprocess.run([sys.executable,'-I','-c',code,str(stage),json.dumps(package_dirs)],cwd=d,check=True,capture_output=True,text=True,timeout=30)
             self.assertEqual(done.stdout.strip(),'R3_STAGE_IMPORT_PASS')
 
-    def test_source_CI_requires_all_twenty_two_cases_without_skips(self):
+    def test_source_CI_requires_all_twenty_six_cases_without_skips(self):
         text=(ROOT/'.github/workflows/wave-recognizer-r3-source-tests.yml').read_text()
         self.assertIn("pattern='test_wave_recognizer_r3*.py'",text)
-        self.assertIn('result.testsRun >= 22',text)
+        self.assertIn('result.testsRun >= 26',text)
         self.assertIn('not result.skipped',text)
         self.assertIn('executor/wave_recognizer_r3_v1_protocol.json',text)
 

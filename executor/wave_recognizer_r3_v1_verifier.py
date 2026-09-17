@@ -106,6 +106,17 @@ def verify(bars,out):
  from wave_recognizer_r3_v1_visuals import plan,render
  index=json.loads((out/'visuals'/'index.json').read_text());planned=plan(bars,candidate,base,r2)
  if len(planned)!=len(index['panels']) or index.get('manual_acceptance') is not False:raise ValueError('visual plan drift')
+ # Independently require the preregistered R2 short-leg controls. Full wave
+ # duration cannot equal MIN_LEG because a wave contains two qualifying legs.
+ floor=[]
+ for w in r2['waves']:
+  if min(w['high_bar']-w['start_bar'],w['end_bar']-w['high_bar'])==MIN_LEG:
+   key=hashlib.sha256(f"R2FLOOR:{w['start_bar']}:{w['end_bar']}:{w['wave_id']}".encode()).hexdigest()[:16]
+   floor.append((key,w['wave_id']))
+ required={wave_id for key,wave_id in sorted(floor)[:8]}
+ controls=[p for p in index['panels'] if p['kind']=='R2_MIN_LEG_LEG_CONTROL']
+ if {p.get('wave_id') for p in controls}!=required:raise ValueError('missing R2 component-leg control')
+ if index.get('r2_min_leg_control_pages')!=len(controls):raise ValueError('R2 control count drift')
  # Five former-R1 residual pages are a fixed requirement of the formal 70,114-bar carrier,
  # not a property that arbitrary synthetic test paths are expected to reproduce.
  if len(bars)==70114 and index.get('mandatory_former_R1_residual_pages',0)<5:raise ValueError('missing mandatory former R1 evidence')
