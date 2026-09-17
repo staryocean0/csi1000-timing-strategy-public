@@ -11,6 +11,7 @@ import unittest
 from unittest.mock import patch
 import yaml
 from r3_clock_registration_support import PROFILE,BROKER,strip_audit_workflow,strip_audit_controller
+from tests.segmentation_carrier_registration_support import strip_workflow as strip_s1_workflow, strip_controller as strip_s1_controller
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'executor'))
 import wave_r3_clock_broker_v1 as broker
@@ -28,13 +29,13 @@ class RegistrationTests(unittest.TestCase):
 
     def test_workflow_exact_append_only(self):
         text=(ROOT/'.github/workflows/public-compute.yml').read_text()
-        self.assertEqual(blob(strip_audit_workflow(text)),PARENT_WORKFLOW)
+        self.assertEqual(blob(strip_audit_workflow(strip_s1_workflow(text))),PARENT_WORKFLOW)
         doc=self.workflow();self.assertEqual(set(doc['on']),{'workflow_dispatch'})
         self.assertEqual(doc['on']['workflow_dispatch']['inputs']['profile']['options'].count(PROFILE),1)
 
     def test_controller_exact_append_only(self):
         text=(ROOT/'.github/workflows/controller-dispatch.yml').read_text()
-        self.assertEqual(blob(strip_audit_controller(text)),PARENT_CONTROLLER)
+        self.assertEqual(blob(strip_audit_controller(strip_s1_controller(text))),PARENT_CONTROLLER)
         self.assertNotIn('FACTORLAB_PRIVATE_TOKEN',text)
         self.assertEqual(text.count('actions/workflows/public-compute.yml/dispatches'),1)
 

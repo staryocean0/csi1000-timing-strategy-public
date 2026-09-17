@@ -32,10 +32,13 @@ class SourceClosureTests(unittest.TestCase):
 
     def test_existing_control_plane_and_credentials_unchanged(self):
         m=json.loads(MANIFEST.read_text())
+        from tests.segmentation_carrier_registration_support import strip_workflow as strip_s1_workflow, strip_controller as strip_s1_controller
         from r3_clock_registration_support import strip_audit_workflow,strip_audit_controller
         for path,sha in m['frozen_control_plane_blobs'].items():
+            current=(ROOT/path).read_text()
+            current=strip_s1_controller(current) if 'controller' in path else strip_s1_workflow(current)
             restore=strip_audit_controller if 'controller' in path else strip_audit_workflow
-            raw=restore((ROOT/path).read_text()).encode()
+            raw=restore(current).encode()
             self.assertEqual(hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest(),sha)
         self.assertEqual((ROOT/'.github/workflows/public-compute.yml').read_text().count('secrets.FACTORLAB_PRIVATE_TOKEN'),2)
 
