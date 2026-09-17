@@ -69,7 +69,7 @@ class ReferenceCheckpointTests(unittest.TestCase):
     def test_independent_verifier_is_explicit(self):
         self.assertTrue(self.c['verification']['sampler_and_verifier_independent_implementations'])
         self.assertTrue(self.c['verification']['deterministic_svg_renderer'])
-        self.assertEqual(self.c['verification']['synthetic_contract_tests'],25)
+        self.assertEqual(self.c['verification']['synthetic_contract_tests'],26)
         self.assertEqual(self.c['verification']['synthetic_contract_skips'],0)
 
 if __name__=='__main__':unittest.main()

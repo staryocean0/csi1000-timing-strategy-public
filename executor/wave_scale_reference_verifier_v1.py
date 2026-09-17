@@ -15,6 +15,7 @@ ANCHORS=("11:00","14:30")
 CONTEXTS=(150,300)
 FUTURE=60
 DATE_RE=re.compile(r"^20\d{2}-\d{2}-\d{2}$")
+DATE_ANY_RE=re.compile(r"20\d{2}-\d{2}-\d{2}")
 PANEL_RE=re.compile(r"^[0-9a-f]{20}$")
 
 
@@ -81,7 +82,7 @@ def verify_inventories(eligible_days,full,blind):
     target=expected_blind(expected)
     if blind!=target:raise ValueError('blind inventory mismatch')
     text=json.dumps(blind,sort_keys=True)
-    if DATE_RE.search(text):raise ValueError('date leaked')
+    if DATE_ANY_RE.search(text):raise ValueError('date leaked')
     forbidden=('score','diagnostic','pnl','outcome','r1','r2','r3','timestamp','calendar')
     if any(token in text.lower() for token in forbidden):raise ValueError('candidate or outcome leaked')
     return {'status':'passed','panels':192,'quarters':24,'days_per_quarter':8}
@@ -110,6 +111,6 @@ def verify_svg(svg,panel_id,kind):
     lower=svg.lower()
     for token in ('diagnostic','score','pnl','outcome','r1','r2','r3'):
         if token in lower:raise ValueError('forbidden svg content')
-    if re.search(r'20\d{2}-\d{2}-\d{2}',svg):raise ValueError('date in svg')
+    if DATE_ANY_RE.search(svg):raise ValueError('date in svg')
     if '<svg' not in svg or '</svg>' not in svg:raise ValueError('svg structure')
     return True

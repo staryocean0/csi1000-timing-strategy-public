@@ -64,6 +64,11 @@ class ReferenceVisualContractTests(unittest.TestCase):
         for offset in range(5):self.assertIn(f'offset{offset}',svg)
         self.assertNotRegex(svg,r'20\d{2}-\d{2}-\d{2}')
 
+    def test_embedded_calendar_date_is_rejected_by_verifier(self):
+        panel=self.blind[3]['panel_id']
+        svg=f'<svg><text>{panel} 2020-12-31</text></svg>'
+        with self.assertRaises(ValueError):v.verify_svg(svg,panel,'shape')
+
     def test_invalid_phase_contract_fails_closed(self):
         panel=self.blind[3]['panel_id'];p=phases();del p['offset4']
         with self.assertRaises(ValueError):g.render_phase_svg(panel,p)
