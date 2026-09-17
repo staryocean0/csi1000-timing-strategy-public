@@ -86,6 +86,7 @@ jobs:
        github.event.issue.title == 'controller: two-wave-scale-reference-blind-packet-v3' ||
        github.event.issue.title == 'controller: two-wave-scale-dominance-diagnostic-measurement-v1' ||
        github.event.issue.title == 'controller: two-wave-scale-validity-diagnostic-measurement-v1' ||
+       github.event.issue.title == 'controller: two-wave-scale-diagnostic-family-measurement-v2' ||
        github.event.issue.title == 'controller: overnight-carrier-materialization-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-dev-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-blackbox-v1' ||
@@ -264,6 +265,9 @@ jobs:
               ;;
             'controller: two-wave-scale-validity-diagnostic-measurement-v1')
               profile='two-wave-scale-validity-diagnostic-measurement-v1'
+              ;;
+            'controller: two-wave-scale-diagnostic-family-measurement-v2')
+              profile='two-wave-scale-diagnostic-family-measurement-v2'
               ;;
             'controller: two-wave-blindspot-relocation-v1')
               profile='two-wave-blindspot-relocation-v1'
