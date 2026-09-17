@@ -16,11 +16,13 @@ permissions:
 jobs:
   tests:
     runs-on: ubuntu-24.04
-    timeout-minutes: 4
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+      - name: Install public test dependencies
+        run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt
       - name: Run diagnostic-family v2 contracts
         run: |
           python3 -m unittest \
