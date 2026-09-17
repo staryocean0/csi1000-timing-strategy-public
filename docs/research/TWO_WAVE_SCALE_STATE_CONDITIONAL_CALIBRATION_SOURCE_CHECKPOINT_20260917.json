@@ -1,0 +1,21 @@
+{
+  "algorithm_source": "executor/wave_scale_state_conditional_calibration_v1.py",
+  "date": "2026-09-17",
+  "full_192_candidate_fit": false,
+  "numeric_thresholds_selected": false,
+  "parent_issue": 353,
+  "prior_27_lineage_sha256": "e51d6f64d014b762a538b4803705631db46a9e4372aec74da1fa479a1d725176",
+  "production_authority": false,
+  "protocol": "docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_PROTOCOL_20260917.json",
+  "real_oof_fit_run": false,
+  "research_issue": 376,
+  "schema_id": "csi1000.scale_state_conditional_calibration_source_checkpoint@1.0",
+  "source_base": "1458a282832d8a077d3db3cb85eeeaf0f314be49",
+  "status": "CALIBRATION_ENGINE_SOURCE_READY_REAL_OOF_NOT_RUN",
+  "synthetic_failures": 0,
+  "synthetic_tests": 12,
+  "validity_delivery_status": "archive_uploaded_and_verified",
+  "validity_diagnostics_sha256": "5e7199a3ae42816751a353d7ca6d4fdbd11281e24666fa6de43e499fc42931e8",
+  "validity_formal_run": "35221426711-1",
+  "validity_receipt_status": "passed"
+}

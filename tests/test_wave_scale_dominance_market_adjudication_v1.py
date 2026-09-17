@@ -51,8 +51,8 @@ class MarketAdjudicationTests(unittest.TestCase):
 
     def test_authority_advances_only_to_separate_calibration_gate(self):
         lane=next(x for x in self.auth['active_lanes'] if x['issue']==353);s=self.auth['S2_progress']
-        self.assertIn(lane['status'],{'DIAGNOSTIC_MEASUREMENT_AND_THRESHOLD_FREE_JOIN_COMPLETED_CALIBRATION_GATE_NEXT','VALIDITY_DIAGNOSTIC_PROFILE_SOURCE_READY_NOT_RUN'})
-        self.assertIn(s['next'],{'REGISTER_STATE_MORPHOLOGY_CONDITIONAL_CALIBRATION_AND_VALIDITY_GUARD_GATE','MERGE_VALIDITY_PROFILE_THEN_FORMAL_LABEL_BLIND_MEASUREMENT'})
+        self.assertIn(lane['status'],{'DIAGNOSTIC_MEASUREMENT_AND_THRESHOLD_FREE_JOIN_COMPLETED_CALIBRATION_GATE_NEXT','VALIDITY_DIAGNOSTIC_PROFILE_SOURCE_READY_NOT_RUN','VALIDITY_MEASUREMENT_PASSED_CALIBRATION_ENGINE_SOURCE_READY_NOT_FIT'})
+        self.assertIn(s['next'],{'REGISTER_STATE_MORPHOLOGY_CONDITIONAL_CALIBRATION_AND_VALIDITY_GUARD_GATE','MERGE_VALIDITY_PROFILE_THEN_FORMAL_LABEL_BLIND_MEASUREMENT','MERGE_CALIBRATION_ENGINE_THEN_RUN_FROZEN_LOYO_OOF'})
         self.assertTrue(s['diagnostic_scores_measured']);self.assertFalse(s['single_composite_score_selected'])
         self.assertIsNone(s['market_thresholds']);self.assertFalse(s['future_suffix_revealed'])
 

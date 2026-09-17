@@ -75,8 +75,11 @@ class ValidityMarketRegistrationTests(unittest.TestCase):
     def test_authority_is_registered_not_run(self):
         a = json.loads((ROOT / "docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json").read_text())
         lane = next(x for x in a["active_lanes"] if x["issue"] == 353)
-        self.assertEqual(lane["status"], "VALIDITY_DIAGNOSTIC_PROFILE_SOURCE_READY_NOT_RUN")
-        self.assertFalse(a["S2_progress"]["validity_diagnostics_measured"])
+        self.assertIn(lane["status"], {"VALIDITY_DIAGNOSTIC_PROFILE_SOURCE_READY_NOT_RUN","VALIDITY_MEASUREMENT_PASSED_CALIBRATION_ENGINE_SOURCE_READY_NOT_FIT"})
+        if lane["status"] == "VALIDITY_DIAGNOSTIC_PROFILE_SOURCE_READY_NOT_RUN":
+            self.assertFalse(a["S2_progress"]["validity_diagnostics_measured"])
+        else:
+            self.assertTrue(a["S2_progress"]["validity_diagnostics_measured"])
         self.assertIsNone(a["S2_progress"]["numeric_validity_thresholds"])
         self.assertIsNone(a["S2_progress"]["market_thresholds"])
 
