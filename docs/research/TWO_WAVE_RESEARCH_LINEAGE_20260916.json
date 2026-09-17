@@ -223,13 +223,30 @@
       "market_run": null,
       "R4_selected": false,
       "authority_promoted": false
+    },
+    {
+      "order": 16,
+      "name": "scale_reference_protocol_and_source_contract_v1",
+      "issue": 359,
+      "parent_issue": 353,
+      "source_base": "df24c96be5e659e920716f30c05f681987bfc8df",
+      "protocol": "docs/research/TWO_WAVE_SCALE_REFERENCE_PROTOCOL_20260917.json",
+      "checkpoint": "docs/research/TWO_WAVE_SCALE_REFERENCE_SOURCE_CHECKPOINT_20260917.json",
+      "status": "REFERENCE_PROTOCOL_AND_SOURCE_CONTRACT_IMPLEMENTED_NO_MARKET_PACKET",
+      "primary_panels": 192,
+      "market_packet_run": null,
+      "labels_frozen": false,
+      "diagnostic_scores_measured": false,
+      "numeric_gate_selected": false,
+      "R4_selected": false,
+      "authority_promoted": false
     }
   ],
   "active_recognizer_remaining_order": [
-    "S1/#352 is qualified and closed; fixed carrier construction is no longer the active blocker.",
-    "Issue353 S2 diagnostics separate supplied causal morphology hypotheses from path-support evidence; no final dominance threshold exists.",
-    "Next freeze a candidate-independent real-market graphical reference/ambiguity protocol on qualified common physical support before empirical state calibration.",
-    "After reference validity, measure threshold-free score distributions and failure modes; only then preregister persistence/state boundaries.",
+    "#359 reference protocol/source contract is frozen before market-score measurement; primary sample is candidate-independent and amplitude-blinded.",
+    "Next register one fixed standard packet-generation profile on the #352-qualified carriers; generate/verify192 blind reference panels without dominance diagnostics.",
+    "Freeze the192 causal reference labels/ambiguity annotations before any market score distribution is opened.",
+    "Then measure threshold-free #353 diagnostics by frozen reference label in a separate run; do not select thresholds in that measurement run.",
     "Faster/slower routing,1m strategy admission,router/PnL and production authority remain downstream and inactive."
   ],
   "other_open_research_threads": [

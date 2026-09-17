@@ -1,0 +1,31 @@
+name: Two-Wave candidate-independent reference source tests
+on:
+  pull_request:
+    branches: [cloud-workspace-v1]
+    paths:
+      - '.github/workflows/wave-scale-reference-source-tests.yml'
+      - 'executor/wave_scale_reference_*_v1.py'
+      - 'tests/test_wave_scale_reference_*_v1.py'
+      - 'docs/research/TWO_WAVE_SCALE_REFERENCE_*'
+      - 'docs/research/TWO_WAVE_RESEARCH_LINEAGE_20260916.json'
+      - 'docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json'
+permissions:
+  contents: read
+jobs:
+  source-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt
+      - name: Candidate-independent sampling, blindness, visuals and verifier
+        run: |
+          python3 - <<'PY'
+          import sys,unittest
+          suite=unittest.defaultTestLoader.discover('tests',pattern='test_wave_scale_reference_*_v1.py')
+          result=unittest.TextTestRunner(verbosity=2).run(suite)
+          print(f'run={result.testsRun} skipped={len(result.skipped)}')
+          sys.exit(0 if result.wasSuccessful() and not result.skipped and result.testsRun >= 35 else 1)
+          PY
