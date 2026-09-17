@@ -1,0 +1,90 @@
+{
+  "schema_id": "csi1000.current_scale_dominance_design@1.0",
+  "date": "2026-09-17",
+  "research_issue": 353,
+  "parent_issue": 350,
+  "status": "SOURCE_DESIGN_NO_EMPIRICAL_THRESHOLDS",
+  "blocked_on_issue352_for_market_evaluation": true,
+  "goal": "At each bar close, separately track graphical morphology and whether the current scale is a credible dominant explanation of the observed path.",
+  "morphology_contract": {
+    "continues_when_dominance_rejected": true,
+    "past_events_rewritten": false,
+    "future_backfill": false
+  },
+  "dominance_states": [
+    "DOMINANT",
+    "DEGRADING",
+    "NOT_DOMINANT",
+    "AMBIGUOUS",
+    "INSUFFICIENT_SUPPORT"
+  ],
+  "amplitude_branch_rule": false,
+  "candidate_model_comparisons": {
+    "same_causal_window_required": true,
+    "background": [
+      "LEVEL",
+      "ONE_LEG_TREND"
+    ],
+    "current_scale": [
+      "CONSTRAINED_PIECEWISE_CURRENT_SCALE_GEOMETRY"
+    ],
+    "diagnostic_only": [
+      "SIMPLE_HARMONIC_REFERENCE"
+    ],
+    "quantities": [
+      "SSE_RATIO_TO_BACKGROUND",
+      "DELTA_R2_VS_BACKGROUND",
+      "NORMALIZED_RESIDUAL",
+      "RESIDUAL_STRUCTURE",
+      "SUPPORT_LENGTH",
+      "MODEL_DOF"
+    ],
+    "numeric_thresholds": null,
+    "frequency_or_pivot_search_from_four_R3_failures": false
+  },
+  "online_contract": {
+    "bar_close_causal_only": true,
+    "emit": [
+      "state",
+      "score_components",
+      "reason",
+      "support",
+      "known_from"
+    ],
+    "single_bar_flip_without_persistence": false,
+    "persistence_or_hysteresis_values": null
+  },
+  "minimum_synthetic_controls": [
+    "LOW_AMPLITUDE_CLEAN_SCALE",
+    "HIGH_AMPLITUDE_CLEAN_SCALE",
+    "SAME_RANGE_FAST_OSCILLATION",
+    "MONOTONE_UNFINISHED_LEG",
+    "NON_SINUSOIDAL_VALID_WAVE",
+    "MIXED_SCALES",
+    "JUMP_OUTLIER",
+    "NEAR_CONSTANT",
+    "SCALE_TRANSITION",
+    "OFFSET_AND_FUTURE_SUFFIX"
+  ],
+  "future_reference": {
+    "candidate_independent": true,
+    "multiple_compatible_segmentations_allowed": true,
+    "all_windows_denominator": true,
+    "metrics": [
+      "MISSED_TURNS",
+      "EXTRA_TURNS",
+      "SPLIT_MERGE",
+      "GEOMETRY_FIDELITY",
+      "CAUSAL_DELAY",
+      "NOT_DOMINANT_FALSE_ALARM",
+      "MISSED_NON_DOMINANCE",
+      "AMBIGUITY_OR_INSUFFICIENT_SHARE",
+      "RECOVERY_LATENCY"
+    ]
+  },
+  "routing_after_not_dominant": "OUT_OF_SCOPE_SEPARATE_LATER_MULTISCALE_PROBLEM",
+  "outcomes_used": false,
+  "one_minute_strategy_admitted": false,
+  "router_pnl": false,
+  "production_authority": false
+}

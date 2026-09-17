@@ -1,0 +1,77 @@
+{
+  "schema_id": "csi1000.two_wave_thread_authority@2.0",
+  "date": "2026-09-17",
+  "public_source_base": "8700bbfd15c872c5f06bf8967a00eecdc95e0136",
+  "thread": "TWO_WAVE_ACCURATE_SEGMENTATION",
+  "status": "SEGMENTATION_SCALE_DOMINANCE_MEASUREMENT_PHASE",
+  "purpose": "Accurate causal graphical segmentation with explicit current-scale dominance/confidence, not forced cycle coverage.",
+  "does_not_replace_project_CLOUD_CURRENT": true,
+  "historical_status": {
+    "issue321": "OPEN_HISTORICAL_DIAGNOSTIC_GATE_NOT_PASSED",
+    "R1": "FAILED_READINESS_WITH_FIVE_SUBSTANTIAL_RESIDUALS",
+    "R2": "FAILED_OVERSEGMENTATION",
+    "R3": "FAILED_LEGACY_READINESS_WITH_FOUR_Q4_GAPS_AND_LATENCY",
+    "issue345": "COMPLETED_R3_CLOCK_AUDIT",
+    "retroactive_relabeling": false
+  },
+  "phase_transition": {
+    "source_issue": 350,
+    "S0_merge": "8700bbfd15c872c5f06bf8967a00eecdc95e0136",
+    "reason": "User clarified that segmentation accuracy and whether the current scale is a credible dominant representation are the goal; amplitude-only residual rules are not the target truth definition.",
+    "old_optimization_target_retired": "FILL_BLIND_MASK_UNTIL_ALMOST_ONLY_Q1_REMAINS",
+    "new_research_target": "MORPHOLOGY_EXTRACTION_PLUS_CURRENT_SCALE_DOMINANCE_MONITOR",
+    "old_results_preserved": true,
+    "new_numeric_acceptance_gate": null
+  },
+  "separate_objects": {
+    "morphology": [
+      "CONFIRMED_WAVE",
+      "DEVELOPING_UP_LEG",
+      "DEVELOPING_DOWN_LEG",
+      "NO_COMPLETED_WAVE_YET",
+      "RESET_OR_DATA_BOUNDARY"
+    ],
+    "scale_dominance": [
+      "DOMINANT",
+      "DEGRADING",
+      "NOT_DOMINANT",
+      "AMBIGUOUS",
+      "INSUFFICIENT_SUPPORT"
+    ],
+    "amplitude": "DESCRIPTIVE_ONLY_NOT_AUTOMATIC_ACCEPT_OR_REJECT",
+    "rejection_semantics": "Reject current-scale representation/adoption only; do not delete bars, rewrite pivots, silently reset morphology, or remove windows from evaluation."
+  },
+  "active_lanes": [
+    {
+      "issue": 352,
+      "stage": "S1_DATA_CONSTRUCTION_AND_COMMON_SUPPORT",
+      "status": "PROVENANCE_CODE_BOUND_BINARY_QUALIFICATION_PENDING"
+    },
+    {
+      "issue": 353,
+      "stage": "S2_SCALE_DOMINANCE_DESIGN",
+      "status": "SOURCE_DESIGN_OPEN_EMPIRICAL_WORK_BLOCKED_BY_S1"
+    }
+  ],
+  "future_only": {
+    "faster_or_slower_scale_routing": "NOT_IN_CURRENT_TOOL",
+    "high_amplitude_means_drill_down": false,
+    "low_amplitude_means_drill_up": false,
+    "router_pnl": false,
+    "one_minute_strategy_admitted": false
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  },
+  "history_guard": {
+    "prior_12_lineage_sha256": "6cdff544b5561fb17eb411f0df9b35b604aa422bfc378322c452c8222469ddd7",
+    "R3_adjudication_blob": "91b3747784838accd8b424135ae5e4636295de35"
+  },
+  "frozen_control_plane_blobs": {
+    ".github/workflows/public-compute.yml": "4ff3e711c41d94039926d3115a0d90496f59dfdc",
+    ".github/workflows/controller-dispatch.yml": "0af89aa3d5056deac95638e574346a800ae4496e"
+  }
+}

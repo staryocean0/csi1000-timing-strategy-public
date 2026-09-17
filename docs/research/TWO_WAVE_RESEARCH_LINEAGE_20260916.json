@@ -175,14 +175,31 @@
       "R4_selected": false,
       "new_numeric_gate_selected": false,
       "authority_promoted": false
+    },
+    {
+      "order": 13,
+      "name": "segmentation_scale_dominance_phase_opened",
+      "issue": 350,
+      "data_lane_issue": 352,
+      "design_lane_issue": 353,
+      "source_merge": "8700bbfd15c872c5f06bf8967a00eecdc95e0136",
+      "thread_authority": "docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json",
+      "data_provenance_checkpoint": "docs/research/TWO_WAVE_DATAHUB_OFFSET_S1_PROVENANCE_CHECKPOINT_20260917.json",
+      "dominance_protocol": "docs/research/TWO_WAVE_SCALE_DOMINANCE_MONITOR_PROTOCOL_20260917.json",
+      "decision": "MORPHOLOGY_AND_SCALE_DOMINANCE_SEPARATED_BEFORE_FURTHER_DETECTOR_TUNING",
+      "historical_issue321_passed": false,
+      "R3_reclassified": false,
+      "new_numeric_gate_selected": false,
+      "R4_selected": false,
+      "authority_promoted": false
     }
   ],
   "active_recognizer_remaining_order": [
-    "Issue350 replaces immediate R4 patching with measurement/definition qualification; historical R3 failure is unchanged.",
-    "S1: verify fixed DataHub construction provenance, native constituents, timezones, session edges and common physical support for existing 1m/5m offset products.",
-    "S2: freeze independent graphical references and ambiguity rules; report missed/extra/merged/split structure, live-state coverage and latency on all windows.",
-    "S3: only after S1/S2 choose one justified representation or detector change and preregister its empirical evaluation.",
-    "No automatic low/high-amplitude exemption, no 1m strategy admission, router/PnL or production authority."
+    "Current thread authority: accurate causal graphical segmentation with morphology and current-scale dominance kept separate; historical R3 failure remains unchanged.",
+    "Issue352/S1: qualify DataHub V3 construction, six fixed development binaries and common physical-time support before empirical offset comparisons.",
+    "Issue353/S2: implement and falsify a causal dominance monitor on synthetic/reference controls; no market thresholds before S1 and independent references.",
+    "After S1/S2, freeze candidate-independent reference segmentation/ambiguity rules and only then choose one representation or detector revision.",
+    "Faster/slower scale routing,1m strategy admission,router/PnL and production authority remain downstream and inactive."
   ],
   "other_open_research_threads": [
     "Issue 274 real multiscale single-wave/nine-grid acceptance remains pending",

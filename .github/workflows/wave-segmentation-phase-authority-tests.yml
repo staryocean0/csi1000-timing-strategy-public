@@ -1,0 +1,30 @@
+name: Two-Wave segmentation phase authority tests
+on:
+  pull_request:
+    branches: [cloud-workspace-v1]
+    paths:
+      - '.github/workflows/wave-segmentation-phase-authority-tests.yml'
+      - 'docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.*'
+      - 'docs/research/TWO_WAVE_DATAHUB_OFFSET_S1_PROVENANCE_CHECKPOINT_20260917.*'
+      - 'docs/research/TWO_WAVE_SCALE_DOMINANCE_MONITOR_PROTOCOL_20260917.*'
+      - 'docs/research/TWO_WAVE_RESEARCH_LINEAGE_20260916.json'
+      - 'tests/test_wave_segmentation_phase_authority_v1.py'
+permissions:
+  contents: read
+jobs:
+  source-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Authority/provenance contracts only
+        run: |
+          python3 - <<'PY'
+          import sys, unittest
+          suite=unittest.defaultTestLoader.discover('tests',pattern='test_wave_segmentation_phase_authority_v1.py')
+          result=unittest.TextTestRunner(verbosity=2).run(suite)
+          print(f'run={result.testsRun} skipped={len(result.skipped)}')
+          sys.exit(0 if result.wasSuccessful() and not result.skipped and result.testsRun >= 15 else 1)
+          PY
