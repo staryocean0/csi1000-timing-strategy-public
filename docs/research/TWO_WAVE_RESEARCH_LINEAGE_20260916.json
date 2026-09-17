@@ -376,6 +376,21 @@
       "numeric_gate_selected": false,
       "R4_selected": false,
       "authority_promoted": false
+    },
+    {
+      "order": 25,
+      "name": "post_reference_scale_dominance_diagnostic_market_measurement_registration",
+      "issue": 372,
+      "parent_issue": 353,
+      "source_base": "9ef492faab39bc2e2e7acd184243835ae5687a8a",
+      "profile": "two-wave-scale-dominance-diagnostic-measurement-v1",
+      "status": "PROFILE_SOURCE_READY_NOT_RUN",
+      "reference_labels_sha256": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be",
+      "labels_visible_to_compute": false,
+      "diagnostic_scores_measured": false,
+      "threshold_selected": false,
+      "formal_run": null,
+      "authority_promoted": false
     }
   ],
   "active_recognizer_remaining_order": [

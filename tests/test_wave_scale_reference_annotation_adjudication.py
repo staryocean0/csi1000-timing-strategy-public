@@ -42,8 +42,8 @@ class ReferenceAnnotationAdjudicationTests(unittest.TestCase):
 
     def test_authority_moves_to_diagnostic_measurement_only(self):
         lane=next(x for x in self.u['active_lanes'] if x['issue']==353)
-        self.assertEqual(lane['status'],'PRIMARY_REFERENCE_LABELS_FROZEN_DIAGNOSTIC_MEASUREMENT_REGISTRATION_NEXT')
-        self.assertEqual(self.u['S2_progress']['next'],'REGISTER_POST_REFERENCE_DIAGNOSTIC_ONLY_MARKET_MEASUREMENT')
+        self.assertIn(lane['status'],{'PRIMARY_REFERENCE_LABELS_FROZEN_DIAGNOSTIC_MEASUREMENT_REGISTRATION_NEXT','DIAGNOSTIC_MEASUREMENT_PROFILE_SOURCE_READY_NOT_RUN'})
+        self.assertIn(self.u['S2_progress']['next'],{'REGISTER_POST_REFERENCE_DIAGNOSTIC_ONLY_MARKET_MEASUREMENT','MERGE_PROFILE_THEN_FORMAL_DIAGNOSTIC_ONLY_MARKET_MEASUREMENT'})
         self.assertIn('FROZEN_192',self.u['S2_progress']['primary_reference_labels'])
 
     def test_no_threshold_or_detector_promotion(self):
