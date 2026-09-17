@@ -1,0 +1,37 @@
+name: R3 clock evidence audit source tests
+on:
+  pull_request:
+    branches: [cloud-workspace-v1]
+    paths:
+      - '.github/workflows/r3-clock-audit-source-tests.yml'
+      - 'executor/wave_r3_clock*'
+      - 'executor/wave_recognizer_r3_v1*'
+      - 'executor/wave_recognizer_r2_v1*'
+      - 'executor/wave_recognizer_r1_v1*'
+      - 'executor/wave_multiscale_dual_gates_v2.py'
+      - 'executor/wave_dual_gate_hierarchy_v1.py'
+      - 'executor/wave_dual_gate_probe_v1.py'
+      - 'executor/two_wave_v0800_scale_map.py'
+      - 'executor/two_wave_v0800_semantics.py'
+      - 'tests/test_wave_r3_clock*'
+      - 'docs/research/TWO_WAVE_R3_CLOCK_AUDIT*'
+permissions:
+  contents: read
+jobs:
+  source-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt
+      - name: Synthetic evidence contracts only
+        run: |
+          python3 - <<'PYTEST'
+          import sys,unittest
+          suite=unittest.defaultTestLoader.discover('tests',pattern='test_wave_r3_clock*.py')
+          result=unittest.TextTestRunner(verbosity=2).run(suite)
+          print(f'run={result.testsRun} skipped={len(result.skipped)}')
+          sys.exit(0 if result.wasSuccessful() and not result.skipped and result.testsRun >= 35 else 1)
+          PYTEST
