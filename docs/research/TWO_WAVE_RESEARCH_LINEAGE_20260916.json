@@ -482,6 +482,25 @@
       "fresh_oos_claim": false,
       "R4_selected": false,
       "authority_promoted": false
+    },
+    {
+      "order": 31,
+      "name": "diagnostic_family_v2_label_blind_market_measurement_adjudication",
+      "issue": 381,
+      "parent_issue": 376,
+      "root_issue": 353,
+      "formal_run": "35237394015-1",
+      "source_merge": "a6982e4e8b6dbc77a8d0d5d8e23069c34cbc30ef",
+      "diagnostics_sha256": "a0b71c19591a83bf2ee7cc24eaecaea367d0d3b3772a0e41c03d7c361b5fa659",
+      "status": "DIAGNOSTIC_FAMILY_V2_LABEL_BLIND_MEASUREMENT_PASSED",
+      "labels_visible_to_compute": false,
+      "labels_joined": false,
+      "threshold_selected": false,
+      "ambiguity_region_selected": false,
+      "full_192_fit_performed": false,
+      "fresh_oos_claim": false,
+      "R4_selected": false,
+      "authority_promoted": false
     }
   ],
   "other_open_research_threads": [

@@ -35,8 +35,8 @@ class LoyoAdjudicationTests(unittest.TestCase):
   self.assertEqual(k['unique_rule_counts'],{'validity':5,'morphology':1,'turning_dominance':2,'developing_dominance':3})
  def test_authority_moves_to_revision_not_candidate_fit(self):
   lane=next(x for x in self.u['active_lanes'] if x['issue']==353);s=self.u['S2_progress']
-  self.assertIn(lane['status'],{'FIRST_REAL_LOYO_FAILED_DIAGNOSTIC_FAMILY_REVISION_REQUIRED','DIAGNOSTIC_FAMILY_V2_PROFILE_SOURCE_READY_NOT_RUN'})
-  self.assertIn(s['next'],{'PREREGISTER_DIAGNOSTIC_FAMILY_REVISION_V2','MERGE_DIAGNOSTIC_FAMILY_V2_PROFILE_THEN_FORMAL_LABEL_BLIND_MEASUREMENT'})
+  self.assertIn(lane['status'],{'FIRST_REAL_LOYO_FAILED_DIAGNOSTIC_FAMILY_REVISION_REQUIRED','DIAGNOSTIC_FAMILY_V2_PROFILE_SOURCE_READY_NOT_RUN','DIAGNOSTIC_FAMILY_V2_MEASUREMENT_PASSED_CALIBRATION_SOURCE_NEXT'})
+  self.assertIn(s['next'],{'PREREGISTER_DIAGNOSTIC_FAMILY_REVISION_V2','MERGE_DIAGNOSTIC_FAMILY_V2_PROFILE_THEN_FORMAL_LABEL_BLIND_MEASUREMENT','FREEZE_V2_CALIBRATION_SOURCE_BEFORE_ANY_LABEL_JOIN'})
   self.assertFalse(s['full_192_candidate_fit_performed']);self.assertFalse(s['candidate_v1_frozen'])
   self.assertIsNone(s['numeric_validity_thresholds']);self.assertIsNone(s['market_thresholds'])
  def test_no_authority_promotion(self):
