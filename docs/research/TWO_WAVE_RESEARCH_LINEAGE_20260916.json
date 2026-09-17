@@ -360,14 +360,29 @@
       "labels_frozen": false,
       "diagnostic_scores_measured": false,
       "authority_promoted": false
+    },
+    {
+      "order": 24,
+      "name": "primary_blind_reference_annotation_pass_b_complete",
+      "issue": 369,
+      "parent_issue": 359,
+      "input_run": "35209602753-1",
+      "adjudication": "docs/research/TWO_WAVE_SCALE_REFERENCE_ANNOTATION_ADJUDICATION_20260917.json",
+      "status": "PRIMARY_REFERENCE_LABELS_FROZEN_PASS_B_COMPLETE",
+      "pass_a_sha256": "3914201bccf2d1396eeab668a74686a17c055fd170b33bdebbca66c051a721df",
+      "final_labels_sha256": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be",
+      "labels_frozen": true,
+      "diagnostic_scores_measured": false,
+      "numeric_gate_selected": false,
+      "R4_selected": false,
+      "authority_promoted": false
     }
   ],
   "active_recognizer_remaining_order": [
-    "S1 carrier qualification complete; v3 blind packet independently verified complete.",
-    "Issue369: review all192 Pass-A normalized shapes in blind order and seal the Pass-A decision set before any B300 review.",
-    "Then perform downgrade-only Pass B review and freeze final192 labels/hash before any future suffix or market dominance diagnostic is revealed.",
-    "Only after frozen independent labels may #353 measure market dominance diagnostics; threshold/hysteresis selection remains a separate later gate.",
-    "No R4, amplitude-only exemption, 1m strategy admission, router/PnL or production authority."
+    "Issue369 candidate-independent primary reference labels are frozen after Pass A then Pass B; historical R1/R2/R3 and #321 verdicts remain unchanged.",
+    "Next: register a post-reference diagnostic-only market measurement against all192 frozen labels. The measurement run must not select thresholds, hysteresis or persistence rules.",
+    "After diagnostics are sealed, evaluate separability/calibration in a separately preregistered step before choosing any dominance state threshold or detector change.",
+    "No R4, one-minute strategy admission, faster/slower routing, router/PnL or production authority."
   ],
   "other_open_research_threads": [
     "Issue 274 real multiscale single-wave/nine-grid acceptance remains pending",

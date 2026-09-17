@@ -178,8 +178,9 @@ class PacketRegistrationTests(unittest.TestCase):
         self.assertEqual(lineage['ordered_lineage'][17]['formal_run'],'35205287251-1')
         self.assertIn('FAILED',lineage['ordered_lineage'][17]['status'])
         self.assertEqual(a['S2_progress']['market_packet_run'],'35209602753-1_PASSED')
-        self.assertEqual(a['S2_progress']['primary_reference_labels'],'NOT_YET_FROZEN')
+        self.assertTrue(a['S2_progress']['primary_reference_labels'].startswith(('NOT_YET_FROZEN','FROZEN_192_')))
         self.assertIsNone(a['S2_progress']['market_thresholds'])
+        self.assertEqual(lineage['ordered_lineage'][16]['status'],'BLIND_PACKET_PROFILE_REGISTERED_NOT_RUN')
 
 
 
