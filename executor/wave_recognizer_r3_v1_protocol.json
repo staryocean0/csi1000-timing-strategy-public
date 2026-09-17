@@ -1,0 +1,61 @@
+{
+  "schema_id": "csi1000.recognizer_r3_protocol@1.0",
+  "study": "MATURE_COUNTER_REARM",
+  "issue": 340,
+  "readiness_gate_issue": 321,
+  "upstream_failed_candidate_issue": 337,
+  "input": {
+    "symbol": "000852.SH",
+    "timeframe": "5m",
+    "period": "2015-2020",
+    "bars": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+  },
+  "frozen_scale": {"MIN_LEG": 4, "MAX_UNFINISHED_LEG": 48},
+  "candidate_semantics": {
+    "reset_clock": "R1 progress anchor=max(last confirmed pivot occurrence, live candidate occurrence)",
+    "counter_candidate": "most-extreme opposite close since current live candidate",
+    "counter_survival_maturity_bars": 4,
+    "same_bar_counter_maturity_forbidden": true,
+    "more_extreme_counter_restarts_maturity": true,
+    "candidate_improvement_clears_counter_state": true,
+    "accepted_counter_occurrence_gap_min": 4,
+    "mature_counter_with_smaller_gap": "SUBSCALE_REJECTED_AND_REARM_NEXT_BAR",
+    "retrospective_replay": false,
+    "reset_order_changed": false,
+    "bootstrap_changed": false,
+    "amplitude_threshold_added": false,
+    "volatility_threshold_added": false
+  },
+  "acceptance_source": "issue_321_unchanged",
+  "anti_oversegmentation": {
+    "wave_count_ratio_max": 1.25,
+    "median_duration_ratio_min": 0.75,
+    "median_amplitude_ratio_min": 0.75,
+    "median_channel_height_ratio_min": 0.75,
+    "low_amplitude_share_change_max": 0.05,
+    "confirmation_delay_median_change_max": 4,
+    "confirmation_delay_p90_change_max": 8
+  },
+  "required_diagnostics": [
+    "R1 five-gap recovery",
+    "R2 oversegmentation contrast",
+    "SUBSCALE_REJECTED count and gap distribution",
+    "accepted counter survival distribution",
+    "newly blind versus R1",
+    "pivot occurrence gap audit"
+  ],
+  "required_visuals": [
+    "all five former-R1 residual intervals",
+    "deterministic R2 MIN_LEG-duration oversegmentation controls",
+    "R3 residual meaningful misses",
+    "longest-wave control",
+    "correct R3 confirmation legend"
+  ],
+  "real_run_allowed_before_source_acceptance": false,
+  "one_minute_admitted": false,
+  "outcomes_used": false,
+  "new_training": false,
+  "authority": {"signal": false, "detector_repair": false, "router": false, "trade": false, "production": false}
+}
