@@ -1,0 +1,124 @@
+{
+  "schema_id": "csi1000.scale_reference_protocol@2.0",
+  "date": "2026-09-17",
+  "research_issue": 363,
+  "parent_issue": 359,
+  "source_base": "4b66d4c5a84eb62e9fb34b02ee527c8379f520f8",
+  "status": "REFERENCE_PROTOCOL_V2_AMENDED_BEFORE_SECOND_MARKET_RUN",
+  "population": {
+    "symbol": "000852.SH",
+    "period": [
+      "2015-01-05",
+      "2020-12-31"
+    ],
+    "carrier_qualification_run": "35191936364-1",
+    "common_complete_eligible_days": 1458,
+    "excluded_days": [
+      "2016-01-04",
+      "2016-01-07",
+      "2017-08-24",
+      "2020-04-20"
+    ]
+  },
+  "primary_sample": {
+    "days_per_quarter": 8,
+    "quarters": 24,
+    "expected_panels": 192,
+    "day_rank": "SHA256(csi1000-s2-ref-v2|YYYYQq|YYYY-MM-DD)",
+    "anchor_rule": "low_bit_SHA256(csi1000-s2-anchor-v1|YYYY-MM-DD)",
+    "anchors_shanghai": [
+      "11:00",
+      "14:30"
+    ],
+    "panel_id": "SHA256(csi1000-s2-panel-v2|YYYY-MM-DD|anchor)[:20]",
+    "eligibility_before_hash_ranking": {
+      "anchor_rule": "same frozen v1 anchor hash; no alternate time search",
+      "trailing_qualified_trading_minutes": 300,
+      "all_high_frequency_analysis_eligible": true,
+      "any_causal_flat_fill": false,
+      "five_phase_views_fully_contained_min_bars_each": 2,
+      "post_selection_substitution": false
+    }
+  },
+  "causal_context": {
+    "trailing_trading_minutes": [
+      150,
+      300
+    ],
+    "future_suffix_audit_minutes": 60,
+    "future_suffix_changes_frozen_label": false,
+    "wall_clock_interpolation": false
+  },
+  "blind_packet": {
+    "candidate_outputs_visible": false,
+    "diagnostic_scores_visible": false,
+    "R_version_identity_visible": false,
+    "calendar_date_visible": false,
+    "PnL_or_outcomes_visible": false,
+    "numeric_amplitude_visible_in_pass_A": false,
+    "shape_normalization": "within-window log-price min-max",
+    "raw_1m_and_five_5m_phase_views_allowed": true,
+    "smoothing_or_candidate_line_allowed": false
+  },
+  "reference_states": [
+    "CURRENT_SCALE_SUPPORTED",
+    "CURRENT_SCALE_DEVELOPING",
+    "CURRENT_SCALE_NOT_DOMINANT",
+    "AMBIGUOUS_MULTI_SCALE",
+    "INSUFFICIENT_SUPPORT",
+    "DATA_INVALID_EDGE"
+  ],
+  "reason_codes": [
+    "COHERENT_BROAD_TURN",
+    "COHERENT_DEVELOPING_LEG",
+    "REPEATED_SHORTER_STRUCTURE",
+    "MIXED_SCALE_COMPETITION",
+    "DISCONTINUITY_OR_OUTLIER",
+    "MULTIPLE_COMPATIBLE_SEGMENTATIONS",
+    "INSUFFICIENT_GEOMETRIC_INFORMATION",
+    "DATA_SUPPORT_FAILURE"
+  ],
+  "annotation": {
+    "max_compatible_segmentations": 2,
+    "turns_are_relative_trading_minute_intervals": true,
+    "exact_bar_forced": false,
+    "pass_A": "normalized shape only",
+    "pass_B": "phase and normalized OHLC/wick geometry",
+    "pass_B_may_promote": false,
+    "pass_B_may_confirm_or_downgrade_to_ambiguity_or_invalid": true,
+    "unresolved_disagreement": "AMBIGUOUS_MULTI_SCALE"
+  },
+  "future_audit": {
+    "revealed_only_after_label_freeze": true,
+    "retrospective_disagreement_is_diagnostic_only": true,
+    "backfill_original_label": false
+  },
+  "failure_derived_audit_strata": {
+    "included_in_primary_sample": false,
+    "review_only_after_primary_labels_frozen": true,
+    "eligible_examples": [
+      "R3_Q4_GAPS",
+      "FORMER_R1_RESIDUALS",
+      "R2_NEAR_FLOOR",
+      "LONG_ONE_WAY_CONTROLS"
+    ],
+    "used_for_prevalence": false,
+    "used_for_threshold_calibration": false
+  },
+  "post_reference_measurement": {
+    "diagnostic_scores_measured_only_after_labels_freeze": true,
+    "all_192_in_denominator": true,
+    "threshold_selection_in_same_run": false,
+    "persistence_hysteresis_selection_in_same_run": false
+  },
+  "real_market_packet_run": null,
+  "real_market_diagnostic_run": null,
+  "numeric_state_thresholds": null,
+  "outcomes_used": false,
+  "R4_selected": false,
+  "one_minute_strategy_admitted": false,
+  "router_pnl": false,
+  "private_CLOUD_CURRENT_modified": false,
+  "production_authority": false,
+  "failed_v1_run": "35205287251-1"
+}

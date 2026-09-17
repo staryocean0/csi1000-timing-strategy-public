@@ -257,13 +257,44 @@
       "numeric_gate_selected": false,
       "R4_selected": false,
       "authority_promoted": false
+    },
+    {
+      "order": 18,
+      "name": "scale_reference_blind_packet_v1_formal_run_failed",
+      "issue": 362,
+      "parent_issue": 359,
+      "source_sha": "4b66d4c5a84eb62e9fb34b02ee527c8379f520f8",
+      "formal_run": "35205287251-1",
+      "status": "FAILED_CLOSED_CONTEXT_CAUSAL_FLAT_FILL",
+      "archive_uploaded_and_verified": true,
+      "panels_generated": false,
+      "labels_frozen": false,
+      "diagnostic_scores_measured": false,
+      "authority_promoted": false
+    },
+    {
+      "order": 19,
+      "name": "scale_reference_blind_packet_v2_anchor_context_preregistration",
+      "issue": 363,
+      "parent_issue": 359,
+      "source_base": "4b66d4c5a84eb62e9fb34b02ee527c8379f520f8",
+      "protocol": "docs/research/TWO_WAVE_SCALE_REFERENCE_PROTOCOL_V2_20260917.json",
+      "packet_protocol": "docs/research/TWO_WAVE_SCALE_REFERENCE_PACKET_PROTOCOL_V2_20260917.json",
+      "status": "V2_PROFILE_REGISTERED_NOT_RUN",
+      "eligibility_before_hash_ranking": true,
+      "market_packet_run": null,
+      "labels_frozen": false,
+      "diagnostic_scores_measured": false,
+      "numeric_gate_selected": false,
+      "R4_selected": false,
+      "authority_promoted": false
     }
   ],
   "active_recognizer_remaining_order": [
-    "#359 blind-packet profile is registered on the #352-qualified fixed carriers; no real packet has run yet.",
-    "Trigger one exact standard workflow_dispatch to generate and independently verify the192 candidate-independent blind packets without dominance scores.",
-    "Freeze the192 causal reference labels/ambiguity annotations before any market score distribution is opened.",
-    "Only afterward measure threshold-free #353 diagnostics by frozen reference label in a separate preregistered run; do not choose thresholds there.",
+    "#362/v1 formal blind-packet run is preserved as fail-closed before any panel/label/score; do not rerun that source.",
+    "#363/v2 freezes anchor-context eligibility before hash ranking: exact300-minute causal support, no flat-fill, five fully-contained phase views; no post-selection substitution.",
+    "After reviewed v2 source/CI, run one standard blind-packet workflow; freeze192 causal reference labels before opening any market diagnostic score.",
+    "Only after label freeze measure threshold-free #353 diagnostic distributions; threshold/persistence selection requires another preregistered stage.",
     "Faster/slower routing,1m strategy admission,router/PnL and production authority remain downstream and inactive."
   ],
   "other_open_research_threads": [

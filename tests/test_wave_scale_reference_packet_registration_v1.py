@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'executor'))
 from tests.segmentation_carrier_registration_support import (
     PROFILE as CARRIER_PROFILE, PACKET_PROFILE as PROFILE,
-    PACKET_BROKER as BROKER, strip_packet_workflow, strip_packet_controller,
+    PACKET_BROKER as BROKER, PACKET_V2_PROFILE, strip_packet_workflow, strip_packet_controller,
 )
 import wave_scale_reference_packet_broker_v1 as broker
 
@@ -34,7 +34,7 @@ class PacketRegistrationTests(unittest.TestCase):
         steps=doc['jobs']['execute']['steps']
         stage=[s for s in steps if 'wave_segmentation_carrier_stage_public.py' in s.get('run','')]
         self.assertEqual(len(stage),1)
-        self.assertEqual(stage[0]['if'],f"inputs.profile == '{CARRIER_PROFILE}' || inputs.profile == '{PROFILE}'")
+        self.assertEqual(stage[0]['if'],f"inputs.profile == '{CARRIER_PROFILE}' || inputs.profile == '{PROFILE}' || inputs.profile == '{PACKET_V2_PROFILE}'")
         self.assertNotIn('env',stage[0]);self.assertNotIn('FACTORLAB_PRIVATE_TOKEN',stage[0]['run'])
 
     def test_prepare_compute_allowlists_and_four_routes(self):
@@ -172,9 +172,8 @@ class PacketRegistrationTests(unittest.TestCase):
     def test_thread_authority_is_registered_not_run(self):
         a=json.loads((ROOT/'docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json').read_text())
         lane=next(x for x in a['active_lanes'] if x['issue']==353)
-        self.assertEqual(lane['status'],'BLIND_PACKET_PROFILE_REGISTERED_MARKET_PACKET_RUN_NEXT')
-        self.assertEqual(a['S2_progress']['market_packet_profile'],'REGISTERED_NOT_RUN')
-        self.assertIsNone(a['S2_progress']['market_packet_run'])
+        self.assertIn('V1_PACKET_FAILED_CLOSED',lane['status'])
+        self.assertEqual(a['S2_progress']['market_packet_run'],'35205287251-1_FAILED')
         self.assertEqual(a['S2_progress']['primary_reference_labels'],'NOT_YET_FROZEN')
         self.assertIsNone(a['S2_progress']['market_thresholds'])
 
