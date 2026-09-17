@@ -52,7 +52,7 @@
     {
       "issue": 353,
       "stage": "S2_SCALE_DOMINANCE_DESIGN",
-      "status": "VALIDITY_DIAGNOSTIC_PROFILE_SOURCE_READY_NOT_RUN",
+      "status": "VALIDITY_MEASUREMENT_PASSED_CALIBRATION_ENGINE_SOURCE_READY_NOT_FIT",
       "checkpoint": "docs/research/TWO_WAVE_SCALE_DOMINANCE_SYNTHETIC_CHECKPOINT_20260917.json",
       "reference_issue": 359,
       "reference_checkpoint": "docs/research/TWO_WAVE_SCALE_REFERENCE_SOURCE_CHECKPOINT_20260917.json",
@@ -67,7 +67,10 @@
       "diagnostic_measurement_adjudication": "docs/research/TWO_WAVE_SCALE_DOMINANCE_MARKET_ADJUDICATION_20260917.json",
       "threshold_free_join": "docs/research/TWO_WAVE_SCALE_DOMINANCE_THRESHOLD_FREE_JOIN_20260917.json",
       "validity_guard_issue": 376,
-      "validity_measurement_registration": "docs/research/TWO_WAVE_SCALE_VALIDITY_MARKET_REGISTRATION_20260917.json"
+      "validity_measurement_registration": "docs/research/TWO_WAVE_SCALE_VALIDITY_MARKET_REGISTRATION_20260917.json",
+      "validity_measurement_run": "35221426711-1",
+      "validity_measurement_checkpoint": "docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_SOURCE_CHECKPOINT_20260917.json",
+      "state_conditional_calibration_protocol": "docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_PROTOCOL_20260917.json"
     }
   ],
   "future_only": {
@@ -105,7 +108,7 @@
     "synthetic_diagnostic": "IMPLEMENTED",
     "market_thresholds": null,
     "real_market_reference_labels": "FROZEN_192_AFTER_PASS_B",
-    "next": "MERGE_VALIDITY_PROFILE_THEN_FORMAL_LABEL_BLIND_MEASUREMENT",
+    "next": "MERGE_CALIBRATION_ENGINE_THEN_RUN_FROZEN_LOYO_OOF",
     "reference_protocol": "FROZEN",
     "reference_source_contract": "IMPLEMENTED",
     "market_packet_profile": "V3_VERIFIED",
@@ -139,7 +142,13 @@
     "production_authority": false,
     "validity_guard_issue": 376,
     "validity_measurement_profile": "two-wave-scale-validity-diagnostic-measurement-v1",
-    "validity_diagnostics_measured": false,
-    "numeric_validity_thresholds": null
+    "validity_diagnostics_measured": true,
+    "numeric_validity_thresholds": null,
+    "validity_measurement_run": "35221426711-1_PASSED",
+    "validity_diagnostics_sha256": "5e7199a3ae42816751a353d7ca6d4fdbd11281e24666fa6de43e499fc42931e8",
+    "state_conditional_calibration_engine": "IMPLEMENTED_SYNTHETIC_ONLY",
+    "calibration_real_oof_run": false,
+    "full_192_candidate_fit": false,
+    "fresh_oos_required_for_readiness": true
   }
 }

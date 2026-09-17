@@ -424,6 +424,24 @@
       "threshold_selected": false,
       "formal_run": null,
       "authority_promoted": false
+    },
+    {
+      "order": 28,
+      "name": "scale_validity_measurement_completed_state_conditional_calibration_source_ready_not_fit",
+      "issue": 376,
+      "parent_issue": 353,
+      "formal_run": "35221426711-1",
+      "source_sha": "1458a282832d8a077d3db3cb85eeeaf0f314be49",
+      "validity_diagnostics_sha256": "5e7199a3ae42816751a353d7ca6d4fdbd11281e24666fa6de43e499fc42931e8",
+      "dominance_diagnostics_sha256": "aed0b65305f06d36dfd679df4ee75feb48b246a40e3a5e39831cefedf2ee3baa",
+      "reference_labels_sha256": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be",
+      "status": "VALIDITY_MEASUREMENT_PASSED_CALIBRATION_ENGINE_SOURCE_READY_REAL_OOF_NOT_RUN",
+      "validity_labels_visible_to_formal_compute": false,
+      "real_oof_fit_run": false,
+      "numeric_thresholds_selected": false,
+      "full_192_candidate_fit": false,
+      "fresh_oos_readiness": false,
+      "authority_promoted": false
     }
   ],
   "active_recognizer_remaining_order": [
