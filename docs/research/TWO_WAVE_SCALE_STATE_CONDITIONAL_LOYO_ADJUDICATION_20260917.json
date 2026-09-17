@@ -1,0 +1,70 @@
+{
+  "authority": {
+    "R4_selected": false,
+    "one_minute_strategy_admitted": false,
+    "private_CLOUD_CURRENT_modified": false,
+    "production": false,
+    "router_pnl": false,
+    "signal": false,
+    "trade": false
+  },
+  "calibration_engine_source": "420bf593b2246072ef1ccfc883ca9bb8439cc4d8",
+  "date": "2026-09-17",
+  "decision": "LOYO_OOF_NOT_READY_DIAGNOSTIC_FAMILY_REVISION_REQUIRED_NO_FULL_FIT",
+  "evidence": {
+    "panels": 192,
+    "private_full_oof_sha256": "e74a8dd58a55aa69350b0240c68ecbee48cb431b85dd6c21c0d4f2c7f9728ea9",
+    "public_aggregate_sha256": "72fef2796ea0a3bd9203310b5c5ee6c5f60c850cff2d51fed08f385e699f3403",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020
+    ]
+  },
+  "history_guard": {
+    "prior_28_lineage_sha256": "038959d8daa135989ba6669e7b0abada722cb145d40555494cfa5b29bfdcc952"
+  },
+  "inputs": {
+    "dominance_diagnostics_sha256": "aed0b65305f06d36dfd679df4ee75feb48b246a40e3a5e39831cefedf2ee3baa",
+    "full_inventory_sha256": "32f6279610def838474fb0bc4596c33dfb41f88e4fb78e4a20d6b39942446206",
+    "reference_labels_sha256": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be",
+    "validity_diagnostics_sha256": "5e7199a3ae42816751a353d7ca6d4fdbd11281e24666fa6de43e499fc42931e8"
+  },
+  "key_results": {
+    "ambiguous_recall": "0/13",
+    "false_current_scale_reject": "4/136",
+    "morphology_developing_developing_leg": "34/61",
+    "morphology_supported_turning": "70/75",
+    "not_dominant_recall": "18/24",
+    "unique_rule_counts": {
+      "developing_dominance": 3,
+      "morphology": 1,
+      "turning_dominance": 2,
+      "validity": 5
+    },
+    "validity_false_invalid": "10/173",
+    "validity_false_invalid_rate": 0.057803468208092484,
+    "validity_invalid_recall": "7/19",
+    "validity_invalid_recall_rate": 0.3684210526315789
+  },
+  "parent_issue": 353,
+  "research_issue": 376,
+  "schema_id": "csi1000.scale_state_conditional_loyo_adjudication@1.0",
+  "stop_rule": {
+    "case_exceptions": false,
+    "full_192_fit_authorized": false,
+    "full_192_fit_performed": false,
+    "label_relaxation": false,
+    "next": "PREREGISTER_DIAGNOSTIC_FAMILY_REVISION_V2",
+    "pnl_tuning": false
+  },
+  "structural_findings": [
+    "VALIDITY_RULES_UNSTABLE_AND_MISS_MOST_DATA_INVALID_REFERENCES",
+    "MORPHOLOGY_OVERCALLS_DEVELOPING_AS_TURNING",
+    "CURRENT_RULE_FAMILY_EMITS_ZERO_AMBIGUOUS_ON_OBSERVED_OOF",
+    "DOMINANCE_EVIDENCE_RELATIVELY_STABLE_BUT_NOT_AUTHORITY_PROMOTED"
+  ]
+}

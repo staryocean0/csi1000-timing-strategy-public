@@ -1,0 +1,21 @@
+name: Two-Wave state-conditional LOYO adjudication tests
+on:
+  pull_request:
+    paths:
+      - 'docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_LOYO_*'
+      - 'docs/research/TWO_WAVE_RESEARCH_LINEAGE_20260916.json'
+      - 'docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json'
+      - 'tests/test_wave_scale_state_conditional_loyo_adjudication_v1.py'
+      - '.github/workflows/wave-scale-state-conditional-loyo-adjudication-tests.yml'
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Run LOYO adjudication contracts
+        run: python3 -m unittest tests.test_wave_scale_state_conditional_loyo_adjudication_v1 -v
