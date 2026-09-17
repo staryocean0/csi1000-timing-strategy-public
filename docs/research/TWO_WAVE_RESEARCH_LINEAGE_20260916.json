@@ -332,15 +332,42 @@
       "numeric_gate_selected": false,
       "R4_selected": false,
       "authority_promoted": false
+    },
+    {
+      "order": 22,
+      "name": "scale_reference_blind_packet_v3_formal_success",
+      "issue": 368,
+      "parent_issue": 359,
+      "amendment_issue": 366,
+      "formal_run": "35209602753-1",
+      "source_sha": "892cbd196f5d467921f9228e7dda6f2d6eb0f81e",
+      "status": "PASSED_PACKET_AND_INDEPENDENT_PANEL_VERIFICATION",
+      "primary_panels": 192,
+      "panel_files_verified": 576,
+      "anchor_context_eligible_days": 1414,
+      "labels_frozen": false,
+      "diagnostic_scores_measured": false,
+      "authority_promoted": false
+    },
+    {
+      "order": 23,
+      "name": "primary_blind_reference_annotation_execution_preregistered",
+      "issue": 369,
+      "parent_issue": 359,
+      "input_run": "35209602753-1",
+      "protocol": "docs/research/TWO_WAVE_SCALE_REFERENCE_ANNOTATION_PROTOCOL_20260917.json",
+      "status": "PASS_A_NOT_STARTED_LABELS_NOT_FROZEN",
+      "labels_frozen": false,
+      "diagnostic_scores_measured": false,
+      "authority_promoted": false
     }
   ],
   "active_recognizer_remaining_order": [
-    "Issue350/353 authority now prioritizes accurate segmentation plus current-scale dominance over historical amplitude-only gate optimization.",
-    "S1 carrier construction/common-support qualification is complete.",
-    "S2 candidate-independent blind reference packet v1 and v2 both remain formal fail-closed history; v2 producer/sample identities matched independently but panel geometry verification stopped at a verifier reason-code summary mismatch.",
-    "Issue366 v3 changes only independent verifier diagnostic reason taxonomy; reuse v2 sampling/producer rules unchanged, then complete all-panel independent verification before any label freeze.",
-    "Only after a fully verified blind packet: perform blinded human/reference annotation under frozen protocol, then freeze labels before measuring market dominance scores.",
-    "No R4, automatic amplitude exemption, 1m strategy, router/PnL or production authority."
+    "S1 carrier qualification complete; v3 blind packet independently verified complete.",
+    "Issue369: review all192 Pass-A normalized shapes in blind order and seal the Pass-A decision set before any B300 review.",
+    "Then perform downgrade-only Pass B review and freeze final192 labels/hash before any future suffix or market dominance diagnostic is revealed.",
+    "Only after frozen independent labels may #353 measure market dominance diagnostics; threshold/hysteresis selection remains a separate later gate.",
+    "No R4, amplitude-only exemption, 1m strategy admission, router/PnL or production authority."
   ],
   "other_open_research_threads": [
     "Issue 274 real multiscale single-wave/nine-grid acceptance remains pending",
