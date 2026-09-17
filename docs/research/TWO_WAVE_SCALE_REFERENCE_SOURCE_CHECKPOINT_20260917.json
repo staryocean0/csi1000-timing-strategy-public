@@ -1,0 +1,45 @@
+{
+  "schema_id": "csi1000.scale_reference_source_checkpoint@1.0",
+  "date": "2026-09-17",
+  "research_issue": 359,
+  "parent_issue": 353,
+  "source_base": "df24c96be5e659e920716f30c05f681987bfc8df",
+  "status": "REFERENCE_PROTOCOL_AND_SOURCE_CONTRACT_IMPLEMENTED_NO_MARKET_PACKET",
+  "source_blobs": {
+    "executor/wave_scale_reference_sampling_v1.py": "f62106dd3dad953e3966e92a543cc5f454d0b339",
+    "executor/wave_scale_reference_visuals_v1.py": "d6ce92747bf2701b32c473af9361b46db4effb02",
+    "executor/wave_scale_reference_verifier_v1.py": "a7fa0985337b8dfb4d4664e64a68face9e33cb93",
+    "docs/research/TWO_WAVE_SCALE_REFERENCE_PROTOCOL_20260917.json": "bfc0b248c22146a06fa9b140096a14de5eb5b1ca"
+  },
+  "primary_sample": {
+    "panels": 192,
+    "quarters": 24,
+    "days_per_quarter": 8,
+    "anchors": ["11:00", "14:30"],
+    "contexts_trading_minutes": [150, 300]
+  },
+  "blind_review": {
+    "candidate_outputs_visible": false,
+    "diagnostic_scores_visible": false,
+    "numeric_amplitude_visible_pass_A": false,
+    "calendar_date_visible": false,
+    "future_suffix_backfill": false
+  },
+  "verification": {
+    "sampler_and_verifier_independent_implementations": true,
+    "deterministic_svg_renderer": true,
+    "synthetic_contract_tests": 25,
+    "synthetic_contract_skips": 0
+  },
+  "prior_15_lineage_sha256": "7b5b83989a359fbdd108cf4a88fddfdd8ee7654a20b2246ccb6a8bef22cbb519",
+  "market_packet_profile_registered": false,
+  "market_packet_run": null,
+  "primary_labels_frozen": false,
+  "diagnostic_scores_measured_on_reference": false,
+  "numeric_state_thresholds": null,
+  "outcomes_used": false,
+  "R4_selected": false,
+  "one_minute_strategy_admitted": false,
+  "router_pnl": false,
+  "production_authority": false
+}
