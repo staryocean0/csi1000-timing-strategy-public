@@ -1,0 +1,226 @@
+{
+  "schema_id": "csi1000.segmentation_measurement_reframe@1.0",
+  "research_issue": 350,
+  "source_base": "212337bd9371682283239353d408754af106dc67",
+  "date": "2026-09-17",
+  "objective": "ACCURATE_CAUSAL_GRAPHICAL_MULTIRESOLUTION_SEGMENTATION",
+  "objective_origin": "User explicitly requested re-examining earlier constraints, auditing and restarting at the necessary upstream layer.",
+  "representation": "RECURSIVE_CONFIRMED_LOW_NODE_SKELETONS_NOT_IDEAL_FIXED_BANDS",
+  "T0_21_role": "EMPIRICAL_BASELINE_DURATION_REFERENCE_NOT_PREDEFINED_TARGET_PASSBAND",
+  "priority": "MEASUREMENT_AND_REFERENCE_QUALIFICATION_BEFORE_ANOTHER_DETECTOR_PATCH",
+  "legacy": {
+    "issue321": "Historical gate and past failure verdicts unchanged; no longer treated as a proved universal definition of segmentation accuracy.",
+    "R3_under_legacy_gate": "FAILED",
+    "retroactive_pass": false,
+    "new_gate_numeric_thresholds": null,
+    "original_11_lineage_entries_sha256": "937d61f8871bf7f5e056504abe2e5526362c2c5e60b8e607734dc75e17bd6f38",
+    "four_48_semantics_modified": false,
+    "four_48_immutable_for_every_future_research_question": false
+  },
+  "S0": {
+    "status": "SOURCE_AND_DETERMINISTIC_COUNTEREXAMPLES_IMPLEMENTED",
+    "data_role": "SYNTHETIC_ONLY",
+    "native_sample_rows_max": 4096,
+    "market_data_loaded": false,
+    "file_io_in_experiment_module": false,
+    "result_path": "docs/research/TWO_WAVE_MEASUREMENT_S0_RESULT_20260917.json"
+  },
+  "independent_dimensions": [
+    "aggregation_integrity",
+    "declared_graphical_scale",
+    "amplitude",
+    "cycle_geometry",
+    "live_state_and_leg_coverage",
+    "ambiguity",
+    "latency"
+  ],
+  "prohibited_inferences": [
+    "Q4_IMPLIES_QUALIFIED_MISSED_WAVE",
+    "LOW_AMPLITUDE_IMPLIES_NO_STRUCTURE",
+    "COUNTER_UPDATES_IMPLIES_FAST_REVERSALS",
+    "OFFSET_PERIOD_STABILITY_IMPLIES_NO_ALIAS",
+    "PARENT_ABSORPTION_IMPLIES_CHILD_INVALID",
+    "NO_COMPLETE_LHL_IMPLIES_TOTAL_STATE_BLINDNESS",
+    "NO_LOWPASS_IMPLIES_BROKEN_OHLC",
+    "EXACT_RECONSTRUCTION_IMPLIES_CORRECT_SEGMENTATION"
+  ],
+  "prospective_contract": {
+    "amplitude_only_exemption": false,
+    "all_windows_denominator_required": true,
+    "candidate_independent_reference_required": true,
+    "adjudicator_blinded_to_candidate_version": true,
+    "allow_multiple_compatible_segmentations_with_explicit_ambiguity": true,
+    "state_labels": [
+      "CONFIRMED_STRUCTURE",
+      "DEVELOPING_LEG",
+      "INSUFFICIENT_SCALE_SUPPORT",
+      "AMBIGUOUS",
+      "DATA_EDGE_OR_INVALID"
+    ],
+    "labels_are_not_implemented_detector_outputs": true,
+    "abstention_fraction_and_duration_always_reported": true,
+    "metrics": [
+      "missed_reference_turns",
+      "extra_turns",
+      "split_merge_disagreement",
+      "geometry_fidelity",
+      "causal_confirmation_delay",
+      "state_coverage",
+      "reference_agreement"
+    ],
+    "future_suffix_cannot_change_published_state": true,
+    "same_physical_time_common_support_required": true
+  },
+  "external_metadata": {
+    "repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "manifest_path": "data/manifest.json",
+    "manifest_blob_sha1": "44babc8b61dc3281e325e442935c99462b9e421b",
+    "manifest_sha256": "b40b352a4940c7cf475150a63af135fb3e92bd2061f9d631c0fc2032b4294291",
+    "manifest_bytes_verified": true,
+    "products": [
+      {
+        "column_count": 25,
+        "data_role": "development_material",
+        "file_bytes": 12842573,
+        "maximum_trading_day": "2020-12-31",
+        "minimum_trading_day": "2015-01-05",
+        "path": "data/development/1m_official.parquet",
+        "row_count": 350561,
+        "sha256": "755217afce9dec383e48cd46d591402fa90dc50897abeb3dc7097c9a18a109d4",
+        "source_product": "1m_official.parquet"
+      },
+      {
+        "column_count": 25,
+        "data_role": "development_material",
+        "file_bytes": 3351411,
+        "maximum_trading_day": "2020-12-31",
+        "minimum_trading_day": "2015-01-05",
+        "path": "data/development/5m_offset_0.parquet",
+        "row_count": 70114,
+        "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+        "source_product": "5m_offset_0.parquet"
+      },
+      {
+        "column_count": 25,
+        "data_role": "development_material",
+        "file_bytes": 3226743,
+        "maximum_trading_day": "2020-12-31",
+        "minimum_trading_day": "2015-01-05",
+        "path": "data/development/5m_offset_1.parquet",
+        "row_count": 67192,
+        "sha256": "4523615193c177dda2f63a69dd32a2d21e2b15c78283de2d242dd6cd695fc284",
+        "source_product": "5m_offset_1.parquet"
+      },
+      {
+        "column_count": 25,
+        "data_role": "development_material",
+        "file_bytes": 3223863,
+        "maximum_trading_day": "2020-12-31",
+        "minimum_trading_day": "2015-01-05",
+        "path": "data/development/5m_offset_2.parquet",
+        "row_count": 67192,
+        "sha256": "737548b04ca93fdbfafda806c5f98051b0521e868d71bcab00f23c062ef8ee82",
+        "source_product": "5m_offset_2.parquet"
+      },
+      {
+        "column_count": 25,
+        "data_role": "development_material",
+        "file_bytes": 3225315,
+        "maximum_trading_day": "2020-12-31",
+        "minimum_trading_day": "2015-01-05",
+        "path": "data/development/5m_offset_3.parquet",
+        "row_count": 67193,
+        "sha256": "20a8a4aba19f60946e5781947f658d0b16a2d8758e6318b43c0a0ececdd09282",
+        "source_product": "5m_offset_3.parquet"
+      },
+      {
+        "column_count": 25,
+        "data_role": "development_material",
+        "file_bytes": 3227705,
+        "maximum_trading_day": "2020-12-31",
+        "minimum_trading_day": "2015-01-05",
+        "path": "data/development/5m_offset_4.parquet",
+        "row_count": 67191,
+        "sha256": "ceba69dce07223ba92204dc4994991eeabcaf62aacfb9869fd9403da43694b1b",
+        "source_product": "5m_offset_4.parquet"
+      }
+    ],
+    "parquet_bytes_or_rows_read": false,
+    "row_counts_are_manifest_claims_not_fresh_file_verification": true,
+    "timestamp_contract": "source_Z_wrapped_Shanghai_wall_clock_to_timezone_aware_UTC; source_string_retained_as_timestamp_source_serialized",
+    "construction_equivalence": "NOT_YET_VERIFIED",
+    "offset_common_support": "MUST_QUALIFY_BEFORE_COMPARISON",
+    "new_upload_needed_now": false,
+    "one_minute_role": "MEASUREMENT_PROVENANCE_ONLY_IF_LATER_ADMITTED_BY_SEPARATE_FIXED_PROFILE"
+  },
+  "next_stages": [
+    {
+      "stage": "S1",
+      "task": "Check DataHub construction contract/source lineage, schemas, timezone, session edges, missing/partial buckets, native constituents and common physical support.",
+      "status": "METADATA_AVAILABLE_BINARY_QUALIFICATION_NOT_RUN"
+    },
+    {
+      "stage": "S2",
+      "task": "Freeze independent graphical references and matched controls; test close/wick and offset sensitivity without classifying aliasing from stability alone.",
+      "status": "NOT_RUN"
+    },
+    {
+      "stage": "S3",
+      "task": "Choose only after S1/S2 whether representation, detector lifecycle, or a separately justified operator needs revision; preregister one change.",
+      "status": "NO_CANDIDATE_SELECTED"
+    }
+  ],
+  "frozen_source_blobs": {
+    "wave_recognizer_r3_v1.py": "2815b9a74f45066040e042fdf5670e64af469f5c",
+    "wave_recognizer_r3_v1_entry.py": "7c03ab2aa8908df28e439d8748f935bcfb9ed791",
+    "wave_recognizer_r3_v1_verifier.py": "b4d3d0fa583d64e7839ded1a16945a5dec9ad064",
+    "wave_recognizer_r3_v1_runtime.py": "55c2ccff323b5714fcdc6a8a130f2e72100011f6",
+    "wave_recognizer_r3_v1_visuals.py": "f8e3245005542a615a63ed688536a2d7ecd19235",
+    "wave_recognizer_r3_v1_protocol.json": "00d3fd7fd2d52805b1c99015c2dc12f9e592a23f",
+    "wave_recognizer_r2_v1.py": "fa58977b5640e8b29e1a1771b797575180699bc6",
+    "wave_recognizer_r2_v1_visuals.py": "605533e9712632cff414b0a8108be893ec9f4323",
+    "wave_recognizer_r1_v1.py": "32ffb3db77a7861f88ba6332809072d00b3a78a6",
+    "wave_recognizer_r1_v1_visuals.py": "c6674cbb3ab9b0ffb122984024b39fe8af98a46b",
+    "wave_multiscale_dual_gates_v2.py": "244376f66de50aae8804cedb34b09a6adb442a05",
+    "wave_dual_gate_hierarchy_v1.py": "fd644ee897fce0ceeb925258da9d62deec826352",
+    "wave_dual_gate_probe_v1.py": "c3d0224a27b163fdbee39ab1c8939dce49705d3a",
+    "two_wave_v0800_scale_map.py": "3d370052c68b5b7caa778210a744c0c5b7c6c112",
+    "two_wave_v0800_semantics.py": "504e21105860acc5c655f7703728e7b014d78316",
+    "wave_r3_clock_probe_v1.py": "5db4301acb19f8961642f07927f00bb311b4ecee",
+    "wave_r3_clock_audit_v1.py": "5cbaecd226e2b70be8b34a91f7dc7818c1a2a2e5",
+    "wave_r3_clock_checks_v1.py": "6ea91b11752c603f74d24ea497d58bf3874f6d3d",
+    "wave_r3_clock_protocol_v1.json": "0900c64b68f092710556b7caa858b4a5eb8de9f5",
+    "docs/research/TWO_WAVE_MULTISCALE_GEOMETRIC_DECOMPOSITION_REFRAME_20260916.md": "73e75495e0694862a90495c3ead83582b959f5c1",
+    "docs/research/TWO_WAVE_R3_CLOCK_AUDIT_ADJUDICATION_20260917.json": "91b3747784838accd8b424135ae5e4636295de35",
+    "docs/research/TWO_WAVE_RECOGNIZER_R2_ADJUDICATION_20260917.json": "3cf407cdb6dad859fa4d6263a906182abaee0a0b",
+    ".github/workflows/public-compute.yml": "4ff3e711c41d94039926d3115a0d90496f59dfdc",
+    ".github/workflows/controller-dispatch.yml": "0af89aa3d5056deac95638e574346a800ae4496e"
+  },
+  "external_primary_references": [
+    {
+      "source": "pandas Resampler.ohlc",
+      "url": "https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.api.typing.Resampler.ohlc.html",
+      "supports": "OHLC is a group summary, not an anti-alias filter"
+    },
+    {
+      "source": "SciPy decimate",
+      "url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.decimate.html",
+      "supports": "Filtering before downsampling; zero-phase is not a live-causality certificate"
+    },
+    {
+      "source": "Steven W. Smith, The Sampling Theorem",
+      "url": "https://dspguide.com/ch3/2.htm",
+      "supports": "Sampling can map different original frequencies to the same sampled frequency"
+    }
+  ],
+  "no_research_market_run_this_stage": true,
+  "R4_selected": false,
+  "one_minute_strategy_admitted": false,
+  "outcomes_used": false,
+  "private_CLOUD_CURRENT_modified": false,
+  "production_authority": false,
+  "new_source_git_blobs": {
+    "executor/wave_measurement_audit_s0.py": "44001c09c1de7a7cba72e962542049f8279122cf"
+  }
+}
