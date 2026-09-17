@@ -37,7 +37,7 @@ class ReferenceCheckpointTests(unittest.TestCase):
         lanes={x['issue']:x for x in self.a['active_lanes']}
         self.assertEqual(lanes[353]['reference_issue'],359)
         self.assertEqual(self.a['S2_progress']['reference_protocol'],'FROZEN')
-        self.assertIn(self.a['S2_progress']['market_packet_profile'],('NOT_YET_REGISTERED','REGISTERED_NOT_RUN'))
+        self.assertEqual(self.a['S2_progress']['primary_reference_labels'],'NOT_YET_FROZEN')
         self.assertEqual(self.a['S2_progress']['primary_reference_labels'],'NOT_YET_FROZEN')
         self.assertIsNone(self.a['S2_progress']['market_thresholds'])
 

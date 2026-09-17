@@ -52,11 +52,12 @@
     {
       "issue": 353,
       "stage": "S2_SCALE_DOMINANCE_DESIGN",
-      "status": "BLIND_PACKET_PROFILE_REGISTERED_MARKET_PACKET_RUN_NEXT",
+      "status": "V1_PACKET_FAILED_CLOSED_V2_PROFILE_REGISTERED_MARKET_RUN_NEXT",
       "checkpoint": "docs/research/TWO_WAVE_SCALE_DOMINANCE_SYNTHETIC_CHECKPOINT_20260917.json",
       "reference_issue": 359,
       "reference_checkpoint": "docs/research/TWO_WAVE_SCALE_REFERENCE_SOURCE_CHECKPOINT_20260917.json",
-      "packet_checkpoint": "docs/research/TWO_WAVE_SCALE_REFERENCE_PACKET_REGISTRATION_CHECKPOINT_20260917.json"
+      "packet_checkpoint": "docs/research/TWO_WAVE_SCALE_REFERENCE_PACKET_REGISTRATION_CHECKPOINT_20260917.json",
+      "reference_amendment_issue": 363
     }
   ],
   "future_only": {
@@ -94,11 +95,13 @@
     "synthetic_diagnostic": "IMPLEMENTED",
     "market_thresholds": null,
     "real_market_reference_labels": "NOT_YET_FROZEN",
-    "next": "RUN_FIXED_BLIND_PACKET_PROFILE",
+    "next": "RUN_V2_BLIND_PACKET_AFTER_REVIEWED_MERGE",
     "reference_protocol": "FROZEN",
     "reference_source_contract": "IMPLEMENTED",
-    "market_packet_profile": "REGISTERED_NOT_RUN",
+    "market_packet_profile": "V1_FAILED_V2_REGISTERED_NOT_RUN",
     "primary_reference_labels": "NOT_YET_FROZEN",
-    "market_packet_run": null
+    "market_packet_run": "35205287251-1_FAILED",
+    "market_packet_v1_failure": "context_causal_flat_fill_before_inventory_or_panels",
+    "reference_amendment": "ANCHOR_CONTEXT_ELIGIBILITY_BEFORE_HASH_RANKING"
   }
 }
