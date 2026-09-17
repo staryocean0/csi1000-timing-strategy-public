@@ -29,6 +29,11 @@ class DominanceCheckpointTests(unittest.TestCase):
         for name,sha in self.c['source_blobs'].items():
             self.assertEqual(blob(ROOT/name),sha,name)
 
+    def test_bic_floor_is_documented_as_numeric_only(self):
+        n=self.c['numerical_stability']
+        self.assertEqual(n['bic_variance_floor'],1e-28)
+        self.assertEqual(n['role'],'NUMERIC_ONLY_NOT_MARKET_THRESHOLD')
+
     def test_stored_result_reproduces(self):
         fresh=run_suite()
         def same(a,b):

@@ -6,7 +6,7 @@
   "status": "SYNTHETIC_DIAGNOSTIC_IMPLEMENTED_NO_MARKET_THRESHOLDS",
   "diagnostic_role": "SUPPLIED_CAUSAL_MORPHOLOGY_HYPOTHESIS_SUPPORT_NOT_PIVOT_SEARCH",
   "source_blobs": {
-    "executor/wave_scale_dominance_diagnostics_v1.py": "5e1e2af062ecee8cbb87be51da1582b1126cdd50",
+    "executor/wave_scale_dominance_diagnostics_v1.py": "9f6f56c9c601a41d3e4c90e27281121e51e69d00",
     "executor/wave_scale_dominance_synthetic_v1.py": "4007e28e2d2947352549fafdf9186146dbf64995",
     "docs/research/TWO_WAVE_SCALE_DOMINANCE_MONITOR_PROTOCOL_20260917.json": "d41639ea8d6ec542e9c4cecbb27689429a2f2d5a"
   },
@@ -45,5 +45,10 @@
   "R4_selected": false,
   "one_minute_strategy_admitted": false,
   "router_pnl": false,
-  "production_authority": false
+  "production_authority": false,
+  "numerical_stability": {
+    "bic_variance_floor": 1e-28,
+    "role": "NUMERIC_ONLY_NOT_MARKET_THRESHOLD",
+    "reason": "Canonicalize algebraically exact fits across BLAS/platform round-off"
+  }
 }

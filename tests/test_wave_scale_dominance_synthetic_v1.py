@@ -95,6 +95,16 @@ class ScaleDominanceSyntheticTests(unittest.TestCase):
         for x in ([1,0,2],[1,float('nan'),2],[1,float('inf'),2]):
             with self.assertRaises(ValueError):d.diagnose(x,turn_index=None)
 
+    def test_bic_numeric_floor_is_stable_below_machine_noise(self):
+        t=d._design_time(21); design=d.np.column_stack([d.np.ones(21),t])
+        y=4.0+0.2*t
+        exact=d._fit('EXACT',y,design)
+        perturbed=y.copy();perturbed[3]+=1e-15
+        tiny=d._fit('TINY',perturbed,design)
+        self.assertLessEqual(exact.sse/21,d.BIC_VARIANCE_FLOOR)
+        self.assertLessEqual(tiny.sse/21,d.BIC_VARIANCE_FLOOR)
+        self.assertEqual(exact.bic,tiny.bic)
+
     def test_modules_have_no_file_network_or_process_calls(self):
         forbidden={'open','read_csv','read_parquet','write_text','write_bytes','urlopen','request','Popen','run','system','exec','eval'}
         for name in ('wave_scale_dominance_diagnostics_v1.py','wave_scale_dominance_synthetic_v1.py'):

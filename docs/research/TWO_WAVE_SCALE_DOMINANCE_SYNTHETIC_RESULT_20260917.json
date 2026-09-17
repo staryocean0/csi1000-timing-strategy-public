@@ -41,7 +41,7 @@
         "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
         "piecewise": {
           "sse": 4.5753932502818685e-29,
-          "bic": -4218.941461894387,
+          "bic": -3920.48271724131,
           "r2": 1.0,
           "adjusted_r2": 1.0,
           "dof": 3,
@@ -52,7 +52,7 @@
           "sse_ratio_to_background": 2.175852269849665e-24,
           "fractional_sse_improvement": 1.0,
           "delta_r2_vs_background": 1.0,
-          "delta_bic_vs_background": -3315.340181819246,
+          "delta_bic_vs_background": -3016.881437166169,
           "normalized_rmse_to_log_range": 4.330313115871322e-13,
           "residual_lag1": 0.0,
           "robust_outlier_score": null
@@ -97,7 +97,7 @@
         "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
         "piecewise": {
           "sse": 9.482108080756562e-28,
-          "bic": -4034.032216516914,
+          "bic": -3920.48271724131,
           "r2": 1.0,
           "adjusted_r2": 1.0,
           "dof": 3,
@@ -108,7 +108,7 @@
           "sse_ratio_to_background": 7.214826009265565e-26,
           "fractional_sse_improvement": 1.0,
           "delta_r2_vs_background": 1.0000000000000004,
-          "delta_bic_vs_background": -3523.1337870757056,
+          "delta_bic_vs_background": -3409.5842878001017,
           "normalized_rmse_to_log_range": 7.885287433353387e-14,
           "residual_lag1": 0.0,
           "robust_outlier_score": null
@@ -186,7 +186,7 @@
         "tortuosity": 1.0,
         "background_selected": "ONE_LEG_TREND",
         "background_sse": 1.8143800820083272e-29,
-        "background_bic": -4279.474212230213,
+        "background_bic": -3924.5935911054835,
         "background_r2": 1.0,
         "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
         "aliasing_conclusion": "NOT_AUTHORIZED",
@@ -200,7 +200,7 @@
           },
           "ONE_LEG_TREND": {
             "sse": 1.8143800820083272e-29,
-            "bic": -4279.474212230213,
+            "bic": -3924.5935911054835,
             "r2": 1.0,
             "adjusted_r2": 1.0,
             "dof": 2
@@ -455,7 +455,7 @@
         "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
         "piecewise": {
           "sse": 2.926673958369954e-28,
-          "bic": -4105.740159718665,
+          "bic": -3920.48271724131,
           "r2": 1.0,
           "adjusted_r2": 1.0,
           "dof": 3,
@@ -466,7 +466,7 @@
           "sse_ratio_to_background": 3.4794878970433636e-26,
           "fractional_sse_improvement": 1.0,
           "delta_r2_vs_background": 1.0,
-          "delta_bic_vs_background": -3567.6182170171232,
+          "delta_bic_vs_background": -3382.360774539768,
           "normalized_rmse_to_log_range": 5.475985163227601e-14,
           "residual_lag1": 0.0,
           "robust_outlier_score": null

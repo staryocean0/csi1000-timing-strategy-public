@@ -11,6 +11,10 @@ import math
 import numpy as np
 
 EPS = 1e-14
+# Pure numerical floor for BIC variance. This prevents platform/BLAS round-off
+# in algebraically exact fits from changing a stored diagnostic. It is not a
+# market acceptance threshold and is far below any intended empirical scale.
+BIC_VARIANCE_FLOOR = 1e-28
 MAX_POINTS = 4096
 MIN_PIECEWISE_SIDE = 3  # algebraic support guard, not a market threshold
 
@@ -52,7 +56,7 @@ def _fit(name: str, y: np.ndarray, design: np.ndarray) -> Fit:
     adjusted = None
     if r2 is not None and n > k:
         adjusted = float(1.0 - (1.0 - r2) * (n - 1) / (n - k))
-    sigma2 = max(sse / n, np.finfo(float).tiny)
+    sigma2 = max(sse / n, BIC_VARIANCE_FLOOR)
     bic = float(n * math.log(sigma2) + k * math.log(n))
     return Fit(name, n, k, int(rank), sse, r2, adjusted, bic,
                tuple(float(v) for v in coef), residual)
