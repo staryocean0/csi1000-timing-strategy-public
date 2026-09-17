@@ -11,7 +11,26 @@ LATER='two-wave-recognizer-r2-eligible-counter-v1'
 def blob(text):
     raw=text.encode();return hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
 
+
+R3='two-wave-recognizer-r3-mature-counter-rearm-v1'
+def strip_r3_workflow(text):
+    text=text.replace('          - '+R3+'\n','').replace(" || inputs.profile == '"+R3+"'",'')
+    for phase in ('prepare','compute','cleanup','publish'):
+        addition="          elif [ '${{ inputs.profile }}' = '"+R3+"' ]; then\n            python3 executor/wave_recognizer_r3_v1_broker.py "+phase+' '+R3+'\n'
+        if text.count(addition)!=1:raise AssertionError('R3 workflow route is not exact for '+phase)
+        text=text.replace(addition,'')
+    return text
+
+def strip_r3_controller(text):
+    addition="       github.event.issue.title == 'controller: "+R3+"' ||\n"
+    if text.count(addition)!=1:raise AssertionError('R3 controller allowlist is not exact')
+    text=text.replace(addition,'')
+    case="            'controller: "+R3+"')\n              profile='"+R3+"'\n              ;;\n"
+    if text.count(case)!=1:raise AssertionError('R3 controller case is not exact')
+    return text.replace(case,'')
+
 def strip_later_workflow(text):
+    text=strip_r3_workflow(text)
     text=text.replace('          - '+LATER+'\n','').replace(" || inputs.profile == '"+LATER+"'",'')
     for phase in ('prepare','compute','cleanup','publish'):
         addition="          elif [ '${{ inputs.profile }}' = '"+LATER+"' ]; then\n            python3 executor/wave_recognizer_r2_v1_broker.py "+phase+' '+LATER+'\n'
@@ -21,6 +40,7 @@ def strip_later_workflow(text):
     return text
 
 def strip_later_controller(text):
+    text=strip_r3_controller(text)
     addition="       github.event.issue.title == 'controller: "+LATER+"' ||\n"
     if text.count(addition)!=1:raise AssertionError('later R2 controller allowlist is not exact')
     text=text.replace(addition,'')
