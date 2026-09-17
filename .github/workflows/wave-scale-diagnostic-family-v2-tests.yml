@@ -1,0 +1,28 @@
+name: Two-Wave diagnostic-family v2 contracts
+on:
+  pull_request:
+    paths:
+      - 'executor/wave_scale_diagnostic_family_v2.py'
+      - 'executor/wave_scale_diagnostic_family_market_*_v2.py'
+      - 'tests/test_wave_scale_diagnostic_family_v2.py'
+      - 'tests/test_wave_scale_diagnostic_family_market_v2.py'
+      - 'docs/research/TWO_WAVE_SCALE_DIAGNOSTIC_FAMILY_*V2*'
+      - 'docs/research/TWO_WAVE_RESEARCH_LINEAGE_20260916.json'
+      - 'docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json'
+      - '.github/workflows/public-compute.yml'
+      - '.github/workflows/controller-dispatch.yml'
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Run diagnostic-family v2 contracts
+        run: |
+          python3 -m unittest \
+            tests.test_wave_scale_diagnostic_family_v2 \
+            tests.test_wave_scale_diagnostic_family_market_v2 -v

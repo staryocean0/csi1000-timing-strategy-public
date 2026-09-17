@@ -465,6 +465,23 @@
       "order": 29,
       "parent_issue": 353,
       "status": "LOYO_OOF_NOT_READY_DIAGNOSTIC_FAMILY_REVISION_REQUIRED_NO_FULL_FIT"
+    },
+    {
+      "order": 30,
+      "name": "diagnostic_family_v2_label_blind_market_measurement_registration",
+      "issue": 381,
+      "parent_issue": 376,
+      "root_issue": 353,
+      "source_base": "3e975a037db5016435a11669de2f644fb164e025",
+      "profile": "two-wave-scale-diagnostic-family-measurement-v2",
+      "status": "DIAGNOSTIC_FAMILY_V2_PROFILE_SOURCE_READY_NOT_RUN",
+      "formal_run": null,
+      "labels_visible_to_compute": false,
+      "threshold_selected": false,
+      "full_192_fit_performed": false,
+      "fresh_oos_claim": false,
+      "R4_selected": false,
+      "authority_promoted": false
     }
   ],
   "other_open_research_threads": [

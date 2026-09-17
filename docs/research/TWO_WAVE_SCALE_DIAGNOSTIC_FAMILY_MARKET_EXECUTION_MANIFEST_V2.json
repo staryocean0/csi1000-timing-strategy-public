@@ -1,0 +1,40 @@
+{
+  "broker_blob": "aa6d23b447fec31df5c6f3951ac57f99a39250b0",
+  "carrier_protocol_blob": "fbe18533f503a754f57f5f9eff8d79b60e107462",
+  "command": [
+    "scale_diagnostic_family_v2/wave_scale_diagnostic_family_market_entry_v2.py"
+  ],
+  "command_timeout_seconds": 600,
+  "dependency_blobs": {
+    "broker.py": "299ab90424e42f76f038d3bad719cb2abeb155dc",
+    "research_broker.py": "1b4968475fc91a34f53bc08b7b5fdc1bf79862c0",
+    "run_research_in_container.py": "38dfa9bbcf0a09b328495b4844c82e25c9b5bec8"
+  },
+  "new_training": false,
+  "private_ref": "7688ba57206dd29fbef88d8e57475255718471fe",
+  "production_authority": false,
+  "profile": "two-wave-scale-diagnostic-family-measurement-v2",
+  "protocol_blob": "bab895ad3d6590cbd42302251f5878e189c426f5",
+  "schema_id": "csi1000.scale_diagnostic_family_market_execution@2.0",
+  "source_blobs": {
+    "wave_scale_diagnostic_family_market_entry_v2.py": "f88c268cb04c2a4077942c6f4faebcab6dee560f",
+    "wave_scale_diagnostic_family_market_measurement_v2.py": "df559626f45fdfe87c1beaac8e2b550d47aca3b8",
+    "wave_scale_diagnostic_family_market_verifier_v2.py": "4d1310622948011f7704e5b725f8c61eb564c355",
+    "wave_scale_diagnostic_family_v2.py": "01ce6603b6c8ab8434a371b277ead53b9df04370",
+    "wave_scale_dominance_diagnostics_v1.py": "8c8a07a0f3ed206cf7ec845efd5f4e14b035aea6",
+    "wave_scale_dominance_market_verifier_v1.py": "ba8b1f4b028f67bcc2b4b404128231835443e1b0",
+    "wave_scale_reference_packet_v2.py": "90b226723098188185725576e4caffa37993d2d4",
+    "wave_scale_reference_sampling_v2.py": "7cc243a1cee058b15d96db82a123e466de63571b",
+    "wave_scale_reference_verifier_v2.py": "1394ab08c1a3e49ad8930189765f59969b414b7a",
+    "wave_scale_reference_visuals_v1.py": "d6ce92747bf2701b32c473af9361b46db4effb02",
+    "wave_scale_validity_diagnostics_v1.py": "8f3feb7d6bb97788017fbd9b1fdbbfd169493db6",
+    "wave_scale_validity_market_verifier_v1.py": "3fa74e6c411eb3950240b38788df124c2966a267",
+    "wave_segmentation_carrier_qualification_v1.py": "9f8b9a6fd5e0232ad186dffa5b7008eeae8ef597",
+    "wave_segmentation_carrier_verifier_v1.py": "c09705f3915f3ada73742d96085fe7808ce26987"
+  },
+  "stage_blob": "c0e737d93278273f5180ae3cd60e66c75aec80cc",
+  "verification_timeout_seconds": 600,
+  "verify_command": [
+    "scale_diagnostic_family_v2/wave_scale_diagnostic_family_market_verifier_v2.py"
+  ]
+}
