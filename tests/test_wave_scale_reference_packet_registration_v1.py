@@ -173,9 +173,11 @@ class PacketRegistrationTests(unittest.TestCase):
         a=json.loads((ROOT/'docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json').read_text())
         lane=next(x for x in a['active_lanes'] if x['issue']==353)
         lineage=json.loads((ROOT/'docs/research/TWO_WAVE_RESEARCH_LINEAGE_20260916.json').read_text())
-        self.assertIn('FAILED_CLOSED',lane['status'])
+        # Historical v1 failure remains frozen even after the thread advances to
+        # a later verified packet and annotation stage.
         self.assertEqual(lineage['ordered_lineage'][17]['formal_run'],'35205287251-1')
-        self.assertIn('FAILED',a['S2_progress']['market_packet_run'])
+        self.assertIn('FAILED',lineage['ordered_lineage'][17]['status'])
+        self.assertEqual(a['S2_progress']['market_packet_run'],'35209602753-1_PASSED')
         self.assertEqual(a['S2_progress']['primary_reference_labels'],'NOT_YET_FROZEN')
         self.assertIsNone(a['S2_progress']['market_thresholds'])
 

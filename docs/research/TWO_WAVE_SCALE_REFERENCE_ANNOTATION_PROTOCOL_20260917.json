@@ -1,0 +1,54 @@
+{
+  "schema_id": "csi1000.scale_reference_annotation_execution@1.0",
+  "date": "2026-09-17",
+  "issue": 369,
+  "parent_issue": 359,
+  "input_run": "35209602753-1",
+  "blind_inventory_sha256": "5ab33685531475b3ad6cf4f69590c0af0925836679043d24ce2a44127ab7d4d1",
+  "panel_manifest_sha256": "f3cf7e7773da50278615a2217076b5dcbd6929721df49668c7a27c617950fab8",
+  "panels": 192,
+  "pass_order": [
+    "PASS_A_ALL_192_SEAL",
+    "PASS_B_ALL_192_FINAL_FREEZE"
+  ],
+  "pass_a_views": [
+    "A150",
+    "A300"
+  ],
+  "pass_b_views": [
+    "B300"
+  ],
+  "full_inventory_visible": false,
+  "calendar_date_visible": false,
+  "candidate_outputs_visible": false,
+  "diagnostic_scores_visible": false,
+  "outcomes_visible": false,
+  "reference_states": [
+    "CURRENT_SCALE_SUPPORTED",
+    "CURRENT_SCALE_DEVELOPING",
+    "CURRENT_SCALE_NOT_DOMINANT",
+    "AMBIGUOUS_MULTI_SCALE",
+    "INSUFFICIENT_SUPPORT",
+    "DATA_INVALID_EDGE"
+  ],
+  "reason_codes": [
+    "COHERENT_BROAD_TURN",
+    "COHERENT_DEVELOPING_LEG",
+    "REPEATED_SHORTER_STRUCTURE",
+    "MIXED_SCALE_COMPETITION",
+    "DISCONTINUITY_OR_OUTLIER",
+    "MULTIPLE_COMPATIBLE_SEGMENTATIONS",
+    "INSUFFICIENT_GEOMETRIC_INFORMATION",
+    "DATA_SUPPORT_FAILURE"
+  ],
+  "pass_b_allowed_transition": "SAME_AS_PASS_A_OR_DOWNGRADE_TO_AMBIGUOUS_MULTI_SCALE_OR_DATA_INVALID_EDGE",
+  "max_compatible_segmentations": 2,
+  "max_turns_per_segmentation": 6,
+  "turn_coordinates": "RELATIVE_TRADING_MINUTES_-299_TO_0",
+  "exact_bar_forced": false,
+  "future_suffix_revealed_before_freeze": false,
+  "labels_frozen": false,
+  "dominance_scores_measured": false,
+  "numeric_thresholds": null,
+  "production_authority": false
+}
