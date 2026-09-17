@@ -4,6 +4,9 @@ on:
     branches: [cloud-workspace-v1]
     paths:
       - '.github/workflows/r3-clock-audit-source-tests.yml'
+      - '.github/workflows/public-compute.yml'
+      - '.github/workflows/controller-dispatch.yml'
+      - 'tests/r3_clock_registration_support.py'
       - 'executor/wave_r3_clock*'
       - 'executor/wave_recognizer_r3_v1*'
       - 'executor/wave_recognizer_r2_v1*'
@@ -33,5 +36,5 @@ jobs:
           suite=unittest.defaultTestLoader.discover('tests',pattern='test_wave_r3_clock*.py')
           result=unittest.TextTestRunner(verbosity=2).run(suite)
           print(f'run={result.testsRun} skipped={len(result.skipped)}')
-          sys.exit(0 if result.wasSuccessful() and not result.skipped and result.testsRun >= 35 else 1)
+          sys.exit(0 if result.wasSuccessful() and not result.skipped and result.testsRun >= 70 else 1)
           PYTEST

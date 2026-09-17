@@ -1,0 +1,78 @@
+{
+  "schema_id": "csi1000.r3_clock_execution@1.0",
+  "profile": "two-wave-r3-clock-evidence-audit-v1",
+  "private_ref": "7688ba57206dd29fbef88d8e57475255718471fe",
+  "sources": {
+    "wave_recognizer_r3_v1.py": {
+      "git_blob_sha1": "2815b9a74f45066040e042fdf5670e64af469f5c"
+    },
+    "wave_recognizer_r3_v1_entry.py": {
+      "git_blob_sha1": "7c03ab2aa8908df28e439d8748f935bcfb9ed791"
+    },
+    "wave_recognizer_r3_v1_verifier.py": {
+      "git_blob_sha1": "b4d3d0fa583d64e7839ded1a16945a5dec9ad064"
+    },
+    "wave_recognizer_r3_v1_runtime.py": {
+      "git_blob_sha1": "55c2ccff323b5714fcdc6a8a130f2e72100011f6"
+    },
+    "wave_recognizer_r3_v1_visuals.py": {
+      "git_blob_sha1": "f8e3245005542a615a63ed688536a2d7ecd19235"
+    },
+    "wave_recognizer_r3_v1_protocol.json": {
+      "git_blob_sha1": "00d3fd7fd2d52805b1c99015c2dc12f9e592a23f"
+    },
+    "wave_recognizer_r2_v1.py": {
+      "git_blob_sha1": "fa58977b5640e8b29e1a1771b797575180699bc6"
+    },
+    "wave_recognizer_r2_v1_visuals.py": {
+      "git_blob_sha1": "605533e9712632cff414b0a8108be893ec9f4323"
+    },
+    "wave_recognizer_r1_v1.py": {
+      "git_blob_sha1": "32ffb3db77a7861f88ba6332809072d00b3a78a6"
+    },
+    "wave_recognizer_r1_v1_visuals.py": {
+      "git_blob_sha1": "c6674cbb3ab9b0ffb122984024b39fe8af98a46b"
+    },
+    "wave_multiscale_dual_gates_v2.py": {
+      "git_blob_sha1": "244376f66de50aae8804cedb34b09a6adb442a05"
+    },
+    "wave_dual_gate_hierarchy_v1.py": {
+      "git_blob_sha1": "fd644ee897fce0ceeb925258da9d62deec826352"
+    },
+    "wave_dual_gate_probe_v1.py": {
+      "git_blob_sha1": "c3d0224a27b163fdbee39ab1c8939dce49705d3a"
+    },
+    "two_wave_v0800_scale_map.py": {
+      "git_blob_sha1": "3d370052c68b5b7caa778210a744c0c5b7c6c112"
+    },
+    "two_wave_v0800_semantics.py": {
+      "git_blob_sha1": "504e21105860acc5c655f7703728e7b014d78316"
+    },
+    "wave_r3_clock_probe_v1.py": {
+      "git_blob_sha1": "5db4301acb19f8961642f07927f00bb311b4ecee"
+    },
+    "wave_r3_clock_audit_v1.py": {
+      "git_blob_sha1": "5cbaecd226e2b70be8b34a91f7dc7818c1a2a2e5"
+    },
+    "wave_r3_clock_checks_v1.py": {
+      "git_blob_sha1": "6ea91b11752c603f74d24ea497d58bf3874f6d3d"
+    },
+    "wave_r3_clock_protocol_v1.json": {
+      "git_blob_sha1": "0900c64b68f092710556b7caa858b4a5eb8de9f5"
+    },
+    "wave_r3_clock_files_v1.py": {
+      "git_blob_sha1": "cbfd22393b164750231dc7c9f8d800a976e5c96f"
+    },
+    "wave_r3_clock_entry_v1.py": {
+      "git_blob_sha1": "85dec521c0f3f74d228f5df8e08ab1119e267697"
+    },
+    "wave_r3_clock_verifier_v1.py": {
+      "git_blob_sha1": "5fd710625a6b96be00b043b3f53cd3a60cc1e87c"
+    },
+    "wave_r3_clock_runtime_v1.py": {
+      "git_blob_sha1": "c305a413af4056280f841bb4621cd4a2eb205726"
+    }
+  },
+  "new_training": false,
+  "production_authority": false
+}

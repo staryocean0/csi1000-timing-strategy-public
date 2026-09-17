@@ -27,18 +27,21 @@ class SourceClosureTests(unittest.TestCase):
     def test_not_execution_ready_and_no_standard_registration(self):
         m=json.loads(MANIFEST.read_text())
         self.assertFalse(m['execution_ready']);self.assertFalse(m['profile_registered']);self.assertIsNone(m['real_run'])
-        for path in m['frozen_control_plane_blobs']:
-            self.assertNotIn('two-wave-r3-clock-evidence-audit-v1',(ROOT/path).read_text())
-        self.assertFalse((ROOT/'executor/wave_r3_clock_entry_v1.py').exists())
+        # This is a historical source checkpoint, not the current execution manifest.
+        self.assertNotIn('wave_r3_clock_entry_v1.py',m['sources'])
 
     def test_existing_control_plane_and_credentials_unchanged(self):
         m=json.loads(MANIFEST.read_text())
-        for path,sha in m['frozen_control_plane_blobs'].items():self.assertEqual(blob(ROOT/path),sha)
+        from r3_clock_registration_support import strip_audit_workflow,strip_audit_controller
+        for path,sha in m['frozen_control_plane_blobs'].items():
+            restore=strip_audit_controller if 'controller' in path else strip_audit_workflow
+            raw=restore((ROOT/path).read_text()).encode()
+            self.assertEqual(hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest(),sha)
         self.assertEqual((ROOT/'.github/workflows/public-compute.yml').read_text().count('secrets.FACTORLAB_PRIVATE_TOKEN'),2)
 
     def test_source_ci_requires_35_without_skips(self):
         text=(ROOT/'.github/workflows/r3-clock-audit-source-tests.yml').read_text()
-        self.assertIn('result.testsRun >= 35',text);self.assertIn('not result.skipped',text)
+        self.assertIn('result.testsRun >= 70',text);self.assertIn('not result.skipped',text)
         self.assertNotIn('FACTORLAB_PRIVATE_TOKEN',text)
         self.assertNotIn('workflow_dispatch:',text)
 

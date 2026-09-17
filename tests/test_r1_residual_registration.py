@@ -14,6 +14,8 @@ def blob(text):
 
 R3='two-wave-recognizer-r3-mature-counter-rearm-v1'
 def strip_r3_workflow(text):
+    from r3_clock_registration_support import strip_audit_workflow
+    text=strip_audit_workflow(text)
     text=text.replace('          - '+R3+'\n','').replace(" || inputs.profile == '"+R3+"'",'')
     for phase in ('prepare','compute','cleanup','publish'):
         addition="          elif [ '${{ inputs.profile }}' = '"+R3+"' ]; then\n            python3 executor/wave_recognizer_r3_v1_broker.py "+phase+' '+R3+'\n'
@@ -22,6 +24,8 @@ def strip_r3_workflow(text):
     return text
 
 def strip_r3_controller(text):
+    from r3_clock_registration_support import strip_audit_controller
+    text=strip_audit_controller(text)
     addition="       github.event.issue.title == 'controller: "+R3+"' ||\n"
     if text.count(addition)!=1:raise AssertionError('R3 controller allowlist is not exact')
     text=text.replace(addition,'')
