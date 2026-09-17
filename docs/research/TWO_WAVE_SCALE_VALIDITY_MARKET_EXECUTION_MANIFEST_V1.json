@@ -1,0 +1,36 @@
+{
+  "schema_id": "csi1000.scale_validity_market_execution@1.0",
+  "profile": "two-wave-scale-validity-diagnostic-measurement-v1",
+  "private_ref": "7688ba57206dd29fbef88d8e57475255718471fe",
+  "source_blobs": {
+    "wave_scale_validity_market_measurement_v1.py": "766960681842228beed6920028db2668504c3a0c",
+    "wave_scale_validity_market_entry_v1.py": "6caf06cc2d3fc1a0e9cb5e5db673afa39e032884",
+    "wave_scale_validity_market_verifier_v1.py": "3fa74e6c411eb3950240b38788df124c2966a267",
+    "wave_scale_validity_diagnostics_v1.py": "8f3feb7d6bb97788017fbd9b1fdbbfd169493db6",
+    "wave_scale_reference_packet_v2.py": "90b226723098188185725576e4caffa37993d2d4",
+    "wave_scale_reference_sampling_v2.py": "7cc243a1cee058b15d96db82a123e466de63571b",
+    "wave_scale_reference_visuals_v1.py": "d6ce92747bf2701b32c473af9361b46db4effb02",
+    "wave_scale_reference_verifier_v2.py": "1394ab08c1a3e49ad8930189765f59969b414b7a",
+    "wave_segmentation_carrier_qualification_v1.py": "9f8b9a6fd5e0232ad186dffa5b7008eeae8ef597",
+    "wave_segmentation_carrier_verifier_v1.py": "c09705f3915f3ada73742d96085fe7808ce26987"
+  },
+  "dependency_blobs": {
+    "research_broker.py": "1b4968475fc91a34f53bc08b7b5fdc1bf79862c0",
+    "broker.py": "299ab90424e42f76f038d3bad719cb2abeb155dc",
+    "run_research_in_container.py": "38dfa9bbcf0a09b328495b4844c82e25c9b5bec8"
+  },
+  "broker_blob": "ce6b8e3f70e05e8acb143f3b391721641452b46c",
+  "stage_blob": "c0e737d93278273f5180ae3cd60e66c75aec80cc",
+  "protocol_blob": "5b45d2ba53da654137c50fc22382ec244a84ad3a",
+  "carrier_protocol_blob": "fbe18533f503a754f57f5f9eff8d79b60e107462",
+  "command": [
+    "scale_validity_measurement/wave_scale_validity_market_entry_v1.py"
+  ],
+  "verify_command": [
+    "scale_validity_measurement/wave_scale_validity_market_verifier_v1.py"
+  ],
+  "command_timeout_seconds": 600,
+  "verification_timeout_seconds": 600,
+  "new_training": false,
+  "production_authority": false
+}

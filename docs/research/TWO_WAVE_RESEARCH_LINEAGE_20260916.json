@@ -410,6 +410,20 @@
       "future_suffix_revealed": false,
       "R4_selected": false,
       "authority_promoted": false
+    },
+    {
+      "order": 27,
+      "name": "scale_validity_guard_label_blind_market_measurement_registration",
+      "issue": 376,
+      "parent_issue": 353,
+      "source_base": "bcd90340691c34e6b97ba72a88367e5bde9d191b",
+      "profile": "two-wave-scale-validity-diagnostic-measurement-v1",
+      "status": "PROFILE_SOURCE_READY_NOT_RUN",
+      "labels_visible_to_compute": false,
+      "validity_state_assigned": false,
+      "threshold_selected": false,
+      "formal_run": null,
+      "authority_promoted": false
     }
   ],
   "active_recognizer_remaining_order": [

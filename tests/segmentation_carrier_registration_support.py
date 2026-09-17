@@ -9,6 +9,8 @@ PACKET_V3_PROFILE = "two-wave-scale-reference-blind-packet-v3"
 PACKET_V3_BROKER = "executor/wave_scale_reference_packet_broker_v3.py"
 MARKET_PROFILE = "two-wave-scale-dominance-diagnostic-measurement-v1"
 MARKET_BROKER = "executor/wave_scale_dominance_market_broker_v1.py"
+VALIDITY_PROFILE = "two-wave-scale-validity-diagnostic-measurement-v1"
+VALIDITY_BROKER = "executor/wave_scale_validity_market_broker_v1.py"
 
 
 def remove_once(text: str, part: str, label: str) -> str:
@@ -19,7 +21,37 @@ def remove_once(text: str, part: str, label: str) -> str:
 
 
 
+def strip_validity_workflow(text: str) -> str:
+    text = remove_once(text, f"          - {VALIDITY_PROFILE}\n", "validity profile option")
+    stage = (f"        if: inputs.profile == '{PROFILE}' || inputs.profile == '{PACKET_PROFILE}' || "
+             f"inputs.profile == '{PACKET_V2_PROFILE}' || inputs.profile == '{PACKET_V3_PROFILE}' || "
+             f"inputs.profile == '{MARKET_PROFILE}' || inputs.profile == '{VALIDITY_PROFILE}'\n")
+    text = remove_once(text, stage, "validity stage condition")
+    public_name = "      - name: Stage fixed public Two-Wave segmentation carriers without private credentials\n"
+    pos = text.index(public_name) + len(public_name)
+    restored = (f"        if: inputs.profile == '{PROFILE}' || inputs.profile == '{PACKET_PROFILE}' || "
+                f"inputs.profile == '{PACKET_V2_PROFILE}' || inputs.profile == '{PACKET_V3_PROFILE}' || "
+                f"inputs.profile == '{MARKET_PROFILE}'\n")
+    text = text[:pos] + restored + text[pos:]
+    condition = f" || inputs.profile == '{VALIDITY_PROFILE}'"
+    if text.count(condition) != 2: raise AssertionError("validity allowlist count")
+    text = text.replace(condition, "")
+    for phase in ("prepare", "compute", "cleanup", "publish"):
+        branch = (f"          elif [ '${{{{ inputs.profile }}}}' = '{VALIDITY_PROFILE}' ]; then\n"
+                  f"            python3 {VALIDITY_BROKER} {phase} {VALIDITY_PROFILE}\n")
+        text = remove_once(text, branch, "validity " + phase)
+    return text
+
+def strip_validity_controller(text: str) -> str:
+    allow = f"       github.event.issue.title == 'controller: {VALIDITY_PROFILE}' ||\n"
+    text = remove_once(text, allow, "validity controller allowlist")
+    case = (f"            'controller: {VALIDITY_PROFILE}')\n"
+            f"              profile='{VALIDITY_PROFILE}'\n"
+            "              ;;\n")
+    return remove_once(text, case, "validity controller case")
+
 def strip_market_workflow(text: str) -> str:
+    text = strip_validity_workflow(text)
     text = remove_once(text, f"          - {MARKET_PROFILE}\n", "market diagnostic profile option")
     stage = (f"        if: inputs.profile == '{PROFILE}' || inputs.profile == '{PACKET_PROFILE}' || "
              f"inputs.profile == '{PACKET_V2_PROFILE}' || inputs.profile == '{PACKET_V3_PROFILE}' || "
@@ -41,6 +73,7 @@ def strip_market_workflow(text: str) -> str:
 
 
 def strip_market_controller(text: str) -> str:
+    text = strip_validity_controller(text)
     allow = f"       github.event.issue.title == 'controller: {MARKET_PROFILE}' ||\n"
     text = remove_once(text, allow, "market diagnostic controller allowlist")
     case = (f"            'controller: {MARKET_PROFILE}')\n"

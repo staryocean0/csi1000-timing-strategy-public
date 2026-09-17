@@ -52,7 +52,7 @@
     {
       "issue": 353,
       "stage": "S2_SCALE_DOMINANCE_DESIGN",
-      "status": "DIAGNOSTIC_MEASUREMENT_AND_THRESHOLD_FREE_JOIN_COMPLETED_CALIBRATION_GATE_NEXT",
+      "status": "VALIDITY_DIAGNOSTIC_PROFILE_SOURCE_READY_NOT_RUN",
       "checkpoint": "docs/research/TWO_WAVE_SCALE_DOMINANCE_SYNTHETIC_CHECKPOINT_20260917.json",
       "reference_issue": 359,
       "reference_checkpoint": "docs/research/TWO_WAVE_SCALE_REFERENCE_SOURCE_CHECKPOINT_20260917.json",
@@ -65,7 +65,9 @@
       "diagnostic_measurement_registration": "docs/research/TWO_WAVE_SCALE_DOMINANCE_MARKET_REGISTRATION_20260917.json",
       "diagnostic_measurement_run": "35216237190-1",
       "diagnostic_measurement_adjudication": "docs/research/TWO_WAVE_SCALE_DOMINANCE_MARKET_ADJUDICATION_20260917.json",
-      "threshold_free_join": "docs/research/TWO_WAVE_SCALE_DOMINANCE_THRESHOLD_FREE_JOIN_20260917.json"
+      "threshold_free_join": "docs/research/TWO_WAVE_SCALE_DOMINANCE_THRESHOLD_FREE_JOIN_20260917.json",
+      "validity_guard_issue": 376,
+      "validity_measurement_registration": "docs/research/TWO_WAVE_SCALE_VALIDITY_MARKET_REGISTRATION_20260917.json"
     }
   ],
   "future_only": {
@@ -103,7 +105,7 @@
     "synthetic_diagnostic": "IMPLEMENTED",
     "market_thresholds": null,
     "real_market_reference_labels": "FROZEN_192_AFTER_PASS_B",
-    "next": "REGISTER_STATE_MORPHOLOGY_CONDITIONAL_CALIBRATION_AND_VALIDITY_GUARD_GATE",
+    "next": "MERGE_VALIDITY_PROFILE_THEN_FORMAL_LABEL_BLIND_MEASUREMENT",
     "reference_protocol": "FROZEN",
     "reference_source_contract": "IMPLEMENTED",
     "market_packet_profile": "V3_VERIFIED",
@@ -134,6 +136,10 @@
     "hysteresis_or_persistence_selected": false,
     "R4_selected": false,
     "router_pnl": false,
-    "production_authority": false
+    "production_authority": false,
+    "validity_guard_issue": 376,
+    "validity_measurement_profile": "two-wave-scale-validity-diagnostic-measurement-v1",
+    "validity_diagnostics_measured": false,
+    "numeric_validity_thresholds": null
   }
 }

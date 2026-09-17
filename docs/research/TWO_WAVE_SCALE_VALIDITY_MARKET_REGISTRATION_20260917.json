@@ -1,0 +1,23 @@
+{
+  "schema_id": "csi1000.scale_validity_market_registration@1.0",
+  "date": "2026-09-17",
+  "issue": 376,
+  "parent_issue": 353,
+  "source_base": "bcd90340691c34e6b97ba72a88367e5bde9d191b",
+  "profile": "two-wave-scale-validity-diagnostic-measurement-v1",
+  "protocol": "docs/research/TWO_WAVE_SCALE_VALIDITY_MARKET_PROTOCOL_20260917.json",
+  "execution_manifest": "docs/research/TWO_WAVE_SCALE_VALIDITY_MARKET_EXECUTION_MANIFEST_V1.json",
+  "status": "PROFILE_SOURCE_READY_NOT_RUN",
+  "formal_run": null,
+  "prior_26_lineage_sha256": "fa07fdc6ae7500541ecad52e3e330a88b18a3900f5e143ee2ff87408f9ae113b",
+  "reference_labels_visible_to_compute": false,
+  "validity_state_assigned": false,
+  "threshold_selection_in_run": false,
+  "numeric_validity_thresholds": null,
+  "future_suffix_used": false,
+  "outcomes_used": false,
+  "R4_selected": false,
+  "one_minute_strategy_admitted": false,
+  "router_pnl": false,
+  "production_authority": false
+}
