@@ -1,0 +1,382 @@
+{
+  "schema_id": "csi1000.r3_clock_audit_adjudication@1.0",
+  "date": "2026-09-17",
+  "research_issue": 345,
+  "readiness_issue": 321,
+  "source_pr": 347,
+  "controller_issue": 348,
+  "decision": "EVIDENCE_AUDIT_COMPLETED_R3_REMAINS_NOT_READY",
+  "formal_run": {
+    "workflow_run_id": 35178725247,
+    "attempt": 1,
+    "public_run_id": "35178725247-1",
+    "event": "workflow_dispatch",
+    "workflow": ".github/workflows/public-compute.yml",
+    "profile": "two-wave-r3-clock-evidence-audit-v1",
+    "public_source_sha": "8fc29e3e33c681fd7fec6a2172cfa7f908d63804",
+    "private_source_ref": "7688ba57206dd29fbef88d8e57475255718471fe",
+    "prepare": "success",
+    "isolated_compute_and_separate_verifier": "success",
+    "cleanup": "success",
+    "private_publish": "success",
+    "receipt_status": "passed",
+    "delivery_status": "archive_uploaded_and_verified",
+    "manifest_sha256": "019287bc7a205ff537fc1012cc33be32b8d50451e3d729c1e7a76df824d38304",
+    "aggregate_sha256": "3a65f656a542b6537e518f65ee008b469ee26a5187484500f139af9a3ba59001",
+    "validation_sha256_from_receipt": "f0b438dc5f820f0dd599a079f6f4f71344f02be6ac0bebc67652e911a905ed28",
+    "release_id": 390419162,
+    "archive_bytes": 776686,
+    "archive_sha256": "8b5b752c2faa06c12db9b7e3f7bed833d12cdddd9bde1814c6e2f83359f2154b"
+  },
+  "readback_evidence": {
+    "private_repository": "staryocean0/csi1000-timing-strategy-private",
+    "private_branch": "runs/public-research/35178725247-1",
+    "receipt_path": "research/public-runs/35178725247-1.json",
+    "aggregate_path": "research/public-runs/35178725247-1/report.json",
+    "directly_read": [
+      "standard_workflow_status",
+      "private_receipt",
+      "private_aggregate",
+      "private_release_metadata"
+    ],
+    "receipt_release_metadata_agree": true,
+    "row_level_verification_location": "FORMAL_ISOLATED_RUN_ONLY",
+    "local_archive_downloaded": false,
+    "local_archive_bytes_independently_hashed": false,
+    "local_row_level_replay": false,
+    "validation_json_content_directly_read": false,
+    "limitation": "A combined full-archive retrieval request was blocked before execution and withdrawn because acquiring detailed event/trace material was unnecessary for aggregate adjudication. No alternative-interface retrieval followed. Passed verifier status is established by the reviewed fail-closed execution route and successful compute/receipt, not direct local reading of validation JSON."
+  },
+  "parent_identity": {
+    "run": "35174316105-1",
+    "source": "12991256f60e0e432cb90416be58a7d12a2d1b58",
+    "report_sha256": "160a591386af53f127f7cb3ae784f2eecc24c687d260cb4e75e2053b4a98e581",
+    "visual_index_sha256": "8e34a62b71282c0bb7823a81b00c7fa38b559244caef74e732acba9c10f59eca",
+    "report_and_all_original_visual_identities_preserved": true,
+    "visual_pages": 33,
+    "waves": 1932,
+    "pivots": 3881,
+    "resets": 4,
+    "subscale_rejections": 454,
+    "accepted_mature_counters": 3876
+  },
+  "input": {
+    "symbol": "000852.SH",
+    "timeframe": "5m",
+    "period": "2015-2020",
+    "bars": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+  },
+  "frozen_scale": {
+    "MIN_LEG": 4,
+    "MAX_UNFINISHED_LEG": 48,
+    "T0": 21
+  },
+  "residual_cases": [
+    {
+      "case_id": "d9d93c795e7bfb48",
+      "bars": 151,
+      "amplitude_quartile": "Q4",
+      "classification": "TIMEOUT_WITH_COUNTER_NOT_YET_MATURE",
+      "candidate_mode": -1,
+      "candidate_age": 49,
+      "progress_age": 49,
+      "pending_counter_age": 1,
+      "occurrence_gap": 48,
+      "same_bar_candidate_progress": false,
+      "same_bar_counter_update": false,
+      "same_bar_eligible_maturity": false,
+      "same_bar_subscale_maturity": false,
+      "before_reset_blind_bars": 74,
+      "reset_blind_bars": 1,
+      "after_reset_blind_bars": 76,
+      "pre_reset_window_counter_updates": 36,
+      "pre_reset_window_counter_supersessions": 35,
+      "maturity_boundary_supersessions": 1,
+      "pre_reset_window_subscale_rejections": 0,
+      "originally_covered_bars": 0,
+      "R1_covered_bars": 151
+    },
+    {
+      "case_id": "1bc752d4e36d9955",
+      "bars": 177,
+      "amplitude_quartile": "Q4",
+      "classification": "TIMEOUT_WITH_COUNTER_SUPERSESSION_ON_RESET_BAR",
+      "candidate_mode": -1,
+      "candidate_age": 49,
+      "progress_age": 49,
+      "pending_counter_age": 1,
+      "occurrence_gap": 48,
+      "same_bar_candidate_progress": false,
+      "same_bar_counter_update": true,
+      "same_bar_eligible_maturity": false,
+      "same_bar_subscale_maturity": false,
+      "before_reset_blind_bars": 81,
+      "reset_blind_bars": 1,
+      "after_reset_blind_bars": 95,
+      "pre_reset_window_counter_updates": 27,
+      "pre_reset_window_counter_supersessions": 26,
+      "maturity_boundary_supersessions": 1,
+      "pre_reset_window_subscale_rejections": 0,
+      "originally_covered_bars": 89,
+      "R1_covered_bars": 177
+    },
+    {
+      "case_id": "9ec8c8207214f19f",
+      "bars": 173,
+      "amplitude_quartile": "Q4",
+      "classification": "TIMEOUT_WITH_COUNTER_NOT_YET_MATURE",
+      "candidate_mode": -1,
+      "candidate_age": 49,
+      "progress_age": 49,
+      "pending_counter_age": 1,
+      "occurrence_gap": 48,
+      "same_bar_candidate_progress": false,
+      "same_bar_counter_update": false,
+      "same_bar_eligible_maturity": false,
+      "same_bar_subscale_maturity": false,
+      "before_reset_blind_bars": 141,
+      "reset_blind_bars": 1,
+      "after_reset_blind_bars": 31,
+      "pre_reset_window_counter_updates": 28,
+      "pre_reset_window_counter_supersessions": 27,
+      "maturity_boundary_supersessions": 4,
+      "pre_reset_window_subscale_rejections": 0,
+      "originally_covered_bars": 93,
+      "R1_covered_bars": 173
+    },
+    {
+      "case_id": "47dc7f59b49c5817",
+      "bars": 87,
+      "amplitude_quartile": "Q4",
+      "classification": "TIMEOUT_WITH_COUNTER_SUPERSESSION_ON_RESET_BAR",
+      "candidate_mode": 1,
+      "candidate_age": 49,
+      "progress_age": 49,
+      "pending_counter_age": 1,
+      "occurrence_gap": 48,
+      "same_bar_candidate_progress": false,
+      "same_bar_counter_update": true,
+      "same_bar_eligible_maturity": false,
+      "same_bar_subscale_maturity": false,
+      "before_reset_blind_bars": 56,
+      "reset_blind_bars": 1,
+      "after_reset_blind_bars": 30,
+      "pre_reset_window_counter_updates": 31,
+      "pre_reset_window_counter_supersessions": 30,
+      "maturity_boundary_supersessions": 2,
+      "pre_reset_window_subscale_rejections": 0,
+      "originally_covered_bars": 0,
+      "R1_covered_bars": 87
+    }
+  ],
+  "reset_classification_counts": {
+    "TIMEOUT_WITH_COUNTER_NOT_YET_MATURE": 2,
+    "TIMEOUT_WITH_COUNTER_SUPERSESSION_ON_RESET_BAR": 2
+  },
+  "gap_accounting": {
+    "nonedge_episodes": 4,
+    "nonedge_bars": 588,
+    "before_reset_bars": 352,
+    "reset_bars": 4,
+    "after_reset_bars": 232,
+    "originally_covered_bars": 182,
+    "newly_blind_vs_R1_bars": 588
+  },
+  "mechanism_adjudication": {
+    "observed": "Opposite-counter updates repeatedly restart extremum survival while the candidate/last-confirmed-pivot progress anchor remains stale. At all four reset boundaries the old candidate has age49 and the pending counter has age1, occurrence gap48.",
+    "same_bar_candidate_progress_cases": 0,
+    "same_bar_eligible_maturity_cases": 0,
+    "not_the_old_R1_mature_evidence_skipped_boundary": true,
+    "not_an_ineligible_early_counter_still_occupying_the_slot_at_reset": true,
+    "pre_reset_subscale_rejections_zero_scope": "Only the protocol-defined pre-reset observation windows; not a claim that all historical rejection/rearm effects are absent.",
+    "pre_reset_acceptance_scope": "Some windows include an earlier acceptance establishing the current candidate; those counts must not be read as successful maturity of the candidate eventually reset.",
+    "counterfactual_repair_executed": false,
+    "ordering_only_repair_proven_to_pass": false,
+    "classification_scope": "OBSERVED_CLOCK_PREDICATES_NOT_COUNTERFACTUAL_REPAIR"
+  },
+  "R1_recovery": {
+    "episodes": 5,
+    "bars": 414,
+    "recovered_bars": 414,
+    "exact_new_subset": 92,
+    "exact_new_subset_recovered": 92,
+    "new_subset_case_parts": [
+      0,
+      26,
+      0,
+      29,
+      37
+    ],
+    "cases": [
+      {
+        "case_id": "6b0c59546dbe9869",
+        "bars": 63,
+        "R3_recovered_bars": 63,
+        "prior_R1_new_subset": 0,
+        "subset_recovered": 0
+      },
+      {
+        "case_id": "38c9b6eded380dee",
+        "bars": 85,
+        "R3_recovered_bars": 85,
+        "prior_R1_new_subset": 26,
+        "subset_recovered": 26
+      },
+      {
+        "case_id": "a6238d2bdc6f8fc2",
+        "bars": 77,
+        "R3_recovered_bars": 77,
+        "prior_R1_new_subset": 0,
+        "subset_recovered": 0
+      },
+      {
+        "case_id": "2fe4c0676e86fb32",
+        "bars": 94,
+        "R3_recovered_bars": 94,
+        "prior_R1_new_subset": 29,
+        "subset_recovered": 29
+      },
+      {
+        "case_id": "9fe2ac7c42db4ac8",
+        "bars": 95,
+        "R3_recovered_bars": 95,
+        "prior_R1_new_subset": 37,
+        "subset_recovered": 37
+      }
+    ],
+    "newly_blind_vs_R1_bars": 588
+  },
+  "final_low_latency": {
+    "waves_accounted": 1932,
+    "pointwise_identity_violations": 0,
+    "identity": "delay = opposite occurrence separation + opposite extremum survival",
+    "occurrence_separation": {
+      "minimum": 4,
+      "q25": 6,
+      "median": 9,
+      "q75": 13,
+      "p90": 18,
+      "maximum": 42
+    },
+    "counter_survival": {
+      "minimum": 4,
+      "median": 4,
+      "p90": 4,
+      "maximum": 4,
+      "constant_for_all_waves": true
+    },
+    "confirmation_delay": {
+      "minimum": 8,
+      "q25": 10,
+      "median": 13,
+      "q75": 17,
+      "p90": 22,
+      "maximum": 46
+    },
+    "original_and_R1_delay_median": 4,
+    "original_and_R1_delay_p90": 7,
+    "median_change": 9,
+    "p90_change": 15,
+    "median_change_limit": 4,
+    "p90_change_limit": 8,
+    "latency_gate_passed": false,
+    "quantile_identity_justification": "Survival is exactly four in every paired event; these translated quantiles are not sums of unrelated marginal quantiles."
+  },
+  "joint_short_low_amplitude": {
+    "definition": "DURATION_LE_T0_AND_AMPLITUDE_LE_ORIGINAL_Q1",
+    "duration_max": 21,
+    "amplitude_max": 0.006026317779015855,
+    "diagnostic_only": true,
+    "counts": {
+      "original": {
+        "waves": 2503,
+        "low_amplitude_count": 626,
+        "short_count": 1279,
+        "joint_count": 493,
+        "joint_share": 0.19696364362764682
+      },
+      "R1": {
+        "waves": 2704,
+        "low_amplitude_count": 633,
+        "short_count": 1297,
+        "joint_count": 498,
+        "joint_share": 0.1841715976331361
+      },
+      "R2": {
+        "waves": 4345,
+        "low_amplitude_count": 1542,
+        "short_count": 3501,
+        "joint_count": 1472,
+        "joint_share": 0.3387802071346375
+      },
+      "R3": {
+        "waves": 1932,
+        "low_amplitude_count": 253,
+        "short_count": 497,
+        "joint_count": 161,
+        "joint_share": 0.08333333333333333
+      }
+    }
+  },
+  "floor_controls": {
+    "cases": 8,
+    "complete_R2_wave_inside_one_R3_leg": 5,
+    "focus_case": "00e6fd0e09267132",
+    "focus_R3_leg_direction": "UP",
+    "focus_R3_leg_bars": 37,
+    "focus_R1_complete_waves_inside": 2,
+    "focus_R2_component_leg_bars": [
+      4,
+      4
+    ],
+    "focus_R2_pivots_confirmed_by_R3_asof_cutoff": 0,
+    "focus_final_low_pending_exit": "CANDIDATE_PROGRESS",
+    "interpretation": "INTER_DETECTOR_DISAGREEMENT_NOT_AUTOMATIC_MISSED_WAVE",
+    "automatically_qualified_as_true_missed_base_wave": false
+  },
+  "visual_review": {
+    "original_pack_pages": 33,
+    "original_pack_previously_reviewed": true,
+    "all_33_newly_rereviewed_this_turn": false,
+    "existing_boards_rereviewed": [
+      "RESIDUAL_Q4-1",
+      "R2_MIN_LEG_LEG_CONTROL-2"
+    ],
+    "unchanged_hashed_pack_preserved": true,
+    "new_Q4_misses_are_not_low_amplitude_noise": true,
+    "longest_R3_wave_bars": 136,
+    "long_one_way_control_preserved": true,
+    "geometry_acceptance": false
+  },
+  "readiness": {
+    "nonedge_blind_fraction": 0.008386342242633425,
+    "coverage_limit": 0.02,
+    "coverage_passed": true,
+    "Q3_Q4_episodes": 4,
+    "Q3_Q4_episode_limit": 5,
+    "Q3_Q4_blind_bars": 588,
+    "Q3_Q4_bar_fraction_limit": 0.0025,
+    "Q3_Q4_bar_fraction_passed": false,
+    "residual_Q1_share": 0.0,
+    "residual_Q1_share_minimum": 0.9,
+    "longest_substantial_gap_bars": 177,
+    "longest_substantial_gap_limit": 31.5,
+    "R3_passed": false,
+    "issue321_stays_open": true
+  },
+  "audit_completed": true,
+  "R4_selected": false,
+  "one_minute_admitted": false,
+  "outcomes_used": false,
+  "new_training": false,
+  "authority": {
+    "signal": false,
+    "detector_repair": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  },
+  "next_action": "Only after this audit may a separate issue preregister one structural candidate. No candidate or repair is selected by this adjudication."
+}

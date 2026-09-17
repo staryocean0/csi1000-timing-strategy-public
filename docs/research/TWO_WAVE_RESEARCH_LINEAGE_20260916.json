@@ -126,16 +126,47 @@
       "real_run": null,
       "adjudication": null,
       "authority_promoted": false
+    },
+    {
+      "order": 10,
+      "name": "recognizer_R3_formal_failed_outcome",
+      "formal_run": "35174316105-1",
+      "source_merge": "12991256f60e0e432cb90416be58a7d12a2d1b58",
+      "decision": "REJECT_R3_FOR_5M_READINESS",
+      "nonedge_Q4_gaps": 4,
+      "nonedge_Q4_bars": 588,
+      "confirmation_delay_median": 13,
+      "confirmation_delay_p90": 22,
+      "old_R1_414_bars_recovered": true,
+      "numeric_gate_passed": false,
+      "authority_promoted": false,
+      "recorded_with_evidence_audit": "docs/research/TWO_WAVE_R3_CLOCK_AUDIT_ADJUDICATION_20260917.json"
+    },
+    {
+      "order": 11,
+      "name": "R3_residual_clock_and_latency_audit_completed",
+      "issue": 345,
+      "source_pr": 347,
+      "controller_issue": 348,
+      "formal_run": "35178725247-1",
+      "source_merge": "8fc29e3e33c681fd7fec6a2172cfa7f908d63804",
+      "adjudication": "docs/research/TWO_WAVE_R3_CLOCK_AUDIT_ADJUDICATION_20260917.json",
+      "decision": "EVIDENCE_AUDIT_COMPLETED_R3_REMAINS_NOT_READY",
+      "observed_reset_classes": {
+        "TIMEOUT_WITH_COUNTER_NOT_YET_MATURE": 2,
+        "TIMEOUT_WITH_COUNTER_SUPERSESSION_ON_RESET_BAR": 2
+      },
+      "exact92_recovered": 92,
+      "parent_report_and_visual_identities_preserved": true,
+      "R4_selected": false,
+      "authority_promoted": false
     }
   ],
   "active_recognizer_remaining_order": [
-    "Implement R3 MATURE_COUNTER_REARM source-only and independent replay verifier exactly as issue 340 freezes it",
-    "Pass synthetic early-counter, counter-supersession, monotone, pivot-gap, reset-order and causal-prefix counterexamples before any real run",
-    "Register a fixed standard public-compute profile without increasing the two credential boundaries",
-    "Run one unchanged consumed 5m 2015-2020 carrier through real workflow_dispatch",
-    "Read the private verified aggregate and mandatory full-OHLC evidence",
-    "Adjudicate R3 against the unchanged issue 321 thresholds and preserve failure if any",
-    "Admit 1m only if the 5m readiness gate actually passes"
+    "Issue345 evidence audit completed; preserve frozen R3 failure and all four newly blind cases",
+    "Before further detector execution, separately preregister one structural candidate using audited clock evidence, not threshold rescue",
+    "Keep 4/48, causality, one-way negative controls, eight floor cases and original readiness gates explicit in any future study",
+    "Admit1m only after issue321 actually passes; no router/PnL or production authority is granted"
   ],
   "other_open_research_threads": [
     "Issue 274 real multiscale single-wave/nine-grid acceptance remains pending",
