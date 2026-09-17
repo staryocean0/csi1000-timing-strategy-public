@@ -1,0 +1,27 @@
+{
+  "schema_id": "csi1000.scale_reference_packet_v3_checkpoint@1.0",
+  "date": "2026-09-17",
+  "issue": 366,
+  "source_base": "fffde4af461eefe598fd253d34e19c5027fde982",
+  "history_guard": {
+    "prior_19_lineage_sha256": "00d1badb24c6b91463b9bcc59d2aa4526e93605339951de0df1173e0ee224174"
+  },
+  "failed_v2": {
+    "run": "35207642041-1",
+    "producer_compute_passed": true,
+    "formal_status": "FAILED",
+    "archive_sha256": "03da8d2f3816924ad4e26c8790ec3a93061cf2e854caec184523ffc34c539870",
+    "archive_bytes": 2151892,
+    "full_inventory_sha256": "32f6279610def838474fb0bc4596c33dfb41f88e4fb78e4a20d6b39942446206",
+    "blind_inventory_sha256": "5ab33685531475b3ad6cf4f69590c0af0925836679043d24ce2a44127ab7d4d1",
+    "packet_summary_sha256": "dbe369560a81cd88ea4a3144358823d6e78aab2d09f136e9c048cbf336132724",
+    "independent_sample_identity_passed": true,
+    "independent_panel_geometry_reached": false
+  },
+  "v3_scope": "VERIFIER_REASON_TAXONOMY_ONLY",
+  "sampling_or_producer_change": false,
+  "market_run": null,
+  "labels_frozen": false,
+  "diagnostic_scores_measured": false,
+  "production_authority": false
+}

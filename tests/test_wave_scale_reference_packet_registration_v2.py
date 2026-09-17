@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'executor'))
 from tests.segmentation_carrier_registration_support import (
     PROFILE as CARRIER_PROFILE, PACKET_PROFILE as V1_PROFILE,
-    PACKET_V2_PROFILE as PROFILE, PACKET_V2_BROKER as BROKER,
+    PACKET_V2_PROFILE as PROFILE, PACKET_V2_BROKER as BROKER, PACKET_V3_PROFILE,
     strip_packet_v2_workflow, strip_packet_v2_controller,
 )
 import wave_scale_reference_packet_broker_v2 as broker
@@ -29,7 +29,7 @@ class PacketV2RegistrationTests(unittest.TestCase):
         doc=self.workflow();opts=doc['on']['workflow_dispatch']['inputs']['profile']['options']
         self.assertEqual(opts.count(PROFILE),1)
         stage=next(s for s in doc['jobs']['execute']['steps'] if 'wave_segmentation_carrier_stage_public.py' in s.get('run',''))
-        self.assertEqual(stage['if'],f"inputs.profile == '{CARRIER_PROFILE}' || inputs.profile == '{V1_PROFILE}' || inputs.profile == '{PROFILE}'")
+        self.assertEqual(stage['if'],f"inputs.profile == '{CARRIER_PROFILE}' || inputs.profile == '{V1_PROFILE}' || inputs.profile == '{PROFILE}' || inputs.profile == '{PACKET_V3_PROFILE}'")
         self.assertNotIn('env',stage)
         self.assertEqual(WORKFLOW.read_text().count('secrets.FACTORLAB_PRIVATE_TOKEN'),2)
 
