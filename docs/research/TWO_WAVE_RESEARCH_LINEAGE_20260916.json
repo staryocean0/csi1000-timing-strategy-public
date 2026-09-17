@@ -288,14 +288,59 @@
       "numeric_gate_selected": false,
       "R4_selected": false,
       "authority_promoted": false
+    },
+    {
+      "order": 20,
+      "name": "scale_reference_blind_packet_v2_formal_run_failed_verifier_reason_parity",
+      "issue": 365,
+      "parent_issue": 359,
+      "amendment_issue": 363,
+      "source_sha": "fffde4af461eefe598fd253d34e19c5027fde982",
+      "formal_run": "35207642041-1",
+      "status": "FAILED_CLOSED_VERIFIER_REASON_SUMMARY_MISMATCH",
+      "producer_compute_passed": true,
+      "packet_generated": true,
+      "primary_panels": 192,
+      "panel_files": 576,
+      "anchor_context_eligible_days": 1414,
+      "producer_exclusions": {
+        "context_causal_flat_fill": 43,
+        "context_support": 1
+      },
+      "full_inventory_sha256": "32f6279610def838474fb0bc4596c33dfb41f88e4fb78e4a20d6b39942446206",
+      "blind_inventory_sha256": "5ab33685531475b3ad6cf4f69590c0af0925836679043d24ce2a44127ab7d4d1",
+      "sample_identity_independently_verified_before_failure": true,
+      "panel_geometry_independently_verified": false,
+      "labels_frozen": false,
+      "diagnostic_scores_measured": false,
+      "authority_promoted": false
+    },
+    {
+      "order": 21,
+      "name": "scale_reference_blind_packet_v3_verifier_reason_parity_registration",
+      "issue": 366,
+      "parent_issue": 359,
+      "source_base": "fffde4af461eefe598fd253d34e19c5027fde982",
+      "packet_protocol": "docs/research/TWO_WAVE_SCALE_REFERENCE_PACKET_PROTOCOL_V3_20260917.json",
+      "execution_manifest": "docs/research/TWO_WAVE_SCALE_REFERENCE_PACKET_EXECUTION_MANIFEST_V3.json",
+      "status": "V3_PROFILE_SOURCE_READY_NOT_RUN",
+      "scientific_sampling_change": false,
+      "verifier_reason_taxonomy_only": true,
+      "market_packet_run": null,
+      "labels_frozen": false,
+      "diagnostic_scores_measured": false,
+      "numeric_gate_selected": false,
+      "R4_selected": false,
+      "authority_promoted": false
     }
   ],
   "active_recognizer_remaining_order": [
-    "#362/v1 formal blind-packet run is preserved as fail-closed before any panel/label/score; do not rerun that source.",
-    "#363/v2 freezes anchor-context eligibility before hash ranking: exact300-minute causal support, no flat-fill, five fully-contained phase views; no post-selection substitution.",
-    "After reviewed v2 source/CI, run one standard blind-packet workflow; freeze192 causal reference labels before opening any market diagnostic score.",
-    "Only after label freeze measure threshold-free #353 diagnostic distributions; threshold/persistence selection requires another preregistered stage.",
-    "Faster/slower routing,1m strategy admission,router/PnL and production authority remain downstream and inactive."
+    "Issue350/353 authority now prioritizes accurate segmentation plus current-scale dominance over historical amplitude-only gate optimization.",
+    "S1 carrier construction/common-support qualification is complete.",
+    "S2 candidate-independent blind reference packet v1 and v2 both remain formal fail-closed history; v2 producer/sample identities matched independently but panel geometry verification stopped at a verifier reason-code summary mismatch.",
+    "Issue366 v3 changes only independent verifier diagnostic reason taxonomy; reuse v2 sampling/producer rules unchanged, then complete all-panel independent verification before any label freeze.",
+    "Only after a fully verified blind packet: perform blinded human/reference annotation under frozen protocol, then freeze labels before measuring market dominance scores.",
+    "No R4, automatic amplitude exemption, 1m strategy, router/PnL or production authority."
   ],
   "other_open_research_threads": [
     "Issue 274 real multiscale single-wave/nine-grid acceptance remains pending",
