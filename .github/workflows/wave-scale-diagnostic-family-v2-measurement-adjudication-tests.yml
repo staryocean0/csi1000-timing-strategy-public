@@ -1,0 +1,20 @@
+name: Two-Wave diagnostic-family v2 measurement adjudication tests
+on:
+  pull_request:
+    paths:
+      - 'docs/research/TWO_WAVE_SCALE_DIAGNOSTIC_FAMILY_V2_MEASUREMENT_ADJUDICATION_20260917.*'
+      - 'docs/research/TWO_WAVE_RESEARCH_LINEAGE_20260916.json'
+      - 'docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json'
+      - 'tests/test_wave_scale_diagnostic_family_v2_measurement_adjudication.py'
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Run v2 measurement adjudication contracts
+        run: python3 -m unittest tests.test_wave_scale_diagnostic_family_v2_measurement_adjudication -v
