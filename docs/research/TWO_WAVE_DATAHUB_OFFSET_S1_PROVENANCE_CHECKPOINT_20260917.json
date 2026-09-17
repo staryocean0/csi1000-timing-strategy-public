@@ -1,0 +1,80 @@
+{
+  "schema_id": "csi1000.two_wave_datahub_offset_s1_provenance_checkpoint@1.0",
+  "date": "2026-09-17",
+  "research_issue": 352,
+  "parent_issue": 350,
+  "status": "PROVENANCE_CODE_BOUND_DEVELOPMENT_BINARIES_NOT_YET_QUALIFIED",
+  "source_role": "EXTERNAL_DATA_PROVENANCE_EVIDENCE_NOT_PROJECT_CURRENT_AUTHORITY",
+  "datahub": {
+    "local_repository": "unified_datahub",
+    "head_observed": "4b4d36a16076c347ed7810eeed37391571a3cc3d",
+    "relevant_export_commit": "d31b140e35132911aa6ab164deaa9afcbb02b0ff",
+    "relevant_export_commit_time": "2026-08-24T19:28:59+08:00",
+    "relevant_export_commit_subject": "feat: add T0 unified index kline V3",
+    "export_id": "factorlab_unified_index_kline_v3_20260824",
+    "schema": "factorlab_unified_index_kline.v3",
+    "export_evidence_manifest_sha256": "c46f2da6c3df016ca054e183e37267dc472097450fcdd6644c22aa0084c15749",
+    "canonical_1m_parent_dataset_version": "bars_cn_index_1m_raw_canonical_market_index_baidu_3s_20000714_20260821_factorlab_unified_missing_day_repaired_v8_20260824",
+    "source_blobs_at_export_commit": {
+      "scripts/export_factorlab_unified_index_kline_v3.py": "22c2da1635e15f438b38c40831129e1a54166a36",
+      "scripts/export_factorlab_unified_index_kline_v2.py": "1e7d216fe4fea4e841d213068e69455cff0e8292",
+      "docs/modules/history/session-offset-bars-whitepaper.md": "b9f5096e7f5a9c77bd8fed1aaab8a0e5a39e1c0a",
+      "src/datahub/storage/query/session_offset_contract.py": "accb183f695880c5524f7263bfdfae1debe006a0",
+      "src/datahub/storage/query/bars_deriver.py": "e708f6546263df5981d43ec305af1b18ac2e9286",
+      "tests/unit/scripts/test_export_factorlab_unified_index_kline_v3.py": "f9ec6d03eb5402ca3de92f409778458ca281d0eb"
+    }
+  },
+  "construction_contract": {
+    "native_clock": "CN_A_TWO_SESSIONS_MORNING_AND_AFTERNOON_NO_LUNCH_CROSSING",
+    "one_minute_expected_clocks_per_normal_day": 240,
+    "five_minute_offset0": {
+      "align": "session_end_label_v2",
+      "expected_clocks_per_normal_day": 48
+    },
+    "five_minute_offsets_1_to_4": {
+      "align": "session_wall_clock",
+      "expected_clocks_per_normal_day": 46,
+      "leading_minutes_before_shifted_grid": "DROPPED",
+      "incomplete_session_tail": "DROPPED",
+      "include_tail_partial": false
+    },
+    "aggregation": "first open / max OHLC high / min OHLC low / last close / summed volume and amount",
+    "thirteen_hundred_standalone_bar": false,
+    "important_row_count_inference": "Shifted 5m products intentionally have two fewer complete bars per normal trading day than offset0; lower row count is therefore expected by construction and is not, by itself, evidence of missing data."
+  },
+  "missing_minute_policy": {
+    "one_minute_export_only": "causal prior-observed flat fill on eligible non-short days",
+    "maximum_eligible_missing_minutes": 5,
+    "future_value_fill": false,
+    "five_minute_values": "Produced from the pinned canonical 1m source through the original query path; the later 1m output densification is not fed back into 5m construction.",
+    "exclusion_scope": "1m_official_and_all_5m_offset_views",
+    "000852_excluded_days_full_v3": [
+      "2016-01-04",
+      "2016-01-07",
+      "2017-08-24",
+      "2020-04-20"
+    ]
+  },
+  "development_export": {
+    "repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "data_manifest_blob": "44babc8b61dc3281e325e442935c99462b9e421b",
+    "scope": "000852.SH 2015-01-05..2020-12-31",
+    "role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS",
+    "readme_claim": "filtered from frozen DataHub-built bar products; no local resampling",
+    "binary_equivalence_to_datahub_v3_subset": "NOT_YET_VERIFIED",
+    "actual_columns_and_rows": "NOT_YET_VERIFIED_IN_STANDARD_RUN",
+    "common_physical_support": "NOT_YET_QUALIFIED"
+  },
+  "next_verification": [
+    "Verify exact six development file hashes/bytes/schemas and ordered timestamps.",
+    "Use actual per-row causal_fill/eligibility metadata from 1m and known excluded days; never silently fill or crop comparison windows.",
+    "Reconstruct/compare 5m constituents only where the source contract and available minute evidence support an exact comparison.",
+    "Report each offset full denominator plus common physical-time support and attrition; never align by row index.",
+    "Do not infer aliasing or scale dominance from carrier equivalence alone."
+  ],
+  "market_data_read_in_this_checkpoint": false,
+  "standard_market_run": null,
+  "R4_selected": false,
+  "production_authority": false
+}
