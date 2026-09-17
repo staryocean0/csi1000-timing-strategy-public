@@ -1,0 +1,34 @@
+{
+  "broker_blob": "66ef874dac48c6ee988a6574595ca743a91acf42",
+  "carrier_protocol_blob": "fbe18533f503a754f57f5f9eff8d79b60e107462",
+  "command": [
+    "scale_reference_packet/wave_scale_reference_packet_entry_v1.py"
+  ],
+  "command_timeout_seconds": 600,
+  "dependency_blobs": {
+    "broker.py": "299ab90424e42f76f038d3bad719cb2abeb155dc",
+    "research_broker.py": "1b4968475fc91a34f53bc08b7b5fdc1bf79862c0",
+    "run_research_in_container.py": "38dfa9bbcf0a09b328495b4844c82e25c9b5bec8"
+  },
+  "new_training": false,
+  "private_ref": "7688ba57206dd29fbef88d8e57475255718471fe",
+  "production_authority": false,
+  "profile": "two-wave-scale-reference-blind-packet-v1",
+  "protocol_blob": "a3e5b9e3bc39b1d54f83e4c068bc98a6f8c1cad8",
+  "schema_id": "csi1000.scale_reference_packet_execution@1.0",
+  "source_blobs": {
+    "wave_scale_reference_packet_entry_v1.py": "cf35e7f8a5892abd06b57793a1febef12787b81e",
+    "wave_scale_reference_packet_v1.py": "0a8283caf90dd16a1e3d04c922d194200a5740db",
+    "wave_scale_reference_packet_verifier_v1.py": "fbf482bbe9dc8f37f04384687a8377f62cdbbdc4",
+    "wave_scale_reference_sampling_v1.py": "f62106dd3dad953e3966e92a543cc5f454d0b339",
+    "wave_scale_reference_verifier_v1.py": "022ccd80c896edc0267f9ceee94e86e10a1f1ee8",
+    "wave_scale_reference_visuals_v1.py": "d6ce92747bf2701b32c473af9361b46db4effb02",
+    "wave_segmentation_carrier_qualification_v1.py": "9f8b9a6fd5e0232ad186dffa5b7008eeae8ef597",
+    "wave_segmentation_carrier_verifier_v1.py": "c09705f3915f3ada73742d96085fe7808ce26987"
+  },
+  "stage_blob": "c0e737d93278273f5180ae3cd60e66c75aec80cc",
+  "verification_timeout_seconds": 600,
+  "verify_command": [
+    "scale_reference_packet/wave_scale_reference_packet_verifier_v1.py"
+  ]
+}

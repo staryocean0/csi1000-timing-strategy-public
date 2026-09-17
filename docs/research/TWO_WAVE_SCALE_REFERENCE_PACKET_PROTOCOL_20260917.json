@@ -1,0 +1,121 @@
+{
+  "schema_id": "csi1000.scale_reference_packet_protocol@1.0",
+  "date": "2026-09-17",
+  "research_issue": 359,
+  "parent_issue": 353,
+  "profile": "two-wave-scale-reference-blind-packet-v1",
+  "source_base": "0187cafd392d1d3eb56eeee38947106bdc2fd787",
+  "data_role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_REFERENCE_ONLY",
+  "symbol": "000852.SH",
+  "period": [
+    "2015-01-05",
+    "2020-12-31"
+  ],
+  "external_repository": "staryocean0/factorlab-two-wave-strategy-lab",
+  "external_ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+  "files": {
+    "1m_official.parquet": {
+      "bytes": 12842573,
+      "sha256": "755217afce9dec383e48cd46d591402fa90dc50897abeb3dc7097c9a18a109d4",
+      "git_blob_sha1": "bd2aab00b58c1d31865ed596e99e8f531c5c9ddb",
+      "declared_rows": 350561
+    },
+    "5m_offset_0.parquet": {
+      "bytes": 3351411,
+      "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+      "git_blob_sha1": "30eddf3020d311fb409660a8c296f6309383745f",
+      "declared_rows": 70114
+    },
+    "5m_offset_1.parquet": {
+      "bytes": 3226743,
+      "sha256": "4523615193c177dda2f63a69dd32a2d21e2b15c78283de2d242dd6cd695fc284",
+      "git_blob_sha1": "263c90cf31564885348325db419ee9c85ae4943a",
+      "declared_rows": 67192
+    },
+    "5m_offset_2.parquet": {
+      "bytes": 3223863,
+      "sha256": "737548b04ca93fdbfafda806c5f98051b0521e868d71bcab00f23c062ef8ee82",
+      "git_blob_sha1": "770fd0f2faf987f2bc8acf2c43b73f9f8357461c",
+      "declared_rows": 67192
+    },
+    "5m_offset_3.parquet": {
+      "bytes": 3225315,
+      "sha256": "20a8a4aba19f60946e5781947f658d0b16a2d8758e6318b43c0a0ececdd09282",
+      "git_blob_sha1": "db0b84fda202b280774a55acb141438933183bf9",
+      "declared_rows": 67193
+    },
+    "5m_offset_4.parquet": {
+      "bytes": 3227705,
+      "sha256": "ceba69dce07223ba92204dc4994991eeabcaf62aacfb9869fd9403da43694b1b",
+      "git_blob_sha1": "0820a02b12180d7afba58ba77a150e1f003ac476",
+      "declared_rows": 67191
+    }
+  },
+  "carrier_qualification_run": "35191936364-1",
+  "expected_common_complete_eligible_days": 1458,
+  "excluded_days": [
+    "2016-01-04",
+    "2016-01-07",
+    "2017-08-24",
+    "2020-04-20"
+  ],
+  "common_minute_windows": [
+    [
+      574,
+      686
+    ],
+    [
+      784,
+      896
+    ]
+  ],
+  "reference_contract": {
+    "reference_protocol_schema": "csi1000.scale_reference_protocol@1.0",
+    "primary_panels": 192,
+    "quarters": 24,
+    "days_per_quarter": 8,
+    "day_rank": "SHA256(csi1000-s2-ref-v1|YYYYQq|YYYY-MM-DD)",
+    "anchor_rule": "low_bit_SHA256(csi1000-s2-anchor-v1|YYYY-MM-DD)",
+    "anchors_shanghai": [
+      "11:00",
+      "14:30"
+    ],
+    "contexts_trading_minutes": [
+      150,
+      300
+    ],
+    "future_suffix_generated": false,
+    "panel_files_per_anchor": [
+      "A150",
+      "A300",
+      "B300"
+    ],
+    "replace_unsupported_anchor": false,
+    "fail_on_causal_flat_fill_in_context": true
+  },
+  "blindness": {
+    "calendar_date_in_blind_outputs": false,
+    "candidate_outputs": false,
+    "diagnostic_scores": false,
+    "R_version_identity": false,
+    "PnL_or_outcomes": false,
+    "numeric_amplitude_pass_A": false,
+    "smoothing_or_candidate_line": false
+  },
+  "limits": {
+    "total_source_bytes_max": 41943040,
+    "result_bytes_max": 67108864,
+    "compute_seconds": 600,
+    "verification_seconds": 600,
+    "cpus": 4,
+    "memory_gib": 12
+  },
+  "primary_labels_frozen": false,
+  "numeric_state_thresholds": null,
+  "outcomes_used": false,
+  "R4_selected": false,
+  "one_minute_strategy_admitted": false,
+  "router_pnl": false,
+  "new_training": false,
+  "production_authority": false
+}

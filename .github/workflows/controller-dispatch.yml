@@ -81,6 +81,7 @@ jobs:
        github.event.issue.title == 'controller: two-wave-recognizer-r3-mature-counter-rearm-v1' ||
        github.event.issue.title == 'controller: two-wave-r3-clock-evidence-audit-v1' ||
        github.event.issue.title == 'controller: two-wave-segmentation-carrier-qualification-v1' ||
+       github.event.issue.title == 'controller: two-wave-scale-reference-blind-packet-v1' ||
        github.event.issue.title == 'controller: overnight-carrier-materialization-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-dev-v1' ||
        github.event.issue.title == 'controller: overnight-continuous-tail-likelihood-blackbox-v1' ||
@@ -244,6 +245,9 @@ jobs:
               ;;
             'controller: two-wave-segmentation-carrier-qualification-v1')
               profile='two-wave-segmentation-carrier-qualification-v1'
+              ;;
+            'controller: two-wave-scale-reference-blind-packet-v1')
+              profile='two-wave-scale-reference-blind-packet-v1'
               ;;
             'controller: two-wave-blindspot-relocation-v1')
               profile='two-wave-blindspot-relocation-v1'

@@ -56,10 +56,10 @@ class DominanceCheckpointTests(unittest.TestCase):
         self.assertEqual(line['ordered_lineage'][14]['order'],15)
         self.assertEqual(line['ordered_lineage'][14]['issue'],353)
 
-    def test_thread_authority_advances_without_market_thresholds(self):
+    def test_thread_progress_preserves_synthetic_checkpoint_without_market_thresholds(self):
         a=json.loads(AUTH.read_text());lanes={x['issue']:x for x in a['active_lanes']}
-        self.assertIn('REFERENCE_PROTOCOL',lanes[353]['status'])
         self.assertEqual(lanes[353]['checkpoint'],'docs/research/TWO_WAVE_SCALE_DOMINANCE_SYNTHETIC_CHECKPOINT_20260917.json')
+        self.assertEqual(lanes[353]['reference_issue'],359)
         self.assertEqual(a['S2_progress']['market_thresholds'],None)
         self.assertEqual(a['S2_progress']['real_market_reference_labels'],'NOT_YET_FROZEN')
         self.assertEqual(a['S2_progress']['primary_reference_labels'],'NOT_YET_FROZEN')

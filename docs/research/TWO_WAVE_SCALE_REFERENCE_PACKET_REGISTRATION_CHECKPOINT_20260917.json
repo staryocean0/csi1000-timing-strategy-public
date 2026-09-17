@@ -1,0 +1,62 @@
+{
+  "schema_id": "csi1000.scale_reference_packet_registration_checkpoint@1.0",
+  "date": "2026-09-17",
+  "research_issue": 359,
+  "parent_issue": 353,
+  "source_base": "0187cafd392d1d3eb56eeee38947106bdc2fd787",
+  "profile": "two-wave-scale-reference-blind-packet-v1",
+  "status": "BLIND_PACKET_PROFILE_REGISTERED_NOT_RUN",
+  "packet_contract": {
+    "primary_panels": 192,
+    "panel_files": 576,
+    "files_per_panel": [
+      "A150",
+      "A300",
+      "B300"
+    ],
+    "contexts_trading_minutes": [
+      150,
+      300
+    ],
+    "future_suffix_generated": false,
+    "replace_unsupported_anchor": false,
+    "fail_on_causal_flat_fill_in_context": true
+  },
+  "input_contract": {
+    "carrier_qualification_run": "35191936364-1",
+    "common_complete_eligible_days": 1458,
+    "public_files": 6,
+    "public_file_bytes": 29097610,
+    "reuses_existing_public_stage": true
+  },
+  "execution_boundary": {
+    "workflow": ".github/workflows/public-compute.yml",
+    "event": "workflow_dispatch",
+    "controller_title": "controller: two-wave-scale-reference-blind-packet-v1",
+    "secret_surfaces": 2,
+    "compute_private_credentials": false,
+    "cleanup_private_credentials": false,
+    "private_summary_mirror": "packet_summary.json"
+  },
+  "verification": {
+    "producer_and_runtime_verifier_independent": true,
+    "manifest_sources": 8,
+    "carrier_route_parent_workflow_blob": "e674f0573a05e27f3c058ff5d681747fad0b6ea6",
+    "carrier_route_parent_controller_blob": "664511cdd219c5fb88d9fd4bec719074185f61e9"
+  },
+  "market_packet_run": null,
+  "primary_reference_labels_frozen": false,
+  "diagnostic_scores_measured": false,
+  "numeric_state_thresholds": null,
+  "outcomes_used": false,
+  "R4_selected": false,
+  "one_minute_strategy_admitted": false,
+  "router_pnl": false,
+  "private_CLOUD_CURRENT_modified": false,
+  "production_authority": false,
+  "history_guard": {
+    "prior_16_lineage_sha256": "7201a1ee488e59ad00d8f95db564dbcd8ceab673453d6c9a15b7ea00263e426f",
+    "R3_reclassified": false,
+    "issue321_passed": false
+  }
+}

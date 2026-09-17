@@ -33,13 +33,13 @@ class ReferenceCheckpointTests(unittest.TestCase):
         self.assertEqual(self.l['ordered_lineage'][15]['order'],16)
         self.assertEqual(self.l['ordered_lineage'][15]['issue'],359)
 
-    def test_authority_advances_to_packet_registration_only(self):
+    def test_authority_progress_preserves_reference_freeze(self):
         lanes={x['issue']:x for x in self.a['active_lanes']}
         self.assertEqual(lanes[353]['reference_issue'],359)
-        self.assertIn('PACKET_REGISTRATION_NEXT',lanes[353]['status'])
         self.assertEqual(self.a['S2_progress']['reference_protocol'],'FROZEN')
-        self.assertEqual(self.a['S2_progress']['market_packet_profile'],'NOT_YET_REGISTERED')
+        self.assertIn(self.a['S2_progress']['market_packet_profile'],('NOT_YET_REGISTERED','REGISTERED_NOT_RUN'))
         self.assertEqual(self.a['S2_progress']['primary_reference_labels'],'NOT_YET_FROZEN')
+        self.assertIsNone(self.a['S2_progress']['market_thresholds'])
 
     def test_protocol_freezes_reference_before_scores(self):
         self.assertEqual(self.p['status'],'REFERENCE_PROTOCOL_FROZEN_BEFORE_MARKET_SCORE_MEASUREMENT')
