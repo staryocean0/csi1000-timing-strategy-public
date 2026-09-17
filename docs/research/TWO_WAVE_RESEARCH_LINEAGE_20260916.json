@@ -391,13 +391,33 @@
       "threshold_selected": false,
       "formal_run": null,
       "authority_promoted": false
+    },
+    {
+      "order": 26,
+      "name": "scale_dominance_diagnostic_measurement_and_threshold_free_join_completed",
+      "issue": 372,
+      "parent_issue": 353,
+      "formal_run": "35216237190-1",
+      "source_sha": "ad4458b41d57000731200e39aa5c0539937c7549",
+      "diagnostics_sha256": "aed0b65305f06d36dfd679df4ee75feb48b246a40e3a5e39831cefedf2ee3baa",
+      "reference_labels_sha256": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be",
+      "threshold_free_join_sha256": "bcd47f37b169374b78bfebf230b4aa7537567d8ea92cc55c135ebdba42cc66a8",
+      "status": "DIAGNOSTIC_MEASUREMENT_AND_THRESHOLD_FREE_JOIN_COMPLETED_MULTI_AXIS_CALIBRATION_NEEDED",
+      "diagnostic_scores_measured": true,
+      "reference_labels_visible_to_formal_compute": false,
+      "threshold_selected": false,
+      "single_composite_score_selected": false,
+      "future_suffix_revealed": false,
+      "R4_selected": false,
+      "authority_promoted": false
     }
   ],
   "active_recognizer_remaining_order": [
-    "Issue369 candidate-independent primary reference labels are frozen after Pass A then Pass B; historical R1/R2/R3 and #321 verdicts remain unchanged.",
-    "Next: register a post-reference diagnostic-only market measurement against all192 frozen labels. The measurement run must not select thresholds, hysteresis or persistence rules.",
-    "After diagnostics are sealed, evaluate separability/calibration in a separately preregistered step before choosing any dominance state threshold or detector change.",
-    "No R4, one-minute strategy admission, faster/slower routing, router/PnL or production authority."
+    "Issue350 measurement reframe remains authoritative; historical R1/R2/R3 and #321 outcomes are unchanged.",
+    "S1 carrier construction/common support is qualified. S2 has frozen192 candidate-independent labels and completed raw diagnostic measurement plus threshold-free join.",
+    "The evidence supports separate morphology/developing state, scale-dominance evidence, and data-validity guard; a single monotone dominance score is not supported.",
+    "Next: preregister state/morphology-conditional calibration plus a separate validity guard with explicit calibration/evaluation boundaries before selecting any threshold/hysteresis/persistence.",
+    "No R4, 1m strategy admission, routing/PnL, signal/trade/production authority."
   ],
   "other_open_research_threads": [
     "Issue 274 real multiscale single-wave/nine-grid acceptance remains pending",

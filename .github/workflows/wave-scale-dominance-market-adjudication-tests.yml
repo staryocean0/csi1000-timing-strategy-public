@@ -1,0 +1,27 @@
+name: Two-Wave post-reference dominance adjudication tests
+on:
+  pull_request:
+    branches: [cloud-workspace-v1]
+    paths:
+      - '.github/workflows/wave-scale-dominance-market-adjudication-tests.yml'
+      - 'docs/research/TWO_WAVE_SCALE_DOMINANCE_MARKET_ADJUDICATION_20260917.*'
+      - 'docs/research/TWO_WAVE_SCALE_DOMINANCE_THRESHOLD_FREE_JOIN_20260917.json'
+      - 'docs/research/TWO_WAVE_RESEARCH_LINEAGE_20260916.json'
+      - 'docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json'
+      - 'tests/test_wave_scale_dominance_market_adjudication_v1.py'
+      - 'tests/test_wave_*dominance*checkpoint*.py'
+      - 'tests/test_wave_scale_reference_*adjudication*.py'
+permissions:
+  contents: read
+jobs:
+  adjudication-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Run completed-measurement adjudication contracts
+        run: |
+          PYTHONPATH='tests:executor' python3 -m unittest \
+            tests.test_wave_scale_dominance_market_adjudication_v1 -v
