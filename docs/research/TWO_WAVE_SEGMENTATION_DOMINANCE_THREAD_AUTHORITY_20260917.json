@@ -52,7 +52,7 @@
     {
       "issue": 353,
       "stage": "S2_SCALE_DOMINANCE_DESIGN",
-      "status": "PRIMARY_REFERENCE_LABELS_FROZEN_DIAGNOSTIC_MEASUREMENT_REGISTRATION_NEXT",
+      "status": "DIAGNOSTIC_MEASUREMENT_PROFILE_SOURCE_READY_NOT_RUN",
       "checkpoint": "docs/research/TWO_WAVE_SCALE_DOMINANCE_SYNTHETIC_CHECKPOINT_20260917.json",
       "reference_issue": 359,
       "reference_checkpoint": "docs/research/TWO_WAVE_SCALE_REFERENCE_SOURCE_CHECKPOINT_20260917.json",
@@ -60,7 +60,9 @@
       "reference_amendment_issue": 363,
       "verifier_parity_issue": 366,
       "annotation_issue": 369,
-      "annotation_adjudication": "docs/research/TWO_WAVE_SCALE_REFERENCE_ANNOTATION_ADJUDICATION_20260917.json"
+      "annotation_adjudication": "docs/research/TWO_WAVE_SCALE_REFERENCE_ANNOTATION_ADJUDICATION_20260917.json",
+      "diagnostic_measurement_issue": 372,
+      "diagnostic_measurement_registration": "docs/research/TWO_WAVE_SCALE_DOMINANCE_MARKET_REGISTRATION_20260917.json"
     }
   ],
   "future_only": {
@@ -98,7 +100,7 @@
     "synthetic_diagnostic": "IMPLEMENTED",
     "market_thresholds": null,
     "real_market_reference_labels": "FROZEN_192_AFTER_PASS_B",
-    "next": "REGISTER_POST_REFERENCE_DIAGNOSTIC_ONLY_MARKET_MEASUREMENT",
+    "next": "MERGE_PROFILE_THEN_FORMAL_DIAGNOSTIC_ONLY_MARKET_MEASUREMENT",
     "reference_protocol": "FROZEN",
     "reference_source_contract": "IMPLEMENTED",
     "market_packet_profile": "V3_VERIFIED",
@@ -117,6 +119,8 @@
     "pass_a_sha256": "3914201bccf2d1396eeab668a74686a17c055fd170b33bdebbca66c051a721df",
     "final_reference_labels_sha256": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be",
     "pass_b_downgrades": 0,
-    "diagnostic_scores_measured": false
+    "diagnostic_scores_measured": false,
+    "diagnostic_measurement_issue": 372,
+    "diagnostic_measurement_profile": "two-wave-scale-dominance-diagnostic-measurement-v1"
   }
 }
