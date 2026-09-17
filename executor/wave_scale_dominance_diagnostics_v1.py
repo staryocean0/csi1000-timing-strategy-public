@@ -11,10 +11,11 @@ import math
 import numpy as np
 
 EPS = 1e-14
-# Pure numerical floor for BIC variance. This prevents platform/BLAS round-off
-# in algebraically exact fits from changing a stored diagnostic. It is not a
-# market acceptance threshold and is far below any intended empirical scale.
-BIC_VARIANCE_FLOOR = 1e-28
+# Pure numerical floor for BIC variance. Fits with residual RMSE below 1e-12
+# log-price units are canonicalized so platform/BLAS round-off cannot change a
+# stored diagnostic. This is not a market acceptance threshold.
+BIC_RMSE_FLOOR = 1e-12
+BIC_VARIANCE_FLOOR = BIC_RMSE_FLOOR ** 2
 MAX_POINTS = 4096
 MIN_PIECEWISE_SIDE = 3  # algebraic support guard, not a market threshold
 

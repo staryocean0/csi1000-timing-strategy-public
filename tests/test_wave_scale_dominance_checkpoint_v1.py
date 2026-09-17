@@ -31,7 +31,8 @@ class DominanceCheckpointTests(unittest.TestCase):
 
     def test_bic_floor_is_documented_as_numeric_only(self):
         n=self.c['numerical_stability']
-        self.assertEqual(n['bic_variance_floor'],1e-28)
+        self.assertEqual(n['bic_rmse_floor'],1e-12)
+        self.assertEqual(n['bic_variance_floor'],1e-24)
         self.assertEqual(n['role'],'NUMERIC_ONLY_NOT_MARKET_THRESHOLD')
 
     def test_stored_result_reproduces(self):
