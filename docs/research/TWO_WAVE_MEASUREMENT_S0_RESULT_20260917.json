@@ -1,0 +1,152 @@
+{
+  "schema_id": "csi1000.segmentation_measurement_s0@1.0",
+  "research_issue": 350,
+  "data_role": "DETERMINISTIC_SYNTHETIC_NO_MARKET_DATA",
+  "market_run": null,
+  "findings": {
+    "amplitude": {
+      "kind": "FROZEN_R3_SYNTHETIC",
+      "same_event_positions": true,
+      "low_range": 0.0001999800026662447,
+      "high_range": 0.03922071315328133,
+      "completed_waves": 8,
+      "low_durations": [
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40
+      ],
+      "high_durations": [
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40
+      ]
+    },
+    "wicks": {
+      "kind": "FROZEN_R3_SYNTHETIC",
+      "same_event_positions": true,
+      "unchanged_close_range": 0.0001999800026662447,
+      "narrow_ohlc_range": 0.0001999800026662447,
+      "wide_ohlc_range": 0.10028343855964886,
+      "completed_waves": 8,
+      "geometry_changed": true
+    },
+    "counter_updates": {
+      "kind": "FROZEN_R3_SYNTHETIC",
+      "first_reset": 59,
+      "candidate_age": 49,
+      "pending_age": 1,
+      "counter_updates_before_reset": 48,
+      "direction_changes_after_peak": 0,
+      "first_leg_known_direction": "UP_THEN_DOWN_ONCE",
+      "resets": 1
+    },
+    "unfinished": {
+      "kind": "FROZEN_R3_SYNTHETIC",
+      "bars": 160,
+      "completed_waves": 0,
+      "completed_cycle_coverage": 0.0,
+      "direction_changes": 0,
+      "live_candidate_present": true,
+      "resets": 0,
+      "interpretation": "NO_COMPLETED_CYCLE_IS_NOT_AUTOMATIC_STATE_BLINDNESS"
+    },
+    "ohlc_information_loss": {
+      "kind": "ANALYTIC_SYNTHETIC",
+      "native_paths_differ": true,
+      "offset0_ohlc_equal": true,
+      "offset2_ohlc_equal": false,
+      "intrablock_high_low_order_different": true,
+      "implication": "ONE_OHLC_GRID_CANNOT_RECOVER_OTHER_OFFSETS_OR_INTRABAR_ORDER"
+    },
+    "alias": {
+      "kind": "ANALYTIC_SYNTHETIC",
+      "native_frequency": 0.21,
+      "native_period": 4.761904761904762,
+      "coarse_sample_frequency": 0.2,
+      "apparent_frequency_native_units": 0.01,
+      "offsets": [
+        {
+          "offset": 0,
+          "apparent_period_coarse_bars": 20,
+          "fitted_amplitude": 1.0000000000000002,
+          "exact_alias_identity_max_error": 2.6990909507418337e-13
+        },
+        {
+          "offset": 1,
+          "apparent_period_coarse_bars": 20,
+          "fitted_amplitude": 1.0000000000000013,
+          "exact_alias_identity_max_error": 2.313704783318826e-13
+        },
+        {
+          "offset": 2,
+          "apparent_period_coarse_bars": 20,
+          "fitted_amplitude": 0.9999999999999984,
+          "exact_alias_identity_max_error": 2.6689761511988763e-13
+        },
+        {
+          "offset": 3,
+          "apparent_period_coarse_bars": 20,
+          "fitted_amplitude": 0.9999999999999992,
+          "exact_alias_identity_max_error": 2.757793993168889e-13
+        },
+        {
+          "offset": 4,
+          "apparent_period_coarse_bars": 20,
+          "fitted_amplitude": 1.0000000000000009,
+          "exact_alias_identity_max_error": 2.4810709042810686e-13
+        }
+      ],
+      "implication": "OFFSET_PERIOD_STABILITY_DOES_NOT_RULE_OUT_ALIASING"
+    },
+    "range_duration": {
+      "kind": "ANALYTIC_SYNTHETIC",
+      "short_intervals": 20,
+      "long_intervals": 200,
+      "short_log_range": 0.019999999999999532,
+      "long_log_range": 0.2000000000000002,
+      "direction_changes": 0,
+      "implication": "WHOLE_GAP_RANGE_IS_DURATION_DEPENDENT_NOT_A_FREQUENCY_LABEL"
+    },
+    "skeleton": {
+      "kind": "ANALYTIC_NONLINEAR_ENVELOPE_NOT_PROJECT_REPLAY",
+      "nodes_before": 400,
+      "low_nodes": 100,
+      "all_selected_nodes_are_local_minima": true,
+      "native_carrier_and_sidebands": [
+        0.225,
+        0.25,
+        0.275
+      ],
+      "lower_envelope_frequency": 0.025,
+      "slow_envelope_max_error": 0.0,
+      "two_different_skeleton_reconstruction_errors": [
+        0.0,
+        0.0
+      ],
+      "implication": "NODE_REDUCTION_AND_EXACT_RECONSTRUCTION_DO_NOT_PROVE_BAND_FIDELITY"
+    },
+    "coverage_clocks": {
+      "kind": "ANALYTIC_MASK_SEMANTICS",
+      "cutoff": 12,
+      "retrospective_covered_bars_before_cutoff": 11,
+      "completed_cycles_known_by_cutoff_covered_bars": 0,
+      "implication": "OCCURRENCE_CYCLE_COVERAGE_IS_NOT_LIVE_STATE_COVERAGE"
+    }
+  },
+  "real_R3_residual_aliasing": "UNDETERMINED",
+  "new_detector_selected": false,
+  "new_readiness_gate_selected": false,
+  "R3_promoted": false,
+  "one_minute_strategy_admitted": false,
+  "production_authority": false
+}

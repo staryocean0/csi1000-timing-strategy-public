@@ -160,13 +160,29 @@
       "parent_report_and_visual_identities_preserved": true,
       "R4_selected": false,
       "authority_promoted": false
+    },
+    {
+      "order": 12,
+      "name": "segmentation_measurement_definition_reaudit",
+      "issue": 350,
+      "scope_authorization": "User requested accurate segmentation rather than obedience to earlier amplitude-only constraints.",
+      "source_base": "212337bd9371682283239353d408754af106dc67",
+      "protocol": "docs/research/TWO_WAVE_SEGMENTATION_MEASUREMENT_PROTOCOL_20260917.json",
+      "results": "docs/research/TWO_WAVE_MEASUREMENT_S0_RESULT_20260917.json",
+      "status": "SOURCE_AND_SYNTHETIC_MEASUREMENT_AUDIT_ONLY",
+      "real_residual_aliasing": "UNDETERMINED",
+      "R3_legacy_failure_preserved": true,
+      "R4_selected": false,
+      "new_numeric_gate_selected": false,
+      "authority_promoted": false
     }
   ],
   "active_recognizer_remaining_order": [
-    "Issue345 evidence audit completed; preserve frozen R3 failure and all four newly blind cases",
-    "Before further detector execution, separately preregister one structural candidate using audited clock evidence, not threshold rescue",
-    "Keep 4/48, causality, one-way negative controls, eight floor cases and original readiness gates explicit in any future study",
-    "Admit1m only after issue321 actually passes; no router/PnL or production authority is granted"
+    "Issue350 replaces immediate R4 patching with measurement/definition qualification; historical R3 failure is unchanged.",
+    "S1: verify fixed DataHub construction provenance, native constituents, timezones, session edges and common physical support for existing 1m/5m offset products.",
+    "S2: freeze independent graphical references and ambiguity rules; report missed/extra/merged/split structure, live-state coverage and latency on all windows.",
+    "S3: only after S1/S2 choose one justified representation or detector change and preregister its empirical evaluation.",
+    "No automatic low/high-amplitude exemption, no 1m strategy admission, router/PnL or production authority."
   ],
   "other_open_research_threads": [
     "Issue 274 real multiscale single-wave/nine-grid acceptance remains pending",

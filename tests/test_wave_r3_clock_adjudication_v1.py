@@ -96,7 +96,11 @@ class AuditAdjudicationTests(unittest.TestCase):
         x=json.loads(LINEAGE.read_text());old=x['ordered_lineage'][:9]
         digest=hashlib.sha256(json.dumps(old,sort_keys=True,separators=(',',':')).encode()).hexdigest()
         self.assertEqual(digest,'aee251f5510a8d07bf286ac5a32e6ddc6c423b0b56f7c38453ad34add033cc9b')
-        self.assertEqual(x['ordered_lineage'][-1]['formal_run'],'35178725247-1')
+        # Later research may append history; identify the frozen audit by name.
+        audit=[r for r in x['ordered_lineage']
+               if r['name']=='R3_residual_clock_and_latency_audit_completed']
+        self.assertEqual(len(audit),1)
+        self.assertEqual(audit[0]['formal_run'],'35178725247-1')
         m=json.loads((ROOT/'docs/research/TWO_WAVE_R3_CLOCK_AUDIT_EXECUTION_MANIFEST_V1.json').read_text())
         self.assertEqual(len(m['sources']),23)
         for name,meta in m['sources'].items():
