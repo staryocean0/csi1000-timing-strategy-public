@@ -17,9 +17,15 @@ class MeasurementContractTests(unittest.TestCase):
     def setUpClass(cls):cls.p=json.loads(PROTOCOL.read_text())
 
     def test_frozen_parent_sources_documents_and_control_plane(self):
+        from tests.segmentation_carrier_registration_support import strip_workflow,strip_controller
         for name,sha in self.p['frozen_source_blobs'].items():
             path=ROOT/name if '/' in name else ROOT/'executor'/name
-            self.assertEqual(blob(path),sha,name)
+            if name=='.github/workflows/public-compute.yml':
+                raw=strip_workflow(path.read_text()).encode();actual=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+            elif name=='.github/workflows/controller-dispatch.yml':
+                raw=strip_controller(path.read_text()).encode();actual=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+            else: actual=blob(path)
+            self.assertEqual(actual,sha,name)
 
     def test_new_experiment_source_identity(self):
         for name,sha in self.p['new_source_git_blobs'].items():

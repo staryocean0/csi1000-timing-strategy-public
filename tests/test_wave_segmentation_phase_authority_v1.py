@@ -38,7 +38,11 @@ class PhaseAuthorityTests(unittest.TestCase):
         r=json.loads(path.read_text());self.assertEqual(r['decision'],'EVIDENCE_AUDIT_COMPLETED_R3_REMAINS_NOT_READY')
 
     def test_standard_control_plane_is_unchanged(self):
-        for name,sha in self.a['frozen_control_plane_blobs'].items():self.assertEqual(blob(ROOT/name),sha)
+        from tests.segmentation_carrier_registration_support import strip_workflow,strip_controller
+        for name,sha in self.a['frozen_control_plane_blobs'].items():
+            text=(ROOT/name).read_text();text=strip_controller(text) if 'controller' in name else strip_workflow(text)
+            raw=text.encode();actual=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+            self.assertEqual(actual,sha)
         self.assertEqual((ROOT/'.github/workflows/public-compute.yml').read_text().count('secrets.FACTORLAB_PRIVATE_TOKEN'),2)
 
     def test_morphology_and_dominance_are_separate(self):

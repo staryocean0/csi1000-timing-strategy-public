@@ -14,7 +14,9 @@ def blob(text):
 
 R3='two-wave-recognizer-r3-mature-counter-rearm-v1'
 def strip_r3_workflow(text):
+    from tests.segmentation_carrier_registration_support import strip_workflow as strip_s1_workflow
     from r3_clock_registration_support import strip_audit_workflow
+    text=strip_s1_workflow(text)
     text=strip_audit_workflow(text)
     text=text.replace('          - '+R3+'\n','').replace(" || inputs.profile == '"+R3+"'",'')
     for phase in ('prepare','compute','cleanup','publish'):
@@ -24,7 +26,9 @@ def strip_r3_workflow(text):
     return text
 
 def strip_r3_controller(text):
+    from tests.segmentation_carrier_registration_support import strip_controller as strip_s1_controller
     from r3_clock_registration_support import strip_audit_controller
+    text=strip_s1_controller(text)
     text=strip_audit_controller(text)
     addition="       github.event.issue.title == 'controller: "+R3+"' ||\n"
     if text.count(addition)!=1:raise AssertionError('R3 controller allowlist is not exact')

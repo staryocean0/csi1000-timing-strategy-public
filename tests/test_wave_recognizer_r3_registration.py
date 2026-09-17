@@ -25,7 +25,9 @@ def remove_once(text,part):
     return text.replace(part,'')
 
 def strip_workflow(text):
+    from tests.segmentation_carrier_registration_support import strip_workflow as strip_s1_workflow
     from r3_clock_registration_support import strip_audit_workflow
+    text=strip_s1_workflow(text)
     text=strip_audit_workflow(text)
     text=remove_once(text,'          - '+PROFILE+'\n')
     condition=" || inputs.profile == '"+PROFILE+"'"
@@ -37,7 +39,9 @@ def strip_workflow(text):
     return text
 
 def strip_controller(text):
+    from tests.segmentation_carrier_registration_support import strip_controller as strip_s1_controller
     from r3_clock_registration_support import strip_audit_controller
+    text=strip_s1_controller(text)
     text=strip_audit_controller(text)
     text=remove_once(text,"       github.event.issue.title == 'controller: "+PROFILE+"' ||\n")
     return remove_once(text,"            'controller: "+PROFILE+"')\n              profile='"+PROFILE+"'\n              ;;\n")

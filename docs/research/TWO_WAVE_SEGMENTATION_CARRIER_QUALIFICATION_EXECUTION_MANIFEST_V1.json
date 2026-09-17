@@ -1,0 +1,28 @@
+{
+  "broker_blob": "4f375ed579ed03f3401615158649bf1c12fd1efa",
+  "command": [
+    "segmentation_carrier/wave_segmentation_carrier_entry_v1.py"
+  ],
+  "command_timeout_seconds": 300,
+  "dependency_blobs": {
+    "broker.py": "299ab90424e42f76f038d3bad719cb2abeb155dc",
+    "research_broker.py": "1b4968475fc91a34f53bc08b7b5fdc1bf79862c0",
+    "run_research_in_container.py": "38dfa9bbcf0a09b328495b4844c82e25c9b5bec8"
+  },
+  "new_training": false,
+  "private_ref": "7688ba57206dd29fbef88d8e57475255718471fe",
+  "production_authority": false,
+  "profile": "two-wave-segmentation-carrier-qualification-v1",
+  "protocol_blob": "fbe18533f503a754f57f5f9eff8d79b60e107462",
+  "schema_id": "csi1000.segmentation_carrier_execution@1.0",
+  "source_blobs": {
+    "wave_segmentation_carrier_entry_v1.py": "29c05800378bdc4c90fbda49e7e6f33642d6a029",
+    "wave_segmentation_carrier_qualification_v1.py": "9f8b9a6fd5e0232ad186dffa5b7008eeae8ef597",
+    "wave_segmentation_carrier_verifier_v1.py": "c09705f3915f3ada73742d96085fe7808ce26987"
+  },
+  "stage_blob": "c0e737d93278273f5180ae3cd60e66c75aec80cc",
+  "verification_timeout_seconds": 300,
+  "verify_command": [
+    "segmentation_carrier/wave_segmentation_carrier_verifier_v1.py"
+  ]
+}
