@@ -192,14 +192,32 @@
       "new_numeric_gate_selected": false,
       "R4_selected": false,
       "authority_promoted": false
+    },
+    {
+      "order": 14,
+      "name": "segmentation_carrier_S1_formal_qualification",
+      "issue": 352,
+      "controller_issue": 356,
+      "public_run": "35191936364-1",
+      "source_merge": "f1905aac67b422fdccb05e86eb6fbb79ca530a0b",
+      "adjudication": "docs/research/TWO_WAVE_SEGMENTATION_CARRIER_QUALIFICATION_ADJUDICATION_20260917.json",
+      "decision": "S1_CARRIER_CONSTRUCTION_AND_COMMON_SUPPORT_QUALIFIED",
+      "supported_reconstruction_mismatches": 0,
+      "common_complete_eligible_days": 1458,
+      "aliasing_conclusion": "NOT_AUTHORIZED",
+      "scale_dominance_conclusion": "NOT_AUTHORIZED",
+      "R3_reclassified": false,
+      "R4_selected": false,
+      "one_minute_strategy_admitted": false,
+      "authority_promoted": false
     }
   ],
   "active_recognizer_remaining_order": [
-    "Current thread authority: accurate causal graphical segmentation with morphology and current-scale dominance kept separate; historical R3 failure remains unchanged.",
-    "Issue352/S1: qualify DataHub V3 construction, six fixed development binaries and common physical-time support before empirical offset comparisons.",
-    "Issue353/S2: implement and falsify a causal dominance monitor on synthetic/reference controls; no market thresholds before S1 and independent references.",
-    "After S1/S2, freeze candidate-independent reference segmentation/ambiguity rules and only then choose one representation or detector revision.",
-    "Faster/slower scale routing,1m strategy admission,router/PnL and production authority remain downstream and inactive."
+    "S1/#352 completed: fixed 1m/5m-offset development carriers are construction-qualified on supported physical time with zero reconstruction mismatches; unsupported buckets remain explicit.",
+    "Issue353/S2 is now the active design lane: implement/falsify causal morphology + current-scale dominance diagnostics on candidate-independent synthetic/reference controls before any market threshold selection.",
+    "Freeze independent graphical reference and ambiguity rules, including all-window denominators, before empirical dominance calibration.",
+    "Only after reference validity may one representation/detector revision or persistence rule be preregistered and formally evaluated.",
+    "Faster/slower routing,1m strategy admission,router/PnL and production authority remain downstream and inactive."
   ],
   "other_open_research_threads": [
     "Issue 274 real multiscale single-wave/nine-grid acceptance remains pending",

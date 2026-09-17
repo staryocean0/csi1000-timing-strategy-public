@@ -1,0 +1,139 @@
+{
+  "schema_id": "csi1000.segmentation_carrier_qualification_adjudication@1.0",
+  "date": "2026-09-17",
+  "research_issue": 352,
+  "parent_issue": 350,
+  "decision": "S1_CARRIER_CONSTRUCTION_AND_COMMON_SUPPORT_QUALIFIED",
+  "public_registration_merge": "f1905aac67b422fdccb05e86eb6fbb79ca530a0b",
+  "controller_issue": 356,
+  "public_run_id": "35191936364-1",
+  "workflow_run": 35191936364,
+  "workflow_attempt": 1,
+  "workflow_event": "workflow_dispatch",
+  "workflow_status": "success",
+  "receipt": {
+    "status": "passed",
+    "delivery_status": "archive_uploaded_and_verified",
+    "profile": "two-wave-segmentation-carrier-qualification-v1",
+    "manifest_sha256": "a8835295e7ea2fdff2933df5a5ee5bfd072e239e0ba8e368941ec3662763e1db",
+    "report_sha256": "89043c9ebf550484727e949f7567459b9d2431816bb23280710695001296608f",
+    "archive_sha256": "bd86a4c02cf6819411cd390bfdc92f1153fff4bdba3bdc68a220a6cf29a83dc4",
+    "archive_bytes": 2465
+  },
+  "input_population": {
+    "symbol": "000852.SH",
+    "period": [
+      "2015-01-05",
+      "2020-12-31"
+    ],
+    "trading_days": 1462,
+    "excluded_days_count": 4,
+    "complete_nonexcluded_days": 1458,
+    "files": {
+      "1m_official.parquet": 350561,
+      "5m_offset_0.parquet": 70114,
+      "5m_offset_1.parquet": 67192,
+      "5m_offset_2.parquet": 67192,
+      "5m_offset_3.parquet": 67193,
+      "5m_offset_4.parquet": 67191
+    },
+    "all_files_columns": 25,
+    "unexpected_clock_rows": 0,
+    "schema_or_ohlc_errors": 0
+  },
+  "reconstruction": {
+    "total_5m_rows": 338882,
+    "compared_bars": 333978,
+    "exact_equal_bars": 333978,
+    "matched_bars": 333978,
+    "mismatched_bars": 0,
+    "max_abs_error": 0.0,
+    "max_rel_error": 0.0,
+    "offsets": {
+      "0": {
+        "total": 70114,
+        "compared": 66452,
+        "exact": 66452,
+        "unsupported": {
+          "CAUSAL_FLAT_FILL": 616,
+          "EXCLUDED_DAY": 130,
+          "SOURCE_MINUTE_NOT_EXPORTED": 2916
+        }
+      },
+      "1": {
+        "total": 67192,
+        "compared": 67024,
+        "exact": 67024,
+        "unsupported": {
+          "CAUSAL_FLAT_FILL": 44,
+          "EXCLUDED_DAY": 124
+        }
+      },
+      "2": {
+        "total": 67192,
+        "compared": 67026,
+        "exact": 67026,
+        "unsupported": {
+          "CAUSAL_FLAT_FILL": 42,
+          "EXCLUDED_DAY": 124
+        }
+      },
+      "3": {
+        "total": 67193,
+        "compared": 67026,
+        "exact": 67026,
+        "unsupported": {
+          "CAUSAL_FLAT_FILL": 42,
+          "EXCLUDED_DAY": 125
+        }
+      },
+      "4": {
+        "total": 67191,
+        "compared": 66450,
+        "exact": 66450,
+        "unsupported": {
+          "CAUSAL_FLAT_FILL": 618,
+          "EXCLUDED_DAY": 123
+        }
+      }
+    },
+    "unsupported_total": 4904,
+    "accounting_identity": "333978 compared + 4904 unsupported = 338882 total 5m rows"
+  },
+  "common_support": {
+    "common_complete_eligible_days": 1458,
+    "minute_windows": [
+      "09:34-11:26",
+      "13:04-14:56"
+    ],
+    "contract_common_minutes": 329508,
+    "exported_common_minute_rows": 329508,
+    "observed_unfilled_common_minutes": 329461,
+    "causal_fill_common_minutes": 47
+  },
+  "interpretation": {
+    "construction_verdict": "QUALIFIED_WITH_EXPECTED_UNSUPPORTED_BUCKETS",
+    "supported_reconstruction_has_any_mismatch": false,
+    "shifted_lower_row_counts_are_expected_contract_behavior": true,
+    "unsupported_buckets_are_fail_open_matches": false,
+    "full_original_datahub_export_binary_equality_directly_tested": false,
+    "aliasing_conclusion": "NOT_AUTHORIZED",
+    "scale_dominance_conclusion": "NOT_AUTHORIZED",
+    "S2_issue353_market_measurement_block_from_S1": "SATISFIED",
+    "does_not_prove_segmentation_accuracy": true
+  },
+  "history_guard": {
+    "prior_13_lineage_sha256": "a61420cbd96d4fd1c6e06f77fdb68fae38e7b52e837c4eb8ff80adf9b44bb8ff",
+    "R3_reclassified": false,
+    "issue321_passed": false
+  },
+  "authority": {
+    "R4_selected": false,
+    "one_minute_strategy_admitted": false,
+    "router": false,
+    "pnl": false,
+    "trade": false,
+    "production": false
+  },
+  "outcomes_used": false
+}

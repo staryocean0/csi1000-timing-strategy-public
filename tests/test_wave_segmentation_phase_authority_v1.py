@@ -25,12 +25,14 @@ class PhaseAuthorityTests(unittest.TestCase):
         self.assertIn('FAILED',self.a['historical_status']['R3'])
         self.assertIsNone(self.a['phase_transition']['new_numeric_acceptance_gate'])
 
-    def test_prior_twelve_lineage_rows_preserved(self):
-        x=json.loads(LINEAGE.read_text());self.assertEqual(len(x['ordered_lineage']),13)
+    def test_prior_twelve_lineage_rows_and_phase_open_record_preserved(self):
+        x=json.loads(LINEAGE.read_text());self.assertEqual(len(x['ordered_lineage']),14)
         raw=json.dumps(x['ordered_lineage'][:12],sort_keys=True,separators=(',',':')).encode()
         self.assertEqual(hashlib.sha256(raw).hexdigest(),self.a['history_guard']['prior_12_lineage_sha256'])
-        self.assertEqual(x['ordered_lineage'][-1]['order'],13)
-        self.assertFalse(x['ordered_lineage'][-1]['R4_selected'])
+        self.assertEqual(x['ordered_lineage'][12]['order'],13)
+        self.assertEqual(x['ordered_lineage'][12]['name'],'segmentation_scale_dominance_phase_opened')
+        self.assertFalse(x['ordered_lineage'][12]['R4_selected'])
+        self.assertEqual(x['ordered_lineage'][13]['order'],14)
 
     def test_old_R3_adjudication_identity_and_failure(self):
         path=ROOT/'docs/research/TWO_WAVE_R3_CLOCK_AUDIT_ADJUDICATION_20260917.json'
@@ -57,11 +59,15 @@ class PhaseAuthorityTests(unittest.TestCase):
         self.assertFalse(self.a['future_only']['low_amplitude_means_drill_up'])
         self.assertFalse(self.s2['amplitude_branch_rule'])
 
-    def test_active_lanes_are_data_then_dominance_design(self):
+    def test_active_lanes_advance_only_after_formal_S1_qualification(self):
         lanes={x['issue']:x for x in self.a['active_lanes']}
         self.assertIn(352,lanes);self.assertIn(353,lanes)
-        self.assertIn('PENDING',lanes[352]['status'])
+        self.assertEqual(lanes[352]['status'],'COMPLETED_QUALIFIED_WITH_EXPECTED_UNSUPPORTED_BUCKETS')
+        self.assertEqual(lanes[352]['formal_run'],'35191936364-1')
+        self.assertIn('S1_SATISFIED',lanes[353]['status'])
+        # The source-design protocol preserves its original prerequisite; authority records it as satisfied.
         self.assertTrue(self.s2['blocked_on_issue352_for_market_evaluation'])
+        self.assertEqual(self.a['S1_completion']['block_for_issue353'],'SATISFIED')
 
     def test_datahub_export_source_is_pinned_to_v3_commit(self):
         d=self.s1['datahub']
