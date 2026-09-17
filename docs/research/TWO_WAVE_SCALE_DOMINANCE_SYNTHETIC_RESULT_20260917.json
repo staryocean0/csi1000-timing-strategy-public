@@ -1,0 +1,816 @@
+{
+  "schema_id": "csi1000.scale_dominance_synthetic_suite@1.0",
+  "research_issue": 353,
+  "data_role": "DETERMINISTIC_SYNTHETIC_ONLY",
+  "market_run": null,
+  "cases": {
+    "low_amplitude_clean": {
+      "reference_label": "CURRENT_SCALE_SUPPORTED",
+      "reference_reason": "single supplied broad L-H-L geometry",
+      "diagnostic": {
+        "schema_id": "csi1000.current_scale_evidence@1.0",
+        "n": 61,
+        "known_from": 60,
+        "turn_index": 30,
+        "near_constant": false,
+        "log_range": 0.0019999999999997797,
+        "total_variation": 0.0039999999999995595,
+        "tortuosity": 2.0,
+        "background_selected": "LEVEL",
+        "background_sse": 2.1028051001817298e-05,
+        "background_bic": -903.6012800751414,
+        "background_r2": 0.0,
+        "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+        "aliasing_conclusion": "NOT_AUTHORIZED",
+        "background_candidates": {
+          "LEVEL": {
+            "sse": 2.1028051001817298e-05,
+            "bic": -903.6012800751414,
+            "r2": 0.0,
+            "adjusted_r2": 0.0,
+            "dof": 1
+          },
+          "ONE_LEG_TREND": {
+            "sse": 2.1028051001817298e-05,
+            "bic": -899.4904062109681,
+            "r2": 0.0,
+            "adjusted_r2": -0.016949152542372836,
+            "dof": 2
+          }
+        },
+        "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
+        "piecewise": {
+          "sse": 4.5753932502818685e-29,
+          "bic": -4218.941461894387,
+          "r2": 1.0,
+          "adjusted_r2": 1.0,
+          "dof": 3,
+          "rank": 3,
+          "pre_slope": 0.0019999999999997455,
+          "post_slope": -0.0019999999999992667,
+          "shape": "PEAK",
+          "sse_ratio_to_background": 2.175852269849665e-24,
+          "fractional_sse_improvement": 1.0,
+          "delta_r2_vs_background": 1.0,
+          "delta_bic_vs_background": -3315.340181819246,
+          "normalized_rmse_to_log_range": 4.330313115871322e-13,
+          "residual_lag1": 0.0,
+          "robust_outlier_score": null
+        },
+        "reason": "RAW_MODEL_COMPARISON_EVIDENCE_ONLY"
+      }
+    },
+    "high_amplitude_clean": {
+      "reference_label": "CURRENT_SCALE_SUPPORTED",
+      "reference_reason": "single supplied broad L-H-L geometry",
+      "diagnostic": {
+        "schema_id": "csi1000.current_scale_evidence@1.0",
+        "n": 61,
+        "known_from": 60,
+        "turn_index": 30,
+        "near_constant": false,
+        "log_range": 0.04999999999999982,
+        "total_variation": 0.09999999999999964,
+        "tortuosity": 2.0,
+        "background_selected": "LEVEL",
+        "background_sse": 0.013142531876138473,
+        "background_bic": -510.89842944120846,
+        "background_r2": -4.440892098500626e-16,
+        "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+        "aliasing_conclusion": "NOT_AUTHORIZED",
+        "background_candidates": {
+          "LEVEL": {
+            "sse": 0.013142531876138473,
+            "bic": -510.89842944120846,
+            "r2": -4.440892098500626e-16,
+            "adjusted_r2": -4.440892098500626e-16,
+            "dof": 1
+          },
+          "ONE_LEG_TREND": {
+            "sse": 0.013142531876138473,
+            "bic": -506.78755557703516,
+            "r2": -4.440892098500626e-16,
+            "adjusted_r2": -0.01694915254237328,
+            "dof": 2
+          }
+        },
+        "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
+        "piecewise": {
+          "sse": 9.482108080756562e-28,
+          "bic": -4034.032216516914,
+          "r2": 1.0,
+          "adjusted_r2": 1.0,
+          "dof": 3,
+          "rank": 3,
+          "pre_slope": 0.049999999999998934,
+          "post_slope": -0.04999999999999888,
+          "shape": "PEAK",
+          "sse_ratio_to_background": 7.214826009265565e-26,
+          "fractional_sse_improvement": 1.0,
+          "delta_r2_vs_background": 1.0000000000000004,
+          "delta_bic_vs_background": -3523.1337870757056,
+          "normalized_rmse_to_log_range": 7.885287433353387e-14,
+          "residual_lag1": 0.0,
+          "robust_outlier_score": null
+        },
+        "reason": "RAW_MODEL_COMPARISON_EVIDENCE_ONLY"
+      }
+    },
+    "same_range_fast": {
+      "reference_label": "FASTER_STRUCTURE_GENERATOR",
+      "reference_reason": "repeated ten-step oscillations with same broad range",
+      "diagnostic": {
+        "schema_id": "csi1000.current_scale_evidence@1.0",
+        "n": 61,
+        "known_from": 60,
+        "turn_index": 30,
+        "near_constant": false,
+        "log_range": 0.04999999999999982,
+        "total_variation": 0.5999999999999979,
+        "tortuosity": 12.0,
+        "background_selected": "LEVEL",
+        "background_sse": 0.014114754098360773,
+        "background_bic": -506.545044812789,
+        "background_r2": 0.0,
+        "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+        "aliasing_conclusion": "NOT_AUTHORIZED",
+        "background_candidates": {
+          "LEVEL": {
+            "sse": 0.014114754098360773,
+            "bic": -506.545044812789,
+            "r2": 0.0,
+            "adjusted_r2": 0.0,
+            "dof": 1
+          },
+          "ONE_LEG_TREND": {
+            "sse": 0.014114754098360773,
+            "bic": -502.4341709486157,
+            "r2": 0.0,
+            "adjusted_r2": -0.016949152542372836,
+            "dof": 2
+          }
+        },
+        "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
+        "piecewise": {
+          "sse": 0.014085998406153738,
+          "bic": -498.44769786646293,
+          "r2": 0.002037279006537829,
+          "adjusted_r2": -0.0323752286139265,
+          "dof": 3,
+          "rank": 3,
+          "pre_slope": 0.0023387962995035116,
+          "post_slope": -0.0023387962995034682,
+          "shape": "PEAK",
+          "sse_ratio_to_background": 0.9979627209934622,
+          "fractional_sse_improvement": 0.002037279006537829,
+          "delta_r2_vs_background": 0.002037279006537829,
+          "delta_bic_vs_background": 8.09734694632607,
+          "normalized_rmse_to_log_range": 0.303919730625216,
+          "residual_lag1": 0.7782145883660951,
+          "robust_outlier_score": 1.772751397085031
+        },
+        "reason": "RAW_MODEL_COMPARISON_EVIDENCE_ONLY"
+      }
+    },
+    "monotone_unfinished": {
+      "reference_label": "DEVELOPING_OR_INSUFFICIENT",
+      "reference_reason": "one uninterrupted leg with no completed turn",
+      "diagnostic": {
+        "schema_id": "csi1000.current_scale_evidence@1.0",
+        "n": 61,
+        "known_from": 60,
+        "turn_index": null,
+        "near_constant": false,
+        "log_range": 0.04999999999999982,
+        "total_variation": 0.04999999999999982,
+        "tortuosity": 1.0,
+        "background_selected": "ONE_LEG_TREND",
+        "background_sse": 1.8143800820083272e-29,
+        "background_bic": -4279.474212230213,
+        "background_r2": 1.0,
+        "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+        "aliasing_conclusion": "NOT_AUTHORIZED",
+        "background_candidates": {
+          "LEVEL": {
+            "sse": 0.013131944444444441,
+            "bic": -510.9475899542791,
+            "r2": 0.0,
+            "adjusted_r2": 0.0,
+            "dof": 1
+          },
+          "ONE_LEG_TREND": {
+            "sse": 1.8143800820083272e-29,
+            "bic": -4279.474212230213,
+            "r2": 1.0,
+            "adjusted_r2": 1.0,
+            "dof": 2
+          }
+        },
+        "current_scale_hypothesis": "NO_TURN_HYPOTHESIS",
+        "piecewise": null,
+        "reason": "DEVELOPING_OR_INSUFFICIENT_MORPHOLOGY_HYPOTHESIS"
+      }
+    },
+    "nonsinusoidal_valid": {
+      "reference_label": "CURRENT_SCALE_SUPPORTED_NON_SINUSOIDAL",
+      "reference_reason": "asymmetric smooth single peak",
+      "diagnostic": {
+        "schema_id": "csi1000.current_scale_evidence@1.0",
+        "n": 61,
+        "known_from": 60,
+        "turn_index": 24,
+        "near_constant": false,
+        "log_range": 0.040000000000000036,
+        "total_variation": 0.08000000000000007,
+        "tortuosity": 2.0,
+        "background_selected": "LEVEL",
+        "background_sse": 0.008921373243104108,
+        "background_bic": -534.5300608367468,
+        "background_r2": 2.220446049250313e-16,
+        "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+        "aliasing_conclusion": "NOT_AUTHORIZED",
+        "background_candidates": {
+          "LEVEL": {
+            "sse": 0.008921373243104108,
+            "bic": -534.5300608367468,
+            "r2": 2.220446049250313e-16,
+            "adjusted_r2": 2.220446049250313e-16,
+            "dof": 1
+          },
+          "ONE_LEG_TREND": {
+            "sse": 0.00879935267155281,
+            "bic": -531.2592623217479,
+            "r2": 0.013677330633556584,
+            "adjusted_r2": -0.0030400027455357304,
+            "dof": 2
+          }
+        },
+        "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
+        "piecewise": {
+          "sse": 0.0003220084062728892,
+          "bic": -728.9275914077605,
+          "r2": 0.9639059595985641,
+          "adjusted_r2": 0.9626613375157559,
+          "dof": 3,
+          "rank": 3,
+          "pre_slope": 0.057431441393838004,
+          "post_slope": -0.027782160791628235,
+          "shape": "PEAK",
+          "sse_ratio_to_background": 0.036094040401435934,
+          "fractional_sse_improvement": 0.9639059595985641,
+          "delta_r2_vs_background": 0.9639059595985638,
+          "delta_bic_vs_background": -194.3975305710137,
+          "normalized_rmse_to_log_range": 0.05743924144445174,
+          "residual_lag1": 0.9671338315717269,
+          "robust_outlier_score": 4.0356746049838765
+        },
+        "reason": "RAW_MODEL_COMPARISON_EVIDENCE_ONLY"
+      }
+    },
+    "mixed_scales": {
+      "reference_label": "AMBIGUOUS_MIXED_GENERATOR",
+      "reference_reason": "broad current-scale geometry plus substantial faster component",
+      "diagnostic": {
+        "schema_id": "csi1000.current_scale_evidence@1.0",
+        "n": 61,
+        "known_from": 60,
+        "turn_index": 30,
+        "near_constant": false,
+        "log_range": 0.050666666666666416,
+        "total_variation": 0.3546666666666649,
+        "tortuosity": 7.0,
+        "background_selected": "LEVEL",
+        "background_sse": 0.01146838123718655,
+        "background_bic": -519.210282615351,
+        "background_r2": 0.0,
+        "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+        "aliasing_conclusion": "NOT_AUTHORIZED",
+        "background_candidates": {
+          "LEVEL": {
+            "sse": 0.01146838123718655,
+            "bic": -519.210282615351,
+            "r2": 0.0,
+            "adjusted_r2": 0.0,
+            "dof": 1
+          },
+          "ONE_LEG_TREND": {
+            "sse": 0.01146838123718655,
+            "bic": -515.0994087511777,
+            "r2": 0.0,
+            "adjusted_r2": -0.016949152542372836,
+            "dof": 2
+          }
+        },
+        "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
+        "piecewise": {
+          "sse": 0.004259868465000369,
+          "bic": -571.400220874272,
+          "r2": 0.6285553839815139,
+          "adjusted_r2": 0.6157469489463937,
+          "dof": 3,
+          "rank": 3,
+          "pre_slope": 0.0370299666538277,
+          "post_slope": -0.03702996665382732,
+          "shape": "PEAK",
+          "sse_ratio_to_background": 0.37144461601848616,
+          "fractional_sse_improvement": 0.6285553839815139,
+          "delta_r2_vs_background": 0.6285553839815139,
+          "delta_bic_vs_background": -52.18993825892096,
+          "normalized_rmse_to_log_range": 0.16493424770651183,
+          "residual_lag1": 0.7031957091156397,
+          "robust_outlier_score": 1.020661013584561
+        },
+        "reason": "RAW_MODEL_COMPARISON_EVIDENCE_ONLY"
+      }
+    },
+    "jump_outlier": {
+      "reference_label": "AMBIGUOUS_OUTLIER_GENERATOR",
+      "reference_reason": "otherwise clean broad geometry with isolated jump",
+      "diagnostic": {
+        "schema_id": "csi1000.current_scale_evidence@1.0",
+        "n": 61,
+        "known_from": 60,
+        "turn_index": 30,
+        "near_constant": false,
+        "log_range": 0.0853333333333337,
+        "total_variation": 0.1973333333333347,
+        "tortuosity": 2.3125000000000058,
+        "background_selected": "LEVEL",
+        "background_sse": 0.012631548269581155,
+        "background_bic": -513.3174554219281,
+        "background_r2": 0.0,
+        "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+        "aliasing_conclusion": "NOT_AUTHORIZED",
+        "background_candidates": {
+          "LEVEL": {
+            "sse": 0.012631548269581155,
+            "bic": -513.3174554219281,
+            "r2": 0.0,
+            "adjusted_r2": 0.0,
+            "dof": 1
+          },
+          "ONE_LEG_TREND": {
+            "sse": 0.012608512838592278,
+            "bic": -509.31792531991414,
+            "r2": 0.0018236427156241852,
+            "adjusted_r2": -0.015094600628178911,
+            "dof": 2
+          }
+        },
+        "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
+        "piecewise": {
+          "sse": 0.0035042311224916527,
+          "bic": -583.3115171786021,
+          "r2": 0.722581029046897,
+          "adjusted_r2": 0.713014857634721,
+          "dof": 3,
+          "rank": 3,
+          "pre_slope": 0.04266239368914002,
+          "post_slope": -0.0405682635992406,
+          "shape": "PEAK",
+          "sse_ratio_to_background": 0.277418970953103,
+          "fractional_sse_improvement": 0.722581029046897,
+          "delta_r2_vs_background": 0.722581029046897,
+          "delta_bic_vs_background": -69.994061756674,
+          "normalized_rmse_to_log_range": 0.08882040377381223,
+          "residual_lag1": -0.027691875519106814,
+          "robust_outlier_score": 111.91378164283879
+        },
+        "reason": "RAW_MODEL_COMPARISON_EVIDENCE_ONLY"
+      }
+    },
+    "near_constant": {
+      "reference_label": "INSUFFICIENT_SUPPORT_NEAR_CONSTANT",
+      "reference_reason": "variation is below a numerically meaningful geometry scale",
+      "diagnostic": {
+        "schema_id": "csi1000.current_scale_evidence@1.0",
+        "n": 61,
+        "known_from": 60,
+        "turn_index": null,
+        "near_constant": true,
+        "log_range": 1.978861519091879e-12,
+        "total_variation": 2.148592415096573e-11,
+        "tortuosity": 10.857719928186714,
+        "background_selected": "LEVEL",
+        "background_sse": 3.004404209893725e-23,
+        "background_bic": -3410.074481114684,
+        "background_r2": null,
+        "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+        "aliasing_conclusion": "NOT_AUTHORIZED",
+        "background_candidates": {
+          "LEVEL": {
+            "sse": 3.004404209893725e-23,
+            "bic": -3410.074481114684,
+            "r2": null,
+            "adjusted_r2": null,
+            "dof": 1
+          },
+          "ONE_LEG_TREND": {
+            "sse": 3.004356247150688e-23,
+            "bic": -3405.9645810711004,
+            "r2": null,
+            "adjusted_r2": null,
+            "dof": 2
+          }
+        },
+        "current_scale_hypothesis": "NO_TURN_HYPOTHESIS",
+        "piecewise": null,
+        "reason": "DEVELOPING_OR_INSUFFICIENT_MORPHOLOGY_HYPOTHESIS"
+      }
+    },
+    "scale_transition": {
+      "reference_label": "SCALE_TRANSITION_GENERATOR",
+      "reference_reason": "clean broad wave followed by faster regime",
+      "prefix_diagnostic": {
+        "schema_id": "csi1000.current_scale_evidence@1.0",
+        "n": 61,
+        "known_from": 60,
+        "turn_index": 30,
+        "near_constant": false,
+        "log_range": 0.040000000000000036,
+        "total_variation": 0.08000000000000007,
+        "tortuosity": 2.0,
+        "background_selected": "LEVEL",
+        "background_sse": 0.008411220400728642,
+        "background_bic": -538.121942701542,
+        "background_r2": 0.0,
+        "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+        "aliasing_conclusion": "NOT_AUTHORIZED",
+        "background_candidates": {
+          "LEVEL": {
+            "sse": 0.008411220400728642,
+            "bic": -538.121942701542,
+            "r2": 0.0,
+            "adjusted_r2": 0.0,
+            "dof": 1
+          },
+          "ONE_LEG_TREND": {
+            "sse": 0.008411220400728642,
+            "bic": -534.0110688373687,
+            "r2": 0.0,
+            "adjusted_r2": -0.016949152542372836,
+            "dof": 2
+          }
+        },
+        "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
+        "piecewise": {
+          "sse": 2.926673958369954e-28,
+          "bic": -4105.740159718665,
+          "r2": 1.0,
+          "adjusted_r2": 1.0,
+          "dof": 3,
+          "rank": 3,
+          "pre_slope": 0.039999999999999473,
+          "post_slope": -0.03999999999999946,
+          "shape": "PEAK",
+          "sse_ratio_to_background": 3.4794878970433636e-26,
+          "fractional_sse_improvement": 1.0,
+          "delta_r2_vs_background": 1.0,
+          "delta_bic_vs_background": -3567.6182170171232,
+          "normalized_rmse_to_log_range": 5.475985163227601e-14,
+          "residual_lag1": 0.0,
+          "robust_outlier_score": null
+        },
+        "reason": "RAW_MODEL_COMPARISON_EVIDENCE_ONLY"
+      },
+      "full_diagnostic": {
+        "schema_id": "csi1000.current_scale_evidence@1.0",
+        "n": 101,
+        "known_from": 100,
+        "turn_index": 30,
+        "near_constant": false,
+        "log_range": 0.043301270189222585,
+        "total_variation": 0.6629165124598932,
+        "tortuosity": 15.30940107675846,
+        "background_selected": "LEVEL",
+        "background_sse": 0.02059990204319967,
+        "background_bic": -853.6414164807472,
+        "background_r2": 0.0,
+        "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+        "aliasing_conclusion": "NOT_AUTHORIZED",
+        "background_candidates": {
+          "LEVEL": {
+            "sse": 0.02059990204319967,
+            "bic": -853.6414164807472,
+            "r2": 0.0,
+            "adjusted_r2": 0.0,
+            "dof": 1
+          },
+          "ONE_LEG_TREND": {
+            "sse": 0.02056541433507366,
+            "bic": -849.1955286890314,
+            "r2": 0.0016741685496215464,
+            "adjusted_r2": -0.008409930757957929,
+            "dof": 2
+          }
+        },
+        "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
+        "piecewise": {
+          "sse": 0.0176962876485365,
+          "bic": -859.7562509263277,
+          "r2": 0.14095282533742415,
+          "adjusted_r2": 0.1234212503443104,
+          "dof": 3,
+          "rank": 3,
+          "pre_slope": 0.037906387079699,
+          "post_slope": -0.009313657539924768,
+          "shape": "PEAK",
+          "sse_ratio_to_background": 0.8590471746625759,
+          "fractional_sse_improvement": 0.14095282533742415,
+          "delta_r2_vs_background": 0.14095282533742415,
+          "delta_bic_vs_background": -6.114834445580414,
+          "normalized_rmse_to_log_range": 0.30568896505861276,
+          "residual_lag1": 0.6421861936547651,
+          "robust_outlier_score": 2.3105846228747224
+        },
+        "reason": "RAW_MODEL_COMPARISON_EVIDENCE_ONLY"
+      }
+    }
+  },
+  "offset_probe": {
+    "reference_label": "OFFSET_SENSITIVITY_ONLY",
+    "offsets": [
+      {
+        "offset": 0,
+        "diagnostic": {
+          "schema_id": "csi1000.current_scale_evidence@1.0",
+          "n": 61,
+          "known_from": 60,
+          "turn_index": 28,
+          "near_constant": false,
+          "log_range": 0.04880233264098077,
+          "total_variation": 0.372932224204372,
+          "tortuosity": 7.6416885018157865,
+          "background_selected": "LEVEL",
+          "background_sse": 0.01038782922187527,
+          "background_bic": -525.2467777912262,
+          "background_r2": 0.0,
+          "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+          "aliasing_conclusion": "NOT_AUTHORIZED",
+          "background_candidates": {
+            "LEVEL": {
+              "sse": 0.01038782922187527,
+              "bic": -525.2467777912262,
+              "r2": 0.0,
+              "adjusted_r2": 0.0,
+              "dof": 1
+            },
+            "ONE_LEG_TREND": {
+              "sse": 0.01037333579468199,
+              "bic": -521.2210724811015,
+              "r2": 0.001395231562216992,
+              "adjusted_r2": -0.015530272987575922,
+              "dof": 2
+            }
+          },
+          "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
+          "piecewise": {
+            "sse": 0.0015260724730142617,
+            "bic": -634.0192132832703,
+            "r2": 0.85309033866281,
+            "adjusted_r2": 0.8480244882718724,
+            "dof": 3,
+            "rank": 3,
+            "pre_slope": 0.04617727937648454,
+            "post_slope": -0.03640234544336024,
+            "shape": "PEAK",
+            "sse_ratio_to_background": 0.14690966133719,
+            "fractional_sse_improvement": 0.85309033866281,
+            "delta_r2_vs_background": 0.85309033866281,
+            "delta_bic_vs_background": -108.77243549204411,
+            "normalized_rmse_to_log_range": 0.10249013874555868,
+            "residual_lag1": 0.053877063498993745,
+            "robust_outlier_score": 1.8645273879408424
+          },
+          "reason": "RAW_MODEL_COMPARISON_EVIDENCE_ONLY"
+        }
+      },
+      {
+        "offset": 1,
+        "diagnostic": {
+          "schema_id": "csi1000.current_scale_evidence@1.0",
+          "n": 61,
+          "known_from": 60,
+          "turn_index": 28,
+          "near_constant": false,
+          "log_range": 0.05004383730188966,
+          "total_variation": 0.3718138801354023,
+          "tortuosity": 7.429763586921472,
+          "background_selected": "LEVEL",
+          "background_sse": 0.010393870475277069,
+          "background_bic": -525.21131231215,
+          "background_r2": -4.440892098500626e-16,
+          "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+          "aliasing_conclusion": "NOT_AUTHORIZED",
+          "background_candidates": {
+            "LEVEL": {
+              "sse": 0.010393870475277069,
+              "bic": -525.21131231215,
+              "r2": -4.440892098500626e-16,
+              "adjusted_r2": -4.440892098500626e-16,
+              "dof": 1
+            },
+            "ONE_LEG_TREND": {
+              "sse": 0.010392756155718738,
+              "bic": -521.1069785657485,
+              "r2": 0.00010720929811258717,
+              "adjusted_r2": -0.016840126137512623,
+              "dof": 2
+            }
+          },
+          "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
+          "piecewise": {
+            "sse": 0.0015340014799187503,
+            "bic": -633.7030964109001,
+            "r2": 0.8524128731864096,
+            "adjusted_r2": 0.8473236619169754,
+            "dof": 3,
+            "rank": 3,
+            "pre_slope": 0.045606471225635874,
+            "post_slope": -0.03702676586613863,
+            "shape": "PEAK",
+            "sse_ratio_to_background": 0.14758712681359043,
+            "fractional_sse_improvement": 0.8524128731864096,
+            "delta_r2_vs_background": 0.85241287318641,
+            "delta_bic_vs_background": -108.49178409875014,
+            "normalized_rmse_to_log_range": 0.10020684030951077,
+            "residual_lag1": 0.06538794163268916,
+            "robust_outlier_score": 1.9057756130688546
+          },
+          "reason": "RAW_MODEL_COMPARISON_EVIDENCE_ONLY"
+        }
+      },
+      {
+        "offset": 2,
+        "diagnostic": {
+          "schema_id": "csi1000.current_scale_evidence@1.0",
+          "n": 61,
+          "known_from": 60,
+          "turn_index": 31,
+          "near_constant": false,
+          "log_range": 0.05106874824199181,
+          "total_variation": 0.37024938501542426,
+          "tortuosity": 7.2500188032998,
+          "background_selected": "LEVEL",
+          "background_sse": 0.010417023320340205,
+          "background_bic": -525.0755830017786,
+          "background_r2": -2.220446049250313e-16,
+          "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+          "aliasing_conclusion": "NOT_AUTHORIZED",
+          "background_candidates": {
+            "LEVEL": {
+              "sse": 0.010417023320340205,
+              "bic": -525.0755830017786,
+              "r2": -2.220446049250313e-16,
+              "adjusted_r2": -2.220446049250313e-16,
+              "dof": 1
+            },
+            "ONE_LEG_TREND": {
+              "sse": 0.01041467612657708,
+              "bic": -520.9784553824109,
+              "r2": 0.00022532288648524634,
+              "adjusted_r2": -0.016720010623913373,
+              "dof": 2
+            }
+          },
+          "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
+          "piecewise": {
+            "sse": 0.0014761953812413304,
+            "bic": -636.0462026784746,
+            "r2": 0.8582900953712063,
+            "adjusted_r2": 0.8534035469357306,
+            "dof": 3,
+            "rank": 3,
+            "pre_slope": 0.03893580710758705,
+            "post_slope": -0.043666692076815214,
+            "shape": "PEAK",
+            "sse_ratio_to_background": 0.1417099046287937,
+            "fractional_sse_improvement": 0.8582900953712063,
+            "delta_r2_vs_background": 0.8582900953712065,
+            "delta_bic_vs_background": -110.97061967669606,
+            "normalized_rmse_to_log_range": 0.0963278330479604,
+            "residual_lag1": 0.05202000051440295,
+            "robust_outlier_score": 1.776889067341471
+          },
+          "reason": "RAW_MODEL_COMPARISON_EVIDENCE_ONLY"
+        }
+      },
+      {
+        "offset": 3,
+        "diagnostic": {
+          "schema_id": "csi1000.current_scale_evidence@1.0",
+          "n": 61,
+          "known_from": 60,
+          "turn_index": 31,
+          "near_constant": false,
+          "log_range": 0.05065170544896702,
+          "total_variation": 0.36791973206856987,
+          "tortuosity": 7.263718542295857,
+          "background_selected": "LEVEL",
+          "background_sse": 0.010450509766020015,
+          "background_bic": -524.8798075901487,
+          "background_r2": 0.0,
+          "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+          "aliasing_conclusion": "NOT_AUTHORIZED",
+          "background_candidates": {
+            "LEVEL": {
+              "sse": 0.010450509766020015,
+              "bic": -524.8798075901487,
+              "r2": 0.0,
+              "adjusted_r2": 0.0,
+              "dof": 1
+            },
+            "ONE_LEG_TREND": {
+              "sse": 0.010435199671449317,
+              "bic": -520.8583648213269,
+              "r2": 0.0014650093549004595,
+              "adjusted_r2": -0.015459312520440305,
+              "dof": 2
+            }
+          },
+          "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
+          "piecewise": {
+            "sse": 0.0014812563222575015,
+            "bic": -635.8374299009048,
+            "r2": 0.85825989780194,
+            "adjusted_r2": 0.8533723080709724,
+            "dof": 3,
+            "rank": 3,
+            "pre_slope": 0.03845037268257633,
+            "post_slope": -0.04422354231957507,
+            "shape": "PEAK",
+            "sse_ratio_to_background": 0.14174010219806005,
+            "fractional_sse_improvement": 0.85825989780194,
+            "delta_r2_vs_background": 0.85825989780194,
+            "delta_bic_vs_background": -110.95762231075605,
+            "normalized_rmse_to_log_range": 0.09728729275465445,
+            "residual_lag1": 0.0643873863832558,
+            "robust_outlier_score": 1.9665273028220964
+          },
+          "reason": "RAW_MODEL_COMPARISON_EVIDENCE_ONLY"
+        }
+      },
+      {
+        "offset": 4,
+        "diagnostic": {
+          "schema_id": "csi1000.current_scale_evidence@1.0",
+          "n": 61,
+          "known_from": 60,
+          "turn_index": 27,
+          "near_constant": false,
+          "log_range": 0.04905272771469704,
+          "total_variation": 0.3659475222802637,
+          "tortuosity": 7.460288944759734,
+          "background_selected": "LEVEL",
+          "background_sse": 0.0104880896573338,
+          "background_bic": -524.6608458740202,
+          "background_r2": 0.0,
+          "dominance_state": "UNASSIGNED_THRESHOLD_FREE",
+          "aliasing_conclusion": "NOT_AUTHORIZED",
+          "background_candidates": {
+            "LEVEL": {
+              "sse": 0.0104880896573338,
+              "bic": -524.6608458740202,
+              "r2": 0.0,
+              "adjusted_r2": 0.0,
+              "dof": 1
+            },
+            "ONE_LEG_TREND": {
+              "sse": 0.010451227411908877,
+              "bic": -520.7647449450271,
+              "r2": 0.0035146768028576636,
+              "adjusted_r2": -0.01337490494624638,
+              "dof": 2
+            }
+          },
+          "current_scale_hypothesis": "SUPPLIED_CAUSAL_TURN",
+          "piecewise": {
+            "sse": 0.001598477733881153,
+            "bic": -631.1915987776647,
+            "r2": 0.8475911451840596,
+            "adjusted_r2": 0.8423356674317859,
+            "dof": 3,
+            "rank": 3,
+            "pre_slope": 0.04644077101822482,
+            "post_slope": -0.0368380512788321,
+            "shape": "PEAK",
+            "sse_ratio_to_background": 0.15240885481594038,
+            "fractional_sse_improvement": 0.8475911451840596,
+            "delta_r2_vs_background": 0.8475911451840596,
+            "delta_bic_vs_background": -106.5307529036445,
+            "normalized_rmse_to_log_range": 0.10435787220171742,
+            "residual_lag1": 0.12067106337796794,
+            "robust_outlier_score": 1.9081926699788208
+          },
+          "reason": "RAW_MODEL_COMPARISON_EVIDENCE_ONLY"
+        }
+      }
+    ]
+  },
+  "numeric_dominance_thresholds": null,
+  "persistence_or_hysteresis_thresholds": null,
+  "R4_selected": false,
+  "one_minute_strategy_admitted": false,
+  "router_pnl": false,
+  "production_authority": false
+}

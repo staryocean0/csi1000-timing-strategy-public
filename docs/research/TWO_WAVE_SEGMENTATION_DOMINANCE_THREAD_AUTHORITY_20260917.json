@@ -52,7 +52,8 @@
     {
       "issue": 353,
       "stage": "S2_SCALE_DOMINANCE_DESIGN",
-      "status": "SOURCE_DESIGN_OPEN_S1_SATISFIED_REFERENCE_AND_SYNTHETIC_IMPLEMENTATION_NEXT"
+      "status": "SYNTHETIC_DIAGNOSTIC_IMPLEMENTED_REFERENCE_PROTOCOL_NEXT",
+      "checkpoint": "docs/research/TWO_WAVE_SCALE_DOMINANCE_SYNTHETIC_CHECKPOINT_20260917.json"
     }
   ],
   "future_only": {
@@ -85,5 +86,11 @@
     "common_complete_eligible_days": 1458,
     "block_for_issue353": "SATISFIED",
     "does_not_authorize_aliasing_or_dominance_claim": true
+  },
+  "S2_progress": {
+    "synthetic_diagnostic": "IMPLEMENTED",
+    "market_thresholds": null,
+    "real_market_reference_labels": "NOT_YET_FROZEN",
+    "next": "CANDIDATE_INDEPENDENT_REFERENCE_AND_AMBIGUITY_PROTOCOL"
   }
 }
