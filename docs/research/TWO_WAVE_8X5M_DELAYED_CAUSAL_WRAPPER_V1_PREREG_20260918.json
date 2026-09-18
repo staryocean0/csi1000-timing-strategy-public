@@ -1,0 +1,65 @@
+{
+  "schema_version": "two_wave_8x5m_delayed_causal_wrapper_v1_prereg",
+  "issue": 424,
+  "date": "2026-09-18",
+  "status": "PREREGISTERED_BEFORE_EQUIVALENCE_AUDIT",
+  "oracle": {
+    "freeze_merge_commit": "1eae26785c8faa1b93777d311ba172fc03422075",
+    "freeze_checkpoint_sha256": "4b2f84d1c0d45a7e049a17866e907f97dfe0470f3fbcccf2cb3d5a8983204774",
+    "weights": [
+      0.5375062131339785,
+      0.02424630935968975,
+      0.2550411892804524,
+      0.08498791874772484,
+      0.0982183694781545
+    ],
+    "tau_dir": 0.2
+  },
+  "clock": {
+    "native_bar_minutes": 5,
+    "delay_bars": 8,
+    "delay_trading_minutes": 40,
+    "target_index_formula": "t=k-8",
+    "recognizer_view": "[k-63,k]",
+    "amplitude_window": "[k-16,k]",
+    "first_eligible_knowledge_index": 63,
+    "first_eligible_target_index": 55
+  },
+  "batch": {
+    "output_count_formula": "max(0,N-63)",
+    "one_row_per_knowledge_index": true
+  },
+  "equivalence_acceptance": {
+    "exact_identity": 1,
+    "mismatches": 0,
+    "target_knowledge_alignment_exact": true,
+    "deterministic_replay_byte_identical": true
+  },
+  "causality": {
+    "future_suffix_invariance_required": true,
+    "no_read_after_k": true
+  },
+  "audit_population": {
+    "role": "previously_consumed_development_engineering_identity_audit",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "full_eligible_endpoints": true,
+    "fresh_oos_claim": false
+  },
+  "oracle_mutation_allowed": false,
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "pnl_selection": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
