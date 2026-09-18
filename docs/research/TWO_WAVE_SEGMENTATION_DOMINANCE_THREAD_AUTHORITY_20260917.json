@@ -31,7 +31,7 @@
     "market_packet_v2_failure": "verifier_reason_summary_mismatch_after_sample_identity_match",
     "market_thresholds": null,
     "morphology_dominance_separation_required": true,
-    "next": "MERGE_DIAGNOSTIC_FAMILY_V2_PROFILE_THEN_FORMAL_LABEL_BLIND_MEASUREMENT",
+    "next": "PREREGISTER_V3_CALIBRATION_OBJECTIVE_AND_VALIDITY_FAMILY_REVISION_BEFORE_FURTHER_LABEL_CONDITIONAL_SEARCH",
     "numeric_validity_thresholds": null,
     "pass_a_sha256": "3914201bccf2d1396eeab668a74686a17c055fd170b33bdebbca66c051a721df",
     "pass_b_downgrades": 0,
@@ -61,10 +61,16 @@
     "validity_measurement_run": "35221426711-1_PASSED",
     "diagnostic_family_v2_issue": 381,
     "diagnostic_family_v2_profile": "two-wave-scale-diagnostic-family-measurement-v2",
-    "diagnostic_family_v2_measured": false,
+    "diagnostic_family_v2_measured": true,
     "diagnostic_family_v2_thresholds": null,
     "full_192_fit_performed": false,
-    "fresh_oos_claim": false
+    "fresh_oos_claim": false,
+    "diagnostic_family_v2_formal_run": "35237394015-1_PASSED",
+    "diagnostic_family_v2_diagnostics_sha256": "a0b71c19591a83bf2ee7cc24eaecaea367d0d3b3772a0e41c03d7c361b5fa659",
+    "calibration_v2_family_source_commit": "a735a9a78a37dd2bc5bdeeba2682cf4fece4ecb2",
+    "calibration_v2_development_loyo_run": "COMPLETED_NOT_READY",
+    "calibration_v2_oof_aggregate_sha256": "7b14d15d016c63311c2f9b27cf41f3882705369d1d69af46c270f0abc349afc9",
+    "calibration_v2_private_oof_sha256": "99b6e5ee6545d5982d3acf5eaa1a8275d88c1ca5077bd82c9e080d2aea0402a9"
   },
   "active_lanes": [
     {
@@ -90,7 +96,7 @@
       "reference_issue": 359,
       "stage": "S2_SCALE_DOMINANCE_DESIGN",
       "state_conditional_calibration_protocol": "docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_PROTOCOL_20260917.json",
-      "status": "DIAGNOSTIC_FAMILY_V2_PROFILE_SOURCE_READY_NOT_RUN",
+      "status": "V2_DEVELOPMENT_LOYO_NOT_READY_ABSTENTION_COLLAPSE_NO_FULL_FIT",
       "threshold_free_join": "docs/research/TWO_WAVE_SCALE_DOMINANCE_THRESHOLD_FREE_JOIN_20260917.json",
       "validity_guard_issue": 376,
       "validity_measurement_checkpoint": "docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_SOURCE_CHECKPOINT_20260917.json",
@@ -98,7 +104,12 @@
       "validity_measurement_run": "35221426711-1",
       "verifier_parity_issue": 366,
       "diagnostic_family_v2_issue": 381,
-      "diagnostic_family_v2_registration": "docs/research/TWO_WAVE_SCALE_DIAGNOSTIC_FAMILY_V2_REGISTRATION_20260917.json"
+      "diagnostic_family_v2_registration": "docs/research/TWO_WAVE_SCALE_DIAGNOSTIC_FAMILY_V2_REGISTRATION_20260917.json",
+      "diagnostic_family_v2_formal_run": "35237394015-1",
+      "diagnostic_family_v2_measurement_sha256": "a0b71c19591a83bf2ee7cc24eaecaea367d0d3b3772a0e41c03d7c361b5fa659",
+      "calibration_v2_protocol": "docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_V2_PROTOCOL_20260918.json",
+      "calibration_v2_adjudication": "docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_LOYO_V2_ADJUDICATION_20260918.json",
+      "calibration_v2_aggregate": "docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_LOYO_V2_DEVELOPMENT_AGGREGATE_20260918.json"
     }
   ],
   "authority": {

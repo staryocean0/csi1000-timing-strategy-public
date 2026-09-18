@@ -1,0 +1,225 @@
+{
+  "dominance": {
+    "false_not_dominant_on_supported_developing": 0,
+    "false_not_dominant_rate": 0.0,
+    "not_dominant_recall": 0.0,
+    "not_dominant_recall_count": 0,
+    "not_dominant_support": 24,
+    "supported_developing_support": 136
+  },
+  "final": {
+    "ambiguous_recall": 1.0,
+    "ambiguous_recall_count": 13,
+    "ambiguous_support": 13,
+    "confusion": {
+      "AMBIGUOUS_MULTI_SCALE": {
+        "AMBIGUOUS_MULTI_SCALE": 13
+      },
+      "CURRENT_SCALE_DEVELOPING": {
+        "AMBIGUOUS_MULTI_SCALE": 57,
+        "CURRENT_SCALE_DEVELOPING": 3,
+        "DATA_INVALID_EDGE": 1
+      },
+      "CURRENT_SCALE_NOT_DOMINANT": {
+        "AMBIGUOUS_MULTI_SCALE": 21,
+        "DATA_INVALID_EDGE": 3
+      },
+      "CURRENT_SCALE_SUPPORTED": {
+        "AMBIGUOUS_MULTI_SCALE": 69,
+        "CURRENT_SCALE_DEVELOPING": 1,
+        "CURRENT_SCALE_SUPPORTED": 1,
+        "DATA_INVALID_EDGE": 4
+      },
+      "DATA_INVALID_EDGE": {
+        "AMBIGUOUS_MULTI_SCALE": 12,
+        "DATA_INVALID_EDGE": 7
+      }
+    },
+    "predicted_distribution": {
+      "AMBIGUOUS_MULTI_SCALE": 172,
+      "CURRENT_SCALE_DEVELOPING": 4,
+      "CURRENT_SCALE_SUPPORTED": 1,
+      "DATA_INVALID_EDGE": 15
+    },
+    "reference_distribution": {
+      "AMBIGUOUS_MULTI_SCALE": 13,
+      "CURRENT_SCALE_DEVELOPING": 61,
+      "CURRENT_SCALE_NOT_DOMINANT": 24,
+      "CURRENT_SCALE_SUPPORTED": 75,
+      "DATA_INVALID_EDGE": 19
+    }
+  },
+  "fold_rules": [
+    {
+      "dominance_developing_rule_id": "NULL",
+      "dominance_turning_rule_id": "NULL",
+      "held_year": 2015,
+      "morphology_rule_id": "delta_search_adjusted_bic_vs_one_leg_median|DEV<=-7.0046840755658195|TURN>=101.69865998276293",
+      "validity_invalid_rule_id": "AND|close_range_concentration:GE:0.39202849566710884|signed_post_jump_displacement_ratio_20:LE:1.4703182919423081",
+      "validity_valid_rule_id": "SINGLE|signed_post_jump_displacement_ratio_10:GE:1.7007167770481673"
+    },
+    {
+      "dominance_developing_rule_id": "NULL",
+      "dominance_turning_rule_id": "NULL",
+      "held_year": 2016,
+      "morphology_rule_id": "delta_search_adjusted_bic_vs_one_leg_median|DEV<=-7.0046840755658195|TURN>=101.69865998276293",
+      "validity_invalid_rule_id": "AND|close_range_concentration:GE:0.42451733750364351|jump_persistence_ratio:LE:1.0902752508872764",
+      "validity_valid_rule_id": "SINGLE|signed_post_jump_displacement_ratio_10:GE:1.4603523567695342"
+    },
+    {
+      "dominance_developing_rule_id": "NULL",
+      "dominance_turning_rule_id": "NULL",
+      "held_year": 2017,
+      "morphology_rule_id": "delta_search_adjusted_bic_vs_one_leg_median|DEV<=-7.0046840755658195|TURN>=101.69865998276293",
+      "validity_invalid_rule_id": "AND|close_range_concentration:GE:0.4169672200295661|signed_post_jump_displacement_ratio_20:LE:1.4703182919423081",
+      "validity_valid_rule_id": "SINGLE|signed_post_jump_displacement_ratio_20:GE:1.4703182919423081"
+    },
+    {
+      "dominance_developing_rule_id": "NULL",
+      "dominance_turning_rule_id": "NULL",
+      "held_year": 2018,
+      "morphology_rule_id": "delta_search_adjusted_bic_vs_one_leg_median|DEV<=-7.0046840755658195|TURN>=101.69865998276293",
+      "validity_invalid_rule_id": "AND|close_range_concentration:GE:0.4169672200295661|signed_post_jump_displacement_ratio_20:LE:1.4703182919423081",
+      "validity_valid_rule_id": "SINGLE|signed_post_jump_displacement_ratio_10:GE:1.6811246948527541"
+    },
+    {
+      "dominance_developing_rule_id": "NULL",
+      "dominance_turning_rule_id": "NULL",
+      "held_year": 2019,
+      "morphology_rule_id": "delta_search_adjusted_bic_vs_one_leg_median|DEV<=-5.1589390699798514|TURN>=93.116827982971529",
+      "validity_invalid_rule_id": "AND|close_jump_concentration:GE:0.072683468316882188|signed_post_jump_displacement_ratio_20:LE:1.4849674533022126",
+      "validity_valid_rule_id": "SINGLE|signed_post_jump_displacement_ratio_10:GE:1.6811246948527541"
+    },
+    {
+      "dominance_developing_rule_id": "NULL",
+      "dominance_turning_rule_id": "NULL",
+      "held_year": 2020,
+      "morphology_rule_id": "delta_search_adjusted_bic_vs_one_leg_median|DEV<=-7.0046840755658195|TURN>=101.88264793069851",
+      "validity_invalid_rule_id": "AND|close_jump_concentration:GE:0.072683468316882188|signed_post_jump_displacement_ratio_20:LE:1.4703182919423081",
+      "validity_valid_rule_id": "SINGLE|signed_post_jump_displacement_ratio_10:GE:1.6811246948527541"
+    }
+  ],
+  "fresh_oos_claim": false,
+  "full_192_fit_performed": false,
+  "inputs": {
+    "calendar": "32f6279610def838474fb0bc4596c33dfb41f88e4fb78e4a20d6b39942446206",
+    "dominance": "aed0b65305f06d36dfd679df4ee75feb48b246a40e3a5e39831cefedf2ee3baa",
+    "labels": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be",
+    "v2": "a0b71c19591a83bf2ee7cc24eaecaea367d0d3b3772a0e41c03d7c361b5fa659"
+  },
+  "joined_records_sha256": "13c62534e27536c3d6cef7d9fef037e25e8a968f0e45ace13dc45e41548aa7e7",
+  "morphology": {
+    "developing_support": 61,
+    "developing_to_developing": 5,
+    "morphology_ambiguous_total": 177,
+    "supported_support": 75,
+    "supported_to_turning": 5,
+    "true_ambiguous_support": 13,
+    "true_ambiguous_to_morphology_ambiguous": 13
+  },
+  "oof_full_sha256": "99b6e5ee6545d5982d3acf5eaa1a8275d88c1ca5077bd82c9e080d2aea0402a9",
+  "panels": 192,
+  "per_year": {
+    "2015": {
+      "predicted": {
+        "AMBIGUOUS_MULTI_SCALE": 27,
+        "DATA_INVALID_EDGE": 5
+      },
+      "reference": {
+        "AMBIGUOUS_MULTI_SCALE": 1,
+        "CURRENT_SCALE_DEVELOPING": 12,
+        "CURRENT_SCALE_NOT_DOMINANT": 5,
+        "CURRENT_SCALE_SUPPORTED": 11,
+        "DATA_INVALID_EDGE": 3
+      },
+      "support": 32
+    },
+    "2016": {
+      "predicted": {
+        "AMBIGUOUS_MULTI_SCALE": 29,
+        "CURRENT_SCALE_DEVELOPING": 2,
+        "DATA_INVALID_EDGE": 1
+      },
+      "reference": {
+        "AMBIGUOUS_MULTI_SCALE": 2,
+        "CURRENT_SCALE_DEVELOPING": 11,
+        "CURRENT_SCALE_NOT_DOMINANT": 8,
+        "CURRENT_SCALE_SUPPORTED": 7,
+        "DATA_INVALID_EDGE": 4
+      },
+      "support": 32
+    },
+    "2017": {
+      "predicted": {
+        "AMBIGUOUS_MULTI_SCALE": 29,
+        "CURRENT_SCALE_DEVELOPING": 1,
+        "DATA_INVALID_EDGE": 2
+      },
+      "reference": {
+        "AMBIGUOUS_MULTI_SCALE": 4,
+        "CURRENT_SCALE_DEVELOPING": 10,
+        "CURRENT_SCALE_NOT_DOMINANT": 3,
+        "CURRENT_SCALE_SUPPORTED": 11,
+        "DATA_INVALID_EDGE": 4
+      },
+      "support": 32
+    },
+    "2018": {
+      "predicted": {
+        "AMBIGUOUS_MULTI_SCALE": 30,
+        "DATA_INVALID_EDGE": 2
+      },
+      "reference": {
+        "AMBIGUOUS_MULTI_SCALE": 5,
+        "CURRENT_SCALE_DEVELOPING": 9,
+        "CURRENT_SCALE_NOT_DOMINANT": 4,
+        "CURRENT_SCALE_SUPPORTED": 13,
+        "DATA_INVALID_EDGE": 1
+      },
+      "support": 32
+    },
+    "2019": {
+      "predicted": {
+        "AMBIGUOUS_MULTI_SCALE": 27,
+        "CURRENT_SCALE_DEVELOPING": 1,
+        "CURRENT_SCALE_SUPPORTED": 1,
+        "DATA_INVALID_EDGE": 3
+      },
+      "reference": {
+        "AMBIGUOUS_MULTI_SCALE": 1,
+        "CURRENT_SCALE_DEVELOPING": 14,
+        "CURRENT_SCALE_NOT_DOMINANT": 3,
+        "CURRENT_SCALE_SUPPORTED": 12,
+        "DATA_INVALID_EDGE": 2
+      },
+      "support": 32
+    },
+    "2020": {
+      "predicted": {
+        "AMBIGUOUS_MULTI_SCALE": 30,
+        "DATA_INVALID_EDGE": 2
+      },
+      "reference": {
+        "CURRENT_SCALE_DEVELOPING": 5,
+        "CURRENT_SCALE_NOT_DOMINANT": 1,
+        "CURRENT_SCALE_SUPPORTED": 21,
+        "DATA_INVALID_EDGE": 5
+      },
+      "support": 32
+    }
+  },
+  "population_role": "ITERATIVE_DEVELOPMENT_EVIDENCE_NOT_FRESH_OOS",
+  "production_authority": false,
+  "schema_id": "csi1000.scale_state_conditional_loyo_development_aggregate@2.0",
+  "source_engine_sha256": "59a299d3d94d0cda65d3623e2d1c9d0cf823135baa997eae3696f22adddce179",
+  "source_family_commit": "a735a9a78a37dd2bc5bdeeba2682cf4fece4ecb2",
+  "validity": {
+    "false_invalid_noninvalid": 8,
+    "false_invalid_rate": 0.046242774566473986,
+    "invalid_recall": 0.3684210526315789,
+    "invalid_recall_count": 7,
+    "invalid_support": 19,
+    "noninvalid_support": 173,
+    "uncertain_total": 130
+  }
+}
