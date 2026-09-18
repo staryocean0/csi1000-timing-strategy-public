@@ -1,0 +1,104 @@
+{
+  "schema_version": "two_wave_frozen_taxonomy_recognizer_standard_v1",
+  "issue": 406,
+  "date": "2026-09-18",
+  "status": "PREREGISTERED_BEFORE_RECOGNIZER_METRICS",
+  "authority": {
+    "buckets": [
+      "B0_CURRENT_SCALE",
+      "B1_FINER_SCALE_DOMINANT",
+      "B2_COARSER_SCALE_DOMINANT",
+      "B3_MIXED_MULTI_SCALE",
+      "B4_NO_RESOLVABLE_STRUCTURE",
+      "B5_DATA_INVALID_OR_EDGE"
+    ],
+    "pass_a_sha256": "839a41bf9db5622eaea72c9b9c725afde9e25f621d11a1cb8cc45e02b7af3eb4",
+    "pass_b_sha256": "d4095e5cca526e0f2a2519f478844474af05c1491c3aee411a25edd1b3639a4f",
+    "adjudication_sha256": "5a6cd4966230dce4642f86846b3e95b9bbe40084f934ed418cdfa20705767c02",
+    "final_labels_sha256": "e7415c5a7fed302ce7eabab1c62560ef74dbcd73c260850f592234f1afa4d714",
+    "taxonomy_freeze_sha256": "42f75f864d969f1921e9f4b94a19ad84a85ea92872aef3ce65bc54ed137fb812",
+    "handbook_sha256": "83c9f711a82f01024a011c554a8bb805235da6de"
+  },
+  "information_set": {
+    "native_bar": "5m",
+    "horizons": [
+      64,
+      128,
+      256
+    ],
+    "knowledge_lag_bars": 8,
+    "view_end": "t+8",
+    "target_offset_from_right": 8,
+    "forbidden_features": [
+      "date",
+      "challenge_stratum",
+      "old_reference_label",
+      "old_recognizer_output",
+      "outcome",
+      "PnL",
+      "trade_result"
+    ]
+  },
+  "representation": {
+    "price": "log_close",
+    "scale": "max(q95_minus_q05, 4 * MAD(diff), eps)",
+    "amplitude_is_label": false
+  },
+  "structural_primitive": {
+    "family": "nested_vertical_residual_polyline_skeleton",
+    "tolerance_ladder": [
+      0.05,
+      0.1,
+      0.2,
+      0.4
+    ],
+    "horizontal_axis": "native_5m_bar_index",
+    "required_outputs": [
+      "anchors",
+      "alternating_turn_count",
+      "target_leg_span",
+      "target_neighborhood_turn_count",
+      "target_leg_path_efficiency",
+      "largest_enclosing_object_span",
+      "cross_tolerance_anchor_nesting",
+      "target_turn_confirmation_from_eight_bar_tail"
+    ]
+  },
+  "precedence": [
+    "B5 evidence invalid_or_dominant_technical_edge",
+    "B3 genuine_multi_scale_competition",
+    "B1_B0_B2 dominant_structural_scale",
+    "B4 valid_but_no_resolvable_structure"
+  ],
+  "calibration_split": {
+    "salt": "tw-recognizer-v1|",
+    "method": "within each frozen bucket sort by SHA256(salt + panel_id); every fifth item -> protected evaluation; remainder -> calibration",
+    "fresh_oos_claim": false
+  },
+  "calibration_allowed": [
+    "B5 thresholds",
+    "B4 minimum structure thresholds",
+    "finer/current/coarser support weights and minimum support",
+    "B3 competition margin",
+    "anchor match tolerances"
+  ],
+  "calibration_forbidden": [
+    "feature-family replacement after evaluation opens",
+    "date/stratum/outcome/PnL fitting",
+    "unconstrained generic multiclass black-box as first family",
+    "taxonomy rewrite"
+  ],
+  "next_phase": {
+    "name": "8x5m delayed-causal retrospective-equivalent wrapper",
+    "starts_after": "retrospective oracle accepted and frozen",
+    "eligible_endpoint_exact_identity_required": 1
+  },
+  "authority_limits": {
+    "R4": false,
+    "router": false,
+    "pnl_optimization": false,
+    "signal_authority": false,
+    "trade_authority": false,
+    "production_authority": false
+  }
+}
