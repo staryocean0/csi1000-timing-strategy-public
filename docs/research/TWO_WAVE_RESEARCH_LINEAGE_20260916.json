@@ -566,6 +566,73 @@
       "source_base": "e67dcbf4d0720669d2a705ee12a6f42973ec8ff9",
       "status": "FIXED_LAG_CONFIRMATION_PROFILE_SOURCE_READY_NOT_RUN",
       "threshold_selected": false
+    },
+    {
+      "authority_promoted": false,
+      "formal_run": "35292230400-1",
+      "history_guard_prior_34_sha256": "914b2c417d734f3c6e1ba1c77f43f6ab6919a5a1889d2944c2c9fe19ac22e894",
+      "issue": 386,
+      "labels_joined": false,
+      "labels_visible_to_compute": false,
+      "lag_minutes": [
+        0,
+        5,
+        10,
+        15,
+        25
+      ],
+      "lag_performance_inspected_in_formal_run": false,
+      "name": "fixed_lag_causal_confirmation_formal_measurement_completed",
+      "order": 35,
+      "panel_lag_rows": 960,
+      "panels_per_lag": 192,
+      "parent_issue": 381,
+      "raw_diagnostics_sha256": {
+        "0": "83133052d42112ad0b6eeedec392099ddd6067fd495c2db300b1da927f8d45ec",
+        "10": "8dd186a1a394b073ff76fa6c243290ea8dff84343a3a1a85b529ef8d605a4551",
+        "15": "125950faee020c183779a621ec90efc3432b3d8939505884a1fd9efc986a6243",
+        "25": "3ebcd52d6c22c45d4d21144fdacd371a0d096de30f06efa20ec669ed5211ee45",
+        "5": "457b5a1d67ee43ec4cc42f1714bc236f52b57beaa06a2b55804501e5cc34e6b8"
+      },
+      "root_issue": 353,
+      "source_sha": "3bb2739ad4fa52547a00dcef80e596d7a6fdc5ec",
+      "states_assigned": false,
+      "status": "RAW_FIXED_LAG_CONFIRMATION_FAMILY_FROZEN_LABEL_BLIND",
+      "threshold_selected": false
+    },
+    {
+      "authority_promoted": false,
+      "calibration_family_source_commit": "a735a9a78a37dd2bc5bdeeba2682cf4fece4ecb2",
+      "formal_measurement_run": "35292230400-1",
+      "fresh_oos_claim": false,
+      "full_192_fit_performed": false,
+      "history_guard_prior_35_sha256": "f69e8ad237cac13073eda16a351ad354e603286bf8aa4a58cbc57a3f34b971e9",
+      "issue": 386,
+      "lag_promoted": false,
+      "name": "fixed_lag_development_loyo_adjudication",
+      "order": 36,
+      "parent_issue": 381,
+      "private_comparison_sha256": "a9f4ffba42e6ad0e7495fe2452640c753fbf7dd2e7befce72929cdbb3aebbb3a",
+      "public_aggregate_sha256": "a43e0adc1aedf02872a460e6594489777c4e2801f30f01f02f521deedf2779c0",
+      "root_issue": 353,
+      "status": "FIXED_LAG_DEVELOPMENT_LOYO_NOT_READY_OBJECTIVE_ABSTENTION_COLLAPSE_NO_LAG_PROMOTION"
+    },
+    {
+      "authority_promoted": false,
+      "engine_sha256": "a0edc69a9a0169bb15aee9d370c17920e2bc6015794a201d279d504143628c0e",
+      "fresh_oos_claim": false,
+      "full_192_fit_performed": false,
+      "history_guard_prior_36_sha256": "6fb659f600309fef2d35a94405a082137b22eff33cb58d7eccc052e5262263f4",
+      "issue": 388,
+      "lag_promoted": false,
+      "name": "coverage_aware_calibration_v3_source_registration",
+      "order": 37,
+      "parent_issue": 386,
+      "protocol": "docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_V3_PROTOCOL_20260918.json",
+      "real_oof_run": false,
+      "root_issue": 353,
+      "source_base": "3bb2739ad4fa52547a00dcef80e596d7a6fdc5ec",
+      "status": "CALIBRATION_V3_SOURCE_READY_NOT_RUN"
     }
   ],
   "other_open_research_threads": [

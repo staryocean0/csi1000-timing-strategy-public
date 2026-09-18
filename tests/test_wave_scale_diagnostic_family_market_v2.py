@@ -144,7 +144,7 @@ class DiagnosticFamilyMarketV2Tests(unittest.TestCase):
     def test_authority_is_source_ready_not_measured(self):
         a = json.loads((ROOT / 'docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json').read_text())
         lane = next(x for x in a['active_lanes'] if x['issue'] == 353)
-        self.assertIn(lane['status'], {'DIAGNOSTIC_FAMILY_V2_PROFILE_SOURCE_READY_NOT_RUN','V2_DEVELOPMENT_LOYO_NOT_READY_ABSTENTION_COLLAPSE_NO_FULL_FIT','FIXED_LAG_CONFIRMATION_PROFILE_SOURCE_READY_NOT_RUN'})
+        self.assertIn(lane['status'], {'DIAGNOSTIC_FAMILY_V2_PROFILE_SOURCE_READY_NOT_RUN','V2_DEVELOPMENT_LOYO_NOT_READY_ABSTENTION_COLLAPSE_NO_FULL_FIT','FIXED_LAG_CONFIRMATION_PROFILE_SOURCE_READY_NOT_RUN','FIXED_LAG_DEVELOPMENT_LOYO_NOT_READY_OBJECTIVE_ABSTENTION_COLLAPSE_NO_LAG_PROMOTION','CALIBRATION_V3_SOURCE_READY_NOT_RUN'})
         self.assertEqual(a['S2_progress']['diagnostic_family_v2_measured'], lane['status'] != 'DIAGNOSTIC_FAMILY_V2_PROFILE_SOURCE_READY_NOT_RUN')
         self.assertIsNone(a['S2_progress']['diagnostic_family_v2_thresholds'])
         self.assertFalse(a['S2_progress']['full_192_fit_performed'])

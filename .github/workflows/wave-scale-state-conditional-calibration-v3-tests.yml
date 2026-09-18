@@ -1,0 +1,27 @@
+name: Two-Wave calibration v3 source contracts
+
+on:
+  pull_request:
+    paths:
+      - 'executor/wave_scale_state_conditional_calibration_v3.py'
+      - 'tests/test_wave_scale_state_conditional_calibration_v3.py'
+      - 'tests/test_wave_scale_state_conditional_calibration_v3_source.py'
+      - 'docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_V3_PROTOCOL_20260918.json'
+      - 'docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_V3_SOURCE_REGISTRATION_20260918.json'
+      - 'docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_V3_SOURCE_REGISTRATION_20260918.md'
+      - 'docs/research/TWO_WAVE_RESEARCH_LINEAGE_20260916.json'
+      - 'docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - run: python3 -m unittest tests.test_wave_scale_state_conditional_calibration_v3 tests.test_wave_scale_state_conditional_calibration_v3_source -v
