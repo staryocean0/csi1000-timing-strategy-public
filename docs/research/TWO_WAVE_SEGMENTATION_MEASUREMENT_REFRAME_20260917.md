@@ -1,6 +1,3 @@
-> **2026-09-18 active-successor note**  
-> The active research direction is now retrospective-first bucket taxonomy, registered in issue #402 and documented in `TWO_WAVE_RETROSPECTIVE_BUCKET_TAXONOMY_WHITEPAPER_20260918.md`. This 2026-09-17 reframe remains historical and binding for its corrections (especially “amplitude is not scale”), but recognizer redesign is paused until the retrospective bucket universe is exhaustive and frozen.
-
 # 准确切分优先：测量与验收口径审计（#350，2026-09-17）
 
 ## 当前决定
