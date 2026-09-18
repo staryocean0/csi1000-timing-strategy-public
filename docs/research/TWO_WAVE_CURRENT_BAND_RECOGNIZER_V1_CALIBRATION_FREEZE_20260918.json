@@ -1,0 +1,82 @@
+{
+  "schema_version": "two_wave_current_band_recognizer_v1_calibration_freeze",
+  "issue": 420,
+  "date": "2026-09-18",
+  "status": "CALIBRATION_FROZEN_PROTECTED_UNOPENED",
+  "preprotected_numerical_stability_amendment": {
+    "previous_freeze_commit": "f49229a",
+    "reason": "two CURRENT_RANGE calibration scores landed on floating-point +0.20 boundary",
+    "protected_opened_before_amendment": false,
+    "model_family_changed": false,
+    "runtime_threshold_changed": false
+  },
+  "target_oracle_sha256": "bcb72a35d45e0ceb385dba92cf40efec61d7d94a08c5d03bffad047798a033c8",
+  "split": {
+    "calibration_rows": 322,
+    "protected_rows": 78,
+    "split_manifest_sha256": "0f274d6500a04c059bfb4dc833417bd881c683389f33b42fb2f11f325b007ebd",
+    "calibration_labels_sha256": "50d39c9affc1c6e31be0f8a006b22a309f09be294c8141efbbba4a27c789efd7",
+    "protected_opened": false
+  },
+  "fixed_gates": {
+    "low": {
+      "support": 34,
+      "recall": 1,
+      "false_positive": 0
+    },
+    "finer": {
+      "support": 2,
+      "recall": 1,
+      "false_positive": 0
+    }
+  },
+  "direction": {
+    "calibration_rows": 286,
+    "tau": 0.2,
+    "solver_stability_margin": 0.0001,
+    "optimizer": "three-stage MILP: exact identity -> macro recall -> minimize max weight",
+    "direction_correct_optimum": 263,
+    "weights": [
+      0.5375062131339785,
+      0.02424630935968975,
+      0.2550411892804524,
+      0.08498791874772484,
+      0.0982183694781545
+    ],
+    "weight_order": [
+      "phase0",
+      "phase1",
+      "phase2",
+      "phase3",
+      "raw_minleg4"
+    ],
+    "max_weight": 0.5375062131339785,
+    "minimum_threshold_distance": 0.00009999999999960041
+  },
+  "calibration": {
+    "features_sha256": "a33c325ccabc2cc51d330b4176f001f59909a5d95e3176edd5d04a1d5ab0c272",
+    "receipt_sha256": "04616d33463efd7760894f1a30e355959fbae122e08244600618ecaaa2b780ca",
+    "freeze_checkpoint_sha256": "8f237fecc911ea01bdc324a51df61a30b7a843324d68ec117d2ea7dc35de0067",
+    "exact_identity": 0.9285714285714286,
+    "macro_recall": 0.9484265350877192,
+    "recall": {
+      "CURRENT_UP": 0.9333333333333333,
+      "CURRENT_RANGE": 0.8947368421052632,
+      "CURRENT_DOWN": 0.9140625,
+      "LOW_AMPLITUDE_VETO": 1,
+      "FINER_SCALE_OUT_OF_BAND": 1
+    },
+    "progression_gate_passed": true
+  },
+  "post_protected_retuning_allowed": false,
+  "wrapper_started": false,
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "pnl_selection": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
