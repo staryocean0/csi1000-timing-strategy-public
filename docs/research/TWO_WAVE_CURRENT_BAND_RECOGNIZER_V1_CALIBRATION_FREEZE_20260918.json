@@ -1,0 +1,60 @@
+{
+  "schema_version": "two_wave_current_band_recognizer_v1_calibration_freeze",
+  "issue": 420,
+  "date": "2026-09-18",
+  "status": "CALIBRATION_FROZEN_PROGRESSION_GATE_PASSED",
+  "target_oracle_sha256": "bcb72a35d45e0ceb385dba92cf40efec61d7d94a08c5d03bffad047798a033c8",
+  "split": {
+    "calibration": 322,
+    "protected_evaluation": 78,
+    "protected_opened_before_freeze": false
+  },
+  "fixed_gates": {
+    "low_recall": 1,
+    "finer_recall": 1,
+    "low_false_positive": 0,
+    "finer_false_positive": 0
+  },
+  "direction": {
+    "coordinate_order": [
+      "phase0",
+      "phase1",
+      "phase2",
+      "phase3",
+      "raw_minleg4"
+    ],
+    "weights": [
+      0.5371004573470922,
+      0.02422511769054332,
+      0.2549557883167388,
+      0.08538362512087591,
+      0.09833501152474969
+    ],
+    "tau_dir": 0.2
+  },
+  "calibration": {
+    "exact_identity": 0.922360248447205,
+    "macro_recall": 0.9379002192982456,
+    "per_state_recall": {
+      "CURRENT_UP": 0.9333333333333333,
+      "CURRENT_RANGE": 0.8421052631578947,
+      "CURRENT_DOWN": 0.9140625,
+      "LOW_AMPLITUDE_VETO": 1,
+      "FINER_SCALE_OUT_OF_BAND": 1
+    },
+    "minimum_state_recall": 0.8421052631578947,
+    "progression_gate_passed": true,
+    "feature_matrix_sha256": "a33c325ccabc2cc51d330b4176f001f59909a5d95e3176edd5d04a1d5ab0c272",
+    "receipt_sha256": "50cd0bfc104e35486549d9f2b60e82e50da981696196e731f78232c69d01fa9a"
+  },
+  "post_protected_retuning_allowed": false,
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "pnl_selection": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
