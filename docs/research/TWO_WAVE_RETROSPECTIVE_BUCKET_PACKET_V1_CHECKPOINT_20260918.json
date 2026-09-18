@@ -51,5 +51,7 @@
     "any_panel_annotation_seen_before_checkpoint": false
   },
   "quality_note": "Public 5m product HFA/flat-fill metadata are null in this retained source and were not interpreted as boolean qualification gates.",
-  "status": "BLIND_PACKET_SOURCE_FROZEN_BEFORE_ANNOTATION"
+  "status": "BLIND_PACKET_SOURCE_FROZEN_BEFORE_ANNOTATION",
+  "annotation_handbook_path": "docs/research/TWO_WAVE_RETROSPECTIVE_BUCKET_ANNOTATION_HANDBOOK_20260918.md",
+  "annotation_semantics_frozen_before_pass_a": true
 }
