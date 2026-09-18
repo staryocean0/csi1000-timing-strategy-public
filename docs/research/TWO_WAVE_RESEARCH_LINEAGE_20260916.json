@@ -658,7 +658,7 @@
       "parent_issue": 388,
       "root_issue": 353,
       "source_base": "ae99f4016925f0d4162dd97fb07a07b00f7bc52e",
-      "engine_sha256": "d6003f02a85ee89dece38a249eb3e797add56986ccff339b5e7f8902c895f279",
+      "engine_sha256": "b9659f5f2322799a7fe9c9f5935f7feb0efab299487089cdb13fe4af7f646ddc",
       "protocol": "docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_V4_PROTOCOL_20260918.json",
       "threshold_free_capacity_audit_sha256": "804013893f009a77e5534a979a8566c19e63b4ec632357eede687835757ae936",
       "ambiguity_existing_evidence_audit_sha256": "0f0149a0c13dc7b8ad28aa76b761b0faf8bdd97a408a07db7a09e13168d9729d",
