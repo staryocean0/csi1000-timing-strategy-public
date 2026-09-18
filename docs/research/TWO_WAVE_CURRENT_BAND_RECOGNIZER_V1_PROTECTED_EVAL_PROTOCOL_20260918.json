@@ -1,0 +1,36 @@
+{
+  "schema_version": "two_wave_current_band_recognizer_v1_protected_eval_protocol",
+  "issue": 420,
+  "date": "2026-09-18",
+  "status": "FROZEN_BEFORE_PROTECTED_OPEN",
+  "target_oracle_sha256": "bcb72a35d45e0ceb385dba92cf40efec61d7d94a08c5d03bffad047798a033c8",
+  "calibration_freeze_checkpoint_sha256": "8f237fecc911ea01bdc324a51df61a30b7a843324d68ec117d2ea7dc35de0067",
+  "weights": [
+    0.5375062131339785,
+    0.02424630935968975,
+    0.2550411892804524,
+    0.08498791874772484,
+    0.0982183694781545
+  ],
+  "protected_rows": 78,
+  "one_time_open": true,
+  "acceptance": {
+    "low_recall": 1,
+    "finer_recall": 1,
+    "exact_identity_min": 0.8,
+    "macro_recall_min": 0.75,
+    "minimum_any_state_recall": 0.6,
+    "deterministic_replay_required": true
+  },
+  "post_open_retuning_allowed": false,
+  "wrapper_started": false,
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "pnl_selection": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
