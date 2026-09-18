@@ -1,6 +1,3 @@
-> **2026-09-18 active-successor note**  
-> This multiresolution reframe remains the mathematical basis that separates period/scale from amplitude. The current execution order has changed: before any new causal recognizer or economic gate, issue #402 requires a retrospective-first exhaustive bucket taxonomy. See `TWO_WAVE_RETROSPECTIVE_BUCKET_TAXONOMY_WHITEPAPER_20260918.md`.
-
 # Two-Wave 多尺度图形分解：金融命题与数学承载重新对齐（2026-09-16）
 
 ## 1. 研究对象不是“证明金融直觉”，而是验证数学对象是否忠实承载金融直觉
