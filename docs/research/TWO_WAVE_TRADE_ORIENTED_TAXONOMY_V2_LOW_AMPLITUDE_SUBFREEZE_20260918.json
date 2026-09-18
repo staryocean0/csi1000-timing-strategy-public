@@ -1,0 +1,60 @@
+{
+  "schema_version": "two_wave_trade_oriented_taxonomy_v2_low_amplitude_subfreeze",
+  "issue": 411,
+  "parent_issue": 409,
+  "date": "2026-09-18",
+  "status": "FROZEN",
+  "evidence_order": [
+    "DATA_INVALID",
+    "LOW_AMPLITUDE_VETO",
+    "CURRENT_BAND",
+    "FINER_SCALE_OUT_OF_BAND"
+  ],
+  "source_cost_reference": {
+    "repository": "staryocean0/csi1000-timing-strategy-private",
+    "path": "runtime/docs/ops/timing_asset_cost_boundary_registry@2.0.json",
+    "blob_sha": "9afe1102fb4debad6c5b8ddf5669054371284ec9",
+    "current": true,
+    "proxy_contract": "market_index_equity_replication_1bp_6bp_sensitivity@1.0",
+    "complete_round_trip_rate": 0.0007,
+    "tradable_account": false
+  },
+  "amplitude_metric": {
+    "bar_view": "native_5m",
+    "target": "t",
+    "evidence_end": "t+8",
+    "window_start": "t-8",
+    "window_end": "t+8",
+    "window_bars": 17,
+    "price_fields": [
+      "high",
+      "low"
+    ],
+    "formula": "10000 * (max(log(high)) - min(log(low)))",
+    "name": "A_local_bps"
+  },
+  "threshold": {
+    "A_min_bps": 7,
+    "veto_rule": "A_local_bps < 7.0",
+    "equality_passes": true
+  },
+  "diagnostic_sensitivity_bps": [
+    14,
+    21
+  ],
+  "sensitivity_can_relabel_primary": false,
+  "MO_note": {
+    "fixed_fee_rmb_per_contract_side": 14,
+    "used_as_fixed_index_bp_threshold": false,
+    "reason": "MO break-even is contract/delta/BBO/liquidity dependent"
+  },
+  "outcome_selection_forbidden": true,
+  "pnl_selection_forbidden": true,
+  "authority": {
+    "strategy_selection": false,
+    "routing": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
