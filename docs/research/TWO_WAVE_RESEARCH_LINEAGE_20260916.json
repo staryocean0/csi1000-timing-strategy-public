@@ -589,10 +589,10 @@
       "parent_issue": 381,
       "raw_diagnostics_sha256": {
         "0": "83133052d42112ad0b6eeedec392099ddd6067fd495c2db300b1da927f8d45ec",
+        "5": "457b5a1d67ee43ec4cc42f1714bc236f52b57beaa06a2b55804501e5cc34e6b8",
         "10": "8dd186a1a394b073ff76fa6c243290ea8dff84343a3a1a85b529ef8d605a4551",
         "15": "125950faee020c183779a621ec90efc3432b3d8939505884a1fd9efc986a6243",
-        "25": "3ebcd52d6c22c45d4d21144fdacd371a0d096de30f06efa20ec669ed5211ee45",
-        "5": "457b5a1d67ee43ec4cc42f1714bc236f52b57beaa06a2b55804501e5cc34e6b8"
+        "25": "3ebcd52d6c22c45d4d21144fdacd371a0d096de30f06efa20ec669ed5211ee45"
       },
       "root_issue": 353,
       "source_sha": "3bb2739ad4fa52547a00dcef80e596d7a6fdc5ec",
@@ -650,6 +650,25 @@
       "source_commit": "f64fb4ad00adf27a4452f234f15000f09266daae",
       "source_merge": "e6919975f06f7d79143320c32efd7cf2387bf812",
       "status": "CALIBRATION_V3_NOT_READY_AMBIGUITY_RECALL_COLLAPSE_VALIDITY_RECALL_LOW_NO_FULL_FIT"
+    },
+    {
+      "order": 39,
+      "name": "explicit_ambiguity_calibration_v4_source_registration",
+      "issue": 395,
+      "parent_issue": 388,
+      "root_issue": 353,
+      "source_base": "ae99f4016925f0d4162dd97fb07a07b00f7bc52e",
+      "engine_sha256": "d6003f02a85ee89dece38a249eb3e797add56986ccff339b5e7f8902c895f279",
+      "protocol": "docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_V4_PROTOCOL_20260918.json",
+      "threshold_free_capacity_audit_sha256": "804013893f009a77e5534a979a8566c19e63b4ec632357eede687835757ae936",
+      "ambiguity_existing_evidence_audit_sha256": "0f0149a0c13dc7b8ad28aa76b761b0faf8bdd97a408a07db7a09e13168d9729d",
+      "history_guard_prior_38_sha256": "8fc94d1cdd70cc0cf6aa387271c8eb18930fd96e17c61a97cb76f736bbfb9bc1",
+      "real_oof_run": false,
+      "full_192_fit_performed": false,
+      "lag_promoted": false,
+      "fresh_oos_claim": false,
+      "authority_promoted": false,
+      "status": "CALIBRATION_V4_SOURCE_READY_NOT_RUN"
     }
   ],
   "other_open_research_threads": [
