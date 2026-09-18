@@ -680,6 +680,22 @@
       "root_issue": 353,
       "source_base": "ae99f4016925f0d4162dd97fb07a07b00f7bc52e",
       "status": "CALIBRATION_V4_SOURCE_READY_NOT_RUN"
+    },
+    {
+      "authority_promoted": false,
+      "fresh_oos_claim": false,
+      "full_192_fit_performed": false,
+      "history_guard_prior_40_sha256": "a5c30c1ad7fc6d4272bd6f8c020d0486df6cfb379026261482f33dfbfd0c2e1f",
+      "issue": 394,
+      "lag_selected_or_promoted": false,
+      "merge_commit": "cb4aa3204fc5361ccb87d3e595e2f24432d21775",
+      "name": "calibration_v4_development_loyo_adjudication",
+      "oof_aggregate_sha256": "870ce7df72049436f024065f521c5905d71c1b4a72728ad7cc138daa12526780",
+      "order": 41,
+      "parent_issue": 393,
+      "root_issue": 353,
+      "source_commit": "c736f61434d29f8f431a8abdcad9cf9d0dd720ed",
+      "status": "CALIBRATION_V4_NOT_READY_AMBIGUITY_RECALL_LOW_VALIDITY_RECALL_LOWER_NO_FULL_FIT"
     }
   ],
   "other_open_research_threads": [
