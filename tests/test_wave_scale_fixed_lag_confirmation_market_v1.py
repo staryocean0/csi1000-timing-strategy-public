@@ -100,9 +100,9 @@ class FixedLagMarketTests(unittest.TestCase):
     def test_authority_advances_only_to_formal_measurement(self):
         a = json.loads((ROOT / 'docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json').read_text())
         lane = next(x for x in a['active_lanes'] if x['issue'] == 353)
-        self.assertEqual(lane['status'], 'FIXED_LAG_CONFIRMATION_PROFILE_SOURCE_READY_NOT_RUN')
-        self.assertEqual(a['S2_progress']['next'], 'MERGE_FIXED_LAG_PROFILE_THEN_FORMAL_LABEL_BLIND_MEASUREMENT')
-        self.assertFalse(a['S2_progress']['fixed_lag_confirmation_performance_inspected'])
+        self.assertIn(lane['status'], {'FIXED_LAG_CONFIRMATION_PROFILE_SOURCE_READY_NOT_RUN','FIXED_LAG_DEVELOPMENT_LOYO_NOT_READY_OBJECTIVE_ABSTENTION_COLLAPSE_NO_LAG_PROMOTION','CALIBRATION_V3_SOURCE_READY_NOT_RUN'})
+        self.assertIn(a['S2_progress']['next'], {'MERGE_FIXED_LAG_PROFILE_THEN_FORMAL_LABEL_BLIND_MEASUREMENT','PREREGISTER_COVERAGE_CONSTRAINED_MORPHOLOGY_OBJECTIVE_V3_AND_VALIDITY_REVISION','MERGE_CALIBRATION_V3_THEN_RUN_FROZEN_FIXED_LAG_LOYO'})
+        self.assertEqual(a['S2_progress']['fixed_lag_confirmation_performance_inspected'], lane['status'] != 'FIXED_LAG_CONFIRMATION_PROFILE_SOURCE_READY_NOT_RUN')
         self.assertFalse(a['S2_progress']['full_192_fit_performed'])
 
 
