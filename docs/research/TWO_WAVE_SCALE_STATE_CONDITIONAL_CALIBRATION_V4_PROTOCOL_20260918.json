@@ -1,0 +1,140 @@
+{
+  "schema_id": "csi1000.scale_state_conditional_calibration_v4_protocol@1.0",
+  "date": "2026-09-18",
+  "research_issue": 395,
+  "parent_issue": 388,
+  "root_issue": 353,
+  "source_base": "ae99f4016925f0d4162dd97fb07a07b00f7bc52e",
+  "population_role": "ITERATIVE_DEVELOPMENT_EVIDENCE_NOT_FRESH_OOS",
+  "frozen_inputs": {
+    "formal_measurement_run": "35292230400-1",
+    "reference_labels_sha256": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be",
+    "dominance_v1_sha256": "aed0b65305f06d36dfd679df4ee75feb48b246a40e3a5e39831cefedf2ee3baa",
+    "calendar_sha256": "32f6279610def838474fb0bc4596c33dfb41f88e4fb78e4a20d6b39942446206",
+    "fixed_lag_raw_sha256": {
+      "0": "83133052d42112ad0b6eeedec392099ddd6067fd495c2db300b1da927f8d45ec",
+      "5": "457b5a1d67ee43ec4cc42f1714bc236f52b57beaa06a2b55804501e5cc34e6b8",
+      "10": "8dd186a1a394b073ff76fa6c243290ea8dff84343a3a1a85b529ef8d605a4551",
+      "15": "125950faee020c183779a621ec90efc3432b3d8939505884a1fd9efc986a6243",
+      "25": "3ebcd52d6c22c45d4d21144fdacd371a0d096de30f06efa20ec669ed5211ee45"
+    },
+    "calibration_v3_public_aggregate_sha256": "60a4b963d69bcb6776f6018fe1f6c210ca3e6fd74985bd9027cc6cb71cd3bfdc",
+    "threshold_free_capacity_audit_sha256": "804013893f009a77e5534a979a8566c19e63b4ec632357eede687835757ae936",
+    "existing_ambiguity_evidence_audit_sha256": "0f0149a0c13dc7b8ad28aa76b761b0faf8bdd97a408a07db7a09e13168d9729d"
+  },
+  "controlled_join_extension": {
+    "new_market_measurement": false,
+    "ambiguity_features_from_existing_raw_only": {
+      "turn_relative_minute_range": "morphology_v2.phase_stability.turn_relative_minute_range",
+      "shape_disagreement": "5 - morphology_v2.phase_stability.shape_agreement_max",
+      "best_second_adjusted_bic_gap_median": "morphology_v2.phase_stability.best_second_adjusted_bic_gap.median"
+    },
+    "panel_identity_and_year_mapping_unchanged": true
+  },
+  "morphology_v4": {
+    "primary_axis": "reversal_completion_ratio_median",
+    "primary_axis_searched": false,
+    "primary_direction": "larger_means_turning",
+    "primary_thresholds": "MIDPOINTS_OF_CONSECUTIVE_DISTINCT_TRAINING_VALUES_ONLY",
+    "ambiguity_gate_features": {
+      "turn_relative_minute_range": "GE",
+      "shape_disagreement": "GE",
+      "best_second_adjusted_bic_gap_median": "LE"
+    },
+    "ambiguity_gate_exactly_one_feature": true,
+    "ambiguity_gate_thresholds": "MIDPOINTS_OF_CONSECUTIVE_DISTINCT_TRAINING_VALUES_ONLY",
+    "missing_selected_ambiguity_evidence": "MORPHOLOGY_AMBIGUOUS",
+    "fit_reference_states": [
+      "CURRENT_SCALE_SUPPORTED",
+      "CURRENT_SCALE_DEVELOPING",
+      "AMBIGUOUS_MULTI_SCALE"
+    ],
+    "excluded_from_morphology_fit": [
+      "DATA_INVALID_EDGE",
+      "CURRENT_SCALE_NOT_DOMINANT"
+    ],
+    "outputs": [
+      "TURNING_OR_COMPLETED",
+      "DEVELOPING_ONE_LEG",
+      "MORPHOLOGY_AMBIGUOUS"
+    ],
+    "objective": [
+      "MAXIMIZE_MIN_RECALL_ACROSS_SUPPORTED_DEVELOPING_AMBIGUOUS",
+      "MAXIMIZE_MACRO_THREE_CLASS_RECALL",
+      "MINIMIZE_DIRECT_SUPPORTED_DEVELOPING_CROSS_ERRORS",
+      "MINIMIZE_FALSE_AMBIGUITY_ON_SUPPORTED_DEVELOPING",
+      "MINIMIZE_TOTAL_WRONG",
+      "CANONICAL_RULE_ID"
+    ],
+    "raw_amplitude_classifier_forbidden": true
+  },
+  "validity_v4": {
+    "semantics": "ONE_SIDED_INVALID_GUARD",
+    "false_invalid_cap": 0.05,
+    "features_and_invalid_directions": {
+      "post_jump_reversal_extreme_10": "GE",
+      "post_jump_midpoint_hold_fraction_10": "LE",
+      "signed_post_jump_displacement_ratio_10": "LE",
+      "signed_post_jump_displacement_ratio_20": "LE",
+      "jump_persistence_ratio": "LE",
+      "wick_only_concentration_max": "GE",
+      "wick_only_concentration_median": "GE",
+      "local_jump_isolation_ratio": "GE",
+      "close_jump_concentration": "GE",
+      "close_range_concentration": "GE"
+    },
+    "candidate_rules": [
+      "NULL",
+      "ANY_SINGLE",
+      "ANY_DISTINCT_TWO_FEATURE_AND",
+      "ANY_DISTINCT_TWO_FEATURE_OR"
+    ],
+    "max_conditions": 2,
+    "thresholds": "MIDPOINTS_OF_CONSECUTIVE_DISTINCT_TRAINING_VALUES_ONLY",
+    "missing_semantics": "KLEENE_TRISTATE_NO_IMPUTATION",
+    "prediction": {
+      "TRUE": "INVALID_OR_DISCONTINUITY",
+      "FALSE": "VALID_FOR_SCALE_JUDGMENT",
+      "MISSING": "UNCERTAIN_VALIDITY"
+    },
+    "objective": [
+      "REQUIRE_FALSE_INVALID_RATE_LE_0_05",
+      "MAXIMIZE_DATA_INVALID_RECALL",
+      "MINIMIZE_FALSE_INVALID_RATE",
+      "MINIMIZE_UNKNOWN_RATE",
+      "MINIMIZE_CONDITION_COUNT",
+      "CANONICAL_RULE_ID"
+    ],
+    "raw_amplitude_classifier_forbidden": true
+  },
+  "dominance": {
+    "family": "V1_FROZEN_CONTROL_UNCHANGED",
+    "redesigned": false
+  },
+  "evaluation": {
+    "type": "LEAVE_ONE_CALENDAR_YEAR_OUT",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "lag_minutes": [
+      0,
+      5,
+      10,
+      15,
+      25
+    ],
+    "full_192_fit_before_oof_adjudication": false,
+    "lag_promotion_from_consumed_population": false,
+    "fresh_oos_required_for_readiness": true
+  },
+  "v4_real_oof_run": false,
+  "outcomes_used": false,
+  "R4_selected": false,
+  "router_pnl": false,
+  "production_authority": false
+}
