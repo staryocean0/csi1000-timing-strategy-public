@@ -696,6 +696,21 @@
       "root_issue": 353,
       "source_commit": "c736f61434d29f8f431a8abdcad9cf9d0dd720ed",
       "status": "CALIBRATION_V4_NOT_READY_AMBIGUITY_RECALL_LOW_VALIDITY_RECALL_LOWER_NO_FULL_FIT"
+    },
+    {
+      "authority_promoted": false,
+      "candidate_constructed": false,
+      "full_192_fit_performed": false,
+      "history_guard_prior_41_sha256": "04638afe72797fb5201c7e562c263e552afbffe99a97fd865095785fe05541ac",
+      "issue": 399,
+      "lag_selected_or_promoted": false,
+      "name": "post_v4_error_capacity_audit_adjudication",
+      "order": 42,
+      "parent_issue": 394,
+      "private_audit_sha256": "6d7005f4db66793c0b612e2f06ec39b01d240a394c0aff95d648bd0e300f5b30",
+      "public_aggregate_sha256": "1b1496b79c7ac2da3db28eba06b8edb6d5dd2e1260d5ab1be0c77638fbefddf1",
+      "root_issue": 353,
+      "status": "POST_V4_AUDIT_DIAGNOSTIC_FAMILY_REVISION_REQUIRED_BEFORE_ANY_CALIBRATION_V5"
     }
   ],
   "other_open_research_threads": [

@@ -18,5 +18,5 @@ class V4Adjudication(unittest.TestCase):
   s=self.a['stop_rule'];self.assertFalse(s['full_192_fit_authorized']);self.assertFalse(s['full_192_fit_performed']);self.assertFalse(s['lag_selected_or_promoted']);self.assertEqual(s['next'],'RUN_POST_V4_ERROR_AND_CAPACITY_AUDIT_BEFORE_ANY_V5_PREREGISTRATION')
  def test_lineage_and_authority(self):
   self.assertEqual((self.l[40]['order'],self.l[40]['issue']),(41,394));self.assertFalse(self.l[40]['full_192_fit_performed'])
-  lane=next(x for x in self.u['active_lanes'] if x['issue']==353);self.assertEqual(lane['status'],'CALIBRATION_V4_NOT_READY_AMBIGUITY_RECALL_LOW_VALIDITY_RECALL_LOWER_NO_FULL_FIT');self.assertEqual(self.u['S2_progress']['next'],'RUN_POST_V4_ERROR_AND_CAPACITY_AUDIT_BEFORE_ANY_V5_PREREGISTRATION')
+  lane=next(x for x in self.u['active_lanes'] if x['issue']==353);self.assertIn(lane['status'],{'CALIBRATION_V4_NOT_READY_AMBIGUITY_RECALL_LOW_VALIDITY_RECALL_LOWER_NO_FULL_FIT','POST_V4_AUDIT_DIAGNOSTIC_FAMILY_REVISION_REQUIRED_BEFORE_ANY_CALIBRATION_V5'});self.assertIn(self.u['S2_progress']['next'],{'RUN_POST_V4_ERROR_AND_CAPACITY_AUDIT_BEFORE_ANY_V5_PREREGISTRATION','PREREGISTER_LABEL_BLIND_DIAGNOSTIC_FAMILY_V3_MULTISCALE_COMPETITION_AND_VALIDITY_SUBTYPE_EVIDENCE'})
 if __name__=='__main__':unittest.main()

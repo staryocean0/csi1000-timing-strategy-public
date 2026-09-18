@@ -1,0 +1,71 @@
+{
+  "date": "2026-09-18",
+  "decision": "POST_V4_AUDIT_DIAGNOSTIC_FAMILY_REVISION_REQUIRED_BEFORE_ANY_CALIBRATION_V5",
+  "evidence": {
+    "private_audit_sha256": "6d7005f4db66793c0b612e2f06ec39b01d240a394c0aff95d648bd0e300f5b30",
+    "public_aggregate_sha256": "1b1496b79c7ac2da3db28eba06b8edb6d5dd2e1260d5ab1be0c77638fbefddf1",
+    "reference_reason_audit_sha256": "e1138bc96ce60f31cd69a2ed67c5105ed19f064dd5743beeac97fb554f9b0fac",
+    "v4_aggregate_sha256": "870ce7df72049436f024065f521c5905d71c1b4a72728ad7cc138daa12526780"
+  },
+  "findings": {
+    "ambiguous_component_total_detection_events": {
+      "both": 0,
+      "delta_only": 7,
+      "turn_edge_only": 1
+    },
+    "ambiguous_detection_lag_count_distribution": {
+      "0": 6,
+      "1": 6,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "annotation_reason_ambiguity": "MIXED_SCALE_COMPETITION_ALL_13",
+    "annotation_reason_invalid": "DISCONTINUITY_OR_OUTLIER_ALL_19",
+    "developing_correct_all_five_lags": "39/61",
+    "dominance_not_dominant_correct_among_reached_range": "12-16",
+    "dominance_not_dominant_reach_range": "18-22/24",
+    "dominance_upstream_gated_range": "2-6/24",
+    "invalid_detection_lag_count_distribution": {
+      "0": 14,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 5
+    },
+    "supported_correct_all_five_lags": "49/75",
+    "supported_developing_correct_all_five_lags": "88/136",
+    "supported_developing_never_correct_any_lag": "18/136",
+    "validity_heldout_zero_recall_years": [
+      2017,
+      2020
+    ],
+    "validity_mean_heldout_year_recall_unweighted": 0.40277777777777773,
+    "validity_mean_training_pooled_invalid_recall": 0.5269744008714597,
+    "validity_unique_rule_ids_per_lag": 5
+  },
+  "interpretation": [
+    "FIXED_CONFIRMATION_LAG_DOES_NOT_EXPLAIN_AMBIGUITY_OR_VALIDITY_FAILURE",
+    "EXISTING_TWO_AXIS_EXPLICIT_AMBIGUITY_EVIDENCE_LACKS_STABLE_MIXED_SCALE_COMPETITION_CAPACITY",
+    "V4_VALIDITY_IDENTIFIES_A_STABLE_5_OF_19_SUBSET_WHILE_14_OF_19_REMAIN_OUTSIDE_THE_RULE_FAMILY_AT_ALL_LAGS",
+    "SUPPORTED_DEVELOPING_MORPHOLOGY_HAS_A_LARGE_CROSS_LAG_STABLE_CORE",
+    "DOMINANCE_V1_HAS_RESIDUAL_ERROR_ON_CASES_THAT_REACH_IT_BUT_IS_NOT_THE_FIRST_UPSTREAM_BLOCKER",
+    "ANNOTATION_REASON_TAXONOMY_DOES_NOT_FURTHER_SUBTYPE_THE_FAILURES"
+  ],
+  "issue": 399,
+  "parent_issue": 394,
+  "root_issue": 353,
+  "schema_id": "csi1000.post_v4_error_capacity_audit_adjudication@1.0",
+  "stop_rule": {
+    "calibration_v5_allowed_now": false,
+    "candidate_constructed": false,
+    "full_192_fit_performed": false,
+    "lag_selected_or_promoted": false,
+    "next": "PREREGISTER_LABEL_BLIND_DIAGNOSTIC_FAMILY_V3_MULTISCALE_COMPETITION_AND_VALIDITY_SUBTYPE_EVIDENCE",
+    "outcomes_used": false,
+    "production_authority": false,
+    "router_pnl": false
+  }
+}
