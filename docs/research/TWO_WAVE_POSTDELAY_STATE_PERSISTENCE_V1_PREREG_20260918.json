@@ -1,0 +1,108 @@
+{
+  "schema_version": "two_wave_postdelay_state_persistence_v1_prereg",
+  "issue": 429,
+  "date": "2026-09-18",
+  "status": "PREREGISTERED_BEFORE_PERSISTENCE_OUTCOMES",
+  "state_process": "frozen accepted 8x5m delayed wrapper",
+  "knowledge_boundary": {
+    "target": "t",
+    "known_from": "k=t+8",
+    "outcomes_start": "k+1",
+    "confirmation_bars_reused_as_outcome": false
+  },
+  "horizons_bars": [
+    1,
+    2,
+    4,
+    8,
+    12,
+    16,
+    24,
+    32
+  ],
+  "outcomes": {
+    "exact_remaining_lifetime": true,
+    "continuous_same_state_survival": true,
+    "directional_face_slap": true,
+    "endpoint_same_direction_secondary": true
+  },
+  "common_endpoints": {
+    "source_rows": 70114,
+    "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "first_known_index": 255,
+    "last_known_index": 70081,
+    "count": 69827,
+    "reason": "P256 available and +32 outcome available"
+  },
+  "parent_phase": {
+    "candidates": [
+      128,
+      256
+    ],
+    "formula": "OLS_slope(log_close,P)*(P-1)/max(log_close_range,eps)",
+    "tau": 0.2,
+    "classes": [
+      "PARENT_UP",
+      "PARENT_RANGE",
+      "PARENT_DOWN"
+    ],
+    "causal_at_k": true,
+    "tuned_against_outcome": false
+  },
+  "relation": {
+    "directional": [
+      "ALIGNED",
+      "NEUTRAL",
+      "OPPOSED"
+    ],
+    "consensus": [
+      "CONSENSUS_ALIGNED",
+      "CONSENSUS_OPPOSED",
+      "OTHER_OR_MIXED"
+    ]
+  },
+  "uncertainty": {
+    "bootstrap_cluster": "knowledge_trading_day",
+    "replicates": 2000,
+    "seed": 20260918,
+    "ci": "percentile_95",
+    "yearly_stability": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020
+    ]
+  },
+  "supported_conditioner_gate": {
+    "min_aligned_support": 500,
+    "min_opposed_support": 500,
+    "h8_survival_rd_min": 0.05,
+    "h8_slap_rd_max": -0.03,
+    "ci_excludes_zero": true,
+    "h16_same_sign": true,
+    "h16_min_fraction_of_h8_abs_effect": 0.5,
+    "expected_sign_years_min": 5,
+    "total_years": 6,
+    "winner_selection": false
+  },
+  "forbidden": [
+    "PnL",
+    "future_return_magnitude_target",
+    "trade_outcome",
+    "route_choice",
+    "primary_state_relabel",
+    "parent_threshold_tuning",
+    "winner_only_reporting"
+  ],
+  "authority": {
+    "signal": false,
+    "strategy_selection": false,
+    "trade": false,
+    "router": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
