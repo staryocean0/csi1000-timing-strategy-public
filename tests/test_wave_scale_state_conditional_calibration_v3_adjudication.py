@@ -32,7 +32,7 @@ class CalibrationV3AdjudicationTests(unittest.TestCase):
   self.assertEqual((self.l[37]['order'],self.l[37]['issue']),(38,388));self.assertFalse(self.l[37]['full_192_fit_performed'])
  def test_authority_is_not_promoted(self):
   lane=next(x for x in self.u['active_lanes'] if x['issue']==353)
-  self.assertEqual(lane['status'],'CALIBRATION_V3_NOT_READY_AMBIGUITY_RECALL_COLLAPSE_VALIDITY_RECALL_LOW_NO_FULL_FIT')
-  self.assertEqual(self.u['S2_progress']['next'],'RUN_THRESHOLD_FREE_AMBIGUITY_AND_VALIDITY_CAPACITY_AUDIT_BEFORE_V4_PREREGISTRATION')
+  self.assertIn(lane['status'],{'CALIBRATION_V3_NOT_READY_AMBIGUITY_RECALL_COLLAPSE_VALIDITY_RECALL_LOW_NO_FULL_FIT','CALIBRATION_V4_SOURCE_READY_NOT_RUN'})
+  self.assertIn(self.u['S2_progress']['next'],{'RUN_THRESHOLD_FREE_AMBIGUITY_AND_VALIDITY_CAPACITY_AUDIT_BEFORE_V4_PREREGISTRATION','MERGE_CALIBRATION_V4_THEN_RUN_FROZEN_FIXED_LAG_LOYO'})
   self.assertFalse(self.u['S2_progress']['calibration_v3_full_192_fit_performed']);self.assertFalse(self.u['S2_progress']['calibration_v3_lag_selected_or_promoted'])
 if __name__=='__main__':unittest.main()

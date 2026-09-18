@@ -1,0 +1,84 @@
+{
+  "R4_selected": false,
+  "ambiguity_v4": {
+    "audit_thresholds_reused": false,
+    "axes": [
+      "delta_search_adjusted_bic_vs_one_leg_median",
+      "turn_edge_distance_fraction_median"
+    ],
+    "combined": "OR_OF_TWO_COMPONENT_INTERVALS",
+    "combined_false_capture_upper_bound": 0.1,
+    "component_false_ambiguous_cap": 0.05,
+    "component_rule": "ONE_BOUNDED_TRAINING_ONLY_INTERVAL_PER_AXIS",
+    "reference_states_for_fit": [
+      "CURRENT_SCALE_SUPPORTED",
+      "CURRENT_SCALE_DEVELOPING",
+      "AMBIGUOUS_MULTI_SCALE"
+    ]
+  },
+  "date": "2026-09-18",
+  "dominance": "V1_FROZEN_CONTROL_UNCHANGED",
+  "evaluation": {
+    "fresh_oos_required_for_readiness": true,
+    "full_192_fit_before_oof_adjudication": false,
+    "lag_minutes": [
+      0,
+      5,
+      10,
+      15,
+      25
+    ],
+    "lag_promotion_from_consumed_population": false,
+    "type": "LEAVE_ONE_CALENDAR_YEAR_OUT",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020
+    ]
+  },
+  "frozen_inputs": {
+    "capacity_audit_private_sha256": "4972de4c1b83961b332f91e4a255ae5795aff2ec5cf5991b56bf983660c3dc0e",
+    "capacity_audit_public_sha256": "4ab289ed3ae5c2427204e53de360d90d1554ebe20b284d0fead6925e38761560",
+    "dominance_v1_sha256": "aed0b65305f06d36dfd679df4ee75feb48b246a40e3a5e39831cefedf2ee3baa",
+    "fixed_lag_formal_run": "35292230400-1",
+    "reference_labels_sha256": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be"
+  },
+  "morphology_sd": "CALIBRATION_V3_COVERAGE_AWARE_ONE_AXIS_TWO_BOUNDARY_UNCHANGED",
+  "outcomes_used": false,
+  "parent_issue": 393,
+  "population_role": "ITERATIVE_DEVELOPMENT_EVIDENCE_NOT_FRESH_OOS",
+  "production_authority": false,
+  "research_issue": 394,
+  "root_issue": 353,
+  "router_pnl": false,
+  "schema_id": "csi1000.scale_state_conditional_calibration_v4_protocol@1.0",
+  "source_base": "ae99f4016925f0d4162dd97fb07a07b00f7bc52e",
+  "v4_real_oof_run": false,
+  "validity_v4": {
+    "directions": "GE",
+    "false_invalid_cap_each_training_year": 0.05,
+    "features": [
+      "close_jump_concentration",
+      "close_range_concentration",
+      "local_jump_isolation_ratio"
+    ],
+    "objective": [
+      "MAXIMIZE_MIN_TRAINING_YEAR_INVALID_RECALL",
+      "MAXIMIZE_POOLED_INVALID_RECALL",
+      "MINIMIZE_POOLED_FALSE_INVALID_RATE",
+      "MINIMIZE_UNKNOWN_RATE",
+      "MINIMIZE_COMPLEXITY",
+      "CANONICAL_RULE_ID"
+    ],
+    "rules": [
+      "NULL",
+      "SINGLE",
+      "OR_OF_TWO_DISTINCT_FEATURES"
+    ],
+    "semantics": "ONE_SIDED_INVALID_GUARD",
+    "thresholds": "TRAINING_CONSECUTIVE_DISTINCT_VALUE_MIDPOINTS"
+  }
+}

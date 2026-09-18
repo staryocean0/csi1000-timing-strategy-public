@@ -1,0 +1,29 @@
+{
+  "candidate_constructed": false,
+  "date": "2026-09-18",
+  "decision": "CAPACITY_AUDIT_SINGLE_AXIS_AMBIGUITY_INSUFFICIENT_VALIDITY_SIGNAL_PRESENT_BUT_TEMPORALLY_UNSTABLE",
+  "evidence": {
+    "private_audit_sha256": "4972de4c1b83961b332f91e4a255ae5795aff2ec5cf5991b56bf983660c3dc0e",
+    "public_aggregate_sha256": "4ab289ed3ae5c2427204e53de360d90d1554ebe20b284d0fead6925e38761560"
+  },
+  "findings": {
+    "ambiguous_best_single_axis_recall_at_false_capture_005": "4/13",
+    "ambiguous_best_single_axis_recall_at_false_capture_010": "6/13",
+    "ambiguous_best_single_axis_recall_at_false_capture_020": "8/13",
+    "validity_mean_heldout_invalid_recall": 0.4777777777777778,
+    "validity_mean_training_invalid_recall": 0.6249572051042639,
+    "validity_top_direction_free_auc": {
+      "close_jump_concentration": 0.859,
+      "close_range_concentration": 0.839,
+      "local_jump_isolation_ratio": 0.836
+    },
+    "validity_unique_rule_ids": 5
+  },
+  "full_192_fit_performed": false,
+  "issue": 393,
+  "lag_selected_or_promoted": false,
+  "next": "PREREGISTER_CALIBRATION_V4_EXPLICIT_MULTI_AXIS_AMBIGUITY_AND_YEAR_ROBUST_VALIDITY",
+  "parent_issue": 388,
+  "production_authority": false,
+  "schema_id": "csi1000.scale_capacity_audit_adjudication@1.0"
+}

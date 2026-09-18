@@ -1,0 +1,17 @@
+{
+  "date": "2026-09-18",
+  "engine_sha256": "8e2b8bce7624357417fe08bfdfa9886400902e583dbf743bc52f4691038a9e19",
+  "fresh_oos_claim": false,
+  "full_192_fit_performed": false,
+  "issue": 394,
+  "lag_selected_or_promoted": false,
+  "parent_issue": 393,
+  "prior_39_lineage_sha256": "2ab31b01a249bf8d82fa2b56a3a700f8ef79a2937c0bf8a616630203212e2ee3",
+  "production_authority": false,
+  "protocol_sha256": "143f42816567e5cd127cf7230792301084bfc131cefae5121e61708a3206594c",
+  "real_oof_run": false,
+  "root_issue": 353,
+  "schema_id": "csi1000.scale_state_conditional_calibration_v4_registration@1.0",
+  "source_base": "ae99f4016925f0d4162dd97fb07a07b00f7bc52e",
+  "status": "CALIBRATION_V4_SOURCE_READY_NOT_RUN"
+}
