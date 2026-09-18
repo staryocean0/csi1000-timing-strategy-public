@@ -329,10 +329,32 @@ def predict_morphology(record, fit):
 
 
 def _validate_records(records):
-    v2._validate_records(records)
+    if not isinstance(records, list) or not records:
+        raise ValueError("records")
+    ids, years = [], set()
+    allowed = {DATA_INVALID, SUPPORTED, DEVELOPING, NOT_DOMINANT, AMBIGUOUS}
+    required = {
+        "panel_id", "year", "reference_state", "validity",
+        "morphology", "ambiguity", "dominance",
+    }
     for record in records:
-        if set(record.get("ambiguity", {})) != set(AMBIGUITY_DIRECTIONS):
+        if not isinstance(record, dict) or set(record) != required:
+            raise ValueError("record schema")
+        if record["reference_state"] not in allowed or record["year"] not in YEARS:
+            raise ValueError("record state/year")
+        if not all(
+            isinstance(record[k], dict)
+            for k in ("validity", "morphology", "ambiguity", "dominance")
+        ):
+            raise ValueError("feature section")
+        if set(record["ambiguity"]) != set(AMBIGUITY_DIRECTIONS):
             raise ValueError("exact ambiguity evidence required")
+        ids.append(record["panel_id"])
+        years.add(record["year"])
+    if len(ids) != len(set(ids)):
+        raise ValueError("duplicate panel")
+    if years != set(YEARS):
+        raise ValueError("year coverage")
 
 
 def _dominance_training(records, validity_predictions, morphology_predictions, branch):
