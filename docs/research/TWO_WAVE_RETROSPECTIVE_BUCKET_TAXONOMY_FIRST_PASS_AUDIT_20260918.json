@@ -1,0 +1,46 @@
+{
+  "schema_id": "csi1000.retrospective_bucket_taxonomy_first_pass_audit@1.0",
+  "date": "2026-09-18",
+  "issue": 402,
+  "decision": "THREE_BUCKET_AMPLITUDE_TAXONOMY_REJECTED_WORKING_SIX_BUCKET_TAXONOMY_ADVANCES_TO_BLIND_RETROSPECTIVE_PACKET",
+  "frozen_reference_192": {
+    "panels": 192,
+    "current_scale_supported": 75,
+    "current_scale_developing": 61,
+    "current_scale_total": 136,
+    "residual_total": 56,
+    "residual_reason_counts": {
+      "REPEATED_SHORTER_STRUCTURE": 24,
+      "MIXED_SCALE_COMPETITION": 13,
+      "DISCONTINUITY_OR_OUTLIER": 19,
+      "MULTIPLE_COMPATIBLE_SEGMENTATIONS": 0,
+      "INSUFFICIENT_GEOMETRIC_INFORMATION": 0,
+      "DATA_SUPPORT_FAILURE": 0
+    }
+  },
+  "historical_coarse_relocation": {
+    "reset_root_blind_episodes": 144,
+    "C2_majority_overlap": 143,
+    "C3_majority_overlap": 142,
+    "interpretation": "supports retaining a distinct coarser-scale structural bucket; amplitude quartile is not used as the label"
+  },
+  "historical_amplitude_boundary": {
+    "blind_episode_Q4": 126,
+    "blind_episode_Q1": 0,
+    "warning": "Q4 was interval range and is not an independent frequency/scale label"
+  },
+  "conclusions": [
+    "current-scale residual is mechanistically heterogeneous",
+    "low/high volatility alone cannot exhaustively define residual buckets",
+    "mixed-scale competition must be a first-class final bucket",
+    "invalid/outlier must remain separate from market-regime buckets",
+    "finer-scale dominance is directly represented by repeated shorter structure",
+    "coarser-scale dominance must remain available because of retrospective higher-scale relocation evidence",
+    "no-resolvable-structure remains provisional because the frozen 192 set has zero insufficient-support labels"
+  ],
+  "working_bucket_count": 6,
+  "working_bucket_count_is_final": false,
+  "next": "BUILD_BLIND_RETROSPECTIVE_BUCKET_TAXONOMY_PACKET_AND_TEST_WHETHER_B4_OR_ANY_ADDITIONAL_BUCKET_IS_REQUIRED",
+  "candidate_classifier_built": false,
+  "production_authority": false
+}

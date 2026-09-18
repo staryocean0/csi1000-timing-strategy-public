@@ -1,0 +1,70 @@
+{
+  "schema_id": "csi1000.retrospective_bucket_taxonomy_protocol@1.0",
+  "date": "2026-09-18",
+  "issue": 402,
+  "parents": [
+    401,
+    399,
+    350,
+    353
+  ],
+  "direction": "RETROSPECTIVE_FIRST_TAXONOMY_BEFORE_RECOGNIZER",
+  "delayed_endpoint_bars_5m": 8,
+  "amplitude_is_bucket_definition": false,
+  "provisional_buckets": [
+    {
+      "id": "B0",
+      "name": "CURRENT_SCALE",
+      "status": "required"
+    },
+    {
+      "id": "B1",
+      "name": "FINER_SCALE_DOMINANT",
+      "status": "required"
+    },
+    {
+      "id": "B2",
+      "name": "COARSER_SCALE_DOMINANT",
+      "status": "required_by_historical_relocation_evidence"
+    },
+    {
+      "id": "B3",
+      "name": "MIXED_MULTI_SCALE",
+      "status": "required"
+    },
+    {
+      "id": "B4",
+      "name": "NO_RESOLVABLE_STRUCTURE",
+      "status": "provisional_until_real_retrospective_packet"
+    },
+    {
+      "id": "B5",
+      "name": "DATA_INVALID_OR_EDGE",
+      "status": "required_technical_bucket"
+    }
+  ],
+  "taxonomy_stop_gate": {
+    "unresolved_final": 0,
+    "conflict_final": 0,
+    "exactly_one_bucket_per_interval": true,
+    "two_blinded_passes_plus_adjudication": true,
+    "candidate_outputs_visible": false,
+    "outcomes_or_pnl_visible": false,
+    "invalid_forced_into_market_bucket": false,
+    "mixed_scale_allowed_as_final": true
+  },
+  "recognizer_entry_gate": {
+    "taxonomy_frozen_first": true,
+    "delayed_endpoint_identity_required": 1,
+    "delayed_endpoint_bars_5m": 8,
+    "fresh_independent_evidence_required_for_universal_accuracy_claim": true
+  },
+  "authority": {
+    "R4": false,
+    "router": false,
+    "pnl": false,
+    "signal": false,
+    "trade": false,
+    "production": false
+  }
+}
