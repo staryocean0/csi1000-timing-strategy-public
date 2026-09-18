@@ -1,0 +1,48 @@
+{
+  "schema_version": "two_wave_trade_oriented_taxonomy_v2_amplitude_amendment_a",
+  "issue": 413,
+  "parent_issue": 409,
+  "amends_issue": 411,
+  "date": "2026-09-18",
+  "status": "FROZEN_BEFORE_V2_REFERENCE_LABELS",
+  "amplitude_metric": {
+    "name": "A_local_bps",
+    "bar_view": "native_5m",
+    "window": "[t-8,t+8]",
+    "bars": 17,
+    "formula": "10000 * (max(log(high)) - min(log(low)))"
+  },
+  "eligible_population": {
+    "role": "previously_consumed_development",
+    "target_count": 69851,
+    "requires_256_history": true,
+    "requires_t_plus_8": true,
+    "labels_used": false,
+    "outcomes_used": false
+  },
+  "hard_impossibility_floor_bps": 7,
+  "primary_low_amplitude_veto_bps": 31.03573193149245,
+  "primary_quantile": 0.05,
+  "equality_passes": true,
+  "diagnostic_quantiles": {
+    "q025_bps": 26.456653728317292,
+    "q10_bps": 37.83979618280142
+  },
+  "diagnostic_can_relabel_primary": false,
+  "reason": "extreme low-amplitude exception frozen label-blind before V2 annotation",
+  "forbidden_selection_inputs": [
+    "future_return",
+    "PnL",
+    "old_taxonomy_label",
+    "recognizer_output",
+    "challenge_stratum"
+  ],
+  "authority": {
+    "strategy": false,
+    "routing": false,
+    "parameter_selection": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
