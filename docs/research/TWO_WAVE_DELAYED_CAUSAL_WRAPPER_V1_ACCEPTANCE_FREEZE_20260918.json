@@ -1,0 +1,63 @@
+{
+  "schema_version": "two_wave_delayed_causal_wrapper_v1_acceptance_freeze",
+  "issue": 425,
+  "date": "2026-09-18",
+  "status": "ACCEPT_WRAPPER_V1",
+  "oracle": {
+    "target_labels_sha256": "bcb72a35d45e0ceb385dba92cf40efec61d7d94a08c5d03bffad047798a033c8",
+    "protected_receipt_sha256": "db5ce56103bb5c34238a3cde2ca533552b96f1c5110ec9c872d66f3663e6fb63",
+    "weights": [
+      0.5375062131339785,
+      0.02424630935968975,
+      0.2550411892804524,
+      0.08498791874772484,
+      0.0982183694781545
+    ],
+    "modified_by_wrapper": false
+  },
+  "clock": {
+    "native_bar": "5m",
+    "delay_bars": 8,
+    "target_rule": "t=k-8",
+    "first_known_index": 63,
+    "last_known_index": 70113,
+    "first_target_index": 55,
+    "last_target_index": 70105,
+    "close_window": "[k-63,k]",
+    "amplitude_window": "[k-16,k]"
+  },
+  "full_replay": {
+    "source_rows": 70114,
+    "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "eligible_endpoints": 70051,
+    "wrapper_rows": 70051,
+    "oracle_rows": 70051,
+    "mismatch_count": 0,
+    "exact_label_identity": 1,
+    "target_sequence_equal": true,
+    "delay_relation_exact": true,
+    "evidence_start_exact": true,
+    "amplitude_start_exact": true,
+    "row_exact_equal": true,
+    "row_evidence_sha256": "379eacf2f276c1325fce125f844a069ab608f09efde663f31a850bebc056486f",
+    "receipt_sha256": "c567fdd7c05001237fa5820a8486855e79b2750fa40acb1e1b48034718b6ef01"
+  },
+  "deterministic_byte_replay": true,
+  "prefix_causality": {
+    "passed": true,
+    "cut_known_index": 35000,
+    "prefix_rows": 34938
+  },
+  "focused_tests_passed": 20,
+  "authority": {
+    "R4": false,
+    "strategy_selection": false,
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "pnl_selection": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
