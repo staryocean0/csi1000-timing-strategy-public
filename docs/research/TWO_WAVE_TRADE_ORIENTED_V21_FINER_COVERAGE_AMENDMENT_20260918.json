@@ -1,0 +1,56 @@
+{
+  "schema_version": "two_wave_trade_oriented_v21_finer_coverage_amendment",
+  "issue": 417,
+  "parent_issue": 415,
+  "taxonomy_issue": 409,
+  "date": "2026-09-18",
+  "status": "FROZEN_BEFORE_V21_LABELS",
+  "prior_packet": {
+    "panels": 368,
+    "status": "COVERAGE_INSUFFICIENT_FAILED_PASSES",
+    "pass_a_sha256": "f52735bbfdd7de2021042019ad8b4c268ee0fe2711961c72a285d580d47bb37c",
+    "pass_b_sha256": "cf3d5cf33eb3b3d62eae24d6bf2ce60772bf31cdc1a905de40f06ff568702b98",
+    "finer_labels_a": 0,
+    "finer_labels_b": 0,
+    "may_enter_final_adjudication": false
+  },
+  "coverage_audit": {
+    "eligible_targets": 69851,
+    "hf_amplitude_pass": 51039,
+    "weak_current_drift_hf": 998,
+    "unique_days_after_excluding_old_packet": 200,
+    "labels_used": false,
+    "outcomes_or_pnl_used": false
+  },
+  "finer_sampling": {
+    "amplitude_pass_required": true,
+    "return_sign_changes_min": 9,
+    "median_same_sign_run_max": 2,
+    "recent_abs_drift_max_exclusive": 0.25,
+    "full_abs_drift_max_exclusive": 0.25,
+    "score": "(1-range_ratio)+(1-tv_ratio)+residual_fraction",
+    "range_ratio": "range(4bar_logclose_block_means)/range(raw_64_logclose)",
+    "tv_ratio": "TV(4bar_logclose_block_means)/TV(raw_64_logclose)",
+    "residual_fraction": "MSE(raw-repeat(block_mean,4))/MSE(raw-mean(raw))",
+    "low_normal_amp_count": 16,
+    "high_amp_count": 16,
+    "q50_bps": 84.38097808825873,
+    "one_best_target_per_unused_trading_day": true,
+    "selection_sha256": "f7a072eebc72058399b726d296edd0fdac4d62341d79e9c1f5ac01c68ca6703c",
+    "role": "challenge sampling only"
+  },
+  "v21_packet": {
+    "original_panels": 368,
+    "added_panels": 32,
+    "total_panels": 400,
+    "unique_trading_days_required": 400,
+    "old_pass_labels_reused": false
+  },
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "pnl_selection": false,
+    "production": false
+  }
+}
