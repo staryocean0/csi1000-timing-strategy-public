@@ -1,0 +1,113 @@
+{
+  "authority": {
+    "R4_selected": false,
+    "production": false,
+    "router_pnl": false,
+    "signal": false,
+    "trade": false
+  },
+  "cross_lag_findings": {
+    "lag0_developing_to_developing": "45/61",
+    "lag0_false_not_dominant_sd": "8/136",
+    "lag0_not_dominant_recall": "16/24",
+    "lag0_supported_to_turning": "64/75",
+    "max_explicit_ambiguity_recall_count_across_lags": "4/13",
+    "max_final_ambiguity_recall_count_across_lags": "4/13",
+    "validity_false_invalid_all_lags": "4/173",
+    "validity_invalid_recall_all_lags": "5/19"
+  },
+  "date": "2026-09-18",
+  "decision": "CALIBRATION_V4_NOT_READY_AMBIGUITY_RECALL_LOW_VALIDITY_RECALL_LOWER_NO_FULL_FIT",
+  "evidence": {
+    "engine_sha256": "8e2b8bce7624357417fe08bfdfa9886400902e583dbf743bc52f4691038a9e19",
+    "lags": [
+      0,
+      5,
+      10,
+      15,
+      25
+    ],
+    "merge_commit": "cb4aa3204fc5361ccb87d3e595e2f24432d21775",
+    "panels_each_lag": 192,
+    "public_aggregate_sha256": "870ce7df72049436f024065f521c5905d71c1b4a72728ad7cc138daa12526780",
+    "source_commit": "c736f61434d29f8f431a8abdcad9cf9d0dd720ed"
+  },
+  "issue": 394,
+  "key_results": {
+    "0": {
+      "developing_to_developing": "45/61",
+      "exact_final_state_correct": 116,
+      "explicit_ambiguity_recall": "2/13",
+      "false_not_dominant_sd": "8/136",
+      "final_ambiguity_recall": "3/13",
+      "not_dominant_recall": "16/24",
+      "supported_to_turning": "64/75",
+      "validity_false_invalid": "4/173",
+      "validity_invalid_recall": "5/19"
+    },
+    "10": {
+      "developing_to_developing": "45/61",
+      "exact_final_state_correct": 108,
+      "explicit_ambiguity_recall": "4/13",
+      "false_not_dominant_sd": "9/136",
+      "final_ambiguity_recall": "4/13",
+      "not_dominant_recall": "12/24",
+      "supported_to_turning": "58/75",
+      "validity_false_invalid": "4/173",
+      "validity_invalid_recall": "5/19"
+    },
+    "15": {
+      "developing_to_developing": "45/61",
+      "exact_final_state_correct": 109,
+      "explicit_ambiguity_recall": "1/13",
+      "false_not_dominant_sd": "8/136",
+      "final_ambiguity_recall": "1/13",
+      "not_dominant_recall": "13/24",
+      "supported_to_turning": "62/75",
+      "validity_false_invalid": "4/173",
+      "validity_invalid_recall": "5/19"
+    },
+    "25": {
+      "developing_to_developing": "44/61",
+      "exact_final_state_correct": 100,
+      "explicit_ambiguity_recall": "1/13",
+      "false_not_dominant_sd": "10/136",
+      "final_ambiguity_recall": "1/13",
+      "not_dominant_recall": "15/24",
+      "supported_to_turning": "55/75",
+      "validity_false_invalid": "4/173",
+      "validity_invalid_recall": "5/19"
+    },
+    "5": {
+      "developing_to_developing": "42/61",
+      "exact_final_state_correct": 112,
+      "explicit_ambiguity_recall": "0/13",
+      "false_not_dominant_sd": "7/136",
+      "final_ambiguity_recall": "0/13",
+      "not_dominant_recall": "16/24",
+      "supported_to_turning": "62/75",
+      "validity_false_invalid": "4/173",
+      "validity_invalid_recall": "5/19"
+    }
+  },
+  "parent_issue": 393,
+  "root_issue": 353,
+  "schema_id": "csi1000.scale_state_conditional_calibration_v4_loyo_adjudication@1.0",
+  "stop_rule": {
+    "case_exceptions": false,
+    "fresh_oos_claim": false,
+    "full_192_fit_authorized": false,
+    "full_192_fit_performed": false,
+    "label_relaxation": false,
+    "lag_selected_or_promoted": false,
+    "next": "RUN_POST_V4_ERROR_AND_CAPACITY_AUDIT_BEFORE_ANY_V5_PREREGISTRATION",
+    "pnl_tuning": false
+  },
+  "structural_findings": [
+    "EXPLICIT_TWO_AXIS_AMBIGUITY_RECALL_REMAINS_LOW_AND_UNSTABLE_ACROSS_LAGS",
+    "YEAR_ROBUST_VALIDITY_HALVES_FALSE_INVALIDS_VS_V3_BUT_LOWERS_INVALID_RECALL_TO_5_OF_19",
+    "COVERAGE_AWARE_SUPPORTED_DEVELOPING_MORPHOLOGY_REMAINS_SUBSTANTIALLY_RECOVERED",
+    "DOMINANCE_RECOVERS_SUBSTANTIAL_NOT_DOMINANT_RECALL_WITH_NONZERO_FALSE_REJECTION_COST",
+    "CONFIRMATION_LAG_STILL_NOT_A_PROMOTABLE_CONTROL_PARAMETER_ON_THIS_DEVELOPMENT_POPULATION"
+  ]
+}
