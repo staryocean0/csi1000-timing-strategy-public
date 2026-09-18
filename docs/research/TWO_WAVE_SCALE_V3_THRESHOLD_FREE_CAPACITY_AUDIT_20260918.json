@@ -1,0 +1,74 @@
+{
+  "schema_id": "csi1000.scale_v3_threshold_free_capacity_audit_summary@1.0",
+  "date": "2026-09-18",
+  "research_issue": 395,
+  "parent_issue": 388,
+  "population_role": "ITERATIVE_DEVELOPMENT_EVIDENCE_NOT_FRESH_OOS",
+  "thresholds_selected": false,
+  "operational_rules_fit": false,
+  "lag_selected_or_promoted": false,
+  "private_audit_sha256": "804013893f009a77e5534a979a8566c19e63b4ec632357eede687835757ae936",
+  "private_existing_ambiguity_evidence_audit_sha256": "0f0149a0c13dc7b8ad28aa76b761b0faf8bdd97a408a07db7a09e13168d9729d",
+  "morphology_middle_rank_best_by_lag": {
+    "0": {
+      "feature": "reversal_completion_ratio_median",
+      "middle_pair_min_auc": 0.5801
+    },
+    "5": {
+      "feature": "reversal_completion_ratio_median",
+      "middle_pair_min_auc": 0.559
+    },
+    "10": {
+      "feature": "one_leg_background_count",
+      "middle_pair_min_auc": 0.5303
+    },
+    "15": {
+      "feature": "one_leg_background_count",
+      "middle_pair_min_auc": 0.5309
+    },
+    "25": {
+      "feature": "reversal_completion_ratio_median",
+      "middle_pair_min_auc": 0.5733
+    }
+  },
+  "existing_ambiguity_evidence_semantic_auc": {
+    "0": {
+      "turn_relative_minute_range_high": 0.5922,
+      "shape_disagreement_high": 0.5857,
+      "best_second_gap_small": 0.6171
+    },
+    "5": {
+      "turn_relative_minute_range_high": 0.56,
+      "shape_disagreement_high": 0.556,
+      "best_second_gap_small": 0.6018
+    },
+    "10": {
+      "turn_relative_minute_range_high": 0.5701,
+      "shape_disagreement_high": 0.5747,
+      "best_second_gap_small": 0.5469
+    },
+    "15": {
+      "turn_relative_minute_range_high": 0.5102,
+      "shape_disagreement_high": 0.5065,
+      "best_second_gap_small": 0.4779
+    },
+    "25": {
+      "turn_relative_minute_range_high": 0.541,
+      "shape_disagreement_high": 0.5269,
+      "best_second_gap_small": 0.5532
+    }
+  },
+  "validity_top_rank_capacity": {
+    "close_jump_concentration": 0.8588378460602373,
+    "close_range_concentration": 0.8387587465774262,
+    "local_jump_isolation_ratio": 0.8360206875570428
+  },
+  "interpretation": [
+    "AMBIGUOUS_IS_NOT_A_ROBUST_ONE_DIMENSIONAL_MIDDLE_REGION",
+    "EXISTING_INSTABILITY_EVIDENCE_HAS_ONLY_WEAK_TO_MODERATE_SINGLE_AXIS_AMBIGUITY_RANK_CAPACITY",
+    "VALIDITY_RAW_EVIDENCE_HAS_SUBSTANTIAL_RANK_CAPACITY_NOT_REALIZED_BY_V3_RULE_FAMILY"
+  ],
+  "authority_promoted": false,
+  "full_192_fit_performed": false,
+  "production_authority": false
+}
