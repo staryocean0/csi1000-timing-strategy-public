@@ -1,0 +1,79 @@
+{
+  "schema_version": "two_wave_trade_oriented_v21_primary_taxonomy_freeze",
+  "date": "2026-09-18",
+  "issues": [
+    409,
+    415,
+    417
+  ],
+  "status": "PRIMARY_TAXONOMY_FROZEN",
+  "primary_states": [
+    "CURRENT_UP",
+    "CURRENT_RANGE",
+    "CURRENT_DOWN",
+    "LOW_AMPLITUDE_VETO",
+    "FINER_SCALE_OUT_OF_BAND"
+  ],
+  "packet": {
+    "panels": 400,
+    "unique_panel_ids": 400,
+    "unique_trading_days": 400,
+    "primary_random": 240,
+    "old_failed_packet_panels": 368,
+    "old_failed_passes_reused": false
+  },
+  "pass_a_sha256": "fc3d25109fd844fb4dbe32732fd48297e28dcc509061e054cb3e18635bfe565d",
+  "pass_b_sha256": "882583327b12a2fcdc5de556725427d681d3131c7fd8d16282caa9be6704a225",
+  "agreements": 250,
+  "disagreements": 150,
+  "adjudication_sha256": "e0d84d42d26852e32eb2f2c55419896fc574ee8a6bdadf2084d9c44c87aa8a5e",
+  "final_labels_sha256": "bcb72a35d45e0ceb385dba92cf40efec61d7d94a08c5d03bffad047798a033c8",
+  "final_counts": {
+    "CURRENT_UP": 149,
+    "CURRENT_RANGE": 47,
+    "CURRENT_DOWN": 159,
+    "LOW_AMPLITUDE_VETO": 42,
+    "FINER_SCALE_OUT_OF_BAND": 3
+  },
+  "research_unresolved_final": 0,
+  "primary_information_set": {
+    "native_bar": "5m",
+    "view_bars": 64,
+    "view_end": "t+8",
+    "amplitude_window": "[t-8,t+8]",
+    "context_128_256_required": false
+  },
+  "priority": [
+    "DATA_INVALID",
+    "LOW_AMPLITUDE_VETO",
+    "CURRENT_BAND_STRUCTURE",
+    "CURRENT_UP_RANGE_DOWN",
+    "FINER_SCALE_OUT_OF_BAND"
+  ],
+  "post_freeze_audit": {
+    "low_gate_exact": true,
+    "random_primary_counts": {
+      "CURRENT_UP": 101,
+      "CURRENT_RANGE": 26,
+      "CURRENT_DOWN": 103,
+      "LOW_AMPLITUDE_VETO": 10,
+      "FINER_SCALE_OUT_OF_BAND": 0
+    },
+    "finer_cases_only_in_coverage_challenge": true,
+    "finer_amplitudes_bps": [
+      82.367,
+      86.441,
+      163.545
+    ],
+    "challenge_prevalence_claim": false
+  },
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "pnl_selection": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
