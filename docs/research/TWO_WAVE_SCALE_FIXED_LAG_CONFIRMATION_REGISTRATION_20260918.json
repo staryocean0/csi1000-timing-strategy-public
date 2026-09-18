@@ -1,0 +1,40 @@
+{
+  "R4_selected": false,
+  "date": "2026-09-18",
+  "formal_run": null,
+  "fresh_oos_claim": false,
+  "full_192_fit_performed": false,
+  "issue": 386,
+  "lag0_cross_platform_byte_identity_required": false,
+  "lag0_expected_v2_diagnostics_sha256": "a0b71c19591a83bf2ee7cc24eaecaea367d0d3b3772a0e41c03d7c361b5fa659",
+  "lag0_same_runtime_source_semantics_required": true,
+  "lag_minutes": [
+    0,
+    5,
+    10,
+    15,
+    25
+  ],
+  "lag_performance_inspected": false,
+  "lag_phase_bars": [
+    0,
+    1,
+    2,
+    3,
+    5
+  ],
+  "numeric_thresholds": null,
+  "panels": 192,
+  "parent_issue": 381,
+  "prior_33_lineage_sha256": "480ce1561c92584dd09220c45fd79c655d7fa6eff9b8f8854bb98d9302a964fb",
+  "production_authority": false,
+  "profile": "two-wave-scale-fixed-lag-confirmation-measurement-v1",
+  "reference_labels_joined": false,
+  "reference_labels_visible_to_compute": false,
+  "root_issue": 353,
+  "router_pnl": false,
+  "schema_id": "csi1000.scale_fixed_lag_confirmation_registration@1.0",
+  "source_base": "e67dcbf4d0720669d2a705ee12a6f42973ec8ff9",
+  "status": "FIXED_LAG_CONFIRMATION_PROFILE_SOURCE_READY_NOT_RUN",
+  "threshold_selection_in_run": false
+}

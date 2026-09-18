@@ -1,0 +1,25 @@
+name: Two-Wave fixed-lag causal confirmation contracts
+on:
+  pull_request:
+    branches: [cloud-workspace-v1]
+    paths:
+      - 'executor/wave_scale_fixed_lag_*.py'
+      - 'docs/research/TWO_WAVE_SCALE_FIXED_LAG_CONFIRMATION_*'
+      - 'tests/test_wave_scale_fixed_lag_confirmation_*.py'
+      - 'tests/segmentation_carrier_registration_support.py'
+      - '.github/workflows/public-compute.yml'
+      - '.github/workflows/controller-dispatch.yml'
+      - '.github/workflows/wave-scale-fixed-lag-confirmation-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt
+      - run: python3 -m unittest tests.test_wave_scale_fixed_lag_confirmation_v1 tests.test_wave_scale_fixed_lag_confirmation_market_v1 -v

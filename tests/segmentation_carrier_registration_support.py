@@ -13,6 +13,8 @@ VALIDITY_PROFILE = "two-wave-scale-validity-diagnostic-measurement-v1"
 VALIDITY_BROKER = "executor/wave_scale_validity_market_broker_v1.py"
 DIAG_V2_PROFILE = "two-wave-scale-diagnostic-family-measurement-v2"
 DIAG_V2_BROKER = "executor/wave_scale_diagnostic_family_market_broker_v2.py"
+FIXED_LAG_PROFILE = "two-wave-scale-fixed-lag-confirmation-measurement-v1"
+FIXED_LAG_BROKER = "executor/wave_scale_fixed_lag_market_broker_v1.py"
 
 
 def remove_once(text: str, part: str, label: str) -> str:
@@ -23,7 +25,29 @@ def remove_once(text: str, part: str, label: str) -> str:
 
 
 
+def strip_fixed_lag_workflow(text: str) -> str:
+    text = remove_once(text, f"          - {FIXED_LAG_PROFILE}\n", "fixed lag profile option")
+    condition = f" || inputs.profile == '{FIXED_LAG_PROFILE}'"
+    if text.count(condition) != 3:
+        raise AssertionError("fixed lag allowlist count")
+    text = text.replace(condition, "")
+    for phase in ("prepare", "compute", "cleanup", "publish"):
+        branch = (f"          elif [ '${{{{ inputs.profile }}}}' = '{FIXED_LAG_PROFILE}' ]; then\n"
+                  f"            python3 {FIXED_LAG_BROKER} {phase} {FIXED_LAG_PROFILE}\n")
+        text = remove_once(text, branch, "fixed lag " + phase)
+    return text
+
+def strip_fixed_lag_controller(text: str) -> str:
+    allow = f"       github.event.issue.title == 'controller: {FIXED_LAG_PROFILE}' ||\n"
+    text = remove_once(text, allow, "fixed lag controller allowlist")
+    case = (f"            'controller: {FIXED_LAG_PROFILE}')\n"
+            f"              profile='{FIXED_LAG_PROFILE}'\n"
+            "              ;;\n")
+    return remove_once(text, case, "fixed lag controller case")
+
+
 def strip_diag_v2_workflow(text: str) -> str:
+    text = strip_fixed_lag_workflow(text)
     text = remove_once(text, f"          - {DIAG_V2_PROFILE}\n", "diagnostic v2 profile option")
     stage = (f"        if: inputs.profile == '{PROFILE}' || inputs.profile == '{PACKET_PROFILE}' || "
              f"inputs.profile == '{PACKET_V2_PROFILE}' || inputs.profile == '{PACKET_V3_PROFILE}' || "
@@ -46,6 +70,7 @@ def strip_diag_v2_workflow(text: str) -> str:
     return text
 
 def strip_diag_v2_controller(text: str) -> str:
+    text = strip_fixed_lag_controller(text)
     allow = f"       github.event.issue.title == 'controller: {DIAG_V2_PROFILE}' ||\n"
     text = remove_once(text, allow, "diagnostic v2 controller allowlist")
     case = (f"            'controller: {DIAG_V2_PROFILE}')\n"

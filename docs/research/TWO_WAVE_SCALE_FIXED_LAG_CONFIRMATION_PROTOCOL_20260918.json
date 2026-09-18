@@ -1,0 +1,147 @@
+{
+  "R4_selected": false,
+  "candidate_event_must_be_at_or_before_occurrence": true,
+  "carrier_qualification_run": "35191936364-1",
+  "confirmation_contract": {
+    "base_prefix_observed_minutes": 300,
+    "candidate_event_must_be_at_or_before_occurrence": true,
+    "graphical_phase_bar_minutes": 5,
+    "knowledge_time": "occurrence_plus_lag",
+    "knowledge_time_future_data_used": false,
+    "lag_minutes": [
+      0,
+      5,
+      10,
+      15,
+      25
+    ],
+    "lag_phase_bars": [
+      0,
+      1,
+      2,
+      3,
+      5
+    ],
+    "occurrence_relative_minute": 0,
+    "occurrence_relative_suffix_used_for_nonzero_lags": true,
+    "same_192_panels_each_lag": true,
+    "source_feasibility_support_by_lag": {
+      "0": 192,
+      "10": 192,
+      "15": 192,
+      "25": 192,
+      "5": 192
+    },
+    "suffix_may_confirm_but_not_retarget_occurrence": true
+  },
+  "data_role": "ITERATIVE_DEVELOPMENT_REFERENCE_NOT_FRESH_OOS",
+  "date": "2026-09-18",
+  "external_ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+  "external_repository": "staryocean0/factorlab-two-wave-strategy-lab",
+  "files": {
+    "1m_official.parquet": {
+      "bytes": 12842573,
+      "declared_rows": 350561,
+      "git_blob_sha1": "bd2aab00b58c1d31865ed596e99e8f531c5c9ddb",
+      "sha256": "755217afce9dec383e48cd46d591402fa90dc50897abeb3dc7097c9a18a109d4"
+    },
+    "5m_offset_0.parquet": {
+      "bytes": 3351411,
+      "declared_rows": 70114,
+      "git_blob_sha1": "30eddf3020d311fb409660a8c296f6309383745f",
+      "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48"
+    },
+    "5m_offset_1.parquet": {
+      "bytes": 3226743,
+      "declared_rows": 67192,
+      "git_blob_sha1": "263c90cf31564885348325db419ee9c85ae4943a",
+      "sha256": "4523615193c177dda2f63a69dd32a2d21e2b15c78283de2d242dd6cd695fc284"
+    },
+    "5m_offset_2.parquet": {
+      "bytes": 3223863,
+      "declared_rows": 67192,
+      "git_blob_sha1": "770fd0f2faf987f2bc8acf2c43b73f9f8357461c",
+      "sha256": "737548b04ca93fdbfafda806c5f98051b0521e868d71bcab00f23c062ef8ee82"
+    },
+    "5m_offset_3.parquet": {
+      "bytes": 3225315,
+      "declared_rows": 67193,
+      "git_blob_sha1": "db0b84fda202b280774a55acb141438933183bf9",
+      "sha256": "20a8a4aba19f60946e5781947f658d0b16a2d8758e6318b43c0a0ececdd09282"
+    },
+    "5m_offset_4.parquet": {
+      "bytes": 3227705,
+      "declared_rows": 67191,
+      "git_blob_sha1": "0820a02b12180d7afba58ba77a150e1f003ac476",
+      "sha256": "ceba69dce07223ba92204dc4994991eeabcaf62aacfb9869fd9403da43694b1b"
+    }
+  },
+  "fixed_reference": {
+    "blind_inventory_sha256": "5ab33685531475b3ad6cf4f69590c0af0925836679043d24ce2a44127ab7d4d1",
+    "labels_sha256": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be",
+    "labels_supplied_to_measurement": false,
+    "lag0_expected_v2_diagnostics_sha256": "a0b71c19591a83bf2ee7cc24eaecaea367d0d3b3772a0e41c03d7c361b5fa659",
+    "packet_run": "35209602753-1",
+    "panels": 192
+  },
+  "knowledge_time_future_data_used": false,
+  "lag_minutes": [
+    0,
+    5,
+    10,
+    15,
+    25
+  ],
+  "lag_phase_bars": [
+    0,
+    1,
+    2,
+    3,
+    5
+  ],
+  "limits": {
+    "compute_seconds": 900,
+    "cpus": 4,
+    "memory_gib": 12,
+    "result_bytes_max": 33554432,
+    "verification_seconds": 900
+  },
+  "measurement_contract": {
+    "dominance_v1": "external frozen control; not remeasured",
+    "frozen_v2_raw_sha_retained_as_lineage_identity": "a0b71c19591a83bf2ee7cc24eaecaea367d0d3b3772a0e41c03d7c361b5fa659",
+    "independent_float_tolerance": 2e-10,
+    "jump_candidate": "largest eligible close jump with close relative minute <= 0",
+    "jump_confirmation": "post-jump evidence may extend only through knowledge time",
+    "lag0_must_byte_match_frozen_v2": false,
+    "lag0_same_runtime_source_semantics_must_match": true,
+    "morphology_candidate": "piecewise turn relative minute <= 0",
+    "morphology_confirmation": "fit and counter-leg evidence may extend only through knowledge time",
+    "validity_v1_controls": "occurrence-anchored lag0 controls retained"
+  },
+  "new_training": false,
+  "numeric_thresholds": null,
+  "one_minute_strategy_admitted": false,
+  "outcomes_used": false,
+  "parent_issue": 381,
+  "period": [
+    "2015-01-05",
+    "2020-12-31"
+  ],
+  "post_measurement_gate": {
+    "calibration_family_source_commit": "a735a9a78a37dd2bc5bdeeba2682cf4fece4ecb2",
+    "evaluation": "2015-2020 deterministic LOYO separately per lag",
+    "fresh_oos_required_for_readiness": true,
+    "lag_promotion_from_this_population": false,
+    "raw_all_lags_hash_frozen_before_label_join": true
+  },
+  "production_authority": false,
+  "profile": "two-wave-scale-fixed-lag-confirmation-measurement-v1",
+  "reference_labels_visible_to_compute": false,
+  "research_issue": 386,
+  "root_issue": 353,
+  "router_pnl": false,
+  "schema_id": "csi1000.scale_fixed_lag_confirmation_protocol@1.0",
+  "source_base": "e67dcbf4d0720669d2a705ee12a6f42973ec8ff9",
+  "symbol": "000852.SH",
+  "threshold_selection_in_run": false
+}

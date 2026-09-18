@@ -13,7 +13,7 @@ import yaml
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'executor'))
-from tests.segmentation_carrier_registration_support import PROFILE,BROKER,PACKET_PROFILE,PACKET_V2_PROFILE,PACKET_V3_PROFILE,MARKET_PROFILE,VALIDITY_PROFILE,DIAG_V2_PROFILE,strip_workflow,strip_controller
+from tests.segmentation_carrier_registration_support import PROFILE,BROKER,PACKET_PROFILE,PACKET_V2_PROFILE,PACKET_V3_PROFILE,MARKET_PROFILE,VALIDITY_PROFILE,DIAG_V2_PROFILE,FIXED_LAG_PROFILE,strip_workflow,strip_controller
 import wave_segmentation_carrier_broker_v1 as broker
 
 MANIFEST=ROOT/'docs/research/TWO_WAVE_SEGMENTATION_CARRIER_QUALIFICATION_EXECUTION_MANIFEST_V1.json'
@@ -42,7 +42,7 @@ class RegistrationTests(unittest.TestCase):
         stage=[s for s in steps if 'wave_segmentation_carrier_stage_public.py' in s.get('run','')]
         self.assertEqual(len(stage),1)
         self.assertEqual(stage[0]['name'],'Stage fixed public Two-Wave segmentation carriers without private credentials')
-        self.assertEqual(stage[0]['if'],f"inputs.profile == '{PROFILE}' || inputs.profile == '{PACKET_PROFILE}' || inputs.profile == '{PACKET_V2_PROFILE}' || inputs.profile == '{PACKET_V3_PROFILE}' || inputs.profile == '{MARKET_PROFILE}' || inputs.profile == '{VALIDITY_PROFILE}' || inputs.profile == '{DIAG_V2_PROFILE}'")
+        self.assertEqual(stage[0]['if'],f"inputs.profile == '{PROFILE}' || inputs.profile == '{PACKET_PROFILE}' || inputs.profile == '{PACKET_V2_PROFILE}' || inputs.profile == '{PACKET_V3_PROFILE}' || inputs.profile == '{MARKET_PROFILE}' || inputs.profile == '{VALIDITY_PROFILE}' || inputs.profile == '{DIAG_V2_PROFILE}' || inputs.profile == '{FIXED_LAG_PROFILE}'")
         self.assertNotIn('env',stage[0]);self.assertNotIn('FACTORLAB_PRIVATE_TOKEN',stage[0]['run'])
 
     def test_prepare_and_compute_allowlists_each_include_profile_once(self):
