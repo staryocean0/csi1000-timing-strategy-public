@@ -1,0 +1,55 @@
+{
+  "schema_id": "csi1000.scale_state_conditional_loyo_v2_adjudication@1.0",
+  "date": "2026-09-18",
+  "research_issue": 381,
+  "parent_issue": 376,
+  "decision": "V2_DEVELOPMENT_LOYO_NOT_READY_ABSTENTION_COLLAPSE_NO_FULL_FIT",
+  "population_role": "ITERATIVE_DEVELOPMENT_EVIDENCE_NOT_FRESH_OOS",
+  "evidence": {
+    "panels": 192,
+    "years": [2015, 2016, 2017, 2018, 2019, 2020],
+    "calibration_family_source_commit": "a735a9a78a37dd2bc5bdeeba2682cf4fece4ecb2",
+    "diagnostic_family_v2_sha256": "a0b71c19591a83bf2ee7cc24eaecaea367d0d3b3772a0e41c03d7c361b5fa659",
+    "private_full_oof_sha256": "99b6e5ee6545d5982d3acf5eaa1a8275d88c1ca5077bd82c9e080d2aea0402a9",
+    "public_aggregate_sha256": "7b14d15d016c63311c2f9b27cf41f3882705369d1d69af46c270f0abc349afc9"
+  },
+  "history_guard": {
+    "prior_30_lineage_sha256": "785e5e6179022bf483bb32b9b9386692c595c20f21e4978cc0017df34bf55ae6",
+    "v1_failure_preserved": true,
+    "diagnostic_v2_measurement_freeze_preserved": true
+  },
+  "key_results": {
+    "validity_false_invalid": "8/173",
+    "validity_false_invalid_rate": 0.046242774566473986,
+    "validity_invalid_recall": "7/19",
+    "validity_invalid_recall_rate": 0.3684210526315789,
+    "validity_uncertain": "130/192",
+    "morphology_supported_turning": "5/75",
+    "morphology_developing_developing": "5/61",
+    "morphology_ambiguous": "177/192",    "final_ambiguous": "172/192",
+    "true_ambiguous_recall": "13/13",
+    "not_dominant_recall": "0/24",
+    "false_not_dominant_on_supported_developing": "0/136",
+    "dominance_fold_rules": "NULL_IN_ALL_12_BRANCH_FITS"
+  },
+  "structural_findings": [
+    "VALIDITY_V2_REDUCED_FALSE_INVALID_TO_WITHIN_CAP_BUT_DID_NOT_IMPROVE_DATA_INVALID_RECALL",
+    "VALIDITY_V2_ABSTAINS_ON_MOST_CASES",
+    "MORPHOLOGY_V2_TWO_BOUNDARY_OBJECTIVE_COLLAPSES_TO_EXCESSIVE_AMBIGUITY",
+    "AMBIGUOUS_RECALL_IS_TRIVIAL_UNDER_89_PERCENT_FINAL_ABSTENTION_AND_IS_NOT_SUCCESS",
+    "UPSTREAM_ABSTENTION_STARVES_DOMINANCE_TRAINING_SO_V1_CONTROL_CANNOT_BE_EVALUATED_OPERATIONALLY",
+    "NO_EVIDENCE_SUPPORTS_FULL_192_FIT_OR_AUTHORITY_PROMOTION"
+  ],
+  "stop_rule": {
+    "full_192_fit_authorized": false,
+    "full_192_fit_performed": false,
+    "candidate_frozen": false,
+    "label_relaxation": false,
+    "case_exceptions": false,
+    "pnl_tuning": false,
+    "R4_selected": false,
+    "router_pnl": false,
+    "production_authority": false,
+    "next": "PREREGISTER_V3_CALIBRATION_OBJECTIVE_AND_VALIDITY_FAMILY_REVISION_BEFORE_FURTHER_LABEL_CONDITIONAL_SEARCH"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema_id": "csi1000.scale_state_conditional_calibration_v2_source_registration@1.0",
+  "date": "2026-09-18",
+  "issue": 381,
+  "parent_issue": 376,
+  "source_base": "a6982e4e8b6dbc77a8d0d5d8e23069c34cbc30ef",
+  "engine_sha256": "59a299d3d94d0cda65d3623e2d1c9d0cf823135baa997eae3696f22adddce179",
+  "tests_sha256": "d85470586e86f586ab3cb862c4f0c94657feaacbfc63c196d169da42de4aa22a",
+  "protocol_sha256": "c1e6b2cc5d1264517ff2b31efe85bde932100ba0a7860ca6bcb2d56b1a45c303",
+  "diagnostic_family_v2_sha256": "a0b71c19591a83bf2ee7cc24eaecaea367d0d3b3772a0e41c03d7c361b5fa659",
+  "reference_labels_joined_before_source_freeze": false,
+  "label_conditional_feature_inspection_before_source_freeze": false,
+  "numeric_thresholds": null,
+  "real_loyo_run": false,
+  "full_192_fit_performed": false,
+  "fresh_oos_claim": false,
+  "dominance_v1_redesigned": false,
+  "production_authority": false,
+  "status": "CALIBRATION_V2_FAMILY_SOURCE_READY_NOT_RUN"
+}

@@ -1,0 +1,81 @@
+{
+  "schema_id": "csi1000.scale_state_conditional_calibration_protocol@2.0",
+  "date": "2026-09-18",
+  "research_issue": 381,
+  "parent_issue": 376,
+  "population_role": "ITERATIVE_DEVELOPMENT_EVIDENCE_NOT_FRESH_OOS",
+  "source_base": "a6982e4e8b6dbc77a8d0d5d8e23069c34cbc30ef",
+  "frozen_inputs": {
+    "panels": 192,
+    "reference_labels_sha256": "6fb36ee74413c9b7e95824a94a89bec74a493513668a36b3373c24518fc834be",
+    "diagnostic_family_v2_sha256": "a0b71c19591a83bf2ee7cc24eaecaea367d0d3b3772a0e41c03d7c361b5fa659",
+    "dominance_v1_sha256": "aed0b65305f06d36dfd679df4ee75feb48b246a40e3a5e39831cefedf2ee3baa",
+    "full_inventory_sha256": "32f6279610def838474fb0bc4596c33dfb41f88e4fb78e4a20d6b39942446206"
+  },
+  "calendar_folds": {
+    "type": "LEAVE_ONE_CALENDAR_YEAR_OUT",
+    "years": [2015, 2016, 2017, 2018, 2019, 2020],
+    "random_split": false,
+    "heldout_year_influences_fit": false,
+    "calendar_used_as_feature": false
+  },
+  "validity_v2": {
+    "outputs": ["VALID_FOR_SCALE_JUDGMENT", "INVALID_OR_DISCONTINUITY", "UNCERTAIN_VALIDITY"],
+    "fit": "INDEPENDENT_INVALID_AND_VALID_EVIDENCE_RULES",
+    "false_invalid_cap": 0.05,
+    "false_valid_cap": 0.05,
+    "thresholds": "MIDPOINTS_OF_CONSECUTIVE_DISTINCT_TRAINING_VALUES_ONLY",
+    "max_conditions": 2,
+    "pair_op": "AND_ONLY",
+    "invalid_single_features": [
+      "post_jump_reversal_extreme_10",
+      "post_jump_midpoint_hold_fraction_10",
+      "signed_post_jump_displacement_ratio_10",
+      "signed_post_jump_displacement_ratio_20",
+      "jump_persistence_ratio",
+      "wick_only_concentration_max",
+      "wick_only_concentration_median"
+    ],
+    "jump_size_or_isolation_alone_can_invalidate": false,
+    "gated_jump_features": ["local_jump_isolation_ratio", "close_jump_concentration", "close_range_concentration"],
+    "conflict_or_double_negative": "UNCERTAIN_VALIDITY",
+    "missing": "UNCERTAIN_VALIDITY_NO_IMPUTATION"
+  },
+  "morphology_v2": {
+    "outputs": ["TURNING_OR_COMPLETED", "MORPHOLOGY_AMBIGUOUS", "DEVELOPING_ONE_LEG"],
+    "fit_reference_states": ["CURRENT_SCALE_SUPPORTED", "CURRENT_SCALE_DEVELOPING"],
+    "ambiguous_reference_used_for_fit": false,
+    "axis_candidates": {
+      "reversal_completion_ratio_median": "HIGHER_IS_TURNING",
+      "delta_search_adjusted_bic_vs_one_leg_median": "LOWER_IS_TURNING",
+      "post_turn_fraction_median": "HIGHER_IS_TURNING",
+      "turn_edge_distance_fraction_median": "HIGHER_IS_TURNING",
+      "one_leg_background_count": "LOWER_IS_TURNING"
+    },
+    "raw_amplitude_threshold_forbidden": true,
+    "boundary_candidates": "DISTINCT_TRAINING_VALUES_PLUS_CONSECUTIVE_MIDPOINTS",
+    "boundary_constraint": "DEVELOPING_BOUNDARY_SCORE_STRICTLY_LESS_THAN_TURNING_BOUNDARY_SCORE",
+    "middle_band": "MORPHOLOGY_AMBIGUOUS",
+    "objective": [
+      "MINIMIZE_WRONG_DECISIONS",
+      "MAXIMIZE_MIN_CLASS_CORRECT",
+      "MAXIMIZE_TOTAL_CORRECT",
+      "MINIMIZE_ABSTENTION",
+      "CANONICAL_RULE_ID"
+    ]
+  },
+  "dominance": {
+    "family": "V1_FROZEN_CONTROL_UNCHANGED",
+    "redesign": false,
+    "features_or_directions_changed": false
+  },
+  "sequential_fit_order": ["VALIDITY_V2", "MORPHOLOGY_V2", "DOMINANCE_V1_CONTROL_CONDITIONAL_ON_PREDICTED_MORPHOLOGY"],
+  "numeric_thresholds_selected_before_fold_fit": false,
+  "full_192_fit_allowed": false,
+  "fresh_oos_claim": false,
+  "outcomes_used": false,
+  "R4_selected": false,
+  "one_minute_strategy_admitted": false,
+  "router_pnl": false,
+  "production_authority": false
+}
