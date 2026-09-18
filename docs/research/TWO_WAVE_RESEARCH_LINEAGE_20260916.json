@@ -633,6 +633,23 @@
       "root_issue": 353,
       "source_base": "3bb2739ad4fa52547a00dcef80e596d7a6fdc5ec",
       "status": "CALIBRATION_V3_SOURCE_READY_NOT_RUN"
+    },
+    {
+      "authority_promoted": false,
+      "fresh_oos_claim": false,
+      "full_192_fit_performed": false,
+      "history_guard_prior_37_sha256": "231577de78099fe32868366c0d394cc37d045232fdd1d67ef01efc483f99d422",
+      "issue": 388,
+      "lag_selected_or_promoted": false,
+      "name": "calibration_v3_real_development_loyo_adjudication",
+      "order": 38,
+      "parent_issue": 386,
+      "private_comparison_sha256": "b57af8324caf162ccc835df9ba59e483cd9626891d1cb8ab8a96937765259367",
+      "public_aggregate_sha256": "60a4b963d69bcb6776f6018fe1f6c210ca3e6fd74985bd9027cc6cb71cd3bfdc",
+      "root_issue": 353,
+      "source_commit": "f64fb4ad00adf27a4452f234f15000f09266daae",
+      "source_merge": "e6919975f06f7d79143320c32efd7cf2387bf812",
+      "status": "CALIBRATION_V3_NOT_READY_AMBIGUITY_RECALL_COLLAPSE_VALIDITY_RECALL_LOW_NO_FULL_FIT"
     }
   ],
   "other_open_research_threads": [
