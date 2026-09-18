@@ -1,0 +1,39 @@
+{
+  "ambiguous": {
+    "0": {
+      "MIXED_SCALE_COMPETITION": 6
+    },
+    "1": {
+      "MIXED_SCALE_COMPETITION": 6
+    },
+    "2": {
+      "MIXED_SCALE_COMPETITION": 1
+    }
+  },
+  "invalid": {
+    "0": {
+      "DISCONTINUITY_OR_OUTLIER": 14
+    },
+    "5": {
+      "DISCONTINUITY_OR_OUTLIER": 5
+    }
+  },
+  "supported_developing_correct_lag_count": {
+    "CURRENT_SCALE_DEVELOPING": {
+      "0": 12,
+      "1": 2,
+      "2": 3,
+      "3": 2,
+      "4": 3,
+      "5": 39
+    },
+    "CURRENT_SCALE_SUPPORTED": {
+      "0": 6,
+      "1": 4,
+      "2": 3,
+      "3": 6,
+      "4": 7,
+      "5": 49
+    }
+  }
+}
