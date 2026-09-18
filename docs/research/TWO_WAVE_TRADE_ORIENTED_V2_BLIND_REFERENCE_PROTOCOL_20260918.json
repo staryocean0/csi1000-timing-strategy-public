@@ -1,0 +1,139 @@
+{
+  "schema_version": "two_wave_trade_oriented_v2_blind_reference_protocol",
+  "issue": 415,
+  "parent_issue": 409,
+  "amplitude_issue": 413,
+  "date": "2026-09-18",
+  "status": "PREREGISTERED_BEFORE_PACKET_LABELS",
+  "target_question": "current-band actionable state and direction",
+  "primary_states": [
+    "CURRENT_UP",
+    "CURRENT_RANGE",
+    "CURRENT_DOWN",
+    "LOW_AMPLITUDE_VETO",
+    "FINER_SCALE_OUT_OF_BAND"
+  ],
+  "technical_status": "DATA_INVALID",
+  "temporary_status": "RESEARCH_UNRESOLVED",
+  "evidence": {
+    "native_bar": "5m",
+    "primary_view_bars": 64,
+    "primary_view_end": "t+8",
+    "target_offset_from_right": 8,
+    "context_views_bars": [
+      128,
+      256
+    ],
+    "context_views_hidden_until_primary_label_sealed": true
+  },
+  "current_band": {
+    "min_leg_bars": 4,
+    "max_unfinished_leg_bars": 48,
+    "minimum_complete_wave_bars_approx": 8,
+    "normalized_migration_tau": 0.2
+  },
+  "amplitude": {
+    "metric": "10000*(max(log(high))-min(log(low))) over [t-8,t+8]",
+    "veto_bps": 31.03573193149245,
+    "equality_passes": true,
+    "hard_impossibility_floor_bps": 7
+  },
+  "finer_scale": {
+    "minimum_alternating_subband_legs": 3,
+    "characteristic_leg_separation_bars_lt": 4,
+    "amplitude_independent_after_veto": true
+  },
+  "sampling": {
+    "total_panels": 368,
+    "at_most_one_target_per_trading_day": true,
+    "primary": {
+      "total": 240,
+      "per_year": 40,
+      "years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020
+      ],
+      "selection": "salted hash among eligible unused trading days",
+      "outcome_blind": true
+    },
+    "challenge": [
+      {
+        "name": "LOW_AMPLITUDE",
+        "count": 32,
+        "rule": "A_local_bps < Q5"
+      },
+      {
+        "name": "NEAR_VETO",
+        "count": 32,
+        "rule": "Q5 <= A_local_bps < Q10"
+      },
+      {
+        "name": "HF_LOW_NORMAL_AMP",
+        "count": 32,
+        "rule": "Q10 <= A_local_bps < Q50 and hf_sampling_diagnostic"
+      },
+      {
+        "name": "HF_HIGH_AMP",
+        "count": 32,
+        "rule": "A_local_bps >= Q50 and hf_sampling_diagnostic"
+      }
+    ],
+    "frozen_quantiles_bps": {
+      "q05": 31.03573193149245,
+      "q10": 37.83979618280142,
+      "q50": 84.38097808825873
+    },
+    "hf_sampling_diagnostic": {
+      "window": "[t-8,t+8]",
+      "return_sign_changes_min": 9,
+      "median_same_sign_run_length_max": 2,
+      "role": "challenge sampling only; not final state classifier"
+    },
+    "challenge_used_for_prevalence": false,
+    "old_taxonomy_labels_used": false,
+    "recognizer_outputs_used": false,
+    "outcomes_or_pnl_used": false
+  },
+  "blinding": {
+    "visible_primary": [
+      "panel_id",
+      "64bar_geometry",
+      "target_marker",
+      "confirmation_tail",
+      "amplitude_gate_PASS_or_VETO"
+    ],
+    "hidden_primary": [
+      "date",
+      "year",
+      "target_index",
+      "challenge_stratum",
+      "old_B0_B5_label",
+      "old_recognizer",
+      "outcome",
+      "PnL",
+      "128bar_context",
+      "256bar_context"
+    ],
+    "context_visible_after_primary_seal": [
+      "128bar_context",
+      "256bar_context"
+    ]
+  },
+  "stop_criteria": {
+    "independent_passes": 2,
+    "valid_panel_exactly_one_primary_state": true,
+    "unresolved_final": 0,
+    "definitions_change_after_pass_starts": false
+  },
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "pnl_selection": false,
+    "production": false
+  }
+}
