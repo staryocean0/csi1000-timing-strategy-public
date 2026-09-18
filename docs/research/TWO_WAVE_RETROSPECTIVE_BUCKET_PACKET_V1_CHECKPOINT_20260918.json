@@ -1,0 +1,57 @@
+{
+  "schema_id": "csi1000.retrospective_bucket_taxonomy_packet_v1_checkpoint@1.0",
+  "date": "2026-09-18",
+  "issue": 404,
+  "source_data": {
+    "repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "file": "data/development/5m_offset_0.parquet",
+    "role": "PREVIOUSLY_CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+  },
+  "packet": {
+    "panels": 352,
+    "primary": 192,
+    "challenge_total": 160,
+    "challenge_counts": {
+      "LOW_RANGE": 32,
+      "HIGH_RANGE": 32,
+      "HIGH_COMPLEXITY": 32,
+      "HIGH_PERSISTENCE": 32,
+      "DISCONTINUITY": 32
+    },
+    "primary_year_counts": {
+      "2015": 32,
+      "2016": 32,
+      "2017": 32,
+      "2018": 32,
+      "2019": 32,
+      "2020": 32
+    },
+    "anchor_minutes_shanghai": [
+      660,
+      870
+    ],
+    "knowledge_lag_native_5m_bars": 8,
+    "views_native_5m_bars": [
+      64,
+      128,
+      256
+    ],
+    "controlled_inventory_sha256": "6f9e24798681d96aa7117fdcec5398497aa84b67fb84f2cb155ee2e5bef2c1f3",
+    "blinded_inventory_sha256": "dbde718ce2a1f80962eb5455d083f2699d505cd46185f20b2c23f209d79643d6",
+    "panel_manifest_sha256": "22c423749b56accb5f042ebd93afee08fbdf4322e7631b3cdecec7848a467dd6",
+    "panel_bytes_total": 48391971
+  },
+  "contamination_guards": {
+    "old_labels_visible_during_sampling": false,
+    "recognizer_outputs_used_for_sampling": false,
+    "outcomes_used": false,
+    "pnl_used": false,
+    "pass_a_started": false,
+    "any_panel_annotation_seen_before_checkpoint": false
+  },
+  "quality_note": "Public 5m product HFA/flat-fill metadata are null in this retained source and were not interpreted as boolean qualification gates.",
+  "status": "BLIND_PACKET_SOURCE_FROZEN_BEFORE_ANNOTATION",
+  "annotation_handbook_path": "docs/research/TWO_WAVE_RETROSPECTIVE_BUCKET_ANNOTATION_HANDBOOK_20260918.md",
+  "annotation_semantics_frozen_before_pass_a": true
+}

@@ -1,0 +1,95 @@
+{
+  "schema_id": "csi1000.retrospective_bucket_taxonomy_packet_v1_protocol@1.0",
+  "date": "2026-09-18",
+  "issue": 404,
+  "parent_issue": 402,
+  "root_issue": 350,
+  "target_scale": "native_5m",
+  "anchor_state_time": "t",
+  "knowledge_time": "t_plus_8_native_5m_bars",
+  "future_suffix_beyond_knowledge_time_visible": false,
+  "views_native_5m_bars": [
+    64,
+    128,
+    256
+  ],
+  "panel_markers": [
+    "target_t",
+    "knowledge_t_plus_8"
+  ],
+  "annotator_hidden_fields": [
+    "calendar_date",
+    "source_index",
+    "old_reference_label",
+    "recognizer_output",
+    "diagnostic_score",
+    "outcome",
+    "pnl"
+  ],
+  "sampling": {
+    "primary": {
+      "panels": 192,
+      "purpose": "unbiased_prevalence",
+      "years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020
+      ],
+      "per_year": 32,
+      "anchor_minutes_shanghai": [
+        660,
+        870
+      ],
+      "selected_by_old_recognizer": false,
+      "selected_by_amplitude": false,
+      "selected_by_outcome": false
+    },
+    "challenge": {
+      "panels": 160,
+      "purpose": "taxonomy_falsification_not_prevalence",
+      "strata": {
+        "LOW_RANGE": 32,
+        "HIGH_RANGE": 32,
+        "HIGH_COMPLEXITY": 32,
+        "HIGH_PERSISTENCE": 32,
+        "DISCONTINUITY": 32
+      },
+      "selected_by_raw_path_descriptors_only": true,
+      "selected_by_old_recognizer": false,
+      "selected_by_outcome": false
+    }
+  },
+  "allowed_answers": [
+    "B0_CURRENT_SCALE",
+    "B1_FINER_SCALE_DOMINANT",
+    "B2_COARSER_SCALE_DOMINANT",
+    "B3_MIXED_MULTI_SCALE",
+    "B4_NO_RESOLVABLE_STRUCTURE",
+    "B5_DATA_INVALID_OR_EDGE",
+    "NEW_BUCKET_PROPOSAL",
+    "TAXONOMY_UNRESOLVED"
+  ],
+  "pass_order": [
+    "PASS_A_ALL_PANELS_SEAL",
+    "PASS_B_ALL_PANELS_SEAL",
+    "ADJUDICATION_ALL_DISAGREEMENTS"
+  ],
+  "final_freeze_gate": {
+    "taxonomy_unresolved": 0,
+    "new_bucket_proposal": 0,
+    "final_conflict": 0,
+    "exactly_one_bucket_per_panel": true,
+    "replay_after_any_new_bucket": true
+  },
+  "authority": {
+    "R4": false,
+    "router": false,
+    "pnl": false,
+    "signal": false,
+    "trade": false,
+    "production": false
+  }
+}
