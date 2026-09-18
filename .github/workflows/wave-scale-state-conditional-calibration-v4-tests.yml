@@ -1,0 +1,28 @@
+name: Two-Wave calibration v4 source contracts
+on:
+  pull_request:
+    branches: [cloud-workspace-v1]
+    paths:
+      - 'executor/wave_scale_state_conditional_calibration_v4.py'
+      - 'tests/test_wave_scale_state_conditional_calibration_v4.py'
+      - 'tests/test_wave_scale_state_conditional_calibration_v4_source.py'
+      - 'docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_V4_PROTOCOL_20260918.json'
+      - 'docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_V4_SOURCE_REGISTRATION_20260918.json'
+      - 'docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_V4_SOURCE_REGISTRATION_20260918.md'
+      - 'docs/research/TWO_WAVE_SCALE_V3_THRESHOLD_FREE_CAPACITY_AUDIT_20260918.json'
+      - 'docs/research/TWO_WAVE_RESEARCH_LINEAGE_20260916.json'
+      - 'docs/research/TWO_WAVE_SEGMENTATION_DOMINANCE_THREAD_AUTHORITY_20260917.json'
+      - '.github/workflows/wave-scale-state-conditional-calibration-v4-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 -m pip install --disable-pip-version-check -r executor/requirements.txt
+      - run: python3 -m unittest tests.test_wave_scale_state_conditional_calibration_v4 tests.test_wave_scale_state_conditional_calibration_v4_source -v

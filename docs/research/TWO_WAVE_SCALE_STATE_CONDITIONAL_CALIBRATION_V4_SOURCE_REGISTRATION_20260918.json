@@ -1,0 +1,19 @@
+{
+  "schema_id": "csi1000.scale_state_conditional_calibration_v4_registration@1.0",
+  "date": "2026-09-18",
+  "issue": 395,
+  "parent_issue": 388,
+  "root_issue": 353,
+  "source_base": "ae99f4016925f0d4162dd97fb07a07b00f7bc52e",
+  "engine_sha256": "b9659f5f2322799a7fe9c9f5935f7feb0efab299487089cdb13fe4af7f646ddc",
+  "protocol_sha256": "5cd5ad9101cab2b2f225c653e736554e6a143b5aa247be7dad5eaa32704ea0ac",
+  "prior_38_lineage_sha256": "8fc94d1cdd70cc0cf6aa387271c8eb18930fd96e17c61a97cb76f736bbfb9bc1",
+  "threshold_free_capacity_audit_sha256": "804013893f009a77e5534a979a8566c19e63b4ec632357eede687835757ae936",
+  "ambiguity_existing_evidence_audit_sha256": "0f0149a0c13dc7b8ad28aa76b761b0faf8bdd97a408a07db7a09e13168d9729d",
+  "real_oof_run": false,
+  "full_192_fit_performed": false,
+  "lag_selected_or_promoted": false,
+  "fresh_oos_claim": false,
+  "production_authority": false,
+  "status": "CALIBRATION_V4_SOURCE_READY_NOT_RUN"
+}

@@ -69,8 +69,8 @@ class CalibrationV3SourceTests(unittest.TestCase):
         self.assertFalse(self.p["v3_real_oof_run"])
         self.assertFalse(self.p["production_authority"])
         lane = next(x for x in self.a["active_lanes"] if x["issue"] == 353)
-        self.assertIn(lane["status"], {"CALIBRATION_V3_SOURCE_READY_NOT_RUN","CALIBRATION_V3_NOT_READY_AMBIGUITY_RECALL_COLLAPSE_VALIDITY_RECALL_LOW_NO_FULL_FIT"})
-        self.assertIn(self.a["S2_progress"]["next"], {"MERGE_CALIBRATION_V3_THEN_RUN_FROZEN_FIXED_LAG_LOYO","RUN_THRESHOLD_FREE_AMBIGUITY_AND_VALIDITY_CAPACITY_AUDIT_BEFORE_V4_PREREGISTRATION"})
+        self.assertIn(lane["status"], {"CALIBRATION_V3_SOURCE_READY_NOT_RUN","CALIBRATION_V3_NOT_READY_AMBIGUITY_RECALL_COLLAPSE_VALIDITY_RECALL_LOW_NO_FULL_FIT","CALIBRATION_V4_SOURCE_READY_NOT_RUN"})
+        self.assertIn(self.a["S2_progress"]["next"], {"MERGE_CALIBRATION_V3_THEN_RUN_FROZEN_FIXED_LAG_LOYO","RUN_THRESHOLD_FREE_AMBIGUITY_AND_VALIDITY_CAPACITY_AUDIT_BEFORE_V4_PREREGISTRATION","MERGE_CALIBRATION_V4_THEN_RUN_FROZEN_FIXED_LAG_LOYO"})
         self.assertIn(self.a["S2_progress"]["calibration_v3_real_oof_run"], {False,"COMPLETED_DEVELOPMENT_OOF_NOT_READY"})
 
 
