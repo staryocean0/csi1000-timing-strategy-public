@@ -1,0 +1,110 @@
+{
+  "authority": {
+    "R4_selected": false,
+    "production": false,
+    "router_pnl": false,
+    "signal": false,
+    "trade": false
+  },
+  "ci_repair_merge_sha": "8d21956fc02622d39c8391f2064cc93408db477b",
+  "date": "2026-09-18",
+  "decision": "V3_DEVELOPMENT_OOF_NOT_READY_AMBIGUITY_AND_VALIDITY_REVISION_REQUIRED_NO_FULL_FIT_NO_LAG_PROMOTION",
+  "evidence": {
+    "lags_minutes": [
+      0,
+      5,
+      10,
+      15,
+      25
+    ],
+    "panels_per_lag": 192,
+    "private_comparison_sha256": "b57af8324caf162ccc835df9ba59e483cd9626891d1cb8ab8a96937765259367",
+    "public_aggregate_sha256": "60a4b963d69bcb6776f6018fe1f6c210ca3e6fd74985bd9027cc6cb71cd3bfdc",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020
+    ]
+  },
+  "formal_measurement_run": "35292230400-1",
+  "fresh_oos_claim": false,
+  "interpretation": [
+    "COVERAGE_AWARE_MORPHOLOGY_OBJECTIVE_REPAIRS_V2_ABSTENTION_COLLAPSE",
+    "REFERENCE_AMBIGUOUS_IS_NOW_UNDER_DETECTED_BECAUSE_V3_FIT_EXCLUDES_AMBIGUOUS_REFERENCE_ROWS",
+    "VALIDITY_RECALL_REMAINS_STRUCTURALLY_WEAK_DESPITE_FALSE_INVALID_RATE_WITHIN_CAP_INTENT",
+    "POSITIVE_CONFIRMATION_LAG_DOES_NOT_SHOW_A_CONSISTENT_DEVELOPMENT_ADVANTAGE_AND_NO_LAG_IS_PROMOTED"
+  ],
+  "key_findings": {
+    "developing_to_developing_by_lag": {
+      "0": "45/61",
+      "10": "45/61",
+      "15": "45/61",
+      "25": "44/61",
+      "5": "42/61"
+    },
+    "exact_final_state_correct_by_lag": {
+      "0": "127/192",
+      "10": "120/192",
+      "15": "124/192",
+      "25": "118/192",
+      "5": "122/192"
+    },
+    "false_not_dominant_on_supported_developing_by_lag": {
+      "0": "5/136",
+      "10": "6/136",
+      "15": "7/136",
+      "25": "7/136",
+      "5": "3/136"
+    },
+    "morphology_abstention_collapse_repaired": true,
+    "morphology_ambiguous_total_by_lag": {
+      "0": 2,
+      "10": 1,
+      "15": 0,
+      "25": 0,
+      "5": 0
+    },
+    "not_dominant_recall_by_lag": {
+      "0": "18/24",
+      "10": "17/24",
+      "15": "16/24",
+      "25": "18/24",
+      "5": "17/24"
+    },
+    "supported_to_turning_by_lag": {
+      "0": "64/75",
+      "10": "58/75",
+      "15": "62/75",
+      "25": "55/75",
+      "5": "62/75"
+    },
+    "true_ambiguous_recall_by_lag": {
+      "0": "1/13",
+      "10": "0/13",
+      "15": "0/13",
+      "25": "0/13",
+      "5": "0/13"
+    },
+    "validity_false_invalid_all_lags": "8/173",
+    "validity_invalid_recall_all_lags": "7/19"
+  },
+  "parent_issue": 386,
+  "production_authority": false,
+  "research_issue": 388,
+  "root_issue": 353,
+  "schema_id": "csi1000.scale_state_conditional_calibration_v3_loyo_adjudication@1.0",
+  "source_commit": "f64fb4ad00adf27a4452f234f15000f09266daae",
+  "source_merge_sha": "e6919975f06f7d79143320c32efd7cf2387bf812",
+  "stop_rule": {
+    "case_exceptions": false,
+    "full_192_fit_authorized": false,
+    "full_192_fit_performed": false,
+    "label_relaxation": false,
+    "lag_selected_or_promoted": false,
+    "next": "PREREGISTER_CALIBRATION_V4_THREE_CLASS_AMBIGUITY_AND_BROADER_VALIDITY_FAMILY",
+    "pnl_tuning": false
+  }
+}

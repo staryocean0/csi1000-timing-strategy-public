@@ -69,7 +69,7 @@ class FixedLagLoyoAdjudicationTests(unittest.TestCase):
         self.assertEqual((self.l[35]['order'], self.l[35]['status']),
                          (36, 'FIXED_LAG_DEVELOPMENT_LOYO_NOT_READY_OBJECTIVE_ABSTENTION_COLLAPSE_NO_LAG_PROMOTION'))
         lane = next(x for x in self.u['active_lanes'] if x['issue'] == 353)
-        self.assertIn(lane['status'], {'FIXED_LAG_DEVELOPMENT_LOYO_NOT_READY_OBJECTIVE_ABSTENTION_COLLAPSE_NO_LAG_PROMOTION','CALIBRATION_V3_SOURCE_READY_NOT_RUN'})
+        self.assertIn(lane['status'], {'FIXED_LAG_DEVELOPMENT_LOYO_NOT_READY_OBJECTIVE_ABSTENTION_COLLAPSE_NO_LAG_PROMOTION','CALIBRATION_V3_SOURCE_READY_NOT_RUN','CALIBRATION_V3_DEVELOPMENT_OOF_NOT_READY_AMBIGUITY_VALIDITY_REVISION_REQUIRED'})
         self.assertFalse(self.u['S2_progress']['fixed_lag_confirmation_lag_promoted'])
         self.assertFalse(self.u['S2_progress']['full_192_fit_performed'])
 
