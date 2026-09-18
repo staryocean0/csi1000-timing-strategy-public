@@ -650,6 +650,36 @@
       "source_commit": "f64fb4ad00adf27a4452f234f15000f09266daae",
       "source_merge": "e6919975f06f7d79143320c32efd7cf2387bf812",
       "status": "CALIBRATION_V3_NOT_READY_AMBIGUITY_RECALL_COLLAPSE_VALIDITY_RECALL_LOW_NO_FULL_FIT"
+    },
+    {
+      "authority_promoted": false,
+      "candidate_constructed": false,
+      "full_192_fit_performed": false,
+      "history_guard_prior_38_sha256": "8fc94d1cdd70cc0cf6aa387271c8eb18930fd96e17c61a97cb76f736bbfb9bc1",
+      "issue": 393,
+      "name": "capacity_audit_ambiguity_validity_before_v4",
+      "order": 39,
+      "parent_issue": 388,
+      "private_audit_sha256": "4972de4c1b83961b332f91e4a255ae5795aff2ec5cf5991b56bf983660c3dc0e",
+      "public_aggregate_sha256": "4ab289ed3ae5c2427204e53de360d90d1554ebe20b284d0fead6925e38761560",
+      "status": "CAPACITY_AUDIT_SINGLE_AXIS_AMBIGUITY_INSUFFICIENT_VALIDITY_SIGNAL_PRESENT_BUT_TEMPORALLY_UNSTABLE"
+    },
+    {
+      "authority_promoted": false,
+      "engine_sha256": "8e2b8bce7624357417fe08bfdfa9886400902e583dbf743bc52f4691038a9e19",
+      "fresh_oos_claim": false,
+      "full_192_fit_performed": false,
+      "history_guard_prior_39_sha256": "2ab31b01a249bf8d82fa2b56a3a700f8ef79a2937c0bf8a616630203212e2ee3",
+      "issue": 394,
+      "lag_selected_or_promoted": false,
+      "name": "calibration_v4_source_registration",
+      "order": 40,
+      "parent_issue": 393,
+      "protocol": "docs/research/TWO_WAVE_SCALE_STATE_CONDITIONAL_CALIBRATION_V4_PROTOCOL_20260918.json",
+      "real_oof_run": false,
+      "root_issue": 353,
+      "source_base": "ae99f4016925f0d4162dd97fb07a07b00f7bc52e",
+      "status": "CALIBRATION_V4_SOURCE_READY_NOT_RUN"
     }
   ],
   "other_open_research_threads": [
