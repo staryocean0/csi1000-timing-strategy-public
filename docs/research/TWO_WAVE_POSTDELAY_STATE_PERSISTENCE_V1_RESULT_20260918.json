@@ -1,0 +1,386 @@
+{
+  "authority": {
+    "live_trading": false,
+    "paper_trading": false,
+    "pnl_selection": false,
+    "production": false,
+    "router": false,
+    "signal": false,
+    "strategy_selection": false,
+    "trade": false
+  },
+  "baseline": {
+    "CURRENT_DOWN": {
+      "face_slap": {
+        "1": 0.0265254807522045,
+        "12": 0.3159684102418812,
+        "16": 0.4130750433827956,
+        "2": 0.0463930304210787,
+        "24": 0.5661366292453164,
+        "32": 0.6774090732018274,
+        "4": 0.1018167652371002,
+        "8": 0.2104685341927258
+      },
+      "median_exact_state_lifetime_boundary_bars": 13,
+      "median_face_slap_boundary_bars": 21,
+      "support": 28237,
+      "survival": {
+        "1": 0.8984311364521727,
+        "12": 0.502000920777703,
+        "16": 0.4064525268265042,
+        "2": 0.8379785387966143,
+        "24": 0.2681942132662818,
+        "32": 0.1806849169529341,
+        "4": 0.7508233877536565,
+        "8": 0.6161419414243723
+      }
+    },
+    "CURRENT_RANGE": {
+      "median_exact_state_lifetime_boundary_bars": 2,
+      "support": 8833,
+      "survival": {
+        "1": 0.5344729989810936,
+        "12": 0.0491339295822483,
+        "16": 0.0200384920185667,
+        "2": 0.3421261179667157,
+        "24": 0.0031699309407902,
+        "32": 0.0007924827351975,
+        "4": 0.2156685157930488,
+        "8": 0.1083437110834371
+      }
+    },
+    "CURRENT_UP": {
+      "face_slap": {
+        "1": 0.024245118489895,
+        "12": 0.2905652634818589,
+        "16": 0.3780733850836097,
+        "2": 0.0426084875012823,
+        "24": 0.5163286940464384,
+        "32": 0.6184727969086619,
+        "4": 0.094244776527716,
+        "8": 0.194063536572855
+      },
+      "median_exact_state_lifetime_boundary_bars": 12,
+      "median_face_slap_boundary_bars": 23,
+      "support": 29243,
+      "survival": {
+        "1": 0.8972061689977089,
+        "12": 0.4962213179222378,
+        "16": 0.4059091064528263,
+        "2": 0.8333960263994802,
+        "24": 0.2760318708750812,
+        "32": 0.1904045412577369,
+        "4": 0.742434086790001,
+        "8": 0.6070170639127312
+      }
+    },
+    "FINER_SCALE_OUT_OF_BAND": {
+      "median_exact_state_lifetime_boundary_bars": 1,
+      "support": 22,
+      "survival": {
+        "1": 0.3181818181818182,
+        "12": 0.0,
+        "16": 0.0,
+        "2": 0.0909090909090909,
+        "24": 0.0,
+        "32": 0.0,
+        "4": 0.0,
+        "8": 0.0
+      }
+    },
+    "LOW_AMPLITUDE_VETO": {
+      "median_exact_state_lifetime_boundary_bars": 6,
+      "support": 3492,
+      "survival": {
+        "1": 0.8708476517754868,
+        "12": 0.1964490263459335,
+        "16": 0.1134020618556701,
+        "2": 0.7608820160366552,
+        "24": 0.0312142038946162,
+        "32": 0.0051546391752577,
+        "4": 0.5778923253150057,
+        "8": 0.3373424971363116
+      }
+    }
+  },
+  "consensus_aligned_minus_opposed": {
+    "slap_16": {
+      "aligned_support": 21701,
+      "ci_high": -0.023257081191926,
+      "ci_low": -0.0971051458020868,
+      "effect": -0.0589993618358216,
+      "opposed_support": 11508
+    },
+    "slap_8": {
+      "aligned_support": 21701,
+      "ci_high": -0.0219497533251853,
+      "ci_low": -0.066123413872647,
+      "effect": -0.0435643353757053,
+      "opposed_support": 11508
+    },
+    "survive_16": {
+      "aligned_support": 21701,
+      "ci_high": 0.1099362740638582,
+      "ci_low": 0.0326149138264405,
+      "effect": 0.0707189475338004,
+      "opposed_support": 11508
+    },
+    "survive_8": {
+      "aligned_support": 21701,
+      "ci_high": 0.112222204665718,
+      "ci_low": 0.0506285586964994,
+      "effect": 0.0804862606662415,
+      "opposed_support": 11508
+    }
+  },
+  "date": "2026-09-18",
+  "evidence_sha256": {
+    "baseline_summary.csv": "bdd713e5e3b65f0fe325f6c03b1ffc45c7b63a06f55c7bfe0bd1e040e4a90873",
+    "bootstrap_effects.csv": "70c33582c64953d89d46edb5c5b65e2fd805c87fe8ba687f7afa7a844f1d5ccb",
+    "conditioner_gate_detail.csv": "d43e840350ed30a6ba50daca4de9e940f36743ce9224db1dae4992d379f32325",
+    "conditioner_verdict.json": "53f4521b21e210f326d0e9bacf85af8b3e3559548c5b7098cea7473ea87ff682",
+    "consensus_effects_bootstrap.csv": "1291a72f9031a49ff0dea80bd7732fc0ba526f50ce899349d25e6d7b4602a500",
+    "consensus_summary.csv": "9ba8bee896948eb18861e140976a978c272b4fd5e1542b4543ba0fa55006619f",
+    "directional_relation_summary.csv": "85a0378f049ac40cd8a4fa95b8888a686810069a5378c5207bdd0124d018d941",
+    "events.parquet": "f7675e9f84298bdb29d41e6715e285486f475b43b5c552b725a3b2fa3fd2624c",
+    "execution_meta.json": "5bbcb8ad1f0c2d9ba1c5e786ca387b769bf89c5bcab17024f667d2c81b620c12",
+    "first_exit_matrix.csv": "8844caf116f32715bbaa72f0b7fe8c10b56511827250e1eaf65e89a87ae42b21",
+    "lifetime_boundary_summary.csv": "ea13cee822933f6058ba999772046f776e73c3794b3f656f0284ed1a0898c287",
+    "raw_parent_phase_survival.csv": "2c03fb192416787c528a0ce73117a00ace500d00517148154ee47a0864c26117",
+    "state_specific_directional_effects_exploratory.csv": "0aefecd11016b9828d8123192b9279bdb9e4e343eae40e534cbfcec273b5d931",
+    "yearly_effects.csv": "3cee622505db29d38c3cef403aedbccb59e0307c28799b58b7b0345ddb7b67d0"
+  },
+  "formal_conditioner_verdicts": {
+    "128": "SUPPORTED_PERSISTENCE_CONDITIONER",
+    "256": "NOT_SUPPORTED_AS_PERSISTENCE_CONDITIONER"
+  },
+  "formal_interpretation": {
+    "P128": "SUPPORTED_PERSISTENCE_CONDITIONER",
+    "P256": "NOT_SUPPORTED_AS_PERSISTENCE_CONDITIONER",
+    "non_directional_pattern": "CURRENT_RANGE, LOW_AMPLITUDE_VETO and FINER_SCALE_OUT_OF_BAND have short residual exact-state lifetimes and are not rescued into persistent states by parent phase in V1.",
+    "primary_pattern": "P128 effect is materially stronger for CURRENT_DOWN; CURRENT_UP state-specific alignment effect is weak."
+  },
+  "formal_key_effects": {
+    "P128": {
+      "slap_h16": {
+        "aligned_support": 31990,
+        "ci_high": -0.0179246620077593,
+        "ci_low": -0.0787399157424818,
+        "effect": -0.0467788718778771,
+        "opposed_support": 16952,
+        "valid_bootstrap_replicates": 2000
+      },
+      "slap_h8": {
+        "aligned_support": 31990,
+        "ci_high": -0.0231704210716593,
+        "ci_low": -0.0589044818817757,
+        "effect": -0.0413073022613101,
+        "opposed_support": 16952,
+        "valid_bootstrap_replicates": 2000
+      },
+      "survive_h16": {
+        "aligned_support": 31990,
+        "ci_high": 0.0837915237406559,
+        "ci_low": 0.0215658844779908,
+        "effect": 0.0529895749630348,
+        "opposed_support": 16952,
+        "valid_bootstrap_replicates": 2000
+      },
+      "survive_h8": {
+        "aligned_support": 31990,
+        "ci_high": 0.0935341244154609,
+        "ci_low": 0.0445240982604514,
+        "effect": 0.0693958013365726,
+        "opposed_support": 16952,
+        "valid_bootstrap_replicates": 2000
+      }
+    },
+    "P256": {
+      "slap_h16": {
+        "aligned_support": 28132,
+        "ci_high": -0.0043354453837701,
+        "ci_low": -0.0648651328758639,
+        "effect": -0.0347113590605461,
+        "opposed_support": 21318,
+        "valid_bootstrap_replicates": 2000
+      },
+      "slap_h8": {
+        "aligned_support": 28132,
+        "ci_high": -0.0022283113750436,
+        "ci_low": -0.0368728161606011,
+        "effect": -0.0193286885901182,
+        "opposed_support": 21318,
+        "valid_bootstrap_replicates": 2000
+      },
+      "survive_h16": {
+        "aligned_support": 28132,
+        "ci_high": 0.0727807058039714,
+        "ci_low": 0.0097955453534821,
+        "effect": 0.0414847461567501,
+        "opposed_support": 21318,
+        "valid_bootstrap_replicates": 2000
+      },
+      "survive_h8": {
+        "aligned_support": 28132,
+        "ci_high": 0.0669352988649826,
+        "ci_low": 0.0185322931500819,
+        "effect": 0.0414192953922728,
+        "opposed_support": 21318,
+        "valid_bootstrap_replicates": 2000
+      }
+    }
+  },
+  "fresh_oos": false,
+  "issue": 429,
+  "schema_version": "two_wave_postdelay_state_persistence_v1_result",
+  "source": {
+    "eligible_endpoints": 69827,
+    "first_known_index": 255,
+    "last_known_index": 70081,
+    "rows": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48"
+  },
+  "state_specific_exploratory": {
+    "CURRENT_DOWN": {
+      "128": {
+        "16": {
+          "slap": {
+            "aligned_support": 14629,
+            "ci_high": -0.0303762903461034,
+            "ci_low": -0.1148629828421491,
+            "effect": -0.0713977482473664,
+            "opposed_support": 9176
+          },
+          "survive": {
+            "aligned_support": 14629,
+            "ci_high": 0.1430453279015216,
+            "ci_low": 0.0558833283278733,
+            "effect": 0.1015672700610264,
+            "opposed_support": 9176
+          }
+        },
+        "8": {
+          "slap": {
+            "aligned_support": 14629,
+            "ci_high": -0.0266656487172796,
+            "ci_low": -0.0794117102315171,
+            "effect": -0.0535120447537564,
+            "opposed_support": 9176
+          },
+          "survive": {
+            "aligned_support": 14629,
+            "ci_high": 0.146226364825322,
+            "ci_low": 0.0797479761567927,
+            "effect": 0.1124129985566283,
+            "opposed_support": 9176
+          }
+        }
+      },
+      "256": {
+        "16": {
+          "slap": {
+            "aligned_support": 12451,
+            "ci_high": 0.0020161790544382,
+            "ci_low": -0.0814774944600956,
+            "effect": -0.0409390855490838,
+            "opposed_support": 11722
+          },
+          "survive": {
+            "aligned_support": 12451,
+            "ci_high": 0.1299021742841646,
+            "ci_low": 0.0398646762238873,
+            "effect": 0.0856002518440791,
+            "opposed_support": 11722
+          }
+        },
+        "8": {
+          "slap": {
+            "aligned_support": 12451,
+            "ci_high": 0.0034652973004782,
+            "ci_low": -0.0445119998546508,
+            "effect": -0.020626880233508,
+            "opposed_support": 11722
+          },
+          "survive": {
+            "aligned_support": 12451,
+            "ci_high": 0.1159742345435336,
+            "ci_low": 0.0456472548271547,
+            "effect": 0.0809840056728227,
+            "opposed_support": 11722
+          }
+        }
+      }
+    },
+    "CURRENT_UP": {
+      "128": {
+        "16": {
+          "slap": {
+            "aligned_support": 17361,
+            "ci_high": 0.0260850340274535,
+            "ci_low": -0.0565711692329045,
+            "effect": -0.0151938972409423,
+            "opposed_support": 7776
+          },
+          "survive": {
+            "aligned_support": 17361,
+            "ci_high": 0.0478542332886272,
+            "ci_low": -0.041595406734117,
+            "effect": 0.0029902191374024,
+            "opposed_support": 7776
+          }
+        },
+        "8": {
+          "slap": {
+            "aligned_support": 17361,
+            "ci_high": -0.000547695922029,
+            "ci_low": -0.0517154297428363,
+            "effect": -0.0256545641892108,
+            "opposed_support": 7776
+          },
+          "survive": {
+            "aligned_support": 17361,
+            "ci_high": 0.062412395372328,
+            "ci_low": -0.0098105557231437,
+            "effect": 0.0265741700746885,
+            "opposed_support": 7776
+          }
+        }
+      },
+      "256": {
+        "16": {
+          "slap": {
+            "aligned_support": 15681,
+            "ci_high": 0.0193631432958765,
+            "ci_low": -0.0609613155910425,
+            "effect": -0.0208341557297578,
+            "opposed_support": 9596
+          },
+          "survive": {
+            "aligned_support": 15681,
+            "ci_high": 0.0431957257586857,
+            "ci_low": -0.049331196366565,
+            "effect": -0.0027600620850486,
+            "opposed_support": 9596
+          }
+        },
+        "8": {
+          "slap": {
+            "aligned_support": 15681,
+            "ci_high": 0.0100017229078932,
+            "ci_low": -0.0397382149100438,
+            "effect": -0.0146282094294598,
+            "opposed_support": 9596
+          },
+          "survive": {
+            "aligned_support": 15681,
+            "ci_high": 0.0399967587432631,
+            "ci_low": -0.0310885626705766,
+            "effect": 0.0038879845961793,
+            "opposed_support": 9596
+          }
+        }
+      }
+    }
+  },
+  "status": "DEVELOPMENT_MECHANISM_RESULT"
+}
