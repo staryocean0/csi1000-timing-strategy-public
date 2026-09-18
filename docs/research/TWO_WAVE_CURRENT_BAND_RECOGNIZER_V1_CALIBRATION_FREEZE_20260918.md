@@ -4,97 +4,126 @@ Issue #420. Target oracle: frozen V2.1 primary taxonomy.
 
 ## Status
 
-`CALIBRATION_FROZEN_PROGRESSION_GATE_PASSED`
+`CALIBRATION_FROZEN_PROTECTED_UNOPENED`
 
-This checkpoint freezes recognizer V1 parameters **before** the protected evaluation labels are opened.
+The recognizer family and the five fitted convex weights are frozen before protected evaluation.
 
-## Frozen target
+### Pre-protected numerical-stability amendment
 
-Final V2.1 primary-label SHA256:
+Commit `f49229a` recorded the first calibration freeze, but two calibration `CURRENT_RANGE` samples landed numerically at `D=+0.20`; deterministic runtime replay evaluated those scores a few floating-point ulps above the frozen threshold. The protected labels were still permission mode `000` and had never been opened.
+
+Before any protected evaluation, calibration was rerun with a solver-only `1e-4` interior stability margin around ±0.20. The model family, coordinates, LOW/FINER gates and runtime thresholds did not change. The resulting weights below supersede the pre-protected weights from `f49229a`. Git history retains that earlier checkpoint.
+
+Target oracle SHA256:
 
 `bcb72a35d45e0ceb385dba92cf40efec61d7d94a08c5d03bffad047798a033c8`
 
-Split:
+## Frozen split
 
-- calibration: 322
-- protected evaluation: 78
-- protected labels remained mode `000` throughout calibration
-## Fixed gates
+- calibration rows: 322
+- protected evaluation rows: 78
+- split manifest SHA256: `0f274d6500a04c059bfb4dc833417bd881c683389f33b42fb2f11f325b007ebd`
+- calibration labels SHA256: `50d39c9affc1c6e31be0f8a006b22a309f09be294c8141efbbba4a27c789efd7`
 
-LOW_AMPLITUDE_VETO remains exactly:
+The protected-label file remained permission mode `000` throughout calibration.
+## Fixed semantic gates
 
-`A_local_bps < 31.03573193149245`
+Before fitting any weight:
 
-FINER_SCALE_OUT_OF_BAND remains exactly the preregistered five-condition subband gate plus local alternation gate.
-
-Calibration results for the fixed gates:
-
-- LOW calibration rows: 34 / 34 recalled
-- FINER calibration rows: 2 / 2 recalled
+- LOW calibration support: 34
+- LOW recall: 34/34 = 1.0
 - LOW false positives: 0
+- FINER calibration support: 2
+- FINER recall: 2/2 = 1.0
 - FINER false positives: 0
 
-No LOW or FINER threshold was calibrated.
+Neither LOW nor FINER contains a fitted parameter.
 
-## Frozen direction weights
-
-Coordinate order:
-
-1. four-bar projection phase 0
-2. four-bar projection phase 1
-3. four-bar projection phase 2
-4. four-bar projection phase 3
-5. raw min-leg-4 pivot-chain coordinate
-
-Frozen convex weights:
-
-`[0.5371004573470922, 0.02422511769054332, 0.2549557883167388, 0.08538362512087591, 0.09833501152474969]`
-
-They are nonnegative and sum to one.
-
-Direction threshold remains frozen at `±0.20`.
-## Calibration result
-
-Five-state exact identity:
-
-`0.922360248447205`
-
-Macro recall:
-
-`0.9379002192982456`
-
-Per-state recall:
-
-- CURRENT_UP: `0.9333333333333333`
-- CURRENT_RANGE: `0.8421052631578947`
-- CURRENT_DOWN: `0.9140625`
-- LOW_AMPLITUDE_VETO: `1.0`
-- FINER_SCALE_OUT_OF_BAND: `1.0`
-
-Minimum state recall:
-
-`0.8421052631578947`
-
-All preregistered progression gates pass.
+The direction problem therefore contains 286 calibration rows.
 
 Calibration feature matrix SHA256:
 
 `a33c325ccabc2cc51d330b4176f001f59909a5d95e3176edd5d04a1d5ab0c272`
+## Deterministic optimization
+
+Only the five nonnegative direction weights are fitted.
+
+Constraints:
+
+- every weight >= 0;
+- the five weights sum to 1;
+- formal direction threshold remains ±0.20.
+
+Optimization is lexicographic:
+
+1. maximize exact direction identity;
+2. among ties, maximize macro direction recall;
+3. among remaining ties, minimize the maximum single weight.
+
+A solver-only stability margin of `1e-4` is imposed around ±0.20 during calibration so a fitted RANGE example is not left on a floating-point boundary.
+
+This margin does **not** change the runtime classifier threshold, which remains exactly ±0.20.
+
+The global direction optimum is 263 / 286.
+## Frozen weights
+
+In order `[phase0, phase1, phase2, phase3, raw_minleg4]`:
+
+- phase0: `0.5375062131339785`
+- phase1: `0.02424630935968975`
+- phase2: `0.2550411892804524`
+- phase3: `0.08498791874772484`
+- raw_minleg4: `0.0982183694781545`
+
+Maximum single weight: `0.5375062131339785`.
+
+Minimum calibration score distance from either runtime threshold after freezing:
+
+`9.999999999960041e-05`
+## Calibration replay
+
+Exact five-state identity:
+
+`0.9285714285714286`
+
+Macro recall:
+
+`0.9484265350877192`
+
+Per-state recall:
+
+- CURRENT_UP: `0.9333333333333333`
+- CURRENT_RANGE: `0.8947368421052632`
+- CURRENT_DOWN: `0.9140625`
+- LOW_AMPLITUDE_VETO: `1.0`
+- FINER_SCALE_OUT_OF_BAND: `1.0`
+
+The minimum state recall is `0.8947368421052632`.
+
+All preregistered progression gates pass.
+## Frozen local evidence
 
 Calibration receipt SHA256:
 
-`50cd0bfc104e35486549d9f2b60e82e50da981696196e731f78232c69d01fa9a`
-## Protected-evaluation rule
+`04616d33463efd7760894f1a30e355959fbae122e08244600618ecaaa2b780ca`
 
-After this freeze is committed:
+Calibration freeze checkpoint SHA256:
 
-1. the 78 protected labels may be opened once;
-2. evaluate with the exact frozen implementation, gates, weights and ±0.20 threshold;
-3. report the full confusion matrix and per-state recall/precision;
-4. do not retune V1 afterward, regardless of result.
+`8f237fecc911ea01bdc324a51df61a30b7a843324d68ec117d2ea7dc35de0067`
 
-If protected evaluation is unacceptable, V1 is rejected and a new recognizer version must be preregistered.
+No 128/256 context, date/year, challenge stratum, future return, PnL, trade outcome or protected label was used.
 
-## Authority
+## Next step
 
-No signal, trade, router, PnL-selection, paper/live or production authority.
+The 78 protected labels may now be opened exactly once.
+
+After protected evaluation is opened:
+
+- these five weights cannot change under V1;
+- LOW/FINER gates cannot change;
+- direction coordinates cannot change;
+- ±0.20 cannot change.
+
+A protected failure would reject V1 rather than trigger retuning.
+
+The delayed `8 × native 5m` wrapper remains blocked until retrospective recognizer acceptance.
