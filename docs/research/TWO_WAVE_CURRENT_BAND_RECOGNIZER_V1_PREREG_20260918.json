@@ -1,0 +1,69 @@
+{
+  "schema_version": "two_wave_current_band_recognizer_v1_prereg",
+  "issue": 420,
+  "date": "2026-09-18",
+  "target_oracle_sha256": "bcb72a35d45e0ceb385dba92cf40efec61d7d94a08c5d03bffad047798a033c8",
+  "information_set": {
+    "native_bar": "5m",
+    "view_bars": 64,
+    "view_end": "t+8",
+    "amplitude_window": "[t-8,t+8]",
+    "context_128_256_used": false
+  },
+  "low_gate": {
+    "threshold_bps": 31.03573193149245,
+    "rule": "A_local_bps < threshold",
+    "calibrated": false
+  },
+  "finer_gate": {
+    "local_raw_bars": 24,
+    "sign_changes_min": 9,
+    "median_same_sign_run_max": 2,
+    "range_ratio_max_exclusive": 0.55,
+    "residual_fraction_min_exclusive": 0.38,
+    "tv_ratio_max_exclusive": 0.35,
+    "recent_abs_drift_max_exclusive": 0.25,
+    "full_abs_drift_max_exclusive": 0.25,
+    "calibrated": false
+  },
+  "direction": {
+    "phase_offsets": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "block_bars": 4,
+    "extra_coordinate": "raw_minleg4_pivot_chain",
+    "coordinate_clip": [
+      -2,
+      2
+    ],
+    "tau_dir": 0.2,
+    "calibrated_parameters": "nonnegative convex weights only"
+  },
+  "split": {
+    "salt": "tw-current-band-rec-v1|",
+    "common_classes_rule": "every fifth hash-ranked panel protected",
+    "finer_rule": "first hash-ranked panel protected; remaining two calibration",
+    "expected_protected": 78
+  },
+  "progression_gate": {
+    "low_recall": 1,
+    "finer_recall": 1,
+    "overall_identity_min": 0.8,
+    "macro_recall_min": 0.75,
+    "minimum_any_state_recall": 0.6
+  },
+  "post_protected_retuning_allowed": false,
+  "wrapper_started": false,
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "pnl_selection": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
