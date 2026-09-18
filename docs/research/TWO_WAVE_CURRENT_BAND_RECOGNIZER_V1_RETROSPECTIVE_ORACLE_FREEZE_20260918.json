@@ -1,0 +1,49 @@
+{
+  "schema_version": "two_wave_current_band_recognizer_v1_retrospective_oracle_freeze",
+  "issue": 420,
+  "date": "2026-09-18",
+  "status": "RETROSPECTIVE_ORACLE_FROZEN",
+  "target_oracle_sha256": "bcb72a35d45e0ceb385dba92cf40efec61d7d94a08c5d03bffad047798a033c8",
+  "calibration_freeze_checkpoint_sha256": "8f237fecc911ea01bdc324a51df61a30b7a843324d68ec117d2ea7dc35de0067",
+  "weights": [
+    0.5375062131339785,
+    0.02424630935968975,
+    0.2550411892804524,
+    0.08498791874772484,
+    0.0982183694781545
+  ],
+  "protected": {
+    "rows": 78,
+    "labels_sha256": "050aaaeed87240fad921be1496c8e38b6123971b96ebff7cbe9164f40b7f2478",
+    "receipt_sha256": "db5ce56103bb5c34238a3cde2ca533552b96f1c5110ec9c872d66f3663e6fb63",
+    "row_evidence_sha256": "7bac0eb786b1454d09e4a75497dc95c2f394e8d8840a6d50f062570fde5783cf",
+    "exact_identity": 0.9487179487179487,
+    "macro_recall": 0.957533061426276,
+    "minimum_state_recall": 0.8888888888888888,
+    "recall": {
+      "CURRENT_UP": 0.9310344827586207,
+      "CURRENT_RANGE": 0.8888888888888888,
+      "CURRENT_DOWN": 0.967741935483871,
+      "LOW_AMPLITUDE_VETO": 1,
+      "FINER_SCALE_OUT_OF_BAND": 1
+    },
+    "deterministic_replay": true,
+    "protected_file_mode_after_evaluation": "0o0"
+  },
+  "freeze_checkpoint_sha256": "4b2f84d1c0d45a7e049a17866e907f97dfe0470f3fbcccf2cb3d5a8983204774",
+  "post_protected_retuning_allowed": false,
+  "wrapper": {
+    "started": false,
+    "next_phase": "8x native 5m delayed-causal retrospective-equivalent wrapper",
+    "required_exact_identity": 1
+  },
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "pnl_selection": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
