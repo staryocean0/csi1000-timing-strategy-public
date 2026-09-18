@@ -98,3 +98,27 @@ def test_multiplicative_price_scale_does_not_change_direction_coordinates():
     a = rec.direction_coordinates(close)
     b = rec.direction_coordinates(close * 37.0)
     np.testing.assert_allclose(a, b, atol=1e-10, rtol=0)
+
+def test_frozen_weights_are_convex_and_bound_to_oracle():
+    w = np.asarray(rec.FROZEN_WEIGHTS)
+    assert w.shape == (5,)
+    assert np.all(w >= 0)
+    np.testing.assert_allclose(w.sum(), 1.0, atol=1e-12)
+    assert rec.FROZEN_ORACLE_LABEL_SHA256 == (
+        "bcb72a35d45e0ceb385dba92cf40efec61d7d94a08c5d03bffad047798a033c8"
+    )
+
+
+def test_recognize_frozen_matches_explicit_frozen_weights():
+    t = np.arange(64, dtype=float)
+    close = np.exp(0.01 * np.sin(t / 6.0) + 0.003 * t)
+    explicit = rec.recognize(
+        close,
+        amplitude_bps=100.0,
+        weights=rec.FROZEN_WEIGHTS,
+    )
+    bound = rec.recognize_frozen(
+        close,
+        amplitude_bps=100.0,
+    )
+    assert bound == explicit

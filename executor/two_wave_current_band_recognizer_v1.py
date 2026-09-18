@@ -16,6 +16,16 @@ TAU_DIR = 0.20
 PHASES = (0, 1, 2, 3)
 MIN_LEG_BARS = 4
 COORDINATE_CLIP = 2.0
+FROZEN_ORACLE_LABEL_SHA256 = (
+    "bcb72a35d45e0ceb385dba92cf40efec61d7d94a08c5d03bffad047798a033c8"
+)
+FROZEN_WEIGHTS = (
+    0.5375062131339785,
+    0.02424630935968975,
+    0.2550411892804524,
+    0.08498791874772484,
+    0.0982183694781545,
+)
 
 STATES = (
     "CURRENT_UP",
@@ -265,3 +275,18 @@ def recognize(
     if score < -TAU_DIR:
         return "CURRENT_DOWN"
     return "CURRENT_RANGE"
+
+
+def recognize_frozen(
+    close64: Sequence[float],
+    *,
+    amplitude_bps: float,
+    technical_valid: bool = True,
+) -> str:
+    """Accepted V1 retrospective oracle with immutable calibrated weights."""
+    return recognize(
+        close64,
+        amplitude_bps=amplitude_bps,
+        weights=FROZEN_WEIGHTS,
+        technical_valid=technical_valid,
+    )
