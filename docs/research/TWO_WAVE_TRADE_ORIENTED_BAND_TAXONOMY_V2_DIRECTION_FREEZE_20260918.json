@@ -1,0 +1,82 @@
+{
+  "schema_version": "two_wave_trade_oriented_band_taxonomy_v2_direction_freeze",
+  "issue": 409,
+  "date": "2026-09-18",
+  "status": "DIRECTION_FROZEN_PENDING_AMPLITUDE_SUBFREEZE",
+  "supersedes_as_primary_recognizer_target": "retrospective_multiscale_taxonomy_v1",
+  "preserves_historical_v1": true,
+  "primary_market_states": [
+    "CURRENT_UP",
+    "CURRENT_RANGE",
+    "CURRENT_DOWN",
+    "LOW_AMPLITUDE_VETO",
+    "FINER_SCALE_OUT_OF_BAND"
+  ],
+  "non_market_statuses": [
+    "DATA_INVALID",
+    "RESEARCH_UNRESOLVED"
+  ],
+  "precedence": [
+    "DATA_INVALID",
+    "LOW_AMPLITUDE_VETO",
+    "CURRENT_BAND_STRUCTURE",
+    "CURRENT_UP_CURRENT_RANGE_CURRENT_DOWN",
+    "FINER_SCALE_OUT_OF_BAND",
+    "RESEARCH_UNRESOLVED"
+  ],
+  "current_band_baseline": {
+    "bar_view": "native_5m",
+    "min_leg_bars": 4,
+    "max_unfinished_leg_bars": 48,
+    "minimum_complete_wave_bars_approx": 8,
+    "source": "historical frozen Two-Wave implementation"
+  },
+  "direction": {
+    "coordinate": "normalized_migration_g",
+    "tau_dir": 0.2,
+    "up": "g > 0.20",
+    "range": "abs(g) <= 0.20",
+    "down": "g < -0.20",
+    "source": "historical pre-V2 structural baseline"
+  },
+  "low_amplitude": {
+    "metric": "PENDING_SUBFREEZE",
+    "threshold_A_min": "PENDING_SUBFREEZE",
+    "requires_carrier_or_explicit_proxy": true,
+    "outcome_or_pnl_selection_forbidden": true
+  },
+  "finer_scale_out_of_band": {
+    "low_amplitude_must_pass": true,
+    "current_band_structure_must_be_absent": true,
+    "minimum_alternating_subband_legs": 3,
+    "characteristic_leg_separation_rule": "< 4 native 5m bars",
+    "amplitude_independent_after_veto": true
+  },
+  "current_band_priority": {
+    "parent_scale_override": false,
+    "multiscale_competition_override": false,
+    "parent_context_metadata_only": true
+  },
+  "old_protected_eval": {
+    "rows": 69,
+    "opened": false,
+    "reuse_as_v2_ground_truth": false
+  },
+  "next_steps": [
+    "freeze amplitude metric and A_min",
+    "build new blind packet and handbook",
+    "two independent blind passes plus adjudication",
+    "freeze five-state reference taxonomy",
+    "design recognizer",
+    "freeze retrospective oracle",
+    "build 8x5m delayed causal wrapper"
+  ],
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "R4": false,
+    "pnl_selection": false,
+    "production": false
+  }
+}
