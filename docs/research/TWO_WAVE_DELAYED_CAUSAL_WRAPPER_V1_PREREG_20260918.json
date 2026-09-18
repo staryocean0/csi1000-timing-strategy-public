@@ -1,0 +1,57 @@
+{
+  "schema_version": "two_wave_delayed_causal_wrapper_v1_prereg",
+  "issue": 425,
+  "date": "2026-09-18",
+  "status": "PREREGISTERED_BEFORE_WRAPPER_IMPLEMENTATION",
+  "oracle": {
+    "target_labels_sha256": "bcb72a35d45e0ceb385dba92cf40efec61d7d94a08c5d03bffad047798a033c8",
+    "protected_receipt_sha256": "db5ce56103bb5c34238a3cde2ca533552b96f1c5110ec9c872d66f3663e6fb63",
+    "freeze_checkpoint_sha256": "4b2f84d1c0d45a7e049a17866e907f97dfe0470f3fbcccf2cb3d5a8983204774",
+    "weights": [
+      0.5375062131339785,
+      0.02424630935968975,
+      0.2550411892804524,
+      0.08498791874772484,
+      0.0982183694781545
+    ],
+    "direction_tau": 0.2
+  },
+  "clock": {
+    "delay_native_5m_bars": 8,
+    "first_eligible_known_index": 63,
+    "target_rule": "t=k-8",
+    "close_window": "[k-63,k]",
+    "amplitude_window": "[k-16,k]",
+    "future_after_k_allowed": false
+  },
+  "technical_validity": "all(valid[k-63:k+1])",
+  "full_replay": {
+    "rows": 70114,
+    "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "first_known_index": 63,
+    "last_known_index": 70113,
+    "eligible_endpoints": 70051,
+    "first_target_index": 55,
+    "last_target_index": 70105
+  },
+  "acceptance": {
+    "wrapper_rows": 70051,
+    "oracle_rows": 70051,
+    "exact_target_sequence": true,
+    "delay_relation_exact": true,
+    "exact_label_identity": 1,
+    "mismatch_count": 0,
+    "deterministic_byte_replay": true,
+    "prefix_causality": true
+  },
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "pnl_selection": false,
+    "parameter_selection": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
