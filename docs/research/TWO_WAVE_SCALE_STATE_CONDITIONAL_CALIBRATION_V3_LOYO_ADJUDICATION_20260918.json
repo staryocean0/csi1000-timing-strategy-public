@@ -1,0 +1,74 @@
+{
+  "authority": {
+    "R4_selected": false,
+    "production": false,
+    "router_pnl": false,
+    "signal": false,
+    "trade": false
+  },
+  "date": "2026-09-18",
+  "decision": "CALIBRATION_V3_NOT_READY_AMBIGUITY_RECALL_COLLAPSE_VALIDITY_RECALL_LOW_NO_FULL_FIT",
+  "evidence": {
+    "formal_measurement_run": "35292230400-1",
+    "lags_minutes": [
+      0,
+      5,
+      10,
+      15,
+      25
+    ],
+    "panels": 192,
+    "private_comparison_sha256": "b57af8324caf162ccc835df9ba59e483cd9626891d1cb8ab8a96937765259367",
+    "public_aggregate_sha256": "60a4b963d69bcb6776f6018fe1f6c210ca3e6fd74985bd9027cc6cb71cd3bfdc"
+  },
+  "key_results": {
+    "across_lags": {
+      "developing_developing_range": "42-45/61",
+      "exact_state_correct_range": "118-127/192",
+      "morphology_ambiguous_total_range": "0-2/192",
+      "not_dominant_recall_range": "16-18/24",
+      "supported_turning_range": "55-64/75",
+      "true_ambiguous_recall": "lag0 1/13; lag5/10/15/25 0/13",
+      "validity_false_invalid_all_lags": "8/173",
+      "validity_invalid_recall_all_lags": "7/19"
+    },
+    "lag0": {
+      "exact_state_correct": "127/192",
+      "false_not_dominant_on_supported_developing": "5/136",
+      "morphology_ambiguous_total": 2,
+      "morphology_developing_developing": "45/61",
+      "morphology_supported_turning": "64/75",
+      "not_dominant_recall": "18/24",
+      "true_ambiguous_recall": "1/13",
+      "validity_false_invalid": "8/173",
+      "validity_invalid_recall": "7/19"
+    }
+  },
+  "parent_issue": 386,
+  "population_role": "ITERATIVE_DEVELOPMENT_EVIDENCE_NOT_FRESH_OOS",
+  "research_issue": 388,
+  "root_issue": 353,
+  "schema_id": "csi1000.scale_state_conditional_calibration_v3_adjudication@1.0",
+  "source": {
+    "ci_startup_fix_merge": "8d21956fc02622d39c8391f2064cc93408db477b",
+    "source_commit": "f64fb4ad00adf27a4452f234f15000f09266daae",
+    "source_merge": "e6919975f06f7d79143320c32efd7cf2387bf812"
+  },
+  "stop_rule": {
+    "case_exceptions": false,
+    "fresh_oos_claim": false,
+    "full_192_fit_authorized": false,
+    "full_192_fit_performed": false,
+    "label_relaxation": false,
+    "lag_selected_or_promoted": false,
+    "next": "RUN_THRESHOLD_FREE_AMBIGUITY_AND_VALIDITY_CAPACITY_AUDIT_BEFORE_V4_PREREGISTRATION",
+    "pnl_tuning": false
+  },
+  "structural_findings": [
+    "COVERAGE_AWARE_MORPHOLOGY_RESOLVES_V2_ABSTENTION_COLLAPSE",
+    "EXPLICIT_AMBIGUOUS_CLASS_RECALL_COLLAPSES_TO_ZERO_OR_NEAR_ZERO",
+    "ONE_SIDED_VALIDITY_REMOVES_UNCERTAIN_BUT_DOES_NOT_IMPROVE_INVALID_RECALL",
+    "DOMINANCE_V1_CONTROL_RECOVERS_ON_REOPENED_MORPHOLOGY_BRANCHES",
+    "FIXED_CONFIRMATION_DELAY_DOES_NOT_CREATE_A_PROMOTABLE_LAG"
+  ]
+}
