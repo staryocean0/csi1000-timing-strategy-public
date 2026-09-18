@@ -105,7 +105,7 @@
     "validity_measurement_profile": "two-wave-scale-validity-diagnostic-measurement-v1",
     "validity_measurement_run": "35221426711-1_PASSED",
     "calibration_v4_issue": 395,
-    "calibration_v4_engine_sha256": "d6003f02a85ee89dece38a249eb3e797add56986ccff339b5e7f8902c895f279",
+    "calibration_v4_engine_sha256": "b9659f5f2322799a7fe9c9f5935f7feb0efab299487089cdb13fe4af7f646ddc",
     "calibration_v4_source_ready": true,
     "calibration_v4_real_oof_run": false,
     "calibration_v4_full_192_fit_performed": false,
