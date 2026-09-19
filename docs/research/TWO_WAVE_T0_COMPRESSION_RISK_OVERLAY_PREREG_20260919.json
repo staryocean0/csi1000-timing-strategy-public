@@ -1,0 +1,34 @@
+{
+  "schema_version": "two_wave_t0_compression_risk_overlay_prereg",
+  "issue": 523,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "exact_issue_507_walkforward_scored_T0_signals_2018_2020",
+  "score": "frozen_issue_507_compression_score_and_B1_B5",
+  "outcome": "frozen_T0_period21_own_lifecycle_trade",
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "risk_overlay_gate": {
+    "B5_mean_lt_B1": true,
+    "mean_diff_ci_upper_lt0": true,
+    "band_mean_spearman_max": -0.7,
+    "B5_fast_loss_gt_B1": true,
+    "fast_loss_diff_ci_lower_gt0": true,
+    "min_years_B5_mean_lt_B1": 2
+  },
+  "hard_veto_gate": {
+    "B5_mean_negative": true,
+    "B5_mean_ci_upper_lt0": true,
+    "min_years_B5_negative": 2
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
