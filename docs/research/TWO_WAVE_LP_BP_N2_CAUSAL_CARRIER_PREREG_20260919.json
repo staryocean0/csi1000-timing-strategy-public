@@ -1,0 +1,72 @@
+{
+  "schema_version": "two_wave_lp_bp_n2_prereg",
+  "issue": 470,
+  "parent_issue": 450,
+  "r2b_issue": 461,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_N2_RESULTS",
+  "oracle": "exactly N1 frozen C2_DOM/C3_DOM hindsight oracle",
+  "causal_carrier": {
+    "skeletons": [
+      "S1",
+      "S2",
+      "S3"
+    ],
+    "visible_node_rule": "known_from_bar<=k",
+    "latest_segment_slope": "log(last_price/prev_price)/(last_occ-prev_occ)",
+    "evidence_age": "k-last_occ",
+    "LP": [
+      "S1_slope",
+      "S2_slope"
+    ],
+    "BP": [
+      "S1_slope-S2_slope",
+      "S2_slope-S3_slope"
+    ]
+  },
+  "features": [
+    "z_fast",
+    "z_slow",
+    "log_strength_ratio",
+    "fast_run_age",
+    "slow_run_age",
+    "run_age_ratio",
+    "fast_evidence_age",
+    "slow_evidence_age",
+    "evidence_age_ratio"
+  ],
+  "model": {
+    "family": "DecisionTreeClassifier",
+    "max_depth": 3,
+    "min_samples_leaf": 100,
+    "class_weight": "balanced",
+    "criterion": "gini",
+    "random_state": 20260919
+  },
+  "test_years": [
+    2018,
+    2019,
+    2020
+  ],
+  "prefix_cuts": [
+    10000,
+    30000,
+    50000
+  ],
+  "winner": {
+    "regret_relative_improvement_min": 0.05,
+    "paired_regret_ci_excludes_zero": true,
+    "balanced_accuracy_noninferiority": 0.01,
+    "coverage_noninferiority": 0.01,
+    "min_years_ba_ge_0p52": 2
+  },
+  "authority": {
+    "fresh_oos": false,
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
