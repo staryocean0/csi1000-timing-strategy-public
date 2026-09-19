@@ -1,0 +1,36 @@
+{
+  "schema_version": "two_wave_c1_harmful_helpful_turn_prereg",
+  "issue": 589,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "authoritative_507_v2_scored_T0_signals_2018_2020",
+  "target": [
+    "NO_TURN",
+    "HELPFUL_TURN",
+    "HARMFUL_TURN"
+  ],
+  "direction_proxy": "predicted_post_turn_sign=-sign(ret8)",
+  "signed_score": "compression_score*sign(ret8*T0_side)",
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "min_turn_events": 100,
+    "direction_accuracy_min": 0.55,
+    "direction_accuracy_ci_lower_gt": 0.5,
+    "min_years_direction_accuracy_gt_0p50": 2,
+    "harmful_rate_diff_ci_lower_gt0": true,
+    "helpful_rate_diff_ci_lower_gt0": true,
+    "harmful_auc_min": 0.52,
+    "helpful_auc_min": 0.52
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
