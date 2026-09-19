@@ -1,0 +1,150 @@
+{
+  "schema_version": "two_wave_c2_phase_deadband_v1_prereg",
+  "issue": 432,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_DEADBAND_OPTIMIZATION_AND_PERSISTENCE",
+  "object": "C2=S1-S2 from scale-specific continuity hierarchy",
+  "causal_slope": {
+    "s1_nodes": "continuity stage2 input stream",
+    "s2_nodes": "continuity stage3 input stream",
+    "formula": "tail_log_slope(S1)-tail_log_slope(S2)",
+    "future_nodes": false,
+    "backfill": false
+  },
+  "normalization": {
+    "formula": "C2_slope / median(latest up to 3 known completed C2 A2/T2)",
+    "minimum_completed_c2_waves": 1
+  },
+  "audit": {
+    "usable_bars": 69372,
+    "total_bars": 70114,
+    "coverage": 0.9894172347890579,
+    "first_k": 742,
+    "last_k": 70113,
+    "zero_deadband_sign_runs": 290,
+    "one_update_one_bar_runs": 125,
+    "one_update_one_bar_fraction": 0.43103448275862066
+  },
+  "hysteresis": {
+    "states": [
+      "C2_UP",
+      "C2_RANGE",
+      "C2_DOWN"
+    ],
+    "unresolved_status": "UNRESOLVED",
+    "exit_grid": [
+      0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1
+    ],
+    "enter_grid": [
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1,
+      1.1,
+      1.2,
+      1.3,
+      1.4,
+      1.5,
+      1.6,
+      1.7,
+      1.8,
+      1.9,
+      2,
+      2.1,
+      2.2,
+      2.3,
+      2.4,
+      2.5,
+      2.6,
+      2.7,
+      2.8,
+      2.9,
+      3
+    ],
+    "require_enter_ge_exit": true,
+    "direct_direction_flip_allowed": false
+  },
+  "structural_reference": {
+    "chatter_direction_episode_lt_bars": 4,
+    "stable_turn_new_sign_run_min_bars": 4,
+    "stable_entry_run_min_bars": 8
+  },
+  "feasibility": {
+    "exit_old_within_4_min": 0.9,
+    "enter_new_within_8_min": 0.9,
+    "min_reference_events": 30
+  },
+  "selection_lexicographic": [
+    "min_total_chatter",
+    "min_short_same_direction_roundtrips",
+    "min_range_occupancy",
+    "min_enter",
+    "min_exit"
+  ],
+  "dispersion": {
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "min_reference_events_per_metric_year": 20,
+    "high_variance_if_normalized_mad_gt": 0.35,
+    "high_variance_if_full_range_gt": 0.75,
+    "min_usable_years": 5
+  },
+  "conditional_contingency": {
+    "activate_only_if_high_variance": true,
+    "families": [
+      "c2_pace_tertile",
+      "c2_period_tertile",
+      "s2_evidence_age_tertile"
+    ],
+    "min_resolved_bars_per_tertile": 5000,
+    "required_dispersion_reduction_fraction": 0.3,
+    "max_chatter_increase_fraction": 0.1
+  },
+  "persistence": {
+    "horizon_native_5m_bars": 8,
+    "endpoint_same_phase": true,
+    "continuous_survival": true,
+    "entry_event_persistence": true,
+    "transition_matrix_3x3": true,
+    "yearly_reporting": true
+  },
+  "forbidden": [
+    "PnL",
+    "future_return_magnitude",
+    "trade_outcome",
+    "route_choice",
+    "modify_primary_five_state_classifier",
+    "modify_accepted_t8_wrapper"
+  ],
+  "authority": {
+    "signal": false,
+    "strategy_selection": false,
+    "trade": false,
+    "router": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
