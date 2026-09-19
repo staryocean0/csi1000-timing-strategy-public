@@ -1,31 +1,37 @@
 {
-  "schema_version": "two_wave_c1_compression_risk_ranking_result_summary",
+  "schema_version": "two_wave_c1_compression_risk_ranking_result_summary_v2",
   "issue": 507,
   "parent_issue": 493,
   "date": "2026-09-19",
   "status": "C1_COMPRESSION_RISK_RANKING_COMPLETE",
   "verdict": "C1_COMPRESSION_RISK_RANKING_SUPPORTED",
+  "authoritative_version": "v2",
+  "supersedes": "c1-compression-risk-ranking-20260919-v1",
+  "v1_status": "NON_AUTHORITATIVE_UNTRACEABLE_MODULE",
   "support": {
-    "scored_t0_signals": 949,
-    "base_turn_next8_rate": 0.2191780821917808
+    "scored_t0_signals": 945,
+    "base_turn_next8_rate": 0.2201058201058201
   },
   "pooled": {
     "B1_rate": 0.14788732394366197,
-    "B5_rate": 0.24719101123595505,
-    "B5_minus_B1": 0.09930368729229308,
-    "B5_over_B1": 1.671482075976458,
-    "band_spearman": 0.8999999999999998,
-    "auc": 0.5564141492785217
+    "B5_rate": 0.24858757062146894,
+    "B5_minus_B1": 0.10070024667780697,
+    "B5_over_B1": 1.6809254775356472,
+    "band_spearman": 0.7,
+    "auc": 0.5565833420311032
   },
   "bootstrap": {
     "risk_difference_ci95": [
-      0.006664450164450152,
-      0.18879667867176078
+      0.009646891850839223,
+      0.19022521366027814
     ],
     "risk_ratio_ci95": [
-      1.039699074074074,
-      2.6162399203077165
-    ]
+      1.0559888888888889,
+      2.6343814711664475
+    ],
+    "blocks": 37,
+    "repetitions": 5000,
+    "seed": 20260919
   },
   "yearly": {
     "2018": {
@@ -40,15 +46,15 @@
     },
     "2020": {
       "B1": 0.16666666666666666,
-      "B5": 0.18518518518518517,
-      "auc": 0.5127169720347156
+      "B5": 0.18867924528301888,
+      "auc": 0.5137019818938096
     }
   },
   "hashes": {
-    "module": "798f460ed46542e8db162896a58e670288415be292345eb189628b6649023631",
-    "all_signal_ledger": "3e3a41b4106c435afb9aaba252249a056f4043b3088348358360fe0bbd566878",
-    "scored_ledger": "3052a2e9f38b93baec4cad0bc9a786aa0e67dca18667ede9cedea45ac19e3170",
-    "exact_result": "4ab723eb939fbe94ca71737181c1af232818374e4228ca13217a0c1339d5e1b1"
+    "module": "7c386d7ce6b5b41a8df297aecf74488d806dcb20c09c852aab566f424602478c",
+    "all_signal_ledger": "c36bf17dcb82994d3e8be0c1028f6dfefe029903ea0f8736bb6e5a026fbe403e",
+    "scored_ledger": "6fb773743cad9f009b62b973888b63db385459bd6e5db9524046e0b7958d8b33",
+    "exact_result": "f0d0b8d0ee0c35e30c8731d4e71cecef38dc5dc9382e45bc14f1b665dbe087a2"
   },
   "authority": {
     "signal": false,
