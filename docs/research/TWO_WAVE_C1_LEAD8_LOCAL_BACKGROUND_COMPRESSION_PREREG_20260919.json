@@ -1,0 +1,33 @@
+{
+  "schema_version": "two_wave_c1_lead8_local_background_compression_prereg",
+  "issue": 503,
+  "parent_issue": 501,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "frozen_sample": {
+    "events_sha256": "9723fdc08adcab6d325b6bda450acec4caac9c734a05013911926f749dae8d06",
+    "matches_sha256": "996c3ecfe5559a50066a37b8f5c96ef34ae09ecf6c3d159d873c8ef7931a662b",
+    "rematching_forbidden": true
+  },
+  "primary": [
+    "abs_ret8_over_range32",
+    "range8_over_range32",
+    "rv8_over_rv32",
+    "efficiency8_minus_efficiency32"
+  ],
+  "bootstrap": {
+    "unit": "event",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "min_supported_features": 3,
+    "min_event_coverage": 0.95
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
