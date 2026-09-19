@@ -1,0 +1,48 @@
+{
+  "schema_version": "two_wave_c1_causal_warning_v1_prereg",
+  "issue": 492,
+  "parent_issue": 485,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "schedule": {
+    "stride_bars": 8,
+    "target_horizon_bars": 8
+  },
+  "features": [
+    "log_abs_ret8",
+    "log_range8",
+    "log_rv8",
+    "efficiency8",
+    "log_range_ratio_8_32",
+    "log_rv_ratio_8_32"
+  ],
+  "model": {
+    "scaler": "StandardScaler",
+    "family": "LogisticRegression",
+    "C": 1,
+    "class_weight": "balanced",
+    "max_iter": 2000,
+    "random_state": 20260919,
+    "hyperparameter_search": false
+  },
+  "test_years": [
+    2018,
+    2019,
+    2020
+  ],
+  "risk_threshold": "training_probability_q80",
+  "acceptance": {
+    "pooled_auc_min": 0.57,
+    "min_years_auc_ge_0p53": 2,
+    "min_years_lift_ge_1p50": 2,
+    "direction_accuracy_high_risk_min": 0.6,
+    "causality_checks_required": true
+  },
+  "authority": {
+    "fresh_oos": false,
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
