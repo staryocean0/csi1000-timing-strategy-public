@@ -1,0 +1,39 @@
+{
+  "schema_version": "two_wave_t0_side_c1_proxy_fragility_prereg",
+  "issue": 561,
+  "parent_issue": 558,
+  "date": "2026-09-19",
+  "universe": "authoritative_507_strict_v2_scored_T0_signals_2018_2020",
+  "proxy": "actual_T0_side",
+  "targets": [
+    "dense_C1_current_sign",
+    "dense_C1_sign_at_k_plus_8"
+  ],
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "min_pooled_current_BA": 0.6,
+    "min_pooled_future8_BA": 0.55,
+    "future8_B5_lt_B1": true,
+    "future8_delta_ci_upper_lt0": true,
+    "future8_band_spearman_max": -0.7,
+    "min_years_B5_lt_B1": 2,
+    "current_B5_le_B1": true
+  },
+  "forbidden": [
+    "PnL",
+    "route outcome",
+    "proxy search",
+    "band retuning",
+    "threshold search"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
