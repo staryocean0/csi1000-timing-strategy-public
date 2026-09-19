@@ -1,0 +1,67 @@
+{
+  "schema_version": "two_wave_c1_lead8_precursor_atlas_result_summary",
+  "issue": 483,
+  "parent_issue": 450,
+  "date": "2026-09-19",
+  "status": "C1_LEAD8_PRECURSOR_ATLAS_COMPLETE",
+  "prefix_replay_passed": true,
+  "oracle": {
+    "support_rows": 69971,
+    "turns": 1523,
+    "to_up": 761,
+    "to_down": 762
+  },
+  "discovery": {
+    "ret8_aligned_delta_8_minus_16": {
+      "median": -0.00057334536077569,
+      "ci95": [
+        -0.0010184228982250687,
+        -0.0002412385243388826
+      ],
+      "years_same_sign": 6,
+      "both_directions_same_sign": true
+    },
+    "ret16_aligned_delta_8_minus_16": {
+      "median": -0.0009129520785648992,
+      "ci95": [
+        -0.0012328766600884222,
+        -0.0006240367429093396
+      ]
+    },
+    "ret32_aligned_delta_8_minus_16": {
+      "median": -0.0009266496602737817,
+      "ci95": [
+        -0.0012691200403886604,
+        -0.0006956729917515503
+      ]
+    },
+    "range8_delta_8_minus_16": {
+      "median": -0.00024577448000186533,
+      "ci95": [
+        -0.0003917771011644868,
+        -0.00009927952422287374
+      ]
+    },
+    "rv8_delta_8_minus_16": {
+      "median": -0.000056513462118744535,
+      "ci95": [
+        -0.00008384078948983447,
+        -0.000029995260197091954
+      ]
+    }
+  },
+  "interpretation": "event-only discovery; specificity unresolved; mechanical age clocks excluded",
+  "successor_issue": 485,
+  "hashes": {
+    "module": "47fc8e07499e1dc30f0da0decaaaf473f819460aeda33dce27f64359dd39bdfb",
+    "event_ledger": "0e942c1239ec7711fdaac2bc597c1d938bfa31938cc5276e8fd30a68dc6be643",
+    "mechanism_ledger": "5ec4404d3e79ab1b84bc4bdf93800f46d8e1af746e3cbac9979cfa844a7a476f",
+    "exact_result": "a8c289f27cc652262b95d688a5fd8b4d50536827f1a067ae4ac16d1737e12a41"
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
