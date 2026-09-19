@@ -1,0 +1,42 @@
+{
+  "schema_version": "two_wave_r2b_dual_track_charter",
+  "date": "2026-09-19",
+  "parent_issue": 450,
+  "fork_issue": 463,
+  "r2b_issue": 461,
+  "status": "LP_BP_PARALLEL_CAUSAL_QUALIFICATION_REQUIRED",
+  "tracks": {
+    "LP": {
+      "LP2": "S1",
+      "LP3": "S2"
+    },
+    "BP": {
+      "BP2": "S1-S2",
+      "BP3": "S2-S3"
+    }
+  },
+  "fairness": [
+    "same_knowledge_clock",
+    "same_raw_information_set",
+    "same_delay_grid",
+    "same_fidelity_metrics",
+    "same_temporal_stability_rules",
+    "no_execution_outcome_during_selection",
+    "equal_parameter_complexity_budget"
+  ],
+  "order": [
+    "R2b-0_OBSERVATION_FAMILY_REGISTRATION",
+    "R2b-1_PAIRED_CAUSAL_FIDELITY_MEASUREMENT",
+    "R2b-2_REPRESENTATION_COMPARISON",
+    "R2b-3_JOIN_ONLY_QUALIFIED_STATES_TO_FROZEN_EXECUTION_CONTRACT"
+  ],
+  "pass_a_verdict": "NO_EARLY_WINNER__ADVANCE_BP_AND_LP_IN_PARALLEL",
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
