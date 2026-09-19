@@ -1,0 +1,49 @@
+{
+  "schema_version": "two_wave_c1_compression_economic_prereg",
+  "issue": 519,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_OUTCOME_RESULTS",
+  "input": {
+    "strict_scored_signals": 945,
+    "bands": "frozen_#507_B1_to_B5"
+  },
+  "causal_context": "then_known_C1_leg_relative_to_T0",
+  "primary_branch": "ALIGNED",
+  "primary_comparison": [
+    "B1",
+    "B5"
+  ],
+  "preaudit_support": {
+    "aligned_B1": 42,
+    "aligned_B5": 70,
+    "opposed_B1": 100,
+    "opposed_B5": 107
+  },
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate_Q": {
+    "min_each": 30,
+    "B1_mean_positive": true,
+    "B5_minus_B1_negative": true,
+    "diff_ci_upper_lt0": true,
+    "B5_win_lt_B1": true,
+    "min_years_negative_diff": 2
+  },
+  "gate_V": {
+    "requires_gate_Q": true,
+    "B5_mean_negative": true,
+    "B5_mean_ci_upper_lt0": true
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
