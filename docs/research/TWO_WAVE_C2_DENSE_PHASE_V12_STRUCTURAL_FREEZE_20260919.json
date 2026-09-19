@@ -1,0 +1,122 @@
+{
+  "schema_version": "two_wave_c2_dense_phase_v12_structural_freeze",
+  "issue": 432,
+  "date": "2026-09-19",
+  "status": "DENSE_C2_STRUCTURAL_DEADBAND_FROZEN__PERSISTENCE_NOT_YET_OPENED",
+  "carrier": {
+    "object": "retrospective dense graphical C2=log(S1)-log(S2)",
+    "common_support_bars": 69615,
+    "usable_bars": 69358,
+    "first_usable_bar": 523,
+    "last_usable_bar": 69880,
+    "complete_c2_waves": 170,
+    "raw_sign_changes": 386,
+    "raw_sign_runs": 387,
+    "median_raw_sign_run_bars": 157,
+    "raw_sign_runs_lt4": 1,
+    "ledger_sha256": "728d2a6c50a7add6fd2daffa2cf4acd207940e6ed38e100e95d5048eef4d3101"
+  },
+  "deadband": {
+    "exit": 0,
+    "enter": 0.01,
+    "width": 0.01,
+    "lower_boundary_limited": true,
+    "direct_direction_flip_allowed": false
+  },
+  "structural": {
+    "stable_turn_events": 385,
+    "stable_entry_events": 386,
+    "exit_within_4_rate": 1,
+    "entry_within_8_rate": 0.9896373056994818,
+    "short_direction_episodes": 1,
+    "short_same_direction_roundtrips": 0,
+    "total_chatter": 1,
+    "range_occupancy": 0.017748493324490324,
+    "transitions": 770,
+    "feasible_pairs": 336,
+    "candidate_pairs": 420
+  },
+  "yearly": [
+    {
+      "year": 2015,
+      "exit": 0,
+      "enter": 0.01,
+      "total_chatter": 1,
+      "exit_within_4_rate": 1,
+      "entry_within_8_rate": 0.9642857142857143
+    },
+    {
+      "year": 2016,
+      "exit": 0,
+      "enter": 0.01,
+      "total_chatter": 0,
+      "exit_within_4_rate": 1,
+      "entry_within_8_rate": 1
+    },
+    {
+      "year": 2017,
+      "exit": 0,
+      "enter": 0.01,
+      "total_chatter": 0,
+      "exit_within_4_rate": 1,
+      "entry_within_8_rate": 0.9726027397260274
+    },
+    {
+      "year": 2018,
+      "exit": 0,
+      "enter": 0.01,
+      "total_chatter": 0,
+      "exit_within_4_rate": 1,
+      "entry_within_8_rate": 1
+    },
+    {
+      "year": 2019,
+      "exit": 0,
+      "enter": 0.01,
+      "total_chatter": 0,
+      "exit_within_4_rate": 1,
+      "entry_within_8_rate": 1
+    },
+    {
+      "year": 2020,
+      "exit": 0,
+      "enter": 0.01,
+      "total_chatter": 0,
+      "exit_within_4_rate": 1,
+      "entry_within_8_rate": 1
+    }
+  ],
+  "dispersion": {
+    "status": "STABLE_GLOBAL",
+    "usable_years": 6,
+    "exit": {
+      "median": 0,
+      "mad": 0,
+      "normalized_mad": 0,
+      "range": 0
+    },
+    "enter": {
+      "median": 0.01,
+      "mad": 0,
+      "normalized_mad": 0,
+      "range": 0
+    },
+    "conditional_deadband_required": false
+  },
+  "evidence_sha256": {
+    "global_grid": "957091f479778292d836c17ec58b03822ac96015e503d012efa6ee22ee3176c8",
+    "annual_optima": "16f3330c129fe756bd8bdf19779dff9bd09a0a78280c6d977d258dad51177254",
+    "structural_result": "7a8427d9e9a7d3f577edca6334b3b68a6b6d3ef6256ca3e2ea29c96b3210f973"
+  },
+  "persistence_opened": false,
+  "post_persistence_retuning_allowed": false,
+  "causal_equivalence_claimed": false,
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
