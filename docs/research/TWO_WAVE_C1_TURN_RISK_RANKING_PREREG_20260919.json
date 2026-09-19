@@ -1,0 +1,39 @@
+{
+  "schema_version": "two_wave_c1_turn_risk_ranking_prereg",
+  "issue": 498,
+  "parent_issue": 493,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "T0 period-21 signal bars",
+  "target": "retrospective C1 slope turn in next 8 bars",
+  "features": [
+    "abs_ret_8",
+    "range_8",
+    "rv_8",
+    "efficiency_8"
+  ],
+  "score": "mean(1-prior_year_empirical_percentile(feature))",
+  "test_years": [
+    2018,
+    2019,
+    2020
+  ],
+  "bootstrap": {
+    "cluster": "20_trading_day_blocks",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gates": {
+    "pooled_auc_min": 0.55,
+    "min_years_auc_gt_0p52": 2,
+    "top10_lift_min": 1.5,
+    "top10_lift_ci_lower_gt": 1,
+    "quintile_turn_rate_spearman_positive": true
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
