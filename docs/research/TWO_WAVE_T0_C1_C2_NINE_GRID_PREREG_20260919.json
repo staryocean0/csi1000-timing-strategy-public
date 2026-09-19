@@ -1,0 +1,65 @@
+{
+  "schema_version": "two_wave_t0_c1_c2_nine_grid_prereg",
+  "issue": 480,
+  "parent_issue": 450,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "states": {
+    "UP": "g>0.20",
+    "RANGE": "abs(g)<=0.20",
+    "DOWN": "g<-0.20"
+  },
+  "t0": {
+    "period": 21,
+    "cost_bps_per_side": 2,
+    "engine": "trend_shadow_trades"
+  },
+  "grids": [
+    "absolute_C1xC2",
+    "T0_relative_C1xC2"
+  ],
+  "bootstrap": {
+    "cluster": "C2_parent_wave",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gates": {
+    "c1_opposed_veto": {
+      "min_trades": 50,
+      "min_parent_waves": 30,
+      "mean_negative": true,
+      "bootstrap_upper_lt0": true,
+      "long_short_point_means_negative": true
+    },
+    "c1_aligned": {
+      "min_trades": 50,
+      "min_parent_waves": 30,
+      "mean_positive": true,
+      "bootstrap_lower_gt0": true
+    },
+    "c1_range": {
+      "min_trades": 30,
+      "min_parent_waves": 20,
+      "mean_positive": true,
+      "bootstrap_lower_ge0": true
+    },
+    "direct_c1_supervision_rejected": {
+      "paired_difference_negative": true,
+      "bootstrap_upper_lt0": true
+    }
+  },
+  "low_support_cell": {
+    "trades_lt": 20,
+    "parent_waves_lt": 15
+  },
+  "authority": {
+    "retrospective": true,
+    "causal": false,
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
