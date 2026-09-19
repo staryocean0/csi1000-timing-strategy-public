@@ -1,0 +1,31 @@
+{
+  "schema_version": "two_wave_c1_causal_leg_compression_atlas_prereg",
+  "issue": 584,
+  "parent_issue": 579,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "authoritative_507_v2_T0_signals_2018_2020",
+  "current_state": [
+    "ALIGNED",
+    "OPPOSED",
+    "UNRESOLVED"
+  ],
+  "risk_bands": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "target": [
+    "NO_TURN",
+    "FAVORABLE_TURN",
+    "ADVERSE_TURN"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
