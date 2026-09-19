@@ -1,0 +1,66 @@
+{
+  "schema_version": "two_wave_c2_semantic_phase_threshold_v1_prereg",
+  "issue": 444,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_BASE_G_DISTRIBUTION",
+  "c2_oracle": {
+    "carrier": "scale-specific continuity completed C2 waves",
+    "label_formula": "g_C2=(log(end_low)-log(start_low))/channel_height",
+    "tau": 0.2,
+    "classes": [
+      "DOWN",
+      "RANGE",
+      "UP"
+    ],
+    "independent_of_base_g": true
+  },
+  "base_slope": {
+    "variable": "g_base=(log(end_low)-log(start_low))/base_channel_height",
+    "full_containment_required": true
+  },
+  "thresholds": {
+    "asymmetric": true,
+    "prediction": "DOWN if g<t_down; RANGE if t_down<=g<=t_up; UP if g>t_up"
+  },
+  "objective": [
+    "max_macro_balanced_accuracy",
+    "max_RANGE_recall",
+    "min_abs_threshold_asymmetry",
+    "min_range_width"
+  ],
+  "identifiability": {
+    "min_c2_waves_per_class": 30,
+    "min_base_waves_per_class": 500,
+    "macro_balanced_accuracy_min": 0.45,
+    "per_class_recall_min": {
+      "DOWN": 0.4,
+      "RANGE": 0.4,
+      "UP": 0.4
+    }
+  },
+  "bootstrap": {
+    "unit": "completed_C2_wave",
+    "replicates": 2000,
+    "seed": 20260919,
+    "stratified_by_c2_class": true
+  },
+  "stability": {
+    "normalized_mad_max": 0.35,
+    "ci95_width_max": 0.75
+  },
+  "condition_diagnostics": [
+    "c2_amplitude_tertile",
+    "c2_duration_tertile",
+    "base_midpoint_EARLY_MIDDLE_LATE"
+  ],
+  "delayed_persistence_not_used_for_thresholds": true,
+  "authority": {
+    "signal": false,
+    "strategy_selection": false,
+    "trade": false,
+    "router": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
