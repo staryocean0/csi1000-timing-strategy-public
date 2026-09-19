@@ -1,0 +1,37 @@
+{
+  "schema_version": "two_wave_c1_lead8_direction_proxy_prereg",
+  "issue": 577,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "authoritative_507_v2_T0_signals_2018_2020_with_turn_next8",
+  "target": "first_C1_turn_direction_in_(k,k+8]",
+  "proxies": [
+    "NEG_RET8",
+    "NEG_RET16",
+    "NEG_RET32",
+    "NEG_CAUSAL_C1_LEG",
+    "NEG_LAST_BASE_DIR",
+    "NEG_C1_SEGMENT_RESIDUAL"
+  ],
+  "risk_bands": "authoritative_507_v2_B1_B5",
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "clue_gate": {
+    "coverage_min": 0.9,
+    "accuracy_min_strict": 0.58,
+    "accuracy_ci_lower_gt": 0.55,
+    "recall_up_min_strict": 0.55,
+    "recall_down_min_strict": 0.55,
+    "min_years_accuracy_gt_0p55": 2
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
