@@ -1,0 +1,45 @@
+{
+  "schema_version": "two_wave_c1_compression_phase_atlas_prereg",
+  "issue": 509,
+  "parent_issue": 505,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "reuse_score_from_issue": 505,
+  "features": [
+    "abs_ret8_over_range32",
+    "range8_over_range32",
+    "efficiency8_minus_efficiency32"
+  ],
+  "score": "equal-weight mean of prior-year reverse percentiles; no phase-specific recalibration",
+  "phases": {
+    "EARLY": "age_ratio<1/3",
+    "MIDDLE": "1/3<=age_ratio<2/3",
+    "LATE": "age_ratio>=2/3"
+  },
+  "test_years": [
+    2018,
+    2019,
+    2020
+  ],
+  "bootstrap": {
+    "metric": "top20_lift",
+    "blocks": "20-trading-day T0-signal blocks",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "phase_gate": {
+    "pooled_n_min": 150,
+    "each_year_n_min": 30,
+    "pooled_auc_gt": 0.55,
+    "min_years_auc_gt_0p52": 2,
+    "top20_lift_min": 1.3,
+    "top20_lift_ci_lower_gt": 1,
+    "quintile_spearman_gt": 0
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
