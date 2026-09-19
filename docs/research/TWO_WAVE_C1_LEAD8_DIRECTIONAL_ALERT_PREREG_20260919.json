@@ -1,0 +1,31 @@
+{
+  "schema_version": "two_wave_c1_lead8_directional_alert_prereg",
+  "issue": 607,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "risk_input": {
+    "authoritative_issue": 507,
+    "scored_ledger_sha256": "6fb773743cad9f009b62b973888b63db385459bd6e5db9524046e0b7958d8b33"
+  },
+  "direction_rule": "ret8>0=>TO_DOWN; ret8<0=>TO_UP; ret8==0=>abstain",
+  "target": "first_retrospective_C1_turn_in_(k,k+8]",
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "pooled_direction_accuracy_min": 0.6,
+    "bootstrap_lower_min": 0.55,
+    "min_years_accuracy_gt_0p55": 2,
+    "B5_joint_hit_gt_B1": true,
+    "B5_minus_B1_joint_hit_ci_lower_gt0": true
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
