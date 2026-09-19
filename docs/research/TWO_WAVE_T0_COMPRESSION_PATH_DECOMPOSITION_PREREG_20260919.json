@@ -1,0 +1,38 @@
+{
+  "schema_version": "two_wave_t0_compression_path_decomposition_prereg",
+  "issue": 525,
+  "parent_issue": 523,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "exact_issue_507_strict_v2_scored_T0_signals_2018_2020",
+  "zones": {
+    "LOW": [
+      1,
+      2
+    ],
+    "HIGH": [
+      4,
+      5
+    ]
+  },
+  "horizons": [
+    4,
+    8,
+    21
+  ],
+  "excursions": [
+    8,
+    21
+  ],
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
