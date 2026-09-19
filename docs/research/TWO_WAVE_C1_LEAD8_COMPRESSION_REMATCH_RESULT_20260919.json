@@ -1,0 +1,91 @@
+{
+  "schema_version": "two_wave_c1_lead8_compression_rematch_result_summary",
+  "issue": 493,
+  "parent_issue": 485,
+  "date": "2026-09-19",
+  "status": "C1_LEAD8_COMPRESSION_REMATCH_COMPLETE",
+  "verdict": "C1_LEAD8_COMPRESSION_SPECIFICITY_SUPPORTED",
+  "support": {
+    "eligible_events": 1521,
+    "matched_events": 1501,
+    "event_coverage": 0.9868507560815253,
+    "control_rows": 7445,
+    "median_controls_per_event": 5,
+    "unique_control_bars": 7405,
+    "max_reuse_count": 3,
+    "reuse_slots": 40
+  },
+  "balance": {
+    "base_confirm_age": {
+      "median": 0,
+      "ci95": [
+        0,
+        0
+      ]
+    },
+    "causal_c1_evidence_age": {
+      "median": 0,
+      "ci95": [
+        0,
+        0
+      ]
+    }
+  },
+  "primary": {
+    "abs_ret_8": {
+      "event_median": 0.0026040002511855675,
+      "control_median": 0.0034792013652435116,
+      "paired_median": -0.0008136690022556791,
+      "ci95": [
+        -0.000996985845919696,
+        -0.0006748714274856125
+      ],
+      "years_negative": 6
+    },
+    "range_8": {
+      "event_median": 0.0049468536826310595,
+      "control_median": 0.006037964207281311,
+      "paired_median": -0.0009084845014707974,
+      "ci95": [
+        -0.001090441489463786,
+        -0.0006503072824023941
+      ],
+      "years_negative": 6
+    },
+    "rv_8": {
+      "event_median": 0.0010847333361986686,
+      "control_median": 0.0012976318517084564,
+      "paired_median": -0.00016776355407286574,
+      "ci95": [
+        -0.00021035873859867387,
+        -0.00011910686390133036
+      ],
+      "years_negative": 6
+    },
+    "efficiency_8": {
+      "event_median": 0.34764891536073694,
+      "control_median": 0.39982386491435185,
+      "paired_median": -0.04194899346884934,
+      "ci95": [
+        -0.06310124047242957,
+        -0.02422284213623499
+      ],
+      "years_negative": 5
+    }
+  },
+  "supported_variables": 4,
+  "interpretation": "lead-8 C1 turns are preceded by direction-agnostic compression/exhaustion after evidence-age rematching",
+  "hashes": {
+    "module": "ebeed66674b52abb81901a74acacb7496f1cd1dbe452f46cecfc2442cee1a28e",
+    "events": "9723fdc08adcab6d325b6bda450acec4caac9c734a05013911926f749dae8d06",
+    "matches": "996c3ecfe5559a50066a37b8f5c96ef34ae09ecf6c3d159d873c8ef7931a662b",
+    "paired": "e18edc0aabea3fe3e22d3e0b03a6ae61029a474f83ae8819eb1726d65dcef64f",
+    "exact_result": "5055881f7624cf2d7f267c257332007d5b2143ff201afcc8e8e3c65da9c3c7e3"
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
