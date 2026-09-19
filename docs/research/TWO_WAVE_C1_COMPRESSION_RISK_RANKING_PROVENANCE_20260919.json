@@ -1,0 +1,17 @@
+{
+  "schema_version": "two_wave_c1_compression_risk_ranking_provenance",
+  "date": "2026-09-19",
+  "authoritative_result": "c1-compression-risk-ranking-20260919-v2",
+  "retired_result": "c1-compression-risk-ranking-20260919-v1",
+  "retired_status": "NON_AUTHORITATIVE_UNTRACEABLE_MODULE",
+  "reasons": [
+    "v1 exact module source could not be located for module SHA 798f460e...",
+    "v1 included four terminal T0 signals whose k+8 evaluation exceeded frozen C1 oracle support"
+  ],
+  "v2_corrections": [
+    "require k+8 to remain inside frozen C1 oracle support",
+    "store exact traceable module whose SHA matches result receipt"
+  ],
+  "research_definition_changed": false,
+  "gate_or_threshold_changed": false
+}
