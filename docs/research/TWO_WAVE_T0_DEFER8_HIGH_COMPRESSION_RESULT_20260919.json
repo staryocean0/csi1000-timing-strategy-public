@@ -1,0 +1,44 @@
+{
+  "schema_version": "two_wave_t0_defer8_high_compression_result_summary",
+  "issue": 540,
+  "parent_issue": 537,
+  "date": "2026-09-19",
+  "verdict": "C1_COMPRESSION_DEFER8_NOT_SUPPORTED",
+  "support": {
+    "signals": 356,
+    "executed": 311,
+    "skipped": 45,
+    "execution_fraction": 0.8735955056179775
+  },
+  "pooled": {
+    "original_mean_net_bp": 20.53541190804474,
+    "deferred_mean_net_bp": 19.15749579594199,
+    "mean_delta_bp": -1.3779161121027477
+  },
+  "bootstrap_ci95": [
+    -6.3087586721414235,
+    3.0462579876107205
+  ],
+  "skipped": {
+    "mean_net_bp": -58.154409126745485,
+    "win_rate": 0,
+    "fast_loss_rate": 1,
+    "median_duration": 6
+  },
+  "survivors": {
+    "original_mean_net_bp": 31.92139887449349,
+    "deferred_mean_net_bp": 21.9294807181844,
+    "delta_bp": -9.991918156309083
+  },
+  "hashes": {
+    "module": "34e0ee88e0ec415e94dee7b969c07470c2185dae4fdead781f8613e80bdf17b4",
+    "ledger": "4f851fa87d12d959678213aa1b1c2d8558f1da06903d1879f8c866addff48857",
+    "result": "83dc5db6433d2c0def1b36e72c409458cd34661df34ec90e1df92270414fc860"
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
