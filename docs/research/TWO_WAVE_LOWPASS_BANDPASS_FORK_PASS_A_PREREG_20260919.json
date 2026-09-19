@@ -1,0 +1,72 @@
+{
+  "schema_version": "two_wave_lowpass_bandpass_fork_pass_a_prereg",
+  "issue": 463,
+  "parent_issue": 450,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_PASS_A_RESULTS",
+  "representations": {
+    "bandpass": {
+      "BP2": "S1-S2",
+      "BP3": "S2-S3"
+    },
+    "lowpass": {
+      "LP2": "S1",
+      "LP3": "S2"
+    }
+  },
+  "metrics": [
+    "support",
+    "determinism",
+    "component_sign_runs",
+    "relation_runs",
+    "turn_spacing",
+    "scale_separation",
+    "level_correlation",
+    "slope_correlation",
+    "year_stability",
+    "exact_causal_observability"
+  ],
+  "delay_grid": [
+    0,
+    4,
+    8,
+    16,
+    32,
+    64,
+    128,
+    256,
+    512
+  ],
+  "early_preference": {
+    "support_min": 0.9,
+    "turn_spacing_ratio_min": 2,
+    "turn_spacing_ratio_max": 6,
+    "exact_delay_quantiles": [
+      "q25",
+      "q50",
+      "q75",
+      "q90"
+    ],
+    "strict_better_quantiles_min": 3,
+    "yearly_relation_drift_ratio_max": 1.1,
+    "pooled_relation_run_median_ratio_min": 0.8,
+    "no_weighted_score": true
+  },
+  "fallback_verdict": "NO_EARLY_WINNER__ADVANCE_BP_AND_LP_IN_PARALLEL",
+  "forbidden": [
+    "T0 outcome",
+    "C1 outcome",
+    "PnL",
+    "route winner",
+    "future return",
+    "execution-arm labels"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
