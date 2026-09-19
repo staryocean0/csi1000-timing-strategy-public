@@ -1,0 +1,33 @@
+{
+  "schema_version": "two_wave_high_compression_early_progress_prereg",
+  "issue": 527,
+  "parent_issue": 525,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "strict_issue_507_HIGH_B4_B5_T0_signals_2018_2020",
+  "horizons": [
+    4,
+    8
+  ],
+  "mtm_threshold": 0,
+  "cost_bps_roundtrip": 4,
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "mean_diff_positive": true,
+    "mean_diff_ci_lower_gt0": true,
+    "q10_diff_positive": true,
+    "q10_diff_ci_lower_gt0": true,
+    "min_years_mean_diff_positive": 2,
+    "max_early_exit_original_winner_fraction": 0.3
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
