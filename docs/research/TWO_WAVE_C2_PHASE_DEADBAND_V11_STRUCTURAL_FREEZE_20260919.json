@@ -1,0 +1,118 @@
+{
+  "schema_version": "two_wave_c2_phase_deadband_v11_structural_freeze",
+  "issue": 432,
+  "date": "2026-09-19",
+  "status": "STRUCTURAL_DEADBAND_FROZEN__PERSISTENCE_NOT_YET_COMPUTED",
+  "carrier": {
+    "object": "graphical C2=S1-S2 scale-specific continuity",
+    "source_rows": 70114,
+    "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "ledger_rows": 69372,
+    "raw_sign_changes": 289,
+    "ledger_sha256": "7191f0ca6b762edff0967117112c3b6ead09ae6d7424da4ced61909ad7f3071c",
+    "invalid_iir_proxy_excluded": true
+  },
+  "deadband": {
+    "exit": 0,
+    "enter": 0.01,
+    "width": 0.01,
+    "lower_boundary_limited": true,
+    "range_mandatory_between_directions": true
+  },
+  "full_sample": {
+    "stable_turn_events": 289,
+    "stable_entry_events": 290,
+    "exit_within_4_rate": 1,
+    "entry_within_8_rate": 0.996551724137931,
+    "short_direction_episodes": 0,
+    "short_same_direction_roundtrips": 0,
+    "total_chatter": 0,
+    "range_occupancy": 0.005174998558496223,
+    "transitions": 576,
+    "feasible_pairs": 210,
+    "candidate_pairs": 420
+  },
+  "yearly": [
+    {
+      "year": 2015,
+      "exit": 0,
+      "enter": 0.01,
+      "total_chatter": 0,
+      "exit_within_4_rate": 1,
+      "entry_within_8_rate": 1
+    },
+    {
+      "year": 2016,
+      "exit": 0,
+      "enter": 0.01,
+      "total_chatter": 1,
+      "exit_within_4_rate": 1,
+      "entry_within_8_rate": 0.9838709677419355
+    },
+    {
+      "year": 2017,
+      "exit": 0,
+      "enter": 0.01,
+      "total_chatter": 0,
+      "exit_within_4_rate": 1,
+      "entry_within_8_rate": 1
+    },
+    {
+      "year": 2018,
+      "exit": 0,
+      "enter": 0.01,
+      "total_chatter": 0,
+      "exit_within_4_rate": 1,
+      "entry_within_8_rate": 1
+    },
+    {
+      "year": 2019,
+      "exit": 0,
+      "enter": 0.01,
+      "total_chatter": 0,
+      "exit_within_4_rate": 1,
+      "entry_within_8_rate": 1
+    },
+    {
+      "year": 2020,
+      "exit": 0,
+      "enter": 0.01,
+      "total_chatter": 0,
+      "exit_within_4_rate": 1,
+      "entry_within_8_rate": 1
+    }
+  ],
+  "dispersion": {
+    "status": "STABLE_GLOBAL",
+    "usable_years": 6,
+    "exit": {
+      "median": 0,
+      "mad": 0,
+      "normalized_mad": 0,
+      "range": 0
+    },
+    "enter": {
+      "median": 0.01,
+      "mad": 0,
+      "normalized_mad": 0,
+      "range": 0
+    },
+    "conditional_contingency_activated": false
+  },
+  "evidence_sha256": {
+    "global_grid": "18197e05ac8eaf50eaa206ec56b9a0929224b37adeb9255743788eeac795043c",
+    "annual_optima": "65eb11602029205171ad3f8b7b70ad26579ae7c5c86175773b02bee44588f879",
+    "structural_result": "0812955df47a1bf9fbde445e4882466bb54f8a02a3d445ae97ac7c9efd2b80f2"
+  },
+  "persistence_opened": false,
+  "post_persistence_retuning_allowed": false,
+  "authority": {
+    "signal": false,
+    "strategy_selection": false,
+    "trade": false,
+    "router": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
