@@ -1,0 +1,81 @@
+{
+  "schema_version": "two_wave_c1_lead8_direct_direction_prereg",
+  "issue": 604,
+  "parent_issue": 601,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "target": "sign(dC1(k+8))",
+  "test_years": [
+    2018,
+    2019,
+    2020
+  ],
+  "numeric_features": [
+    "ret_4",
+    "ret_8",
+    "ret_16",
+    "ret_32",
+    "range_8",
+    "range_16",
+    "range_32",
+    "rv_8",
+    "rv_16",
+    "rv_32",
+    "efficiency_8",
+    "efficiency_16",
+    "efficiency_32",
+    "last_base_g",
+    "last_base_slope",
+    "last_base_height",
+    "last_base_duration",
+    "age_since_base_confirmation",
+    "prev_base_g",
+    "base_same_sign_run"
+  ],
+  "categorical_features": [
+    "last_base_direction",
+    "last_two_base_same_sign",
+    "t0_side"
+  ],
+  "forbidden_features": [
+    "causal_c1_leg",
+    "causal_c1_descriptor",
+    "causal_c1_phase",
+    "causal_c1_age",
+    "causal_c1_amplitude",
+    "confirmed_S0_S1_segment_slopes",
+    "turn_label",
+    "PnL",
+    "future_return"
+  ],
+  "model": {
+    "family": "LogisticRegression",
+    "C": 1,
+    "class_weight": "balanced",
+    "solver": "lbfgs",
+    "max_iter": 2000,
+    "random_state": 20260919,
+    "hyperparameter_search": false
+  },
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "pooled_balanced_accuracy_min": 0.55,
+    "pooled_auc_strict_gt": 0.55,
+    "recall_up_min": 0.52,
+    "recall_down_min": 0.52,
+    "min_years_ba_ge_0p52": 2,
+    "bootstrap_ba_lower_gt": 0.5
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
