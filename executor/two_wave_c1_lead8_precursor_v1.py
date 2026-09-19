@@ -377,5 +377,3 @@ def analyze(bars):
         "mechanism_ledger":mech,
         "authority":{"signal":False,"router":False,"trade":False,"production":False},
     }
-
-[executed on device: debian (2d5dcc11-76bc-4de1-b98d-911c81cc5135)]
