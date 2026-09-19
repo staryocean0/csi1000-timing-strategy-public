@@ -1,0 +1,271 @@
+[Reading 267 lines from start (total: 267 lines, 0 remaining)]
+
+{
+  "artifact_sha256": {
+    "scored_high_compression_signals.parquet": "adb0ca4f32c86f75b5b3450216d35148f85a750788ea5b59de7f456d192fd2da"
+  },
+  "authority": {
+    "production": false,
+    "router": false,
+    "signal": false,
+    "trade": false
+  },
+  "bootstrap": {
+    "blocks": 37,
+    "repetitions": 5000,
+    "risk_diff": {
+      "ci95": [
+        -0.0022695057494191615,
+        0.11140540318179641
+      ],
+      "median": 0.05251696427752136,
+      "n_draws": 5000
+    },
+    "risk_ratio": {
+      "ci95": [
+        0.9823115760089827,
+        2.513447565275395
+      ],
+      "median": 1.5298010149572652,
+      "n_draws": 5000
+    },
+    "seed": 20260919
+  },
+  "c1_direction_proxy_used": false,
+  "date": "2026-09-19",
+  "decision": {
+    "checks": {
+      "risk_diff_ci_lower_gt0": false,
+      "risk_ratio_ci_lower_gt1": false,
+      "strong_support_ge100": true,
+      "weak_rate_gt_strong": true,
+      "weak_support_ge100": true,
+      "years_weak_gt_strong_ge2": true
+    },
+    "verdict": "HIGH_COMPRESSION_WEAK_THRUST_EARLY_REVERSAL_NOT_SUPPORTED",
+    "years_weak_gt_strong": 3
+  },
+  "folds": [
+    {
+      "prior_high_n": 388,
+      "test_high_n": 112,
+      "test_strong_n": 58,
+      "test_weak_n": 54,
+      "threshold_ret_aligned_8": 0.0021432414147692924,
+      "train_n": 968,
+      "year": 2018
+    },
+    {
+      "prior_high_n": 506,
+      "test_high_n": 124,
+      "test_strong_n": 59,
+      "test_weak_n": 65,
+      "threshold_ret_aligned_8": 0.0021735749640168223,
+      "train_n": 1265,
+      "year": 2019
+    },
+    {
+      "prior_high_n": 634,
+      "test_high_n": 120,
+      "test_strong_n": 63,
+      "test_weak_n": 57,
+      "threshold_ret_aligned_8": 0.0021732484404886065,
+      "train_n": 1584,
+      "year": 2020
+    }
+  ],
+  "issue": 564,
+  "module_sha256": "c75f6144ac3fb2e929f1cb3064c62464ea729b8126be5324dd57d44d8499b6ce",
+  "parent_issue": 543,
+  "pnl_used": false,
+  "pooled": {
+    "STRONG": {
+      "n": 180,
+      "rate": 0.1,
+      "reversals": 18
+    },
+    "WEAK": {
+      "n": 176,
+      "rate": 0.1534090909090909,
+      "reversals": 27
+    },
+    "by_band": {
+      "4": {
+        "STRONG": {
+          "n": 155,
+          "rate": 0.07096774193548387,
+          "reversals": 11
+        },
+        "WEAK": {
+          "n": 24,
+          "rate": 0.125,
+          "reversals": 3
+        },
+        "risk_diff": 0.05403225806451613,
+        "risk_ratio": 1.7613636363636362
+      },
+      "5": {
+        "STRONG": {
+          "n": 25,
+          "rate": 0.28,
+          "reversals": 7
+        },
+        "WEAK": {
+          "n": 152,
+          "rate": 0.15789473684210525,
+          "reversals": 24
+        },
+        "risk_diff": -0.12210526315789477,
+        "risk_ratio": 0.5639097744360901
+      }
+    },
+    "n": 356,
+    "weak_minus_strong": 0.053409090909090906,
+    "weak_over_strong": 1.534090909090909
+  },
+  "schema": "two_wave_high_compression_weak_thrust_result",
+  "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+  "status": "HIGH_COMPRESSION_WEAK_THRUST_VALIDATION_COMPLETE",
+  "yearly": [
+    {
+      "STRONG": {
+        "n": 58,
+        "rate": 0.1206896551724138,
+        "reversals": 7
+      },
+      "WEAK": {
+        "n": 54,
+        "rate": 0.18518518518518517,
+        "reversals": 10
+      },
+      "by_band": {
+        "4": {
+          "STRONG": {
+            "n": 48,
+            "rate": 0.0625,
+            "reversals": 3
+          },
+          "WEAK": {
+            "n": 6,
+            "rate": 0.16666666666666666,
+            "reversals": 1
+          },
+          "risk_diff": 0.10416666666666666,
+          "risk_ratio": 2.6666666666666665
+        },
+        "5": {
+          "STRONG": {
+            "n": 10,
+            "rate": 0.4,
+            "reversals": 4
+          },
+          "WEAK": {
+            "n": 48,
+            "rate": 0.1875,
+            "reversals": 9
+          },
+          "risk_diff": -0.21250000000000002,
+          "risk_ratio": 0.46875
+        }
+      },
+      "n": 112,
+      "weak_minus_strong": 0.06449553001277138,
+      "weak_over_strong": 1.5343915343915342,
+      "year": 2018
+    },
+    {
+      "STRONG": {
+        "n": 59,
+        "rate": 0.11864406779661017,
+        "reversals": 7
+      },
+      "WEAK": {
+        "n": 65,
+        "rate": 0.18461538461538463,
+        "reversals": 12
+      },
+      "by_band": {
+        "4": {
+          "STRONG": {
+            "n": 51,
+            "rate": 0.09803921568627451,
+            "reversals": 5
+          },
+          "WEAK": {
+            "n": 7,
+            "rate": 0.14285714285714285,
+            "reversals": 1
+          },
+          "risk_diff": 0.04481792717086834,
+          "risk_ratio": 1.457142857142857
+        },
+        "5": {
+          "STRONG": {
+            "n": 8,
+            "rate": 0.25,
+            "reversals": 2
+          },
+          "WEAK": {
+            "n": 58,
+            "rate": 0.1896551724137931,
+            "reversals": 11
+          },
+          "risk_diff": -0.060344827586206906,
+          "risk_ratio": 0.7586206896551724
+        }
+      },
+      "n": 124,
+      "weak_minus_strong": 0.06597131681877445,
+      "weak_over_strong": 1.556043956043956,
+      "year": 2019
+    },
+    {
+      "STRONG": {
+        "n": 63,
+        "rate": 0.06349206349206349,
+        "reversals": 4
+      },
+      "WEAK": {
+        "n": 57,
+        "rate": 0.08771929824561403,
+        "reversals": 5
+      },
+      "by_band": {
+        "4": {
+          "STRONG": {
+            "n": 56,
+            "rate": 0.05357142857142857,
+            "reversals": 3
+          },
+          "WEAK": {
+            "n": 11,
+            "rate": 0.09090909090909091,
+            "reversals": 1
+          },
+          "risk_diff": 0.03733766233766234,
+          "risk_ratio": 1.696969696969697
+        },
+        "5": {
+          "STRONG": {
+            "n": 7,
+            "rate": 0.14285714285714285,
+            "reversals": 1
+          },
+          "WEAK": {
+            "n": 46,
+            "rate": 0.08695652173913043,
+            "reversals": 4
+          },
+          "risk_diff": -0.05590062111801242,
+          "risk_ratio": 0.6086956521739131
+        }
+      },
+      "n": 120,
+      "weak_minus_strong": 0.02422723475355054,
+      "weak_over_strong": 1.381578947368421,
+      "year": 2020
+    }
+  ]
+}
+
+[executed on device: debian (2d5dcc11-76bc-4de1-b98d-911c81cc5135)]
