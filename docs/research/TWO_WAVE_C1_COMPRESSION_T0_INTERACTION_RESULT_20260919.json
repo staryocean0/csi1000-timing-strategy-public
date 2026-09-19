@@ -1,0 +1,66 @@
+{
+  "schema_version": "two_wave_c1_compression_t0_interaction_result_summary",
+  "issue": 571,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "C1_COMPRESSION_T0_INTERACTION_COMPLETE",
+  "verdict": "C1_COMPRESSION_T0_INTERACTION_NOT_SUPPORTED",
+  "support": {
+    "scored_rows": 945,
+    "joined_rows": 945,
+    "causal_c1_coverage": 1
+  },
+  "pooled": {
+    "aligned_B1_mean_bp": 38.74038872992694,
+    "aligned_B5_mean_bp": 10.133388301952102,
+    "delta_A": -28.60700042797484,
+    "opposed_B1_mean_bp": 14.317686612930732,
+    "opposed_B5_mean_bp": 17.061405542205232,
+    "delta_O": 2.7437189292745003,
+    "interaction": 31.35071935724934
+  },
+  "bootstrap": {
+    "delta_A_ci95": [
+      -129.99185704432497,
+      43.88448614318733
+    ],
+    "delta_O_ci95": [
+      -44.06653460301416,
+      44.159661553523854
+    ],
+    "interaction_ci95": [
+      -59.68836515810541,
+      136.78406946055335
+    ],
+    "blocks": 37,
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "yearly": {
+    "2018": {
+      "delta_A": 44.590663668241135,
+      "delta_O": -70.62074371623538
+    },
+    "2019": {
+      "delta_A": -68.34862112627331,
+      "delta_O": 19.096640232248195
+    },
+    "2020": {
+      "delta_A": -72.4141578702463,
+      "delta_O": 43.78812226694173
+    }
+  },
+  "hashes": {
+    "module": "d4abd95e4a81d5074a4e37cd695e054ccccb48c4b2a78bfece0e726bfc83393d",
+    "ledger": "ca860603c71ddadcb650f4ff88ec7f10724b43bb40f485ed57071e09f677280a",
+    "exact_result": "1b4dc25d8efbe3a68bb704ac0d3fe576ed7895f54a3e9a57daae69e8b7438480"
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
