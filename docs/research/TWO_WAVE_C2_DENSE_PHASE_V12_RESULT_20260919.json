@@ -1,0 +1,155 @@
+{
+  "schema_version": "two_wave_c2_dense_phase_v12_final_result",
+  "issue": 432,
+  "date": "2026-09-19",
+  "status": "DENSE_C2_PHASE_ADJUDICATED__GLOBAL_DEADBAND_STABLE__DIRECTIONAL_T8_PERSISTENCE_SUPPORTED__RANGE_T8_NOT_SUPPORTED",
+  "carrier": {
+    "object": "retrospective dense graphical C2=log(S1)-log(S2)",
+    "common_support_bars": 69615,
+    "usable_bars": 69358,
+    "first_usable_bar": 523,
+    "last_usable_bar": 69880,
+    "complete_c2_waves": 170,
+    "raw_sign_changes": 386,
+    "raw_sign_runs": 387,
+    "raw_sign_runs_lt4": 1,
+    "ledger_sha256": "728d2a6c50a7add6fd2daffa2cf4acd207940e6ed38e100e95d5048eef4d3101"
+  },
+  "deadband": {
+    "exit": 0,
+    "enter": 0.01,
+    "width": 0.01,
+    "lower_boundary_limited": true,
+    "direct_direction_flip_allowed": false,
+    "range_role": "anti-chatter exit/reversal buffer"
+  },
+  "structural": {
+    "stable_turn_events": 385,
+    "stable_entry_events": 386,
+    "exit_within_4_rate": 1,
+    "entry_within_8_rate": 0.9896373056994818,
+    "short_same_direction_range_roundtrips": 0,
+    "total_chatter": 1,
+    "range_occupancy": 0.017748493324490324,
+    "transitions": 770
+  },
+  "dispersion": {
+    "status": "STABLE_GLOBAL",
+    "usable_years": 6,
+    "exit": {
+      "median": 0,
+      "mad": 0,
+      "normalized_mad": 0,
+      "range": 0
+    },
+    "enter": {
+      "median": 0.01,
+      "mad": 0,
+      "normalized_mad": 0,
+      "range": 0
+    },
+    "conditional_parameter_required": false
+  },
+  "transition_entry_persistence": {
+    "C2_UP": {
+      "entries": 192,
+      "median_episode_bars": 165.5,
+      "endpoint_same_8": 1,
+      "continuous_same_8": 1
+    },
+    "C2_RANGE": {
+      "entries": 385,
+      "median_episode_bars": 1,
+      "endpoint_same_8": 0.01038961038961039,
+      "continuous_same_8": 0.01038961038961039
+    },
+    "C2_DOWN": {
+      "entries": 194,
+      "median_episode_bars": 140.5,
+      "endpoint_same_8": 0.9948453608247423,
+      "continuous_same_8": 0.9948453608247423
+    }
+  },
+  "yearly_entry_persistence": {
+    "C2_UP": {
+      "2015": 1,
+      "2016": 1,
+      "2017": 1,
+      "2018": 1,
+      "2019": 1,
+      "2020": 1
+    },
+    "C2_DOWN": {
+      "2015": 0.9655172413793104,
+      "2016": 1,
+      "2017": 1,
+      "2018": 1,
+      "2019": 1,
+      "2020": 1
+    },
+    "C2_RANGE": {
+      "2015": 0.03571428571428571,
+      "2016": 0,
+      "2017": 0.028169014084507043,
+      "2018": 0,
+      "2019": 0,
+      "2020": 0
+    }
+  },
+  "range_semantics": {
+    "episodes": 385,
+    "median_episode_bars": 1,
+    "fraction_lt4": 0.9896103896103896,
+    "down_range_up": 192,
+    "up_range_down": 192,
+    "down_range_down": 1,
+    "short_same_direction_roundtrips": 0,
+    "verdict": "TRANSITION_EXIT_BUFFER_NOT_PERSISTENT_HORIZONTAL_REGIME"
+  },
+  "bar_level_persistence": {
+    "C2_UP": {
+      "support": 35690,
+      "endpoint_same_8": 0.9569627346595685,
+      "continuous_same_8": 0.9569627346595685
+    },
+    "C2_RANGE": {
+      "support": 1231,
+      "endpoint_same_8": 0.6645004061738424,
+      "continuous_same_8": 0.6645004061738424
+    },
+    "C2_DOWN": {
+      "support": 32429,
+      "endpoint_same_8": 0.9526041506059392,
+      "continuous_same_8": 0.9526041506059392
+    }
+  },
+  "interpretation": {
+    "directional_t8": "SUPPORTED_RETROSPECTIVE_STRUCTURAL_PERSISTENCE",
+    "range_t8": "NOT_SUPPORTED_FOR_EXIT_TIMING",
+    "next_gate": "delayed recognizer exact retrospective-equivalence"
+  },
+  "evidence_sha256": {
+    "structural_dense_ledger": "728d2a6c50a7add6fd2daffa2cf4acd207940e6ed38e100e95d5048eef4d3101",
+    "structural_global_grid": "957091f479778292d836c17ec58b03822ac96015e503d012efa6ee22ee3176c8",
+    "structural_annual_optima": "16f3330c129fe756bd8bdf19779dff9bd09a0a78280c6d977d258dad51177254",
+    "structural_result": "7a8427d9e9a7d3f577edca6334b3b68a6b6d3ef6256ca3e2ea29c96b3210f973",
+    "entry_persistence_summary": "d17931a84c47f573a16fbf383d5c83758330bbe36ca4bb88b472abeed29aee0a",
+    "entry_persistence_yearly": "38a1a9eb8f99497c41a7d169a003df1c7850da925d86b1dff4b0b2e2346bdfbc",
+    "episode_duration_summary": "353205455fbfb589447e5984578bac7c596df1cb6c2494e7d4d14de62ee0d2c7",
+    "range_bridge_summary": "2bc1dca57fd81ee3471584c6c6ce8b75997cdccc5a1cfd03179b10f8d6852c7e",
+    "transition_matrix_h8": "a31af2bd09dea050374cfbfc42dbfc60097ad5a5cc7683f41cf311696dca9d4a",
+    "persistence_result": "99613ece49cbc431d0983b292e120716daedb8e38fb95dc63b8c3b488a15bbc2"
+  },
+  "post_persistence_retuning_allowed": false,
+  "pnl_used": false,
+  "future_return_magnitude_used": false,
+  "causal_equivalence_claimed": false,
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
