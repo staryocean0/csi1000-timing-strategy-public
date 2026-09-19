@@ -1,0 +1,28 @@
+{
+  "schema_version": "two_wave_c1_directional_carrier_atlas_prereg",
+  "issue": 535,
+  "parent_issue": 533,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "strict_issue_507_T0_signals_2018_2020",
+  "horizons": [
+    32,
+    42,
+    64,
+    86
+  ],
+  "carriers": [
+    "return_sign",
+    "ols_logclose_slope_sign"
+  ],
+  "targets": [
+    "current_retrospective_C1_sign",
+    "future_plus8_retrospective_C1_sign"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
