@@ -1,0 +1,40 @@
+{
+  "schema_version": "two_wave_c1_direction_recovery_result_summary",
+  "issue": 511,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "C1_LEAD8_DIRECTION_RECOVERY_COMPLETE",
+  "verdict": "C1_LEAD8_T0_DIRECTION_RECOVERY_NOT_SUPPORTED",
+  "all": {
+    "n": 208,
+    "accuracy": 0.3894230769230769
+  },
+  "high_B4_B5": {
+    "n": 90,
+    "accuracy": 0.4111111111111111,
+    "ci95": [
+      0.31730182926829265,
+      0.5060240963855421
+    ]
+  },
+  "B5": {
+    "n": 44,
+    "accuracy": 0.4090909090909091
+  },
+  "yearly_high": {
+    "2018": 0.4117647058823529,
+    "2019": 0.41935483870967744,
+    "2020": 0.4
+  },
+  "hashes": {
+    "module": "92dd226b0619d5ffadea03b872fd5e374cd2bdaf027152ad56c8e39d3e5adbbd",
+    "ledger": "d0e7338a69d2da81a6426355bb9e51249aa5aeefdd39986df7d9feb6cd58a540",
+    "exact_result": "377ea710af80502ddf0dd219af81af2dfbf9608fdf9b6c4dea92209f732300c1"
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
