@@ -1,0 +1,50 @@
+{
+  "schema_version": "two_wave_c1_lead8_precursor_prereg",
+  "issue": 483,
+  "parent_issue": 450,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "oracle": {
+    "C1": "S0-S1",
+    "turn": "nonzero native slope sign change"
+  },
+  "leads": [
+    32,
+    16,
+    8
+  ],
+  "continuous_feature_families": [
+    "raw_returns",
+    "range",
+    "realized_volatility",
+    "path_efficiency",
+    "base_wave_geometry",
+    "causal_c1_state",
+    "latest_confirmed_S0_S1_segment_slopes"
+  ],
+  "mechanism_only_window": "[t-8,t)",
+  "bootstrap": {
+    "unit": "C1_turn_event",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "clue_rule": {
+    "paired_8_minus_16_ci_excludes_zero": true,
+    "min_years_same_sign": 4,
+    "both_turn_directions_same_sign": true
+  },
+  "forbidden": [
+    "T0 PnL",
+    "C1 PnL",
+    "route outcome",
+    "future bars in lead feature"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
