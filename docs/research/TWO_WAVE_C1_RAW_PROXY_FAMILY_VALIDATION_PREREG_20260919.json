@@ -1,0 +1,57 @@
+{
+  "schema_version": "two_wave_c1_raw_proxy_family_validation_prereg",
+  "issue": 558,
+  "parent_issue": 552,
+  "date": "2026-09-19",
+  "discovery_years": [
+    2018,
+    2019,
+    2020
+  ],
+  "validation_years": [
+    2015,
+    2016,
+    2017
+  ],
+  "candidates": {
+    "RET8": "sign(log_close[k]-log_close[k-8])",
+    "RET16": "sign(log_close[k]-log_close[k-16])",
+    "RAW_MAJORITY": "majority_sign_RET8_RET16_RET32"
+  },
+  "target": "retrospective_dense_C1_current_slope_sign_at_k",
+  "candidate_gate": {
+    "min_coverage": 0.95,
+    "min_pooled_balanced_accuracy": 0.6,
+    "min_recall_up": 0.55,
+    "min_recall_down": 0.55,
+    "min_years_BA_ge_0p55": 2,
+    "min_t0_opposed_support": 0.15,
+    "min_t0_opposed_BA": 0.52,
+    "t0_opposed_bootstrap_lower_gt": 0.5
+  },
+  "family_gate": {
+    "min_validated_candidates": 2
+  },
+  "unique_primary": {
+    "min_BA_margin": 0.02,
+    "correctness_bootstrap_lower_gt": 0
+  },
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "forbidden": [
+    "PnL",
+    "compression score",
+    "future turn target",
+    "routing outcome",
+    "window search"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
