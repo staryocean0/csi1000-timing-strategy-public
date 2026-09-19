@@ -1,0 +1,273 @@
+[Reading 269 lines from start (total: 269 lines, 0 remaining)]
+
+{
+  "aligned_branch": {
+    "B5_minus_B1": -0.23333333333333334,
+    "auc": 0.36808009422850413,
+    "band_rate_spearman": -0.6,
+    "bands": [
+      {
+        "band": 1,
+        "n": 42,
+        "target_rate": 0.2619047619047619
+      },
+      {
+        "band": 2,
+        "n": 72,
+        "target_rate": 0.08333333333333333
+      },
+      {
+        "band": 3,
+        "n": 80,
+        "target_rate": 0.125
+      },
+      {
+        "band": 4,
+        "n": 55,
+        "target_rate": 0.12727272727272726
+      },
+      {
+        "band": 5,
+        "n": 70,
+        "target_rate": 0.02857142857142857
+      }
+    ],
+    "n": 319,
+    "relation": "ALIGNED",
+    "target": "HARMFUL_TURN",
+    "yearly": [
+      {
+        "B1_n": 13,
+        "B1_rate": 0.3076923076923077,
+        "B5_n": 32,
+        "B5_rate": 0.03125,
+        "n": 103,
+        "year": 2018
+      },
+      {
+        "B1_n": 9,
+        "B1_rate": 0.1111111111111111,
+        "B5_n": 23,
+        "B5_rate": 0.043478260869565216,
+        "n": 106,
+        "year": 2019
+      },
+      {
+        "B1_n": 20,
+        "B1_rate": 0.3,
+        "B5_n": 15,
+        "B5_rate": 0.0,
+        "n": 110,
+        "year": 2020
+      }
+    ]
+  },
+  "artifact_sha256": {
+    "causal_state_compression_ledger.parquet": "1d57b2da0933123b56aa3c07c8088e6795d91105c0b47cf8831f5cd8972063e5"
+  },
+  "authority": {
+    "production": false,
+    "router": false,
+    "signal": false,
+    "trade": false
+  },
+  "bootstrap": {
+    "aligned_harmful_B5_minus_B1": {
+      "blocks": 37,
+      "ci95": [
+        -0.3575758995502249,
+        -0.10356301389693637
+      ],
+      "median": -0.23507462686567165,
+      "n_draws": 5000
+    },
+    "opposed_helpful_B5_minus_B1": {
+      "blocks": 37,
+      "ci95": [
+        0.034782608695652174,
+        0.12121212121212122
+      ],
+      "median": 0.07377049180327869,
+      "n_draws": 5000
+    }
+  },
+  "date": "2026-09-19",
+  "decision": {
+    "aligned_branch_pass": false,
+    "aligned_years_B5_gt_B1": 0,
+    "coverage_pass": true,
+    "opposed_branch_pass": true,
+    "opposed_years_B5_gt_B1": 3,
+    "verdict": "C1_CAUSAL_STATE_COMPRESSION_DIRECTIONAL_MAP_NOT_SUPPORTED"
+  },
+  "grid_2x5": [
+    {
+      "any_turn_rate": 0.2619047619047619,
+      "harmful_turn_rate": 0.2619047619047619,
+      "helpful_turn_rate": 0.0,
+      "n": 42,
+      "relation": "ALIGNED",
+      "risk_band": 1
+    },
+    {
+      "any_turn_rate": 0.19444444444444445,
+      "harmful_turn_rate": 0.08333333333333333,
+      "helpful_turn_rate": 0.1111111111111111,
+      "n": 72,
+      "relation": "ALIGNED",
+      "risk_band": 2
+    },
+    {
+      "any_turn_rate": 0.325,
+      "harmful_turn_rate": 0.125,
+      "helpful_turn_rate": 0.2,
+      "n": 80,
+      "relation": "ALIGNED",
+      "risk_band": 3
+    },
+    {
+      "any_turn_rate": 0.2909090909090909,
+      "harmful_turn_rate": 0.12727272727272726,
+      "helpful_turn_rate": 0.16363636363636364,
+      "n": 55,
+      "relation": "ALIGNED",
+      "risk_band": 4
+    },
+    {
+      "any_turn_rate": 0.17142857142857143,
+      "harmful_turn_rate": 0.02857142857142857,
+      "helpful_turn_rate": 0.14285714285714285,
+      "n": 70,
+      "relation": "ALIGNED",
+      "risk_band": 5
+    },
+    {
+      "any_turn_rate": 0.1,
+      "harmful_turn_rate": 0.1,
+      "helpful_turn_rate": 0.0,
+      "n": 100,
+      "relation": "OPPOSED",
+      "risk_band": 1
+    },
+    {
+      "any_turn_rate": 0.1780821917808219,
+      "harmful_turn_rate": 0.1232876712328767,
+      "helpful_turn_rate": 0.0547945205479452,
+      "n": 146,
+      "relation": "OPPOSED",
+      "risk_band": 2
+    },
+    {
+      "any_turn_rate": 0.2080536912751678,
+      "harmful_turn_rate": 0.12751677852348994,
+      "helpful_turn_rate": 0.08053691275167785,
+      "n": 149,
+      "relation": "OPPOSED",
+      "risk_band": 3
+    },
+    {
+      "any_turn_rate": 0.24193548387096775,
+      "harmful_turn_rate": 0.16129032258064516,
+      "helpful_turn_rate": 0.08064516129032258,
+      "n": 124,
+      "relation": "OPPOSED",
+      "risk_band": 4
+    },
+    {
+      "any_turn_rate": 0.29906542056074764,
+      "harmful_turn_rate": 0.22429906542056074,
+      "helpful_turn_rate": 0.07476635514018691,
+      "n": 107,
+      "relation": "OPPOSED",
+      "risk_band": 5
+    }
+  ],
+  "input_scored_sha256": "6fb773743cad9f009b62b973888b63db385459bd6e5db9524046e0b7958d8b33",
+  "issue": 594,
+  "meta": {
+    "T0_closed_trades": 1918,
+    "left": 48,
+    "right": 70018,
+    "rows": 69971,
+    "turns": 1523
+  },
+  "module_sha256": "6ce916377714593eed59f0636ed6749afd0a8c126e5b19c87ee194c5e3f8641f",
+  "opposed_branch": {
+    "B5_minus_B1": 0.07476635514018691,
+    "auc": 0.6024883637665592,
+    "band_rate_spearman": 0.7,
+    "bands": [
+      {
+        "band": 1,
+        "n": 100,
+        "target_rate": 0.0
+      },
+      {
+        "band": 2,
+        "n": 146,
+        "target_rate": 0.0547945205479452
+      },
+      {
+        "band": 3,
+        "n": 149,
+        "target_rate": 0.08053691275167785
+      },
+      {
+        "band": 4,
+        "n": 124,
+        "target_rate": 0.08064516129032258
+      },
+      {
+        "band": 5,
+        "n": 107,
+        "target_rate": 0.07476635514018691
+      }
+    ],
+    "n": 626,
+    "relation": "OPPOSED",
+    "target": "HELPFUL_TURN",
+    "yearly": [
+      {
+        "B1_n": 27,
+        "B1_rate": 0.0,
+        "B5_n": 26,
+        "B5_rate": 0.11538461538461539,
+        "n": 194,
+        "year": 2018
+      },
+      {
+        "B1_n": 33,
+        "B1_rate": 0.0,
+        "B5_n": 43,
+        "B5_rate": 0.046511627906976744,
+        "n": 213,
+        "year": 2019
+      },
+      {
+        "B1_n": 40,
+        "B1_rate": 0.0,
+        "B5_n": 38,
+        "B5_rate": 0.07894736842105263,
+        "n": 219,
+        "year": 2020
+      }
+    ]
+  },
+  "parent_issue": 589,
+  "pnl_used": false,
+  "route_outcome_used": false,
+  "schema": "two_wave_c1_causal_state_compression_result",
+  "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+  "status": "C1_CAUSAL_STATE_COMPRESSION_MAP_COMPLETE",
+  "support": {
+    "aligned_n": 319,
+    "coverage": 1.0,
+    "multi_turn_horizons": 0,
+    "opposed_n": 626,
+    "resolved_signals": 945,
+    "scored_signals": 945,
+    "unresolved_n": 0
+  }
+}
+
+[executed on device: debian (2d5dcc11-76bc-4de1-b98d-911c81cc5135)]
