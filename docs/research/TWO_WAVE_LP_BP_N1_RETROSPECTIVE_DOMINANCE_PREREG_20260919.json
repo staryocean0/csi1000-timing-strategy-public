@@ -1,0 +1,66 @@
+{
+  "schema_version": "two_wave_lp_bp_n1_prereg",
+  "issue": 467,
+  "parent_issue": 450,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_N1_RESULTS",
+  "periods": {
+    "T0": 21,
+    "T1": 86,
+    "source": "2015-2017 structural medians only"
+  },
+  "oracle": {
+    "anchor_stride": 21,
+    "future_horizon_bars": 86,
+    "class_C2_DOM": "R0>R1",
+    "class_C3_DOM": "R1>R0",
+    "exact_tie": "AMBIG_EXCLUDED"
+  },
+  "execution": {
+    "engine": "symmetric close-breakout next-open continuous strategy",
+    "cost_bps_per_position_unit_change": 2
+  },
+  "features": [
+    "z_fast",
+    "z_slow",
+    "log_strength_ratio",
+    "fast_run_age",
+    "slow_run_age",
+    "run_age_ratio"
+  ],
+  "model": {
+    "family": "DecisionTreeClassifier",
+    "max_depth": 3,
+    "min_samples_leaf": 100,
+    "class_weight": "balanced",
+    "criterion": "gini",
+    "random_state": 20260919,
+    "hyperparameter_search": false
+  },
+  "test_years": [
+    2018,
+    2019,
+    2020
+  ],
+  "purge_horizon_bars": 86,
+  "paired_bootstrap": {
+    "block_trading_days": 20,
+    "repetitions": 2000,
+    "seed": 20260919
+  },
+  "winner": {
+    "regret_relative_improvement_min": 0.05,
+    "paired_regret_ci_must_exclude_zero": true,
+    "balanced_accuracy_noninferiority_margin": 0.01,
+    "min_test_years_with_ba_ge_0p52": 2
+  },
+  "authority": {
+    "fresh_oos": false,
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
