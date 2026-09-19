@@ -1,0 +1,34 @@
+{
+  "schema_version": "two_wave_t0_defer8_high_c1_compression_prereg",
+  "issue": 540,
+  "parent_issue": 537,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "risk_group": [
+    4,
+    5
+  ],
+  "defer_bars": 8,
+  "delayed_entry_open_offset_from_signal": 9,
+  "skipped_policy_return_bp": 0,
+  "cost_bps_roundtrip": 4,
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "mean_delta_positive": true,
+    "bootstrap_lower_gt0": true,
+    "policy_mean_gt_original": true,
+    "min_years_positive_delta": 2,
+    "skipped_original_mean_negative": true,
+    "min_execution_fraction": 0.5
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
