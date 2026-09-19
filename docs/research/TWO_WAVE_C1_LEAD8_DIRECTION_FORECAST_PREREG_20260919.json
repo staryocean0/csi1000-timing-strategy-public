@@ -1,0 +1,34 @@
+{
+  "schema_version": "two_wave_c1_lead8_direction_forecast_prereg",
+  "issue": 529,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "strict_issue_507_T0_signals_2018_2020",
+  "causal_inputs": [
+    "current_causal_C1_leg",
+    "frozen_risk_band"
+  ],
+  "baseline": "persist_current_causal_C1_leg",
+  "candidate": "flip_current_causal_C1_leg_if_B4_or_B5_else_persist",
+  "target": "retrospective_dense_C1_slope_sign_at_k_plus_8",
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "min_coverage": 0.95,
+    "min_current_bridge_balanced_accuracy": 0.55,
+    "min_candidate_future_balanced_accuracy": 0.55,
+    "min_candidate_minus_baseline_balanced_accuracy": 0.02,
+    "paired_accuracy_ci_lower_gt0": true,
+    "min_years_candidate_accuracy_gt_baseline": 2
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
