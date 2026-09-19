@@ -1,0 +1,55 @@
+{
+  "schema_version": "two_wave_8x5m_delayed_causal_wrapper_v1_freeze",
+  "issue": 424,
+  "date": "2026-09-18",
+  "status": "WRAPPER_FROZEN_RETROSPECTIVE_EQUIVALENT",
+  "oracle": {
+    "freeze_merge_commit": "1eae26785c8faa1b93777d311ba172fc03422075",
+    "freeze_checkpoint_sha256": "4b2f84d1c0d45a7e049a17866e907f97dfe0470f3fbcccf2cb3d5a8983204774",
+    "source_git_blob_sha": "476c8ff7687354213d4933cf3d853029d77fba8f",
+    "weights": [
+      0.5375062131339785,
+      0.02424630935968975,
+      0.2550411892804524,
+      0.08498791874772484,
+      0.0982183694781545
+    ]
+  },
+  "wrapper": {
+    "delay_bars": 8,
+    "native_bar_minutes": 5,
+    "delay_trading_minutes": 40,
+    "first_eligible_knowledge_index": 63,
+    "first_eligible_target_index": 55,
+    "recognizer_window": "[k-63,k]",
+    "amplitude_window": "[k-16,k]",
+    "source_sha256": "9aa43cd917178942274fee84fa563bdc347852a7cd777ae12b78bc115ea79678",
+    "test_sha256": "1644b81957d74eac447c0e224d9251ac716d3637392f9c742126a8e62d312023",
+    "focused_tests_passed": 9
+  },
+  "audit": {
+    "role": "previously_consumed_development_engineering_identity_audit",
+    "fresh_oos_claim": false,
+    "market_data_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "source_rows": 70114,
+    "eligible_endpoints": 70051,
+    "wrapper_rows": 70051,
+    "alignment_mismatches": 0,
+    "label_mismatches": 0,
+    "exact_identity": 1,
+    "deterministic_replay_byte_identical": true,
+    "prediction_ledger_sha256": "04039beeffe3479fb884c36fbe33458a648c22e223bced9f4290e44dc0cfd59c",
+    "receipt_sha256": "b95de361aa06f8589cc35fcac5ad63e7c41567e37ad2960702d6da9e9172235c"
+  },
+  "freeze_checkpoint_sha256": "26115f697ac160b59d223b4ce5ae8dc0a3cf1d4227fb55a961cd08027b05141f",
+  "oracle_mutation_allowed": false,
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "pnl_selection": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
