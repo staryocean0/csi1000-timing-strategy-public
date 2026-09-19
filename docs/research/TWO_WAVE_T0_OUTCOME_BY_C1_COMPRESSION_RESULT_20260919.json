@@ -1,0 +1,48 @@
+{
+  "schema_version": "two_wave_t0_outcome_by_c1_compression_result_summary",
+  "issue": 537,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "T0_OUTCOME_BY_C1_COMPRESSION_COMPLETE",
+  "verdict": "C1_COMPRESSION_T0_ECONOMIC_DEGRADATION_NOT_SUPPORTED",
+  "pooled": {
+    "B1_mean_net_bp": 21.541302732042286,
+    "B5_mean_net_bp": 14.321511718376309,
+    "B5_minus_B1_mean_net_bp": -7.2197910136659775,
+    "B4B5_minus_B1B2_mean_net_bp": -5.182412751717131,
+    "B4B5_minus_B1B2_fast_loss": 0.1468164794007491
+  },
+  "bootstrap": {
+    "B5_minus_B1_ci95": [
+      -49.57089634521711,
+      28.876024967178626
+    ],
+    "B4B5_minus_B1B2_ci95": [
+      -27.441116577439583,
+      16.229406229616
+    ],
+    "fast_loss_diff_ci95": [
+      0.07912915920517263,
+      0.21754079620414415
+    ]
+  },
+  "yearly_B5_minus_B1": {
+    "2018": -31.106321203431893,
+    "2019": -0.6815751613734338,
+    "2020": 7.176023693634848
+  },
+  "interpretation": "compression predicts fast-loss hazard more clearly than mean-return degradation",
+  "hashes": {
+    "module": "bcc1e5dd46545498e2c2eefd37737c7720124aacff008a9b5d7dff48e3c5622c",
+    "joined_ledger": "e53a3551a53a218edcd7f6a795cb168d5ca4722c60a84fe14284e3a1579291d5",
+    "exact_result": "2e0adec3f2f8dabd1ea278fa44af41ad4c8c70612c8985361c56545c0638e7f6"
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
