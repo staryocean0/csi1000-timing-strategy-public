@@ -1,0 +1,31 @@
+{
+  "schema_version": "two_wave_c1_residual_inversion_prereg",
+  "issue": 554,
+  "parent_issue": 552,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "primary_universe": "dense_C1_support_nonzero_target_resolved_causal_state_excluding_all_T0_signal_bars",
+  "proxy": "negative_causal_first_continuity_stage_leg_sign",
+  "target": "retrospective_dense_C1_current_slope_sign",
+  "gate": {
+    "min_coverage": 0.95,
+    "min_balanced_accuracy": 0.55,
+    "min_up_recall": 0.52,
+    "min_down_recall": 0.52,
+    "min_years_ba_ge_0p52": 5,
+    "min_ba_gain_vs_uninverted": 0.1
+  },
+  "forbidden": [
+    "T0 side in primary validation",
+    "T0 PnL",
+    "compression score",
+    "future turn label",
+    "routing outcome"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
