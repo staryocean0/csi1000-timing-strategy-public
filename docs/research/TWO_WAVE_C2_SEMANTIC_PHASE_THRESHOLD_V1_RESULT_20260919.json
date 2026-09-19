@@ -1,0 +1,80 @@
+{
+  "artifact_sha256": {
+    "class_distributions.csv": "15fe79bde56293caa2e6708a0d8731ef04deddbca95b0b38c5e65737fc6100ce",
+    "condition_diagnostics.csv": "b778f4054362bce5d14a5d4da0465979969273a4ea80ef3c92fd421b4c725906",
+    "mapping_ledger.parquet": "1735e36e92f2c4a2d53f179928fab8e31ec300dc163c9b610cf9f909013dab41",
+    "wave_cluster_bootstrap.parquet": "451760dc36241145a564537a4d38a35980c267e95050f2490b991677689970dc"
+  },
+  "authority": {
+    "live_trading": false,
+    "paper_trading": false,
+    "production": false,
+    "router": false,
+    "signal": false,
+    "strategy_selection": false,
+    "trade": false
+  },
+  "base_wave_counts": {
+    "DOWN": 990,
+    "RANGE": 315,
+    "UP": 1180
+  },
+  "bootstrap": {
+    "t_down": {
+      "ci95": [
+        -1.3544886138217214,
+        0.605656871416969
+      ],
+      "ci_width": 1.9601454852386904,
+      "mad": 0.3746191123913226,
+      "median": -0.5033683856832791,
+      "normalized_mad": 0.7442245541161857
+    },
+    "t_up": {
+      "ci95": [
+        -0.7567191186114276,
+        1.7516920437835406
+      ],
+      "ci_width": 2.5084111623949683,
+      "mad": 0.3242502383026157,
+      "median": 0.05153495431158399,
+      "normalized_mad": 3.2425023830261566
+    }
+  },
+  "c2_wave_counts": {
+    "DOWN": 68,
+    "RANGE": 21,
+    "UP": 81
+  },
+  "date": "2026-09-19",
+  "eligible_base_waves": 2485,
+  "full_fit": {
+    "macro_balanced_accuracy": 0.3813208762361304,
+    "recall_DOWN": 0.402020202020202,
+    "recall_RANGE": 0.20634920634920634,
+    "recall_UP": 0.535593220338983,
+    "t_down": -0.368090834420207,
+    "t_up": 0.0529303294297018
+  },
+  "future_return_magnitude_used": false,
+  "identifiability_gates": {
+    "base_waves_each_ge_500": false,
+    "c2_waves_each_ge_30": false,
+    "macro_ge_0p45": false,
+    "recall_DOWN_ge_0p40": true,
+    "recall_RANGE_ge_0p40": false,
+    "recall_UP_ge_0p40": true
+  },
+  "issue": 444,
+  "module_sha256": "71480e4c93846a5158e42d7e64d096d2708ec0a44b974fcee40162e43107d4da",
+  "pnl_used": false,
+  "schema": "two_wave_c2_semantic_phase_threshold_v1_exact_result",
+  "schema_version": "two_wave_c2_semantic_phase_threshold_v1_result",
+  "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+  "stability_gates": {
+    "t_down_stable": false,
+    "t_up_stable": false
+  },
+  "status": "BASE_SLOPE_ALONE_INSUFFICIENT_FOR_C2_SEMANTIC_PHASE",
+  "verdict": "BASE_SLOPE_ALONE_INSUFFICIENT_FOR_C2_SEMANTIC_PHASE"
+}
