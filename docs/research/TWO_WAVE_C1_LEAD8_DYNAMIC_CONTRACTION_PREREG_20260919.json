@@ -1,0 +1,37 @@
+{
+  "schema_version": "two_wave_c1_lead8_dynamic_contraction_prereg",
+  "issue": 501,
+  "parent_issue": 498,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "frozen_sample": {
+    "events_sha256": "9723fdc08adcab6d325b6bda450acec4caac9c734a05013911926f749dae8d06",
+    "matches_sha256": "996c3ecfe5559a50066a37b8f5c96ef34ae09ecf6c3d159d873c8ef7931a662b",
+    "rematching_forbidden": true
+  },
+  "windows": {
+    "current": "k-8..k returns; bars k-7..k range",
+    "previous": "k-16..k-8 returns; bars k-15..k-8 range"
+  },
+  "primary": [
+    "delta_abs_ret8",
+    "delta_range8",
+    "delta_rv8",
+    "delta_efficiency8"
+  ],
+  "bootstrap": {
+    "unit": "event",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "overall_gate": {
+    "min_supported_features": 3,
+    "min_event_coverage": 0.95
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
