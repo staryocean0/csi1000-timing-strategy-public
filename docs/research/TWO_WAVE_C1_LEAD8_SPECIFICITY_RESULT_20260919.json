@@ -1,0 +1,79 @@
+{
+  "schema_version": "two_wave_c1_lead8_specificity_result_summary",
+  "issue": 485,
+  "parent_issue": 483,
+  "date": "2026-09-19",
+  "status": "C1_LEAD8_SPECIFICITY_COMPLETE",
+  "verdict": "TERMINAL_THRUST_SPECIFICITY_NOT_SUPPORTED",
+  "support": {
+    "matched_events": 1522,
+    "controls": 7610,
+    "unique_control_bars": 7124,
+    "max_reuse_count": 4
+  },
+  "direction_diagnostic": {
+    "P_ret8_sign_equals_old_sign": 0.6616294349540078,
+    "P_negative_ret8_sign_equals_future_turn_direction": 0.6616294349540078
+  },
+  "primary": {
+    "thrust8": {
+      "event_median": 0.0013774011766498617,
+      "control_median": 0.0017651751260697067,
+      "paired_median": -0.0003936069962302113,
+      "ci95": [
+        -0.0006978095987481626,
+        -0.0000817844915042441
+      ]
+    },
+    "abs_ret8": {
+      "event_median": 0.002611527249198886,
+      "control_median": 0.0036304797813670577,
+      "paired_median": -0.0009811557442215956,
+      "ci95": [
+        -0.001144125242734972,
+        -0.0008202576524345422
+      ]
+    },
+    "range8": {
+      "event_median": 0.004948104700987464,
+      "control_median": 0.006208000475926893,
+      "paired_median": -0.0010313807635000626,
+      "ci95": [
+        -0.0012261695106805307,
+        -0.0007931629891440111
+      ]
+    },
+    "rv8": {
+      "event_median": 0.0010875614897916323,
+      "control_median": 0.0013094640977421245,
+      "paired_median": -0.00017662996555750996,
+      "ci95": [
+        -0.00021827266419697865,
+        -0.00013000145255982537
+      ]
+    },
+    "efficiency8": {
+      "event_median": 0.3481727073985508,
+      "control_median": 0.39487375757793175,
+      "paired_median": -0.04662808289885182,
+      "ci95": [
+        -0.06102768359063421,
+        -0.028241595536512426
+      ]
+    }
+  },
+  "interpretation": "matched controls reject terminal thrust and support compression/exhaustion as the next causal precursor family",
+  "hashes": {
+    "module": "ffec6f22eacc7748a3935f290f61ebef415aa643763217c6008ae269acfb8436",
+    "events": "3e6ad1502e516b79a294f9e98c506ad42467bd86e4f2a477e2e01f7b5c5b52e8",
+    "controls": "15798fba3ee05f0175b8edc6daa901f4cca17aea8b0520eb06ea2c00c7fec365",
+    "paired": "3289db36b1958141734c6cb47421e804b94dc04e0778f9128cd365571ed3fd98",
+    "exact_result": "7cd16131d88415a460151e78ef3036ce0be40049b60b462eea1f55b72c41d16e"
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
