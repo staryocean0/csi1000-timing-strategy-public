@@ -1,0 +1,96 @@
+{
+  "schema_version": "two_wave_c2_phase_deadband_v11_boundary_refinement_prereg",
+  "issue": 432,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_V11_FINE_GRID_RESULTS",
+  "coarse_v1": {
+    "status": "BOUNDARY_RESOLUTION_INSUFFICIENT__PERSISTENCE_NOT_FINAL",
+    "global_candidate": {
+      "exit": 0,
+      "enter": 0.1
+    },
+    "lower_boundary_hit": true,
+    "feasible_years": [
+      2015,
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "infeasible_years": [
+      2016
+    ],
+    "year_2016_best_entry_within_8_rate": 0.8709677419354839,
+    "coarse_persistence_quarantined": true
+  },
+  "fine_grid": {
+    "exit_start": 0,
+    "exit_stop": 0.2,
+    "step": 0.01,
+    "enter_start": 0.01,
+    "enter_stop": 0.3,
+    "require_enter_minus_exit_min": 0.01
+  },
+  "feasibility": {
+    "min_leg_bars": 4,
+    "entry_reference_bars": 8,
+    "exit_within_4_min": 0.9,
+    "enter_within_8_min": 0.9,
+    "full_min_events": 30,
+    "year_min_events": 20
+  },
+  "selection": [
+    "min_total_chatter",
+    "min_short_same_direction_roundtrips",
+    "min_range_occupancy",
+    "min_enter",
+    "min_exit"
+  ],
+  "stability": {
+    "require_all_years_feasible": true,
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "normalized_mad_max": 0.35,
+    "full_range_max": 0.75,
+    "statuses": [
+      "STABLE_GLOBAL",
+      "YEAR_FEASIBILITY_GAP",
+      "HIGH_VARIANCE"
+    ]
+  },
+  "boundary_limited_if_enter_equals": 0.01,
+  "conditional_trigger": [
+    "YEAR_FEASIBILITY_GAP",
+    "HIGH_VARIANCE"
+  ],
+  "conditional_families": [
+    "c2_pace_tertile",
+    "c2_period_tertile",
+    "s2_evidence_age_tertile"
+  ],
+  "persistence_primary": "transition-entry +8 phase persistence",
+  "coarse_persistence_may_select_parameters": false,
+  "forbidden": [
+    "PnL",
+    "future_return_magnitude",
+    "trade_outcome",
+    "route_choice",
+    "modify_primary_classifier",
+    "modify_t8_wrapper"
+  ],
+  "authority": {
+    "signal": false,
+    "strategy_selection": false,
+    "trade": false,
+    "router": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
