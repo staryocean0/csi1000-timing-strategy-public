@@ -48,7 +48,7 @@ def main() -> int:
         "issue": 615,
         "date": "2026-09-20",
         "input": {
-            "data_path": str(data),
+            "data_ref": "factorlab-two-wave-strategy-lab/data/development/5m_offset_0.parquet",
             "data_sha256": data_sha,
             "rows": int(len(bars)),
             "risk507_authoritative_scored_ledger_sha256": study.AUTHORITATIVE_SCORED_LEDGER_SHA256,

@@ -1,5 +1,3 @@
-[Reading 251 lines from start (total: 251 lines, 0 remaining)]
-
 """Causal C1 relation × frozen #507 compression-risk interaction on T0 outcomes.
 
 Issue #571, parent #507/#493/#450.
@@ -251,5 +249,3 @@ def analyze(bars:pd.DataFrame, scored:pd.DataFrame)->dict:
             "signal":False,"router":False,"trade":False,"production":False
         },
     }
-
-[executed on device: debian (2d5dcc11-76bc-4de1-b98d-911c81cc5135)]
