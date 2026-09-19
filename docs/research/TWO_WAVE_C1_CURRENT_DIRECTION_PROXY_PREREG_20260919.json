@@ -1,0 +1,45 @@
+{
+  "schema_version": "two_wave_c1_current_direction_proxy_prereg",
+  "issue": 552,
+  "parent_issue": 549,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "scored_ledger_sha256": "6fb773743cad9f009b62b973888b63db385459bd6e5db9524046e0b7958d8b33",
+  "candidates": [
+    "RET8",
+    "RET16",
+    "RET32",
+    "BASE_G",
+    "S0_SEG",
+    "S1_SEG",
+    "C1_SEG_RESIDUAL",
+    "CAUSAL_C1_LEG",
+    "RAW_MAJORITY"
+  ],
+  "qualification": {
+    "min_coverage": 0.95,
+    "min_pooled_balanced_accuracy": 0.55,
+    "min_up_recall": 0.52,
+    "min_down_recall": 0.52,
+    "min_years_balanced_accuracy_ge_0p52": 2
+  },
+  "primary_rule": {
+    "min_balanced_accuracy_margin": 0.02,
+    "correctness_block_bootstrap_lower_gt0": true,
+    "block_trading_days": 20,
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "forbidden": [
+    "T0 PnL",
+    "future turn target in proxy construction",
+    "compression score in proxy selection",
+    "routing outcome"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
