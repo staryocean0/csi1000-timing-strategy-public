@@ -1,0 +1,223 @@
+[Reading 219 lines from start (total: 219 lines, 0 remaining)]
+
+{
+  "artifact_sha256": {
+    "validation_ledger.parquet": "04843cc1ff427cbe734f7183f2efc391b021a34e2ed25d1cbc077b1435e71551"
+  },
+  "authority": {
+    "production": false,
+    "router": false,
+    "signal": false,
+    "trade": false
+  },
+  "compression_score_used": false,
+  "date": "2026-09-19",
+  "decision": {
+    "primary_candidate": null,
+    "primary_status": "NO_UNIQUE_RAW_C1_PROXY",
+    "top_vs_runner": null,
+    "validated_candidates": [],
+    "verdict": "RAW_C1_PROXY_FAMILY_NOT_VALIDATED"
+  },
+  "future_turn_used": false,
+  "issue": 558,
+  "meta": {
+    "rows": 967,
+    "validation_years": [
+      2015,
+      2016,
+      2017
+    ]
+  },
+  "module_sha256": "a6439d8c0dde87b3197a6cf1c3ea9acef60b56578a1bebc28f62643dee73ea16",
+  "parent_issue": 552,
+  "pnl_used": false,
+  "reports": [
+    {
+      "BA_gain_vs_t0": 0.0,
+      "candidate": "RET8",
+      "pooled": {
+        "accuracy": 0.6866597724922441,
+        "balanced_accuracy": 0.6871665551609971,
+        "coverage": 1.0,
+        "n": 967,
+        "recall_DOWN": 0.6771653543307087,
+        "recall_UP": 0.6971677559912854
+      },
+      "qualified": false,
+      "t0_aligned_fraction": 1.0,
+      "t0_baseline": {
+        "accuracy": 0.6866597724922441,
+        "balanced_accuracy": 0.6871665551609971,
+        "coverage": 1.0,
+        "n": 967,
+        "recall_DOWN": 0.6771653543307087,
+        "recall_UP": 0.6971677559912854
+      },
+      "t0_opposed_bootstrap": {
+        "n": 0
+      },
+      "t0_opposed_fraction": 0.0,
+      "t0_opposed_subset": {
+        "coverage": 0.0,
+        "n": 0
+      },
+      "yearly": [
+        {
+          "accuracy": 0.6540880503144654,
+          "balanced_accuracy": 0.6549707602339181,
+          "coverage": 1.0,
+          "n": 318,
+          "recall_DOWN": 0.6432748538011696,
+          "recall_UP": 0.6666666666666666,
+          "year": 2015
+        },
+        {
+          "accuracy": 0.6947674418604651,
+          "balanced_accuracy": 0.6971734592615406,
+          "coverage": 1.0,
+          "n": 344,
+          "recall_DOWN": 0.675392670157068,
+          "recall_UP": 0.7189542483660131,
+          "year": 2016
+        },
+        {
+          "accuracy": 0.7114754098360656,
+          "balanced_accuracy": 0.7117902989575255,
+          "coverage": 1.0,
+          "n": 305,
+          "recall_DOWN": 0.7191780821917808,
+          "recall_UP": 0.7044025157232704,
+          "year": 2017
+        }
+      ],
+      "years_BA_ge_0p55": 3
+    },
+    {
+      "BA_gain_vs_t0": 0.0,
+      "candidate": "RET16",
+      "pooled": {
+        "accuracy": 0.6866597724922441,
+        "balanced_accuracy": 0.6871665551609971,
+        "coverage": 1.0,
+        "n": 967,
+        "recall_DOWN": 0.6771653543307087,
+        "recall_UP": 0.6971677559912854
+      },
+      "qualified": false,
+      "t0_aligned_fraction": 1.0,
+      "t0_baseline": {
+        "accuracy": 0.6866597724922441,
+        "balanced_accuracy": 0.6871665551609971,
+        "coverage": 1.0,
+        "n": 967,
+        "recall_DOWN": 0.6771653543307087,
+        "recall_UP": 0.6971677559912854
+      },
+      "t0_opposed_bootstrap": {
+        "n": 0
+      },
+      "t0_opposed_fraction": 0.0,
+      "t0_opposed_subset": {
+        "coverage": 0.0,
+        "n": 0
+      },
+      "yearly": [
+        {
+          "accuracy": 0.6540880503144654,
+          "balanced_accuracy": 0.6549707602339181,
+          "coverage": 1.0,
+          "n": 318,
+          "recall_DOWN": 0.6432748538011696,
+          "recall_UP": 0.6666666666666666,
+          "year": 2015
+        },
+        {
+          "accuracy": 0.6947674418604651,
+          "balanced_accuracy": 0.6971734592615406,
+          "coverage": 1.0,
+          "n": 344,
+          "recall_DOWN": 0.675392670157068,
+          "recall_UP": 0.7189542483660131,
+          "year": 2016
+        },
+        {
+          "accuracy": 0.7114754098360656,
+          "balanced_accuracy": 0.7117902989575255,
+          "coverage": 1.0,
+          "n": 305,
+          "recall_DOWN": 0.7191780821917808,
+          "recall_UP": 0.7044025157232704,
+          "year": 2017
+        }
+      ],
+      "years_BA_ge_0p55": 3
+    },
+    {
+      "BA_gain_vs_t0": 0.0,
+      "candidate": "RAW_MAJORITY",
+      "pooled": {
+        "accuracy": 0.6866597724922441,
+        "balanced_accuracy": 0.6871665551609971,
+        "coverage": 1.0,
+        "n": 967,
+        "recall_DOWN": 0.6771653543307087,
+        "recall_UP": 0.6971677559912854
+      },
+      "qualified": false,
+      "t0_aligned_fraction": 1.0,
+      "t0_baseline": {
+        "accuracy": 0.6866597724922441,
+        "balanced_accuracy": 0.6871665551609971,
+        "coverage": 1.0,
+        "n": 967,
+        "recall_DOWN": 0.6771653543307087,
+        "recall_UP": 0.6971677559912854
+      },
+      "t0_opposed_bootstrap": {
+        "n": 0
+      },
+      "t0_opposed_fraction": 0.0,
+      "t0_opposed_subset": {
+        "coverage": 0.0,
+        "n": 0
+      },
+      "yearly": [
+        {
+          "accuracy": 0.6540880503144654,
+          "balanced_accuracy": 0.6549707602339181,
+          "coverage": 1.0,
+          "n": 318,
+          "recall_DOWN": 0.6432748538011696,
+          "recall_UP": 0.6666666666666666,
+          "year": 2015
+        },
+        {
+          "accuracy": 0.6947674418604651,
+          "balanced_accuracy": 0.6971734592615406,
+          "coverage": 1.0,
+          "n": 344,
+          "recall_DOWN": 0.675392670157068,
+          "recall_UP": 0.7189542483660131,
+          "year": 2016
+        },
+        {
+          "accuracy": 0.7114754098360656,
+          "balanced_accuracy": 0.7117902989575255,
+          "coverage": 1.0,
+          "n": 305,
+          "recall_DOWN": 0.7191780821917808,
+          "recall_UP": 0.7044025157232704,
+          "year": 2017
+        }
+      ],
+      "years_BA_ge_0p55": 3
+    }
+  ],
+  "route_outcome_used": false,
+  "schema": "two_wave_c1_raw_proxy_family_validation_result",
+  "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+  "status": "C1_RAW_PROXY_FAMILY_VALIDATION_COMPLETE"
+}
+
+[executed on device: debian (2d5dcc11-76bc-4de1-b98d-911c81cc5135)]
