@@ -1,0 +1,43 @@
+{
+  "schema_version": "two_wave_c1_lead8_specificity_prereg",
+  "issue": 485,
+  "parent_issue": 483,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_MATCHED_CONTROL_RESULTS",
+  "event_lead": 8,
+  "controls": {
+    "same_year": true,
+    "same_old_c1_sign": true,
+    "same_age_since_turn_decile": true,
+    "no_turn_next_8": true,
+    "min_distance_from_event_clock": 16,
+    "max_controls_per_event": 5,
+    "seed": 20260919
+  },
+  "primary": [
+    "thrust_8",
+    "thrust_16",
+    "thrust_32"
+  ],
+  "unsigned": [
+    "abs_ret_8",
+    "range_8",
+    "rv_8",
+    "efficiency_8"
+  ],
+  "negative_controls": [
+    "age_since_last_base_confirmation",
+    "causal_c1_evidence_age"
+  ],
+  "bootstrap": {
+    "unit": "turn_event",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
