@@ -1,0 +1,51 @@
+{
+  "schema_version": "two_wave_t0_compression_risk_outcome_prereg",
+  "issue": 515,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "zones": {
+    "LOW": [
+      1,
+      2
+    ],
+    "MID": [
+      3
+    ],
+    "HIGH": [
+      4,
+      5
+    ],
+    "B5": [
+      5
+    ]
+  },
+  "t0": {
+    "period": 21,
+    "engine": "own_lifecycle_breakout"
+  },
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate_A": [
+    "high_mean_lt_low",
+    "high_minus_low_ci_upper_lt0",
+    "high_fast_loss_gt_low",
+    "min_2_of_3_years_high_mean_lt_low"
+  ],
+  "gate_B": [
+    "gate_A",
+    "high_mean_lt0",
+    "high_mean_ci_upper_lt0",
+    "high_long_mean_lt0",
+    "high_short_mean_lt0"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
