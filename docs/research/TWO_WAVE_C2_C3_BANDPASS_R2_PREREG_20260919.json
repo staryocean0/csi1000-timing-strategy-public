@@ -1,0 +1,52 @@
+{
+  "schema_version": "two_wave_c2_c3_bandpass_r2_prereg",
+  "issue": 458,
+  "parent_issue": 450,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_R2_OBSERVABILITY_RESULTS",
+  "hierarchy": {
+    "depth": 4,
+    "S1": "stage2 input stream",
+    "S2": "stage3 input stream",
+    "S3": "stage4 input stream"
+  },
+  "delays": [
+    0,
+    4,
+    8,
+    16,
+    32,
+    64,
+    128,
+    256,
+    512
+  ],
+  "prefix_cuts": [
+    10000,
+    30000,
+    50000
+  ],
+  "exact_clock": {
+    "K_Sk": "max known_from of final adjacent bracketing nodes needed for t and t-1",
+    "K_C2": "max(K_S1,K_S2)",
+    "K_C3": "max(K_S2,K_S3)",
+    "K_joint": "max(K_S1,K_S2,K_S3)"
+  },
+  "forbidden": [
+    "T0 outcome",
+    "C1 outcome",
+    "PnL",
+    "future return",
+    "route winner",
+    "threshold search",
+    "strategy selection"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
