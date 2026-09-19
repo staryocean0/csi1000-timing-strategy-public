@@ -5,29 +5,13 @@
   "date": "2026-09-19",
   "status": "C1_COMPRESSION_RISK_RANKING_COMPLETE",
   "verdict": "C1_COMPRESSION_RISK_RANKING_SUPPORTED",
-  "supersedes_boundary_incomplete_v1": true,
+  "authoritative_version": "v2",
+  "supersedes": "c1-compression-risk-ranking-20260919-v1",
+  "v1_status": "NON_AUTHORITATIVE_UNTRACEABLE_MODULE",
   "support": {
-    "valid_signal_ledger": 1913,
-    "scored_test_signals": 945,
+    "scored_t0_signals": 945,
     "base_turn_next8_rate": 0.2201058201058201
   },
-  "folds": [
-    {
-      "year": 2018,
-      "train_n": 968,
-      "test_n": 297
-    },
-    {
-      "year": 2019,
-      "train_n": 1265,
-      "test_n": 319
-    },
-    {
-      "year": 2020,
-      "train_n": 1584,
-      "test_n": 329
-    }
-  ],
   "pooled": {
     "B1_rate": 0.14788732394366197,
     "B5_rate": 0.24858757062146894,
@@ -44,7 +28,10 @@
     "risk_ratio_ci95": [
       1.0559888888888889,
       2.6343814711664475
-    ]
+    ],
+    "blocks": 37,
+    "repetitions": 5000,
+    "seed": 20260919
   },
   "yearly": {
     "2018": {
