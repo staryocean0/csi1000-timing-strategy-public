@@ -1,0 +1,34 @@
+{
+  "schema_version": "two_wave_high_compression_weak_thrust_prereg",
+  "issue": 564,
+  "parent_issue": 543,
+  "date": "2026-09-19",
+  "universe": "507_strict_v2_B4_B5_T0_signals_2018_2020",
+  "feature": "T0_aligned_log_return_8",
+  "threshold": "prior_year_reconstructed_high_compression_median",
+  "target": "original_T0_exit_bar_le_signal_bar_plus_9",
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "weak_rate_gt_strong": true,
+    "risk_diff_ci_lower_gt0": true,
+    "risk_ratio_ci_lower_gt1": true,
+    "min_years_weak_gt_strong": 2,
+    "min_pooled_support_each": 100
+  },
+  "forbidden": [
+    "PnL",
+    "C1 direction proxy",
+    "threshold search",
+    "horizon search"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
