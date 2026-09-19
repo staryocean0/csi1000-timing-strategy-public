@@ -1,0 +1,55 @@
+{
+  "schema_version": "two_wave_adjacent_trend_amplitude_suppression_prereg",
+  "issue": 473,
+  "parent_issue": 450,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "source": {
+    "symbol": "000852.SH",
+    "timeframe": "5m",
+    "years": [
+      2015,
+      2020
+    ],
+    "rows": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48"
+  },
+  "pairs": [
+    {
+      "parent": "C2",
+      "child": "C1",
+      "parent_stage": 2,
+      "child_stage": 1
+    },
+    {
+      "parent": "C3",
+      "child": "C2",
+      "parent_stage": 3,
+      "child_stage": 2
+    }
+  ],
+  "parent_leg_pace": "height_log/leg_duration",
+  "child_amplitude": "height_log relative to own low-to-low baseline",
+  "child_amplitude_pace": "height_log/duration",
+  "orthogonal_robustness": "A_child/sqrt(1+(DeltaLow/A_ref)^2)",
+  "strong_percentile": 0.75,
+  "weak_percentile": 0.25,
+  "bootstrap": {
+    "unit": "parent_complete_wave",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "verdicts": [
+    "FULL_ADJACENT_TREND_SUPPRESSION_SUPPORTED",
+    "RELATIVE_DOMINANCE_ONLY__ABSOLUTE_SUPPRESSION_NOT_ESTABLISHED",
+    "ADJACENT_TREND_SUPPRESSION_NOT_SUPPORTED"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
