@@ -1,0 +1,70 @@
+{
+  "schema_version": "two_wave_continuous_c2_phase_carrier_fidelity_v1_prereg",
+  "issue": 438,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_FIDELITY_METRICS",
+  "graphical_reference": {
+    "object": "continuity C2=S1-S2",
+    "complete_waves": 170,
+    "duration_q25": 254,
+    "duration_median": 377,
+    "duration_q75": 534.25
+  },
+  "candidates": [
+    {
+      "period": 256,
+      "q": 1,
+      "warmup": 768
+    },
+    {
+      "period": 384,
+      "q": 1,
+      "warmup": 1152
+    },
+    {
+      "period": 512,
+      "q": 1,
+      "warmup": 1536
+    }
+  ],
+  "gates": {
+    "zero_lag_level_correlation_min": 0.55,
+    "retrospective_leg_overall_min": 0.65,
+    "retrospective_leg_up_min": 0.6,
+    "retrospective_leg_down_min": 0.6,
+    "causal_leg_agreement_min": 0.65,
+    "turn_abs_error_median_max_bars": 57,
+    "turn_abs_error_q75_max_bars": 114,
+    "crossings_per_wave_median_max": 2,
+    "crossings_per_wave_q90_max": 4,
+    "retrospective_coverage_min": 0.9,
+    "causal_support_min_bars": 5000,
+    "prefix_replay_atol": 1e-12,
+    "prefix_cuts": [
+      10000,
+      30000,
+      50000
+    ]
+  },
+  "lag_diagnostic": {
+    "min": -128,
+    "max": 128,
+    "selection_use": false
+  },
+  "selection": [
+    "max_zero_lag_level_correlation",
+    "max_causal_leg_agreement",
+    "min_turn_abs_error_median",
+    "min_abs_period_minus_377"
+  ],
+  "persistence_visible_during_selection": false,
+  "authority": {
+    "signal": false,
+    "strategy_selection": false,
+    "trade": false,
+    "router": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
