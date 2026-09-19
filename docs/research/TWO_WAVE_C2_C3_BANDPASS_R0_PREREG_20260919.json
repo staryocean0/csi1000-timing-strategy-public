@@ -1,0 +1,57 @@
+{
+  "schema_version": "two_wave_c2_c3_bandpass_r0_prereg",
+  "issue": 452,
+  "parent_issue": 450,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_FORMAL_R0_BUILD",
+  "source": {
+    "symbol": "000852.SH",
+    "timeframe": "5m",
+    "years": [
+      2015,
+      2020
+    ],
+    "rows": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48"
+  },
+  "hierarchy": {
+    "function": "continuity_hierarchy",
+    "minimum": 1,
+    "depth": 4,
+    "S1": "stage2 input stream",
+    "S2": "stage3 input stream",
+    "S3": "stage4 input stream"
+  },
+  "residuals": {
+    "C2": "log(S1)-log(S2)",
+    "C3": "log(S2)-log(S3)",
+    "extrapolation": false
+  },
+  "reconstruction_tolerance": 1e-12,
+  "acceptance": {
+    "exact_source_sha": true,
+    "strictly_increasing_occurrence": true,
+    "duplicate_occurrence_count": 0,
+    "finite_joint_rows": true,
+    "nonzero_residual_variance": true,
+    "deterministic_replay_exact": true,
+    "joint_support_fraction_min": 0.9
+  },
+  "forbidden": [
+    "PnL",
+    "future_return",
+    "T0 outcome",
+    "C1 outcome",
+    "state threshold search",
+    "routing rule",
+    "causal availability claim"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
