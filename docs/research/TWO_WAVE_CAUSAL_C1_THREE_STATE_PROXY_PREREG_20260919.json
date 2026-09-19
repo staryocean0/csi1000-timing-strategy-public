@@ -1,0 +1,32 @@
+{
+  "schema_version": "two_wave_causal_c1_three_state_proxy_prereg",
+  "issue": 533,
+  "parent_issue": 531,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "proxy": {
+    "unresolved": "risk_band==5",
+    "aligned": "risk_band!=5 and sign(ret8)==T0_side",
+    "opposed": "risk_band!=5 and sign(ret8)!=T0_side"
+  },
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "aligned_mean_positive": true,
+    "aligned_ci_lower_gt0": true,
+    "opposed_mean_negative": true,
+    "opposed_ci_upper_lt0": true,
+    "aligned_minus_opposed_ci_lower_gt0": true,
+    "min_years_aligned_positive": 2,
+    "min_years_opposed_negative": 2
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
