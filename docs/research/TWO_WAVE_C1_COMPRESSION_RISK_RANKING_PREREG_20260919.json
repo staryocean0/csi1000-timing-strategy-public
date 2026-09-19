@@ -1,0 +1,40 @@
+{
+  "schema_version": "two_wave_c1_compression_risk_ranking_prereg",
+  "issue": 507,
+  "parent_issue": 493,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "test_years": [
+    2018,
+    2019,
+    2020
+  ],
+  "features": [
+    "abs_ret_8",
+    "range_8",
+    "rv_8",
+    "efficiency_8"
+  ],
+  "score": "equal_mean_of_prior_year_reverse_empirical_percentiles",
+  "score_bands": "prior_year_score_distribution_20_40_60_80_percentiles",
+  "target": "retrospective_C1_turn_in_(k,k+8]",
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "pooled_top_gt_bottom": true,
+    "risk_diff_ci_lower_gt0": true,
+    "risk_ratio_ci_lower_gt1": true,
+    "pooled_band_spearman_min": 0.7,
+    "min_years_top_gt_bottom": 2,
+    "pooled_auc_min": 0.52
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
