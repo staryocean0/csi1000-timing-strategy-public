@@ -1,0 +1,271 @@
+{
+  "absolute_suppression_all_pairs": false,
+  "artifact_sha256": {
+    "child_associations.parquet": "de92a56b05a7607979d6335014d4c821313c8fbbfd816a8b368b6faee134e564",
+    "parent_leg_ledger.parquet": "2a49edd6b814876fef879fa81d673c47b51b9c197b04735504c8e36eb3705fc1"
+  },
+  "authority": {
+    "production": false,
+    "router": false,
+    "signal": false,
+    "trade": false
+  },
+  "date": "2026-09-19",
+  "future_return_used": false,
+  "issue": 473,
+  "meta": {
+    "C2_to_C1": {
+      "A_ref": 0.009162358816404037,
+      "associations": 667,
+      "child_waves": 672,
+      "parent_waves": 170
+    },
+    "C3_to_C2": {
+      "A_ref": 0.023800375914895255,
+      "associations": 167,
+      "child_waves": 170,
+      "parent_waves": 39
+    },
+    "stage_wave_counts": {
+      "stage1": 672,
+      "stage2": 170,
+      "stage3": 39
+    }
+  },
+  "module_sha256": "88a34b99b48ac4644d550df22ded6256a4a9d762cacecf106727562fc1303c6b",
+  "outcomes_used": false,
+  "pairs": {
+    "C2_to_C1": {
+      "absolute_suppression_pass": false,
+      "bootstrap": {
+        "logamp_diff": {
+          "ci95": [
+            0.029423684481437326,
+            0.5460299601371892
+          ],
+          "median": 0.3135161963062467
+        },
+        "logorth_diff": {
+          "ci95": [
+            -0.35762311268545943,
+            0.0954511671997438
+          ],
+          "median": -0.14252175452021554
+        },
+        "reps": 5000,
+        "rho": {
+          "ci95": [
+            0.01838560611403978,
+            0.23678200781036396
+          ],
+          "median": 0.1297334532284805
+        },
+        "rho_orth": {
+          "ci95": [
+            -0.17640148675697329,
+            0.03412933268573563
+          ],
+          "median": -0.07456109735098074
+        },
+        "seed": 20260919,
+        "strong_frac_D_gt1": {
+          "ci95": [
+            0.8620689655172413,
+            0.9701602282704125
+          ],
+          "median": 0.9204545454545454
+        },
+        "strong_median_D": {
+          "ci95": [
+            1.7088766557238317,
+            2.4883272816375506
+          ],
+          "median": 2.209303616646846
+        }
+      },
+      "by_direction": [
+        {
+          "child_n_summary": {
+            "max": 9,
+            "median": 2.0,
+            "min": 1,
+            "q25": 1.0,
+            "q75": 3.0
+          },
+          "direction": "UP",
+          "n_legs": 170,
+          "n_parent_waves": 170,
+          "n_strong": 43,
+          "n_weak": 42,
+          "spearman_rho_strength_vs_child_amp": 0.044615018227783174,
+          "spearman_rho_strength_vs_child_orth_amp": -0.1048882212492596,
+          "strong_fraction_dominance_ratio_gt1": 0.9302325581395349,
+          "strong_median_dominance_ratio": 2.394976754400063,
+          "strong_minus_weak_median_log_amp": 0.20856312200235383,
+          "strong_minus_weak_median_log_orth_amp": -0.20866291366345102
+        },
+        {
+          "child_n_summary": {
+            "max": 8,
+            "median": 1.0,
+            "min": 1,
+            "q25": 1.0,
+            "q75": 2.0
+          },
+          "direction": "DOWN",
+          "n_legs": 170,
+          "n_parent_waves": 170,
+          "n_strong": 43,
+          "n_weak": 42,
+          "spearman_rho_strength_vs_child_amp": 0.2199461410225878,
+          "spearman_rho_strength_vs_child_orth_amp": -0.007607427897973267,
+          "strong_fraction_dominance_ratio_gt1": 0.9069767441860465,
+          "strong_median_dominance_ratio": 1.6885831353426408,
+          "strong_minus_weak_median_log_amp": 0.5385505999050961,
+          "strong_minus_weak_median_log_orth_amp": 0.06571983530695302
+        }
+      ],
+      "orthogonal_robustness_same_direction": false,
+      "point": {
+        "child_n_summary": {
+          "max": 9,
+          "median": 2.0,
+          "min": 1,
+          "q25": 1.0,
+          "q75": 2.0
+        },
+        "n_legs": 340,
+        "n_parent_waves": 170,
+        "n_strong": 86,
+        "n_weak": 84,
+        "spearman_rho_strength_vs_child_amp": 0.1305977765250911,
+        "spearman_rho_strength_vs_child_orth_amp": -0.07285278661484035,
+        "strong_fraction_dominance_ratio_gt1": 0.9186046511627907,
+        "strong_median_dominance_ratio": 2.209303616646846,
+        "strong_minus_weak_median_log_amp": 0.31441733277847916,
+        "strong_minus_weak_median_log_orth_amp": -0.1593143453356447
+      },
+      "relative_dominance_pass": true
+    },
+    "C3_to_C2": {
+      "absolute_suppression_pass": false,
+      "bootstrap": {
+        "logamp_diff": {
+          "ci95": [
+            -0.08475474901020164,
+            1.3784175152632114
+          ],
+          "median": 0.5049056667884173
+        },
+        "logorth_diff": {
+          "ci95": [
+            -0.8178735411220259,
+            0.5581531212687624
+          ],
+          "median": -0.18546564714736835
+        },
+        "reps": 5000,
+        "rho": {
+          "ci95": [
+            0.010576805574091618,
+            0.524826375779058
+          ],
+          "median": 0.2925755281538566
+        },
+        "rho_orth": {
+          "ci95": [
+            -0.3324954302008565,
+            0.22804904033056528
+          ],
+          "median": -0.055898527241636894
+        },
+        "seed": 20260919,
+        "strong_frac_D_gt1": {
+          "ci95": [
+            0.8461538461538461,
+            1.0
+          ],
+          "median": 0.9523809523809523
+        },
+        "strong_median_D": {
+          "ci95": [
+            1.5690722335394887,
+            3.304033139552847
+          ],
+          "median": 2.0268619169694033
+        }
+      },
+      "by_direction": [
+        {
+          "child_n_summary": {
+            "max": 8,
+            "median": 2.0,
+            "min": 1,
+            "q25": 1.0,
+            "q75": 3.0
+          },
+          "direction": "UP",
+          "n_legs": 39,
+          "n_parent_waves": 39,
+          "n_strong": 10,
+          "n_weak": 9,
+          "spearman_rho_strength_vs_child_amp": 0.18036437246963563,
+          "spearman_rho_strength_vs_child_orth_amp": -0.03582995951417005,
+          "strong_fraction_dominance_ratio_gt1": 1.0,
+          "strong_median_dominance_ratio": 3.0740107263943863,
+          "strong_minus_weak_median_log_amp": 0.49900240273519136,
+          "strong_minus_weak_median_log_orth_amp": -0.06312810555961512
+        },
+        {
+          "child_n_summary": {
+            "max": 7,
+            "median": 1.0,
+            "min": 1,
+            "q25": 1.0,
+            "q75": 2.0
+          },
+          "direction": "DOWN",
+          "n_legs": 39,
+          "n_parent_waves": 39,
+          "n_strong": 10,
+          "n_weak": 9,
+          "spearman_rho_strength_vs_child_amp": 0.44817813765182185,
+          "spearman_rho_strength_vs_child_orth_amp": -0.025910931174089068,
+          "strong_fraction_dominance_ratio_gt1": 0.9,
+          "strong_median_dominance_ratio": 1.5631431835579384,
+          "strong_minus_weak_median_log_amp": 0.8962011388317572,
+          "strong_minus_weak_median_log_orth_amp": -0.0833155907490184
+        }
+      ],
+      "orthogonal_robustness_same_direction": false,
+      "point": {
+        "child_n_summary": {
+          "max": 8,
+          "median": 2.0,
+          "min": 1,
+          "q25": 1.0,
+          "q75": 3.0
+        },
+        "n_legs": 78,
+        "n_parent_waves": 39,
+        "n_strong": 20,
+        "n_weak": 18,
+        "spearman_rho_strength_vs_child_amp": 0.29451236990182666,
+        "spearman_rho_strength_vs_child_orth_amp": -0.05327633147339349,
+        "strong_fraction_dominance_ratio_gt1": 0.95,
+        "strong_median_dominance_ratio": 2.0268619169694033,
+        "strong_minus_weak_median_log_amp": 0.5032844309009641,
+        "strong_minus_weak_median_log_orth_amp": -0.2092419318144323
+      },
+      "relative_dominance_pass": true
+    }
+  },
+  "parent_issue": 450,
+  "pnl_used": false,
+  "relative_dominance_all_pairs": true,
+  "schema": "two_wave_adjacent_trend_amplitude_suppression_result",
+  "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+  "status": "ADJACENT_TREND_SUPPRESSION_AUDIT_COMPLETE",
+  "t0_c1_outcomes_used": false,
+  "verdict": "RELATIVE_DOMINANCE_ONLY__ABSOLUTE_SUPPRESSION_NOT_ESTABLISHED"
+}
