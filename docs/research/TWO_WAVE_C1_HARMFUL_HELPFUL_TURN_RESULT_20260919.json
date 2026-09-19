@@ -1,0 +1,284 @@
+[Reading 280 lines from start (total: 280 lines, 0 remaining)]
+
+{
+  "artifact_sha256": {
+    "directional_turn_ledger.parquet": "e5379e29b232ae3622a4d65898f1a96f6d65c5fc51cdeccddd516bbfafb5e777"
+  },
+  "auc": {
+    "harmful_auc": 0.5138132183354831,
+    "helpful_auc": 0.39656207133058985,
+    "n": 945
+  },
+  "authority": {
+    "production": false,
+    "router": false,
+    "signal": false,
+    "trade": false
+  },
+  "bootstrap": {
+    "blocks": 37,
+    "direction_accuracy": {
+      "ci95": [
+        0.5435637279978779,
+        0.6790716328814823
+      ],
+      "median": 0.6100917431192661,
+      "n_draws": 5000
+    },
+    "harmful_rate_diff_aligned_minus_opposed": {
+      "ci95": null,
+      "median": null,
+      "n_draws": 0
+    },
+    "helpful_rate_diff_opposed_minus_aligned": {
+      "ci95": null,
+      "median": null,
+      "n_draws": 0
+    },
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "date": "2026-09-19",
+  "decision": {
+    "checks": {
+      "both_ret8_relation_groups_present": false,
+      "direction_proxy_pass": true,
+      "harmful_auc_gt_0p52": false,
+      "harmful_separation_pass": false,
+      "helpful_auc_gt_0p52": false,
+      "helpful_separation_pass": false
+    },
+    "ret8_relation_degenerate": true,
+    "verdict": "C1_DIRECTIONAL_TURN_RISK_NOT_SUPPORTED",
+    "years_direction_accuracy_gt_0p50": 3
+  },
+  "direction_proxy": {
+    "accuracy": 0.6105769230769231,
+    "correct_n": 127,
+    "n": 208,
+    "yearly": [
+      {
+        "accuracy": 0.5294117647058824,
+        "n": 68,
+        "year": 2018
+      },
+      {
+        "accuracy": 0.620253164556962,
+        "n": 79,
+        "year": 2019
+      },
+      {
+        "accuracy": 0.6885245901639344,
+        "n": 61,
+        "year": 2020
+      }
+    ]
+  },
+  "grid_2x5": [
+    {
+      "any_turn_rate": 0.14788732394366197,
+      "harmful_turn_rate": 0.14788732394366197,
+      "helpful_turn_rate": 0.0,
+      "n": 142,
+      "relation": "RET8_ALIGNED_T0",
+      "risk_band": 1
+    },
+    {
+      "any_turn_rate": 0.1834862385321101,
+      "harmful_turn_rate": 0.11009174311926606,
+      "helpful_turn_rate": 0.07339449541284404,
+      "n": 218,
+      "relation": "RET8_ALIGNED_T0",
+      "risk_band": 2
+    },
+    {
+      "any_turn_rate": 0.24890829694323144,
+      "harmful_turn_rate": 0.12663755458515283,
+      "helpful_turn_rate": 0.1222707423580786,
+      "n": 229,
+      "relation": "RET8_ALIGNED_T0",
+      "risk_band": 3
+    },
+    {
+      "any_turn_rate": 0.2569832402234637,
+      "harmful_turn_rate": 0.15083798882681565,
+      "helpful_turn_rate": 0.10614525139664804,
+      "n": 179,
+      "relation": "RET8_ALIGNED_T0",
+      "risk_band": 4
+    },
+    {
+      "any_turn_rate": 0.24858757062146894,
+      "harmful_turn_rate": 0.14689265536723164,
+      "helpful_turn_rate": 0.1016949152542373,
+      "n": 177,
+      "relation": "RET8_ALIGNED_T0",
+      "risk_band": 5
+    },
+    {
+      "any_turn_rate": NaN,
+      "harmful_turn_rate": NaN,
+      "helpful_turn_rate": NaN,
+      "n": 0,
+      "relation": "RET8_OPPOSED_T0",
+      "risk_band": 1
+    },
+    {
+      "any_turn_rate": NaN,
+      "harmful_turn_rate": NaN,
+      "helpful_turn_rate": NaN,
+      "n": 0,
+      "relation": "RET8_OPPOSED_T0",
+      "risk_band": 2
+    },
+    {
+      "any_turn_rate": NaN,
+      "harmful_turn_rate": NaN,
+      "helpful_turn_rate": NaN,
+      "n": 0,
+      "relation": "RET8_OPPOSED_T0",
+      "risk_band": 3
+    },
+    {
+      "any_turn_rate": NaN,
+      "harmful_turn_rate": NaN,
+      "helpful_turn_rate": NaN,
+      "n": 0,
+      "relation": "RET8_OPPOSED_T0",
+      "risk_band": 4
+    },
+    {
+      "any_turn_rate": NaN,
+      "harmful_turn_rate": NaN,
+      "helpful_turn_rate": NaN,
+      "n": 0,
+      "relation": "RET8_OPPOSED_T0",
+      "risk_band": 5
+    }
+  ],
+  "input_scored_sha256": "6fb773743cad9f009b62b973888b63db385459bd6e5db9524046e0b7958d8b33",
+  "issue": 589,
+  "meta": {
+    "T0_closed_trades": 1918,
+    "left": 48,
+    "right": 70018,
+    "rows": 69971,
+    "turns": 1523
+  },
+  "module_sha256": "5e57f0b1b552e238656d8aba1ef8cf6870cfb9615ca1dbb6f325b91a21771de5",
+  "parent_issue": 507,
+  "pnl_used": false,
+  "relation_table": [
+    {
+      "harmful_turn_rate": 0.1343915343915344,
+      "helpful_turn_rate": 0.08571428571428572,
+      "n": 945,
+      "no_turn_rate": 0.7798941798941799,
+      "relation": "RET8_ALIGNED_T0"
+    },
+    {
+      "harmful_turn_rate": NaN,
+      "helpful_turn_rate": NaN,
+      "n": 0,
+      "no_turn_rate": NaN,
+      "relation": "RET8_OPPOSED_T0"
+    }
+  ],
+  "route_outcome_used": false,
+  "schema": "two_wave_c1_harmful_helpful_turn_result",
+  "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+  "status": "C1_HARMFUL_HELPFUL_TURN_RANKING_COMPLETE",
+  "support": {
+    "harmful_turns": 127,
+    "helpful_turns": 81,
+    "multi_turn_horizons": 0,
+    "scored_signals": 945,
+    "turn_events": 208,
+    "zero_ret8": 0
+  },
+  "yearly": [
+    {
+      "actual_turns": 68,
+      "auc": {
+        "harmful_auc": 0.5759897828863346,
+        "helpful_auc": 0.39988207547169813,
+        "n": 297
+      },
+      "direction_accuracy": 0.5294117647058824,
+      "n": 297,
+      "relation_table": [
+        {
+          "harmful_turn_rate": 0.12121212121212122,
+          "helpful_turn_rate": 0.10774410774410774,
+          "n": 297,
+          "no_turn_rate": 0.7710437710437711,
+          "relation": "RET8_ALIGNED_T0"
+        },
+        {
+          "harmful_turn_rate": NaN,
+          "helpful_turn_rate": NaN,
+          "n": 0,
+          "no_turn_rate": NaN,
+          "relation": "RET8_OPPOSED_T0"
+        }
+      ],
+      "year": 2018
+    },
+    {
+      "actual_turns": 79,
+      "auc": {
+        "harmful_auc": 0.5210506424792138,
+        "helpful_auc": 0.43143021914648216,
+        "n": 319
+      },
+      "direction_accuracy": 0.620253164556962,
+      "n": 319,
+      "relation_table": [
+        {
+          "harmful_turn_rate": 0.1536050156739812,
+          "helpful_turn_rate": 0.09404388714733543,
+          "n": 319,
+          "no_turn_rate": 0.7523510971786834,
+          "relation": "RET8_ALIGNED_T0"
+        },
+        {
+          "harmful_turn_rate": NaN,
+          "helpful_turn_rate": NaN,
+          "n": 0,
+          "no_turn_rate": NaN,
+          "relation": "RET8_OPPOSED_T0"
+        }
+      ],
+      "year": 2019
+    },
+    {
+      "actual_turns": 61,
+      "auc": {
+        "harmful_auc": 0.45391571262651403,
+        "helpful_auc": 0.3676570458404075,
+        "n": 329
+      },
+      "direction_accuracy": 0.6885245901639344,
+      "n": 329,
+      "relation_table": [
+        {
+          "harmful_turn_rate": 0.1276595744680851,
+          "helpful_turn_rate": 0.057750759878419454,
+          "n": 329,
+          "no_turn_rate": 0.8145896656534954,
+          "relation": "RET8_ALIGNED_T0"
+        },
+        {
+          "harmful_turn_rate": NaN,
+          "helpful_turn_rate": NaN,
+          "n": 0,
+          "no_turn_rate": NaN,
+          "relation": "RET8_OPPOSED_T0"
+        }
+      ],
+      "year": 2020
+    }
+  ]
+}
+
+[executed on device: debian (2d5dcc11-76bc-4de1-b98d-911c81cc5135)]
