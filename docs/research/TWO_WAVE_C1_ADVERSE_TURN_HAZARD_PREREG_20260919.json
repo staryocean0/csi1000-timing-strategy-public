@@ -1,0 +1,34 @@
+{
+  "schema_version": "two_wave_c1_adverse_turn_hazard_prereg",
+  "issue": 579,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "authoritative_507_v2_T0_signals_2018_2020",
+  "bands": "authoritative_507_v2_B1_B5",
+  "target": [
+    "NO_TURN",
+    "ADVERSE_TURN",
+    "FAVORABLE_TURN"
+  ],
+  "horizon_bars": 8,
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "pooled_B5_gt_B1": true,
+    "risk_diff_ci_lower_gt0": true,
+    "risk_ratio_ci_lower_gt1": true,
+    "min_years_B5_gt_B1": 2,
+    "adverse_auc_min_strict": 0.52,
+    "B5_adverse_share_among_turns_min_strict": 0.5
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
