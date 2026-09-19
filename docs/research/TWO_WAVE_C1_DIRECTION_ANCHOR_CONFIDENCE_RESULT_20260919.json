@@ -1,0 +1,370 @@
+[Reading 366 lines from start (total: 366 lines, 0 remaining)]
+
+{
+  "anchors": {
+    "causal_c1_leg": {
+      "bootstrap_B1_minus_B5": {
+        "blocks": 37,
+        "ci95": [
+          -0.3219253670496841,
+          -0.07886686085208157
+        ],
+        "median": -0.19713515985402671,
+        "n_draws": 5000,
+        "repetitions": 5000,
+        "seed": 20260919
+      },
+      "decision": {
+        "B1_minus_B5": -0.19722288533460652,
+        "anchor": "causal_c1_leg",
+        "checks": {
+          "B1_accuracy_gt_0p52": false,
+          "B1_minus_B5_ge_0p05": false,
+          "band_accuracy_spearman_le_neg0p70": false,
+          "bootstrap_lower_gt0": false,
+          "coverage_ge_0p90": true,
+          "years_B1_gt_B5_ge2": false
+        },
+        "qualifies": false,
+        "years_B1_gt_B5": 0
+      },
+      "pooled": {
+        "band_accuracy_spearman": 0.8999999999999998,
+        "bands": [
+          {
+            "accuracy": 0.31690140845070425,
+            "band": 1,
+            "n": 142
+          },
+          {
+            "accuracy": 0.40825688073394495,
+            "band": 2,
+            "n": 218
+          },
+          {
+            "accuracy": 0.47161572052401746,
+            "band": 3,
+            "n": 229
+          },
+          {
+            "accuracy": 0.43575418994413406,
+            "band": 4,
+            "n": 179
+          },
+          {
+            "accuracy": 0.5141242937853108,
+            "band": 5,
+            "n": 177
+          }
+        ],
+        "coverage": 1.0,
+        "current_accuracy": 0.37142857142857144,
+        "plus8_accuracy": 0.43492063492063493,
+        "resolved_n": 945
+      },
+      "yearly": [
+        {
+          "band_accuracy_spearman": 0.9999999999999999,
+          "bands": [
+            {
+              "accuracy": 0.2,
+              "band": 1,
+              "n": 40
+            },
+            {
+              "accuracy": 0.3,
+              "band": 2,
+              "n": 60
+            },
+            {
+              "accuracy": 0.49411764705882355,
+              "band": 3,
+              "n": 85
+            },
+            {
+              "accuracy": 0.5,
+              "band": 4,
+              "n": 54
+            },
+            {
+              "accuracy": 0.5689655172413793,
+              "band": 5,
+              "n": 58
+            }
+          ],
+          "coverage": 1.0,
+          "current_accuracy": 0.3434343434343434,
+          "plus8_accuracy": 0.43097643097643096,
+          "resolved_n": 297,
+          "year": 2018
+        },
+        {
+          "band_accuracy_spearman": 0.39999999999999997,
+          "bands": [
+            {
+              "accuracy": 0.35714285714285715,
+              "band": 1,
+              "n": 42
+            },
+            {
+              "accuracy": 0.4090909090909091,
+              "band": 2,
+              "n": 66
+            },
+            {
+              "accuracy": 0.4482758620689655,
+              "band": 3,
+              "n": 87
+            },
+            {
+              "accuracy": 0.3275862068965517,
+              "band": 4,
+              "n": 58
+            },
+            {
+              "accuracy": 0.5303030303030303,
+              "band": 5,
+              "n": 66
+            }
+          ],
+          "coverage": 1.0,
+          "current_accuracy": 0.3761755485893417,
+          "plus8_accuracy": 0.4231974921630094,
+          "resolved_n": 319,
+          "year": 2019
+        },
+        {
+          "band_accuracy_spearman": 0.09999999999999999,
+          "bands": [
+            {
+              "accuracy": 0.36666666666666664,
+              "band": 1,
+              "n": 60
+            },
+            {
+              "accuracy": 0.4782608695652174,
+              "band": 2,
+              "n": 92
+            },
+            {
+              "accuracy": 0.47368421052631576,
+              "band": 3,
+              "n": 57
+            },
+            {
+              "accuracy": 0.47761194029850745,
+              "band": 4,
+              "n": 67
+            },
+            {
+              "accuracy": 0.4339622641509434,
+              "band": 5,
+              "n": 53
+            }
+          ],
+          "coverage": 1.0,
+          "current_accuracy": 0.39209726443769,
+          "plus8_accuracy": 0.44984802431610943,
+          "resolved_n": 329,
+          "year": 2020
+        }
+      ]
+    },
+    "causal_segment_residual": {
+      "bootstrap_B1_minus_B5": {
+        "blocks": 37,
+        "ci95": [
+          -0.2585807430086038,
+          0.005884103641456536
+        ],
+        "median": -0.1253489245756679,
+        "n_draws": 5000,
+        "repetitions": 5000,
+        "seed": 20260919
+      },
+      "decision": {
+        "B1_minus_B5": -0.12246359513010269,
+        "anchor": "causal_segment_residual",
+        "checks": {
+          "B1_accuracy_gt_0p52": false,
+          "B1_minus_B5_ge_0p05": false,
+          "band_accuracy_spearman_le_neg0p70": false,
+          "bootstrap_lower_gt0": false,
+          "coverage_ge_0p90": true,
+          "years_B1_gt_B5_ge2": false
+        },
+        "qualifies": false,
+        "years_B1_gt_B5": 0
+      },
+      "pooled": {
+        "band_accuracy_spearman": 0.49999999999999994,
+        "bands": [
+          {
+            "accuracy": 0.352112676056338,
+            "band": 1,
+            "n": 142
+          },
+          {
+            "accuracy": 0.43577981651376146,
+            "band": 2,
+            "n": 218
+          },
+          {
+            "accuracy": 0.4847161572052402,
+            "band": 3,
+            "n": 229
+          },
+          {
+            "accuracy": 0.41899441340782123,
+            "band": 4,
+            "n": 179
+          },
+          {
+            "accuracy": 0.4745762711864407,
+            "band": 5,
+            "n": 177
+          }
+        ],
+        "coverage": 1.0,
+        "current_accuracy": 0.4074074074074074,
+        "plus8_accuracy": 0.43915343915343913,
+        "resolved_n": 945
+      },
+      "yearly": [
+        {
+          "band_accuracy_spearman": 0.49999999999999994,
+          "bands": [
+            {
+              "accuracy": 0.15,
+              "band": 1,
+              "n": 40
+            },
+            {
+              "accuracy": 0.43333333333333335,
+              "band": 2,
+              "n": 60
+            },
+            {
+              "accuracy": 0.5176470588235295,
+              "band": 3,
+              "n": 85
+            },
+            {
+              "accuracy": 0.4074074074074074,
+              "band": 4,
+              "n": 54
+            },
+            {
+              "accuracy": 0.46551724137931033,
+              "band": 5,
+              "n": 58
+            }
+          ],
+          "coverage": 1.0,
+          "current_accuracy": 0.3602693602693603,
+          "plus8_accuracy": 0.4208754208754209,
+          "resolved_n": 297,
+          "year": 2018
+        },
+        {
+          "band_accuracy_spearman": 0.3,
+          "bands": [
+            {
+              "accuracy": 0.47619047619047616,
+              "band": 1,
+              "n": 42
+            },
+            {
+              "accuracy": 0.3939393939393939,
+              "band": 2,
+              "n": 66
+            },
+            {
+              "accuracy": 0.4827586206896552,
+              "band": 3,
+              "n": 87
+            },
+            {
+              "accuracy": 0.3793103448275862,
+              "band": 4,
+              "n": 58
+            },
+            {
+              "accuracy": 0.5151515151515151,
+              "band": 5,
+              "n": 66
+            }
+          ],
+          "coverage": 1.0,
+          "current_accuracy": 0.43573667711598746,
+          "plus8_accuracy": 0.45141065830721006,
+          "resolved_n": 319,
+          "year": 2019
+        },
+        {
+          "band_accuracy_spearman": 0.09999999999999999,
+          "bands": [
+            {
+              "accuracy": 0.4,
+              "band": 1,
+              "n": 60
+            },
+            {
+              "accuracy": 0.4673913043478261,
+              "band": 2,
+              "n": 92
+            },
+            {
+              "accuracy": 0.43859649122807015,
+              "band": 3,
+              "n": 57
+            },
+            {
+              "accuracy": 0.4626865671641791,
+              "band": 4,
+              "n": 67
+            },
+            {
+              "accuracy": 0.4339622641509434,
+              "band": 5,
+              "n": 53
+            }
+          ],
+          "coverage": 1.0,
+          "current_accuracy": 0.42249240121580545,
+          "plus8_accuracy": 0.44376899696048633,
+          "resolved_n": 329,
+          "year": 2020
+        }
+      ]
+    }
+  },
+  "artifact_sha256": {
+    "anchor_fidelity_ledger.parquet": "4f473febc6005b956f531fd5e416618ffb02788ffe21ecd2717d601d87056c3c"
+  },
+  "authority": {
+    "production": false,
+    "router": false,
+    "signal": false,
+    "trade": false
+  },
+  "date": "2026-09-19",
+  "issue": 601,
+  "meta": {
+    "ledger_rows": 945,
+    "oracle_left": 48,
+    "oracle_right": 70018,
+    "scored_input_rows": 945
+  },
+  "module_sha256": "1d2d360f65ab3afb37fa213433adfe8126ae9334f001e1b97afc6d5a59fe6e9c",
+  "parent_issue": 507,
+  "pnl_used": false,
+  "qualified_anchors": [],
+  "schema": "two_wave_c1_direction_anchor_confidence_result",
+  "scored_ledger_sha256": "6fb773743cad9f009b62b973888b63db385459bd6e5db9524046e0b7958d8b33",
+  "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+  "status": "C1_DIRECTION_ANCHOR_CONFIDENCE_AUDIT_COMPLETE",
+  "verdict": "C1_COMPRESSION_AS_DIRECTION_CONFIDENCE_NOT_SUPPORTED"
+}
+
+[executed on device: debian (2d5dcc11-76bc-4de1-b98d-911c81cc5135)]
