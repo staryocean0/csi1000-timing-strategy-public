@@ -1,0 +1,463 @@
+[Reading 459 lines from start (total: 459 lines, 0 remaining)]
+
+{
+  "artifact_sha256": {
+    "inversion_ledger.parquet": "193afee277cbc09eba7ed7252c8d8623a4216abff256185c0b6e3ad6d40bfd45"
+  },
+  "authority": {
+    "production": false,
+    "router": false,
+    "signal": false,
+    "trade": false
+  },
+  "compression_used": false,
+  "date": "2026-09-19",
+  "decision": {
+    "checks": {
+      "BA_gain_ge_0p10": false,
+      "BA_ge_0p55": false,
+      "DOWN_recall_ge_0p52": true,
+      "UP_recall_ge_0p52": true,
+      "coverage_ge_0p95": true,
+      "years_BA_ge_0p52_ge5": true
+    },
+    "verdict": "C1_RESIDUAL_INVERSION_NOT_SUPPORTED"
+  },
+  "future_turn_used": false,
+  "issue": 554,
+  "module_sha256": "3a87f7f821e3d9acd2b0373671c21e2af7d0d2fdda051e34b5697cd1dfbab8d9",
+  "parent_issue": 552,
+  "pnl_used": false,
+  "primary_non_t0_signal": {
+    "balanced_accuracy_gain": 0.09489500646354943,
+    "inverted": {
+      "accuracy": 0.5474210874843647,
+      "balanced_accuracy": 0.5474475032317747,
+      "coverage": 0.9984865849716419,
+      "n": 67955,
+      "recall_DOWN": 0.5522343888724475,
+      "recall_UP": 0.542660617591102
+    },
+    "n_rows": 68058,
+    "original": {
+      "accuracy": 0.45257891251563537,
+      "balanced_accuracy": 0.4525524967682253,
+      "coverage": 0.9984865849716419,
+      "n": 67955,
+      "recall_DOWN": 0.44776561112755253,
+      "recall_UP": 0.457339382408898
+    },
+    "skeleton_identity": {
+      "base_g_equals_s0_segment_fraction": 1.0,
+      "causal_equals_base_g_fraction": 0.9984865849716419,
+      "causal_equals_s0_segment_fraction": 0.9984865849716419
+    },
+    "yearly": [
+      {
+        "inverted": {
+          "accuracy": 0.5413627468421989,
+          "balanced_accuracy": 0.544227378232688,
+          "coverage": 0.9909211106214191,
+          "n": 11242,
+          "recall_DOWN": 0.5950226244343891,
+          "recall_UP": 0.49343213203098685
+        },
+        "original": {
+          "accuracy": 0.45863725315780113,
+          "balanced_accuracy": 0.455772621767312,
+          "coverage": 0.9909211106214191,
+          "n": 11242,
+          "recall_DOWN": 0.40497737556561086,
+          "recall_UP": 0.5065678679690131
+        },
+        "year": 2015
+      },
+      {
+        "inverted": {
+          "accuracy": 0.5777836738303705,
+          "balanced_accuracy": 0.5771324544818613,
+          "coverage": 1.0,
+          "n": 11307,
+          "recall_DOWN": 0.6012745435756114,
+          "recall_UP": 0.5529903653881113
+        },
+        "original": {
+          "accuracy": 0.42221632616962945,
+          "balanced_accuracy": 0.42286754551813865,
+          "coverage": 1.0,
+          "n": 11307,
+          "recall_DOWN": 0.39872545642438856,
+          "recall_UP": 0.44700963461188875
+        },
+        "year": 2016
+      },
+      {
+        "inverted": {
+          "accuracy": 0.5546203752411012,
+          "balanced_accuracy": 0.5547217551258916,
+          "coverage": 1.0,
+          "n": 11406,
+          "recall_DOWN": 0.5575559192580469,
+          "recall_UP": 0.5518875909937363
+        },
+        "original": {
+          "accuracy": 0.4453796247588988,
+          "balanced_accuracy": 0.4452782448741084,
+          "coverage": 1.0,
+          "n": 11406,
+          "recall_DOWN": 0.44244408074195307,
+          "recall_UP": 0.44811240900626376
+        },
+        "year": 2017
+      },
+      {
+        "inverted": {
+          "accuracy": 0.5259963050936922,
+          "balanced_accuracy": 0.5300221780358116,
+          "coverage": 1.0,
+          "n": 11367,
+          "recall_DOWN": 0.4601563799700549,
+          "recall_UP": 0.5998879761015683
+        },
+        "original": {
+          "accuracy": 0.4740036949063077,
+          "balanced_accuracy": 0.46997782196418836,
+          "coverage": 1.0,
+          "n": 11367,
+          "recall_DOWN": 0.5398436200299451,
+          "recall_UP": 0.40011202389843165
+        },
+        "year": 2018
+      },
+      {
+        "inverted": {
+          "accuracy": 0.5581497410690776,
+          "balanced_accuracy": 0.5579796012140902,
+          "coverage": 1.0,
+          "n": 11393,
+          "recall_DOWN": 0.5869109947643979,
+          "recall_UP": 0.5290482076637825
+        },
+        "original": {
+          "accuracy": 0.4418502589309225,
+          "balanced_accuracy": 0.4420203987859098,
+          "coverage": 1.0,
+          "n": 11393,
+          "recall_DOWN": 0.4130890052356021,
+          "recall_UP": 0.47095179233621753
+        },
+        "year": 2019
+      },
+      {
+        "inverted": {
+          "accuracy": 0.526423487544484,
+          "balanced_accuracy": 0.5261625253549695,
+          "coverage": 1.0,
+          "n": 11240,
+          "recall_DOWN": 0.518014705882353,
+          "recall_UP": 0.5343103448275862
+        },
+        "original": {
+          "accuracy": 0.473576512455516,
+          "balanced_accuracy": 0.47383747464503045,
+          "coverage": 1.0,
+          "n": 11240,
+          "recall_DOWN": 0.48198529411764707,
+          "recall_UP": 0.4656896551724138
+        },
+        "year": 2020
+      }
+    ],
+    "years_inverted_BA_ge_0p52": 6
+  },
+  "schema": "two_wave_c1_residual_inversion_result",
+  "secondary_all_bars": {
+    "balanced_accuracy_gain": 0.1002791506713161,
+    "inverted": {
+      "accuracy": 0.5501195196312784,
+      "balanced_accuracy": 0.550139575335658,
+      "coverage": 0.9984707731885094,
+      "n": 69863,
+      "recall_DOWN": 0.5551978846319662,
+      "recall_UP": 0.5450812660393499
+    },
+    "n_rows": 69970,
+    "original": {
+      "accuracy": 0.44988048036872164,
+      "balanced_accuracy": 0.44986042466434195,
+      "coverage": 0.9984707731885094,
+      "n": 69863,
+      "recall_DOWN": 0.4448021153680338,
+      "recall_UP": 0.45491873396065013
+    },
+    "skeleton_identity": {
+      "base_g_equals_s0_segment_fraction": 1.0,
+      "causal_equals_base_g_fraction": 0.9984707731885094,
+      "causal_equals_s0_segment_fraction": 0.9984707731885094
+    },
+    "yearly": [
+      {
+        "inverted": {
+          "accuracy": 0.5446521287642783,
+          "balanced_accuracy": 0.5472643513481246,
+          "coverage": 0.9908256880733946,
+          "n": 11556,
+          "recall_DOWN": 0.5970776255707763,
+          "recall_UP": 0.49745107712547276
+        },
+        "original": {
+          "accuracy": 0.4553478712357217,
+          "balanced_accuracy": 0.4527356486518755,
+          "coverage": 0.9908256880733946,
+          "n": 11556,
+          "recall_DOWN": 0.40292237442922374,
+          "recall_UP": 0.5025489228745272
+        },
+        "year": 2015
+      },
+      {
+        "inverted": {
+          "accuracy": 0.5806368552055617,
+          "balanced_accuracy": 0.5799190274302344,
+          "coverage": 1.0,
+          "n": 11651,
+          "recall_DOWN": 0.6043021510755378,
+          "recall_UP": 0.555535903784931
+        },
+        "original": {
+          "accuracy": 0.41936314479443826,
+          "balanced_accuracy": 0.4200809725697656,
+          "coverage": 1.0,
+          "n": 11651,
+          "recall_DOWN": 0.39569784892446225,
+          "recall_UP": 0.444464096215069
+        },
+        "year": 2016
+      },
+      {
+        "inverted": {
+          "accuracy": 0.5571684740841943,
+          "balanced_accuracy": 0.5573208290148783,
+          "coverage": 1.0,
+          "n": 11711,
+          "recall_DOWN": 0.5615589016829052,
+          "recall_UP": 0.5530827563468513
+        },
+        "original": {
+          "accuracy": 0.44283152591580566,
+          "balanced_accuracy": 0.4426791709851218,
+          "coverage": 1.0,
+          "n": 11711,
+          "recall_DOWN": 0.43844109831709477,
+          "recall_UP": 0.4469172436531487
+        },
+        "year": 2017
+      },
+      {
+        "inverted": {
+          "accuracy": 0.529320987654321,
+          "balanced_accuracy": 0.5332624511689583,
+          "coverage": 1.0,
+          "n": 11664,
+          "recall_DOWN": 0.4642335766423358,
+          "recall_UP": 0.602291325695581
+        },
+        "original": {
+          "accuracy": 0.470679012345679,
+          "balanced_accuracy": 0.46673754883104157,
+          "coverage": 1.0,
+          "n": 11664,
+          "recall_DOWN": 0.5357664233576642,
+          "recall_UP": 0.397708674304419
+        },
+        "year": 2018
+      },
+      {
+        "inverted": {
+          "accuracy": 0.5599385245901639,
+          "balanced_accuracy": 0.5597580288939779,
+          "coverage": 1.0,
+          "n": 11712,
+          "recall_DOWN": 0.5883251315119633,
+          "recall_UP": 0.5311909262759924
+        },
+        "original": {
+          "accuracy": 0.4400614754098361,
+          "balanced_accuracy": 0.4402419711060221,
+          "coverage": 1.0,
+          "n": 11712,
+          "recall_DOWN": 0.41167486848803664,
+          "recall_UP": 0.46880907372400754
+        },
+        "year": 2019
+      },
+      {
+        "inverted": {
+          "accuracy": 0.5287405998789869,
+          "balanced_accuracy": 0.5285141788352357,
+          "coverage": 1.0,
+          "n": 11569,
+          "recall_DOWN": 0.5206479174083304,
+          "recall_UP": 0.5363804402621408
+        },
+        "original": {
+          "accuracy": 0.47125940012101303,
+          "balanced_accuracy": 0.4714858211647644,
+          "coverage": 1.0,
+          "n": 11569,
+          "recall_DOWN": 0.4793520825916696,
+          "recall_UP": 0.4636195597378592
+        },
+        "year": 2020
+      }
+    ],
+    "years_inverted_BA_ge_0p52": 6
+  },
+  "secondary_t0_signal_bars": {
+    "balanced_accuracy_gain": 0.29149898371184785,
+    "inverted": {
+      "accuracy": 0.6462264150943396,
+      "balanced_accuracy": 0.6457494918559239,
+      "coverage": 0.997907949790795,
+      "n": 1908,
+      "recall_DOWN": 0.6550348953140578,
+      "recall_UP": 0.63646408839779
+    },
+    "n_rows": 1912,
+    "original": {
+      "accuracy": 0.35377358490566035,
+      "balanced_accuracy": 0.35425050814407605,
+      "coverage": 0.997907949790795,
+      "n": 1908,
+      "recall_DOWN": 0.34496510468594216,
+      "recall_UP": 0.36353591160220994
+    },
+    "skeleton_identity": {
+      "base_g_equals_s0_segment_fraction": 1.0,
+      "causal_equals_base_g_fraction": 0.997907949790795,
+      "causal_equals_s0_segment_fraction": 0.997907949790795
+    },
+    "yearly": [
+      {
+        "inverted": {
+          "accuracy": 0.6624203821656051,
+          "balanced_accuracy": 0.6625771888929783,
+          "coverage": 0.9874213836477987,
+          "n": 314,
+          "recall_DOWN": 0.6608187134502924,
+          "recall_UP": 0.6643356643356644
+        },
+        "original": {
+          "accuracy": 0.3375796178343949,
+          "balanced_accuracy": 0.33742281110702166,
+          "coverage": 0.9874213836477987,
+          "n": 314,
+          "recall_DOWN": 0.3391812865497076,
+          "recall_UP": 0.3356643356643357
+        },
+        "year": 2015
+      },
+      {
+        "inverted": {
+          "accuracy": 0.6744186046511628,
+          "balanced_accuracy": 0.6716969510317217,
+          "coverage": 1.0,
+          "n": 344,
+          "recall_DOWN": 0.6963350785340314,
+          "recall_UP": 0.6470588235294118
+        },
+        "original": {
+          "accuracy": 0.32558139534883723,
+          "balanced_accuracy": 0.32830304896827844,
+          "coverage": 1.0,
+          "n": 344,
+          "recall_DOWN": 0.3036649214659686,
+          "recall_UP": 0.35294117647058826
+        },
+        "year": 2016
+      },
+      {
+        "inverted": {
+          "accuracy": 0.6524590163934426,
+          "balanced_accuracy": 0.6549065219264236,
+          "coverage": 1.0,
+          "n": 305,
+          "recall_DOWN": 0.7123287671232876,
+          "recall_UP": 0.5974842767295597
+        },
+        "original": {
+          "accuracy": 0.3475409836065574,
+          "balanced_accuracy": 0.34509347807357627,
+          "coverage": 1.0,
+          "n": 305,
+          "recall_DOWN": 0.2876712328767123,
+          "recall_UP": 0.4025157232704403
+        },
+        "year": 2017
+      },
+      {
+        "inverted": {
+          "accuracy": 0.6565656565656566,
+          "balanced_accuracy": 0.6578421578421578,
+          "coverage": 1.0,
+          "n": 297,
+          "recall_DOWN": 0.6233766233766234,
+          "recall_UP": 0.6923076923076923
+        },
+        "original": {
+          "accuracy": 0.3434343434343434,
+          "balanced_accuracy": 0.3421578421578422,
+          "coverage": 1.0,
+          "n": 297,
+          "recall_DOWN": 0.37662337662337664,
+          "recall_UP": 0.3076923076923077
+        },
+        "year": 2018
+      },
+      {
+        "inverted": {
+          "accuracy": 0.6238244514106583,
+          "balanced_accuracy": 0.6235055843951549,
+          "coverage": 1.0,
+          "n": 319,
+          "recall_DOWN": 0.6380368098159509,
+          "recall_UP": 0.6089743589743589
+        },
+        "original": {
+          "accuracy": 0.3761755485893417,
+          "balanced_accuracy": 0.3764944156048451,
+          "coverage": 1.0,
+          "n": 319,
+          "recall_DOWN": 0.3619631901840491,
+          "recall_UP": 0.391025641025641
+        },
+        "year": 2019
+      },
+      {
+        "inverted": {
+          "accuracy": 0.60790273556231,
+          "balanced_accuracy": 0.6085088176203587,
+          "coverage": 1.0,
+          "n": 329,
+          "recall_DOWN": 0.601123595505618,
+          "recall_UP": 0.6158940397350994
+        },
+        "original": {
+          "accuracy": 0.39209726443769,
+          "balanced_accuracy": 0.3914911823796413,
+          "coverage": 1.0,
+          "n": 329,
+          "recall_DOWN": 0.398876404494382,
+          "recall_UP": 0.3841059602649007
+        },
+        "year": 2020
+      }
+    ],
+    "years_inverted_BA_ge_0p52": 6
+  },
+  "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+  "status": "C1_RESIDUAL_INVERSION_AUDIT_COMPLETE",
+  "t0_side_used_in_primary": false
+}
+
+[executed on device: debian (2d5dcc11-76bc-4de1-b98d-911c81cc5135)]
