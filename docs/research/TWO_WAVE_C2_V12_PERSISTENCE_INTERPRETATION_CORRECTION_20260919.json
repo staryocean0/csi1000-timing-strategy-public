@@ -1,0 +1,48 @@
+{
+  "schema_version": "two_wave_c2_v12_persistence_interpretation_correction",
+  "issue": 432,
+  "semantic_followup_issue": 444,
+  "date": "2026-09-19",
+  "status": "DENSE_C2_PERSISTENCE_INTERPRETATION_CORRECTED",
+  "withdrawn_interpretation": "directional +8 persistence proves delayed-following value",
+  "audit": {
+    "c2_up": {
+      "episodes": 192,
+      "min_episode_bars": 29,
+      "median_episode_bars": 165.5,
+      "survive_t_plus_8": 1,
+      "survive_t_plus_16": 1
+    },
+    "c2_down": {
+      "episodes": 194,
+      "exceptional_short_episodes": 1,
+      "median_episode_bars": 140.5,
+      "survive_t_plus_8": 0.9948453608247423,
+      "survive_t_plus_16": 0.9948453608247423
+    }
+  },
+  "cause": "retrospective linear interpolation between sparse S1/S2 occurrence-time structural nodes creates long piecewise-linear directional segments",
+  "deadband_reclassification": {
+    "exit": 0,
+    "enter": 0.01,
+    "status": "MINIMUM_ANTI_CHATTER_BUFFER_EVIDENCE",
+    "semantic_range_threshold_accepted": false
+  },
+  "corrected_post_delay_outcomes": [
+    "alive_at_t_plus_8",
+    "same_phase_at_t_plus_16_conditional_on_alive_at_t_plus_8",
+    "continuous_same_phase_t_plus_9_to_t_plus_16",
+    "residual_episode_life_after_t_plus_8",
+    "post_t_plus_8_decay_or_reversal_hazard"
+  ],
+  "next_gate": "blind large-cycle C2 phase oracle -> current-band low-point-slope threshold calibration -> delayed recognizer",
+  "authority": {
+    "signal": false,
+    "strategy_selection": false,
+    "trade": false,
+    "router": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
