@@ -1,0 +1,44 @@
+{
+  "schema_version": "two_wave_c1_lead8_matched_prereg",
+  "issue": 486,
+  "parent_issue": 450,
+  "source_issue": 483,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "matched": {
+    "case": "t-8",
+    "control": "t-16",
+    "same_oracle_c1_segment": true
+  },
+  "direction_rule_windows": [
+    8,
+    16,
+    32
+  ],
+  "bootstrap": {
+    "unit": "turn_event_pair",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "morphology_clue": {
+    "paired_ci_excludes_zero": true,
+    "min_years_same_sign": 4,
+    "both_turn_directions_same_sign": true
+  },
+  "directional_clue": {
+    "balanced_accuracy_min": 0.55,
+    "min_years_accuracy_ge_0p52": 4,
+    "min_recall_each": 0.52
+  },
+  "forbidden": [
+    "PnL",
+    "route outcome",
+    "post-hoc window selection"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
