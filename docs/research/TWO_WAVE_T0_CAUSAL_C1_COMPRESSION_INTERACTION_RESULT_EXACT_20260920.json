@@ -1,0 +1,483 @@
+{
+  "authority": {
+    "live_trading": false,
+    "paper_trading": false,
+    "production": false,
+    "router": false,
+    "signal": false,
+    "trade": false
+  },
+  "bootstrap": {
+    "blocks": 37,
+    "delta_aligned": {
+      "ci95": [
+        -64.33118570134674,
+        22.312899881418378
+      ],
+      "median": -19.22547600431238,
+      "n_draws": 5000
+    },
+    "delta_opposed": {
+      "ci95": [
+        -23.275045936871052,
+        27.534872000747868
+      ],
+      "median": 1.7303814724547824,
+      "n_draws": 5000
+    },
+    "did": {
+      "ci95": [
+        -28.60146636003079,
+        72.21173055735034
+      ],
+      "median": 21.04850495408743,
+      "n_draws": 5000
+    },
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "date": "2026-09-20",
+  "decision": {
+    "aligned_negative_years": 2,
+    "checks": {
+      "aligned_delta_negative_years_ge2": true,
+      "aligned_delta_upper_ci_lt0": false,
+      "did_lower_ci_gt0": false,
+      "opposed_delta_lower_ci_gt0": false,
+      "opposed_delta_positive_years_ge2": true
+    },
+    "opposed_positive_years": 2,
+    "point_estimates": {
+      "DID_opposed_minus_aligned": 21.50614784306392,
+      "aligned_HIGH_mean_bp": 10.842771570500972,
+      "aligned_LOW_mean_bp": 30.206349036015084,
+      "delta_aligned_HIGH_minus_LOW": -19.363577465514112,
+      "delta_opposed_HIGH_minus_LOW": 2.1425703775498093,
+      "opposed_HIGH_mean_bp": 25.780347155633365,
+      "opposed_LOW_mean_bp": 23.637776778083555
+    },
+    "verdict": "T0_CAUSAL_C1_COMPRESSION_INTERACTION_NOT_SUPPORTED"
+  },
+  "hashes": {
+    "joined_ledger_sha256": "3d16639e49994283a9f0027a94e5dcf9c9a1d26a66280efe3adb86da9873a45a",
+    "module_sha256": "958a77bf2cc9b3fd35bdb8c383d00a464e6b906e357bc64a955ff43e330cc08f"
+  },
+  "input": {
+    "data_ref": "factorlab-two-wave-strategy-lab/data/development/5m_offset_0.parquet",
+    "data_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "risk507_authoritative_scored_ledger_sha256": "6fb773743cad9f009b62b973888b63db385459bd6e5db9524046e0b7958d8b33",
+    "rows": 70114
+  },
+  "issue": 615,
+  "meta": {
+    "causal_c1_coverage": 1.0,
+    "joined_rows": 945,
+    "missing_trade": 0,
+    "scored_rows": 945,
+    "unresolved_c1": 0
+  },
+  "point_contrasts": {
+    "DID_opposed_minus_aligned": 21.50614784306392,
+    "aligned_HIGH_mean_bp": 10.842771570500972,
+    "aligned_LOW_mean_bp": 30.206349036015084,
+    "delta_aligned_HIGH_minus_LOW": -19.363577465514112,
+    "delta_opposed_HIGH_minus_LOW": 2.1425703775498093,
+    "opposed_HIGH_mean_bp": 25.780347155633365,
+    "opposed_LOW_mean_bp": 23.637776778083555
+  },
+  "prefix_replay": [
+    {
+      "cut": 10000,
+      "passed": true,
+      "signals_checked": 0,
+      "state_mismatches": 0,
+      "stream_nodes_full": 349,
+      "stream_nodes_prefix": 349,
+      "stream_passed": true
+    },
+    {
+      "cut": 30000,
+      "passed": true,
+      "signals_checked": 0,
+      "state_mismatches": 0,
+      "stream_nodes_full": 1173,
+      "stream_nodes_prefix": 1173,
+      "stream_passed": true
+    },
+    {
+      "cut": 50000,
+      "passed": true,
+      "signals_checked": 383,
+      "state_mismatches": 0,
+      "stream_nodes_full": 1903,
+      "stream_nodes_prefix": 1903,
+      "stream_passed": true
+    },
+    {
+      "cut": 65000,
+      "passed": true,
+      "signals_checked": 800,
+      "state_mismatches": 0,
+      "stream_nodes_full": 2466,
+      "stream_nodes_prefix": 2466,
+      "stream_passed": true
+    }
+  ],
+  "prefix_replay_passed": true,
+  "risk507_reconstruction": {
+    "authoritative_version": "v2",
+    "checks": {
+      "B1_rate": true,
+      "B5_rate": true,
+      "auc": true,
+      "base_rate": true,
+      "n": true
+    },
+    "declared_scored_ledger_sha256": "6fb773743cad9f009b62b973888b63db385459bd6e5db9524046e0b7958d8b33",
+    "folds": [
+      {
+        "score_cutpoints": [
+          0.2724173553719008,
+          0.43279958677685954,
+          0.5821280991735537,
+          0.7180268595041324
+        ],
+        "test_n": 297,
+        "train_n": 968,
+        "year": 2018
+      },
+      {
+        "score_cutpoints": [
+          0.2717391304347826,
+          0.4295256916996048,
+          0.5770750988142292,
+          0.7156521739130436
+        ],
+        "test_n": 319,
+        "train_n": 1265,
+        "year": 2019
+      },
+      {
+        "score_cutpoints": [
+          0.2751578282828283,
+          0.42932449494949493,
+          0.5737058080808082,
+          0.7159722222222222
+        ],
+        "test_n": 329,
+        "train_n": 1584,
+        "year": 2020
+      }
+    ],
+    "matched": true,
+    "module_sha256": "7c386d7ce6b5b41a8df297aecf74488d806dcb20c09c852aab566f424602478c",
+    "pooled": {
+      "B1_rate": 0.14788732394366197,
+      "B5_rate": 0.24858757062146894,
+      "auc": 0.5565833420311032,
+      "base_rate": 0.2201058201058201
+    },
+    "raw_meta": {
+      "T0_closed_trades": 1918,
+      "oracle": {
+        "left": 48,
+        "right": 70018,
+        "rows": 69971,
+        "turns": 1523
+      }
+    },
+    "rows": 945
+  },
+  "schema_version": "two_wave_t0_causal_c1_compression_interaction_result_exact_v1",
+  "status": "T0_CAUSAL_C1_COMPRESSION_INTERACTION_COMPLETE",
+  "support": {
+    "coverage_passed": true,
+    "min_blocks_per_primary_cell": 15,
+    "min_c1_resolved_coverage": 0.95,
+    "min_trades_per_primary_cell": 50,
+    "passed": true,
+    "primary_cells": {
+      "ALIGNED_HIGH": {
+        "blocks": 35,
+        "n": 125,
+        "passed": true
+      },
+      "ALIGNED_LOW": {
+        "blocks": 33,
+        "n": 114,
+        "passed": true
+      },
+      "OPPOSED_HIGH": {
+        "blocks": 37,
+        "n": 231,
+        "passed": true
+      },
+      "OPPOSED_LOW": {
+        "blocks": 36,
+        "n": 246,
+        "passed": true
+      }
+    }
+  },
+  "tables": {
+    "grid": {
+      "ALIGNED": {
+        "HIGH": {
+          "blocks": 35,
+          "fast_loss_rate": 0.48,
+          "mean_duration": 31.792,
+          "mean_net_bp": 10.842771570500972,
+          "median_net_bp": -28.43301803404937,
+          "n": 125,
+          "win_rate": 0.328
+        },
+        "LOW": {
+          "blocks": 33,
+          "fast_loss_rate": 0.32456140350877194,
+          "mean_duration": 37.50877192982456,
+          "mean_net_bp": 30.206349036015084,
+          "median_net_bp": -26.126018532880906,
+          "n": 114,
+          "win_rate": 0.42105263157894735
+        },
+        "MID": {
+          "blocks": 30,
+          "fast_loss_rate": 0.4375,
+          "mean_duration": 33.675,
+          "mean_net_bp": 23.91934541958155,
+          "median_net_bp": -42.11376899998286,
+          "n": 80,
+          "win_rate": 0.3375
+        }
+      },
+      "OPPOSED": {
+        "HIGH": {
+          "blocks": 37,
+          "fast_loss_rate": 0.45454545454545453,
+          "mean_duration": 36.22943722943723,
+          "mean_net_bp": 25.780347155633365,
+          "median_net_bp": -21.069544623542896,
+          "n": 231,
+          "win_rate": 0.38095238095238093
+        },
+        "LOW": {
+          "blocks": 36,
+          "fast_loss_rate": 0.3130081300813008,
+          "mean_duration": 41.142276422764226,
+          "mean_net_bp": 23.637776778083555,
+          "median_net_bp": -16.038424746414957,
+          "n": 246,
+          "win_rate": 0.4268292682926829
+        },
+        "MID": {
+          "blocks": 35,
+          "fast_loss_rate": 0.4161073825503356,
+          "mean_duration": 36.11409395973154,
+          "mean_net_bp": 19.374570339373598,
+          "median_net_bp": -28.233347691936853,
+          "n": 149,
+          "win_rate": 0.40939597315436244
+        }
+      }
+    },
+    "yearly": {
+      "2018": {
+        "ALIGNED": {
+          "HIGH": {
+            "blocks": 13,
+            "fast_loss_rate": 0.4489795918367347,
+            "mean_duration": 37.63265306122449,
+            "mean_net_bp": 21.0663142248548,
+            "median_net_bp": -18.388681494163485,
+            "n": 49,
+            "win_rate": 0.40816326530612246
+          },
+          "LOW": {
+            "blocks": 10,
+            "fast_loss_rate": 0.2916666666666667,
+            "mean_duration": 40.416666666666664,
+            "mean_net_bp": 28.77172134894678,
+            "median_net_bp": -36.01695213323164,
+            "n": 24,
+            "win_rate": 0.375
+          },
+          "MID": {
+            "blocks": 9,
+            "fast_loss_rate": 0.5,
+            "mean_duration": 32.36666666666667,
+            "mean_net_bp": 40.63476565893934,
+            "median_net_bp": -49.59523555641223,
+            "n": 30,
+            "win_rate": 0.23333333333333334
+          }
+        },
+        "OPPOSED": {
+          "HIGH": {
+            "blocks": 13,
+            "fast_loss_rate": 0.5079365079365079,
+            "mean_duration": 36.65079365079365,
+            "mean_net_bp": 29.261919729607467,
+            "median_net_bp": -25.84315875360742,
+            "n": 63,
+            "win_rate": 0.31746031746031744
+          },
+          "LOW": {
+            "blocks": 12,
+            "fast_loss_rate": 0.25,
+            "mean_duration": 47.276315789473685,
+            "mean_net_bp": 57.314363761786794,
+            "median_net_bp": 13.888376693998033,
+            "n": 76,
+            "win_rate": 0.5394736842105263
+          },
+          "MID": {
+            "blocks": 12,
+            "fast_loss_rate": 0.4909090909090909,
+            "mean_duration": 34.36363636363637,
+            "mean_net_bp": -2.7478262164902576,
+            "median_net_bp": -32.022855048066,
+            "n": 55,
+            "win_rate": 0.36363636363636365
+          }
+        }
+      },
+      "2019": {
+        "ALIGNED": {
+          "HIGH": {
+            "blocks": 11,
+            "fast_loss_rate": 0.4864864864864865,
+            "mean_duration": 29.18918918918919,
+            "mean_net_bp": 14.437137424258333,
+            "median_net_bp": -22.75272824665241,
+            "n": 37,
+            "win_rate": 0.35135135135135137
+          },
+          "LOW": {
+            "blocks": 11,
+            "fast_loss_rate": 0.28205128205128205,
+            "mean_duration": 35.97435897435897,
+            "mean_net_bp": 10.609841894611892,
+            "median_net_bp": -15.11563080426746,
+            "n": 39,
+            "win_rate": 0.41025641025641024
+          },
+          "MID": {
+            "blocks": 11,
+            "fast_loss_rate": 0.3333333333333333,
+            "mean_duration": 35.833333333333336,
+            "mean_net_bp": 16.835650099075558,
+            "median_net_bp": -20.09811812545793,
+            "n": 30,
+            "win_rate": 0.36666666666666664
+          }
+        },
+        "OPPOSED": {
+          "HIGH": {
+            "blocks": 13,
+            "fast_loss_rate": 0.41379310344827586,
+            "mean_duration": 36.18390804597701,
+            "mean_net_bp": 27.8992788826815,
+            "median_net_bp": -17.832338514029246,
+            "n": 87,
+            "win_rate": 0.40229885057471265
+          },
+          "LOW": {
+            "blocks": 12,
+            "fast_loss_rate": 0.3333333333333333,
+            "mean_duration": 39.231884057971016,
+            "mean_net_bp": 8.252030155242803,
+            "median_net_bp": -36.451615546887396,
+            "n": 69,
+            "win_rate": 0.3333333333333333
+          },
+          "MID": {
+            "blocks": 13,
+            "fast_loss_rate": 0.3508771929824561,
+            "mean_duration": 40.68421052631579,
+            "mean_net_bp": 45.388236236004474,
+            "median_net_bp": -5.12847712132288,
+            "n": 57,
+            "win_rate": 0.47368421052631576
+          }
+        }
+      },
+      "2020": {
+        "ALIGNED": {
+          "HIGH": {
+            "blocks": 11,
+            "fast_loss_rate": 0.5128205128205128,
+            "mean_duration": 26.923076923076923,
+            "mean_net_bp": -5.412231676995444,
+            "median_net_bp": -38.216025823969154,
+            "n": 39,
+            "win_rate": 0.20512820512820512
+          },
+          "LOW": {
+            "blocks": 12,
+            "fast_loss_rate": 0.37254901960784315,
+            "mean_duration": 37.31372549019608,
+            "mean_net_bp": 45.86703223217908,
+            "median_net_bp": -26.074855008740244,
+            "n": 51,
+            "win_rate": 0.45098039215686275
+          },
+          "MID": {
+            "blocks": 11,
+            "fast_loss_rate": 0.5,
+            "mean_duration": 32.4,
+            "mean_net_bp": 9.471758041303833,
+            "median_net_bp": -36.47581467383476,
+            "n": 20,
+            "win_rate": 0.45
+          }
+        },
+        "OPPOSED": {
+          "HIGH": {
+            "blocks": 12,
+            "fast_loss_rate": 0.4567901234567901,
+            "mean_duration": 35.95061728395062,
+            "mean_net_bp": 20.796567743120306,
+            "median_net_bp": -15.149423497179695,
+            "n": 81,
+            "win_rate": 0.4074074074074074
+          },
+          "LOW": {
+            "blocks": 12,
+            "fast_loss_rate": 0.3465346534653465,
+            "mean_duration": 37.83168316831683,
+            "mean_net_bp": 8.808033275257463,
+            "median_net_bp": -31.051747558400944,
+            "n": 101,
+            "win_rate": 0.40594059405940597
+          },
+          "MID": {
+            "blocks": 11,
+            "fast_loss_rate": 0.40540540540540543,
+            "mean_duration": 31.675675675675677,
+            "mean_net_bp": 12.184106946523638,
+            "median_net_bp": -28.233347691936853,
+            "n": 37,
+            "win_rate": 0.3783783783783784
+          }
+        }
+      }
+    }
+  },
+  "yearly_contrasts": {
+    "2018": {
+      "delta_aligned": -7.70540712409198,
+      "delta_opposed": -28.052444032179327,
+      "did": -20.347036908087347
+    },
+    "2019": {
+      "delta_aligned": 3.8272955296464417,
+      "delta_opposed": 19.647248727438697,
+      "did": 15.819953197792255
+    },
+    "2020": {
+      "delta_aligned": -51.279263909174524,
+      "delta_opposed": 11.988534467862843,
+      "did": 63.267798377037366
+    }
+  }
+}

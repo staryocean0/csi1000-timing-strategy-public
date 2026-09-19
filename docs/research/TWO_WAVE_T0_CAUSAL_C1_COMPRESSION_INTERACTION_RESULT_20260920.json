@@ -1,0 +1,75 @@
+{
+  "schema_version": "two_wave_t0_causal_c1_compression_interaction_result_summary_v1",
+  "issue": 615,
+  "parent_issue": 507,
+  "date": "2026-09-20",
+  "status": "T0_CAUSAL_C1_COMPRESSION_INTERACTION_COMPLETE",
+  "verdict": "T0_CAUSAL_C1_COMPRESSION_INTERACTION_NOT_SUPPORTED",
+  "input": {
+    "data_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "risk507_authoritative_version": "v2",
+    "risk507_module_sha256": "7c386d7ce6b5b41a8df297aecf74488d806dcb20c09c852aab566f424602478c",
+    "risk507_scored_ledger_sha256": "6fb773743cad9f009b62b973888b63db385459bd6e5db9524046e0b7958d8b33",
+    "scored_rows": 945
+  },
+  "support": {
+    "causal_c1_coverage": 1.0,
+    "support_passed": true,
+    "primary_cells": {
+      "ALIGNED_LOW": {"n": 114, "blocks": 33},
+      "ALIGNED_HIGH": {"n": 125, "blocks": 35},
+      "OPPOSED_LOW": {"n": 246, "blocks": 36},
+      "OPPOSED_HIGH": {"n": 231, "blocks": 37}
+    }
+  },
+  "point_estimates_bp": {
+    "aligned_LOW_mean": 30.206349036015084,
+    "aligned_HIGH_mean": 10.842771570500972,
+    "delta_aligned_HIGH_minus_LOW": -19.363577465514112,
+    "opposed_LOW_mean": 23.637776778083555,
+    "opposed_HIGH_mean": 25.780347155633365,
+    "delta_opposed_HIGH_minus_LOW": 2.1425703775498093,
+    "DID_opposed_minus_aligned": 21.50614784306392
+  },
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "blocks": 37,
+    "repetitions": 5000,
+    "seed": 20260919,
+    "delta_aligned_ci95_bp": [-64.33118570134674, 22.312899881418378],
+    "delta_opposed_ci95_bp": [-23.275045936871052, 27.534872000747868],
+    "DID_ci95_bp": [-28.60146636003079, 72.21173055735034]
+  },
+  "yearly": {
+    "2018": {"delta_aligned_bp": -7.70540712409198, "delta_opposed_bp": -28.052444032179327},
+    "2019": {"delta_aligned_bp": 3.8272955296464417, "delta_opposed_bp": 19.647248727438697},
+    "2020": {"delta_aligned_bp": -51.279263909174524, "delta_opposed_bp": 11.988534467862843}
+  },
+  "gates": {
+    "aligned_delta_upper_ci_lt0": false,
+    "opposed_delta_lower_ci_gt0": false,
+    "did_lower_ci_gt0": false,
+    "aligned_delta_negative_years_ge2": true,
+    "opposed_delta_positive_years_ge2": true
+  },
+  "prefix_replay": {
+    "passed": true,
+    "cuts": [10000, 30000, 50000, 65000],
+    "signals_checked_at_50000": 383,
+    "signals_checked_at_65000": 800,
+    "state_mismatches": 0
+  },
+  "hashes": {
+    "module": "958a77bf2cc9b3fd35bdb8c383d00a464e6b906e357bc64a955ff43e330cc08f",
+    "joined_ledger": "3d16639e49994283a9f0027a94e5dcf9c9a1d26a66280efe3adb86da9873a45a",
+    "exact_result": "6a7518075565cb7c027b900764e4846fa937e4ccf83a0739817420d860a7b73a"
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}

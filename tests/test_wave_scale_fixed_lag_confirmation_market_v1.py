@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'executor'))
 import wave_scale_fixed_lag_market_broker_v1 as broker
+from tests.segmentation_carrier_registration_support import strip_issue615_workflow
 
 PROFILE = 'two-wave-scale-fixed-lag-confirmation-measurement-v1'
 WORKFLOW_PARENT = '01f44fb699414a196a04d052f84257adaf97f0e8'
@@ -70,7 +71,7 @@ class FixedLagMarketTests(unittest.TestCase):
 
     def test_workflow_route_is_exact_append_and_secret_surface_unchanged(self):
         path = ROOT / '.github/workflows/public-compute.yml'
-        text = path.read_text()
+        text = strip_issue615_workflow(path.read_text())
         self.assertEqual(text.count(PROFILE), 12)
         self.assertEqual(text.count('secrets.FACTORLAB_PRIVATE_TOKEN'), 2)
         text = text.replace(f'          - {PROFILE}\n', '')
