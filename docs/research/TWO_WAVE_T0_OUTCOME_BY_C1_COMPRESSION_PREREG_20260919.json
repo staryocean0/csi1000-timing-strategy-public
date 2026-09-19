@@ -1,0 +1,31 @@
+{
+  "schema_version": "two_wave_t0_outcome_by_c1_compression_prereg",
+  "issue": 537,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "frozen_input": "strict-boundary #507 walk-forward score and B1..B5 bands",
+  "outcome": "T0 period-21 own-lifecycle net_log_return_proxy",
+  "primary_contrasts": [
+    "B5_minus_B1_mean_net",
+    "B4B5_minus_B1B2_mean_net",
+    "B4B5_minus_B1B2_fast_loss"
+  ],
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "D51_ci_upper_lt0": true,
+    "DHL_ci_upper_lt0": true,
+    "FL_HL_ci_lower_gt0": true,
+    "min_years_B5_mean_lt_B1_mean": 2
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
