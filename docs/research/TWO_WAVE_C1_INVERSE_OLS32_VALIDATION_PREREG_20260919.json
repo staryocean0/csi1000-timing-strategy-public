@@ -1,0 +1,40 @@
+{
+  "schema_version": "two_wave_inverse_ols32_c1_carrier_validation_prereg",
+  "issue": 547,
+  "parent_issue": 535,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "primary_carrier": "negative_OLS_logclose_slope_sign_H32",
+  "validation_years": [
+    2015,
+    2016,
+    2017
+  ],
+  "primary_target": "retrospective_C1_sign_at_k_plus_8",
+  "secondary_target": "retrospective_C1_sign_at_k",
+  "controls": [
+    "negative_OLS42",
+    "negative_OLS64",
+    "negative_OLS86"
+  ],
+  "gate": {
+    "pooled_future8_ba_min": 0.55,
+    "pooled_future8_block_ci_lower_gt": 0.5,
+    "min_years_future8_ba_ge_0p52": 2,
+    "no_year_future8_ba_lt": 0.5,
+    "t0_opposed_support_min": 0.15,
+    "t0_opposed_future8_ba_gt": 0.52,
+    "t0_opposed_block_ci_lower_gt": 0.5
+  },
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
