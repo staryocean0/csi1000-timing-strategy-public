@@ -1,0 +1,58 @@
+{
+  "schema_version": "two_wave_c1_lead8_direct_direction_result_summary",
+  "issue": 604,
+  "parent_issue": 601,
+  "date": "2026-09-19",
+  "status": "C1_LEAD8_DIRECT_DIRECTION_COMPLETE",
+  "verdict": "C1_LEAD8_DIRECT_DIRECTION_SUPPORTED",
+  "support": {
+    "n": 945,
+    "up": 474,
+    "down": 471
+  },
+  "pooled": {
+    "balanced_accuracy": 0.6433860087613212,
+    "accuracy": 0.6433862433862434,
+    "recall_up": 0.6434599156118144,
+    "recall_down": 0.643312101910828,
+    "auc": 0.6797728148207871,
+    "bootstrap_ba_ci95": [
+      0.615060380363188,
+      0.672343450925622
+    ]
+  },
+  "yearly": {
+    "2018": {
+      "balanced_accuracy": 0.6227993764900055,
+      "auc": 0.6669723088208326
+    },
+    "2019": {
+      "balanced_accuracy": 0.6425833728465307,
+      "auc": 0.6861861861861862
+    },
+    "2020": {
+      "balanced_accuracy": 0.6667036625971143,
+      "auc": 0.6946725860155383
+    }
+  },
+  "provenance": {
+    "original_receipt_module_sha256": "aa2f99978dcb7c023ba381661dc50884aef23e280e13a255ee5dfb1984e7be88",
+    "original_source_status": "NOT_LOCATED",
+    "reconstructed_module_sha256": "766f1ac26edb2005cbe0959fe99e846b1e5295d30de747c2bfab2c17f59c688a",
+    "oof_numeric_equivalence": true,
+    "max_probability_difference": 0
+  },
+  "hashes": {
+    "feature_ledger": "e365fcfa505dd65004165dff0bf40febcff2a3229bc1b6c743639c3758ded1f9",
+    "oof": "7abaaea2fccc1eb690ae48d2aae9c68a52b6416e3058b49332173ad16a5e9366",
+    "formal_result": "7d6fd0ef9a0c6ab3348f988d7419ec1e3da1edb16f98dc0846a78c006c925f1c"
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
