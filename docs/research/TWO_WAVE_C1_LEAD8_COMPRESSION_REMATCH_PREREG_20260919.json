@@ -1,0 +1,42 @@
+{
+  "schema_version": "two_wave_c1_lead8_compression_rematch_prereg",
+  "issue": 493,
+  "parent_issue": 485,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "event_lead": 8,
+  "controls": {
+    "same_year": true,
+    "same_old_sign": true,
+    "same_c1_age_decile": true,
+    "same_base_confirmation_age_quintile": true,
+    "same_causal_c1_evidence_age_quintile": true,
+    "strata_within": "calendar_year_x_old_sign",
+    "no_turn_next_8": true,
+    "min_distance_bars": 16,
+    "max_controls_per_event": 5,
+    "seed": 20260919
+  },
+  "primary": [
+    "abs_ret_8",
+    "range_8",
+    "rv_8",
+    "efficiency_8"
+  ],
+  "bootstrap": {
+    "unit": "turn_event",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "overall_gate": {
+    "min_supported_variables": 3,
+    "min_event_coverage": 0.8,
+    "min_median_controls_per_event": 4
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
