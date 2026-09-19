@@ -1,0 +1,57 @@
+{
+  "schema_version": "two_wave_c2_phase_deadband_v11_adjudication",
+  "issue": 432,
+  "date": "2026-09-19",
+  "status": "GRAPHICAL_C2_DEADBAND_WIDTH_UNIDENTIFIED__CONTINUOUS_PHASE_CARRIER_REQUIRED",
+  "carrier": {
+    "object": "graphical C2=S1-S2 continuity carrier",
+    "rows": 69372,
+    "sign_runs": 290,
+    "sign_changes": 289,
+    "unique_z": 667,
+    "ledger_sha256": "7191f0ca6b762edff0967117112c3b6ead09ae6d7424da4ced61909ad7f3071c"
+  },
+  "invalid_p320": {
+    "excluded": true,
+    "result_sha256": "db390e328fe9e20ec24b4acdf4e4b3398295b6394759a97120b8cd7496643bf9",
+    "checkpoint_sha256": "ba7acc2fb3eba69c669b6cbb22ad833075b8c9e9416ad919b3f8911580053da9"
+  },
+  "fine_grid_best": {
+    "exit": 0,
+    "enter": 0.01,
+    "lower_boundary_limited": true,
+    "stable_turn_events": 289,
+    "stable_entry_events": 290,
+    "exit_within_4_rate": 1,
+    "entry_within_8_rate": 0.996551724137931,
+    "range_occupancy": 0.005174998558496223
+  },
+  "yearly": {
+    "feasible_years": 6,
+    "exit_variance": 0,
+    "enter_variance": 0,
+    "condition_search_triggered": false
+  },
+  "native_chatter": {
+    "direction_runs_lt4": 0,
+    "previous_one_update_claim_invalid": true
+  },
+  "graphical_c2_duration_bars": {
+    "n": 170,
+    "q25": 254,
+    "median": 377,
+    "q75": 534.25
+  },
+  "persistence_status": "REPRESENTATION_EVIDENCE_ONLY_NOT_FINAL",
+  "corrected_result_sha256": "1414c116d6c0f464219fd0843e1bd87dc1506d4b6ec21fa357208f25e4ebcdc7",
+  "next_phase": "continuous C2 phase-carrier fidelity",
+  "authority": {
+    "signal": false,
+    "strategy_selection": false,
+    "trade": false,
+    "router": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
