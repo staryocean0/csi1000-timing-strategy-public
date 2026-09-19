@@ -1,0 +1,51 @@
+{
+  "schema_version": "two_wave_c2_c3_bandpass_r1_prereg",
+  "issue": 455,
+  "parent_issue": 450,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_R1_ATLAS",
+  "input": {
+    "r0_ledger_sha256": "0e632a2b782194f8d5d433ffd019780845de8f1d0b8a3e12124351073008e3ec",
+    "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48"
+  },
+  "slopes": "dCk(t)=Ck(t)-Ck(t-1)",
+  "sign_relation_states": [
+    "++",
+    "+-",
+    "-+",
+    "--"
+  ],
+  "lag_range": [
+    -2048,
+    2048
+  ],
+  "outputs": [
+    "level_distributions",
+    "slope_distributions",
+    "sign_relation_occupancy",
+    "relation_run_lengths",
+    "individual_sign_runs",
+    "turn_lead_lag",
+    "correlation_atlas",
+    "scale_ratios",
+    "year_stability"
+  ],
+  "no_selection_rule": true,
+  "forbidden": [
+    "T0 outcome",
+    "C1 outcome",
+    "PnL",
+    "route winner",
+    "future return",
+    "execution arm labels",
+    "threshold optimization"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
