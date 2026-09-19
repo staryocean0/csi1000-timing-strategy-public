@@ -1,0 +1,31 @@
+{
+  "schema_version": "two_wave_c1_causal_persistence_compression_prereg",
+  "issue": 521,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "exact_2018_2020_T0_signals_and_B1_B5_from_issue_507",
+  "current_state": "then_known_stage1_causal_leg_relative_to_T0",
+  "future_state": "retrospective_dense_C1_slope_sign_at_k_plus_8_relative_to_T0",
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "pooled_transition_B5_gt_B1": true,
+    "pooled_transition_diff_ci_lower_gt0": true,
+    "pooled_transition_spearman_min": 0.7,
+    "aligned_persistence_B5_lt_B1": true,
+    "aligned_persistence_diff_ci_upper_lt0": true,
+    "opposed_persistence_B5_lt_B1": true,
+    "opposed_persistence_diff_ci_upper_lt0": true,
+    "min_years_pooled_B5_gt_B1": 2
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
