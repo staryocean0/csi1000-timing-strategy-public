@@ -1,0 +1,39 @@
+{
+  "schema_version": "two_wave_t0_compression_path_hazard_prereg",
+  "issue": 587,
+  "parent_issue": 582,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": {
+    "source": "#507_authoritative_v2",
+    "years": [
+      2018,
+      2019,
+      2020
+    ],
+    "n": 945
+  },
+  "horizons": [
+    4,
+    8,
+    16,
+    21,
+    24,
+    32
+  ],
+  "value_definition": "actual_net_if_exited_else_hypothetical_open_h_liquidation_minus_4bp",
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "selection_rule": "descriptive_only_no_horizon_promotion",
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
