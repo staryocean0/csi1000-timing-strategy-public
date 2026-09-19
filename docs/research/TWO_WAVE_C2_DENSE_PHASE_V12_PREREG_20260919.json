@@ -1,0 +1,59 @@
+{
+  "schema_version": "two_wave_c2_dense_phase_v12_prereg",
+  "issue": 432,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_DENSE_DEADBAND_AND_PERSISTENCE",
+  "supersedes_for_phase_persistence": "asof_sample_hold_C2_descriptor",
+  "dense_carrier": {
+    "object": "retrospective dense graphical C2=log(S1)-log(S2)",
+    "interpolation": "linear_between_occurrence_nodes",
+    "extrapolation": false,
+    "common_support_bars": 69615,
+    "normalized_usable_bars": 69358,
+    "first_usable_bar": 523,
+    "last_usable_bar": 69880,
+    "raw_sign_changes": 386,
+    "raw_sign_runs": 387,
+    "raw_sign_runs_lt4": 1
+  },
+  "normalization": "dense C2 first difference / median(latest up to 3 completed C2 A2/T2 with end_bar<=t)",
+  "deadband": {
+    "exit_grid": {
+      "start": 0,
+      "stop": 0.2,
+      "step": 0.01
+    },
+    "enter_grid": {
+      "start": 0.01,
+      "stop": 0.3,
+      "step": 0.01
+    },
+    "min_width": 0.01,
+    "direct_direction_flip_allowed": false
+  },
+  "feasibility": {
+    "min_leg_bars": 4,
+    "stable_entry_run_bars": 8,
+    "exit_within_4_min": 0.9,
+    "enter_within_8_min": 0.9,
+    "full_min_events": 30,
+    "year_min_events": 20
+  },
+  "persistence": {
+    "horizon_bars": 8,
+    "primary": "transition_entry_same_phase",
+    "continuous": true,
+    "bar_level_secondary": true,
+    "transition_matrix": true,
+    "yearly": true
+  },
+  "causal_equivalence_claimed": false,
+  "authority": {
+    "signal": false,
+    "trade": false,
+    "router": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
