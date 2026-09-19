@@ -1,0 +1,29 @@
+{
+  "schema_version": "two_wave_c1_compression_t0_economic_prereg",
+  "issue": 612,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "risk_input_sha256": "6fb773743cad9f009b62b973888b63db385459bd6e5db9524046e0b7958d8b33",
+  "t0": {
+    "period": 21,
+    "cost_bps_per_side": 2,
+    "engine": "trend_shadow_trades"
+  },
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "verdicts": [
+    "C1_COMPRESSION_T0_VETO_SUPPORTED",
+    "C1_COMPRESSION_T0_RISK_DOWNGRADE_SUPPORTED",
+    "C1_COMPRESSION_T0_ECONOMIC_INTERACTION_NOT_SUPPORTED"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
