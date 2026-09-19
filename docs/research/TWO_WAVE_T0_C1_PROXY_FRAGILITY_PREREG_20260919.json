@@ -1,0 +1,30 @@
+{
+  "schema_version": "two_wave_t0_c1_proxy_fragility_prereg",
+  "issue": 557,
+  "parent_issue": 554,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "scored_ledger_sha256": "6fb773743cad9f009b62b973888b63db385459bd6e5db9524046e0b7958d8b33",
+  "direction_proxy": "negative_causal_first_stage_leg_sign",
+  "primary_population": "resolved_and_proxy_matches_oracle_sign_now",
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "min_coverage": 0.95,
+    "min_current_fidelity": 0.6,
+    "B5_gt_B1": true,
+    "risk_diff_ci_lower_gt0": true,
+    "risk_ratio_ci_lower_gt1": true,
+    "band_spearman_min": 0.7,
+    "min_years_B5_gt_B1": 2
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
