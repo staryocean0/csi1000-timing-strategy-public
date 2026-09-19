@@ -1,0 +1,185 @@
+{
+  "authority": {
+    "live_trading": false,
+    "paper_trading": false,
+    "production": false,
+    "router": false,
+    "signal": false,
+    "strategy_selection": false,
+    "trade": false
+  },
+  "candidates": [
+    {
+      "best_lag": -50,
+      "best_lag_correlation": 0.19888990564188216,
+      "causal_leg_agreement": 0.40957531184656426,
+      "causal_leg_support": 69345,
+      "coverage": 0.9927889104359693,
+      "crossings_per_wave_median": 12.0,
+      "crossings_per_wave_q90": 28.0,
+      "gates": {
+        "causal_leg": false,
+        "causal_support": true,
+        "coverage": true,
+        "cross_median": false,
+        "cross_q90": false,
+        "level_corr": false,
+        "prefix": true,
+        "retro_down": true,
+        "retro_overall": false,
+        "retro_up": false,
+        "turn_median": true,
+        "turn_q75": true
+      },
+      "period": 256,
+      "prefix_causality": true,
+      "prefix_checks": [
+        {
+          "cut": 10000,
+          "passed": true
+        },
+        {
+          "cut": 30000,
+          "passed": true
+        },
+        {
+          "cut": 50000,
+          "passed": true
+        }
+      ],
+      "retrospective_leg_down": 0.6320091548144515,
+      "retrospective_leg_down_support": 30585,
+      "retrospective_leg_overall": 0.5969382587431813,
+      "retrospective_leg_support": 69111,
+      "retrospective_leg_up": 0.5690961947775528,
+      "retrospective_leg_up_support": 38526,
+      "turn_abs_error_median": 14.5,
+      "turn_abs_error_q75": 30.0,
+      "turn_support": 338,
+      "verdict": "FIDELITY_FAIL",
+      "warmup": 768,
+      "zero_lag_correlation": 0.15213874821832798
+    },
+    {
+      "best_lag": -29,
+      "best_lag_correlation": 0.23172263546757474,
+      "causal_leg_agreement": 0.4069691564797494,
+      "causal_leg_support": 68961,
+      "coverage": 0.9872728578610932,
+      "crossings_per_wave_median": 9.0,
+      "crossings_per_wave_q90": 22.30000000000001,
+      "gates": {
+        "causal_leg": false,
+        "causal_support": true,
+        "coverage": true,
+        "cross_median": false,
+        "cross_q90": false,
+        "level_corr": false,
+        "prefix": true,
+        "retro_down": true,
+        "retro_overall": false,
+        "retro_up": true,
+        "turn_median": true,
+        "turn_q75": true
+      },
+      "period": 384,
+      "prefix_causality": true,
+      "prefix_checks": [
+        {
+          "cut": 10000,
+          "passed": true
+        },
+        {
+          "cut": 30000,
+          "passed": true
+        },
+        {
+          "cut": 50000,
+          "passed": true
+        }
+      ],
+      "retrospective_leg_down": 0.6721721392380074,
+      "retrospective_leg_down_support": 30394,
+      "retrospective_leg_overall": 0.6405051871898962,
+      "retrospective_leg_support": 68727,
+      "retrospective_leg_up": 0.6153966556230924,
+      "retrospective_leg_up_support": 38333,
+      "turn_abs_error_median": 22.0,
+      "turn_abs_error_q75": 41.0,
+      "turn_support": 337,
+      "verdict": "FIDELITY_FAIL",
+      "warmup": 1152,
+      "zero_lag_correlation": 0.2155634657463052
+    },
+    {
+      "best_lag": -15,
+      "best_lag_correlation": 0.25119551459088907,
+      "causal_leg_agreement": 0.4463449844700118,
+      "causal_leg_support": 68577,
+      "coverage": 0.981756805286217,
+      "crossings_per_wave_median": 8.0,
+      "crossings_per_wave_q90": 20.0,
+      "gates": {
+        "causal_leg": false,
+        "causal_support": true,
+        "coverage": true,
+        "cross_median": false,
+        "cross_q90": false,
+        "level_corr": false,
+        "prefix": true,
+        "retro_down": true,
+        "retro_overall": true,
+        "retro_up": true,
+        "turn_median": true,
+        "turn_q75": true
+      },
+      "period": 512,
+      "prefix_causality": true,
+      "prefix_checks": [
+        {
+          "cut": 10000,
+          "passed": true
+        },
+        {
+          "cut": 30000,
+          "passed": true
+        },
+        {
+          "cut": 50000,
+          "passed": true
+        }
+      ],
+      "retrospective_leg_down": 0.6849707179048496,
+      "retrospective_leg_down_support": 30394,
+      "retrospective_leg_overall": 0.660228553033961,
+      "retrospective_leg_support": 68343,
+      "retrospective_leg_up": 0.6404121320719913,
+      "retrospective_leg_up_support": 37949,
+      "turn_abs_error_median": 28.0,
+      "turn_abs_error_q75": 50.0,
+      "turn_support": 337,
+      "verdict": "FIDELITY_FAIL",
+      "warmup": 1536,
+      "zero_lag_correlation": 0.24766766228491144
+    }
+  ],
+  "date": "2026-09-19",
+  "execution_result_sha256": "4a1d59a91abe50416a23b91dbe2f6043bcd49ecae7aeaf0d97d89a2036f1318c",
+  "future_return_magnitude_used": false,
+  "implementation_sha256": "23527c81b064b4e6621ccc0c11ca75734ec7ecb80dd3d11df717c2c8e114cae6",
+  "issue": 438,
+  "persistence_used": false,
+  "pnl_used": false,
+  "reference": {
+    "common_support_bars": 69615,
+    "complete_c2_waves": 170,
+    "left": 266,
+    "right": 69880
+  },
+  "schema": "two_wave_continuous_c2_carrier_fidelity_v1_result",
+  "schema_version": "two_wave_continuous_c2_phase_carrier_fidelity_v1_result",
+  "selected_period": null,
+  "source_rows": 70114,
+  "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+  "status": "NO_CONTINUOUS_C2_CARRIER_ACCEPTED"
+}
