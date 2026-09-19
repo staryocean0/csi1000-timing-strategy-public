@@ -1,0 +1,61 @@
+{
+  "schema_version": "two_wave_c1_causal_warning_v1_result_summary",
+  "issue": 492,
+  "date": "2026-09-19",
+  "status": "C1_CAUSAL_WARNING_V1_COMPLETE",
+  "verdict": "C1_CAUSAL_WARNING_V1_NOT_READY",
+  "support": {
+    "decision_rows": 8742,
+    "events": 1523,
+    "event_rate": 0.1742164264470373
+  },
+  "pooled": {
+    "n": 4367,
+    "events": 733,
+    "event_rate": 0.16784978245935425,
+    "roc_auc": 0.5106835473071138,
+    "average_precision": 0.17249813015643112,
+    "brier": 0.24969543578014344,
+    "high_risk_fraction": 0.16807877261277765,
+    "high_risk_event_rate": 0.17029972752043596,
+    "high_risk_lift": 1.0145960574102917,
+    "direction_accuracy_high_risk_events": 0.768
+  },
+  "yearly": {
+    "2018": {
+      "roc_auc": 0.4964221658614838,
+      "lift": 0.9937913968616178,
+      "direction_accuracy_all": 0.6451612903225806
+    },
+    "2019": {
+      "roc_auc": 0.5077784946574976,
+      "lift": 0.9540350079563538,
+      "direction_accuracy_all": 0.6490566037735849
+    },
+    "2020": {
+      "roc_auc": 0.5376884422110553,
+      "lift": 1.1910976782525071,
+      "direction_accuracy_all": 0.6414342629482072
+    }
+  },
+  "acceptance": {
+    "pooled_auc": false,
+    "years_auc_pass": 1,
+    "years_lift_pass": 0,
+    "direction_accuracy": true,
+    "causality": true
+  },
+  "interpretation": "raw compression does not solve turn timing; conditional turn direction remains informative",
+  "hashes": {
+    "module": "73d248637bedc65257f0772d9fdf201645a8565e461071ee1dfdd79bd8549302",
+    "decisions": "4bc4ac602fd2fd947884bb65ae39e460f709c83faf913d96d48c8f6c8069c05a",
+    "oof": "5a02896e4235bfc473d8fa5387984ad19f3e3a549a3c731f0fd08a0715192897",
+    "exact_result": "a02bfae236d1f8da21acd642c556ceef5937c7ccec75055620465c5c525a0cdb"
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
