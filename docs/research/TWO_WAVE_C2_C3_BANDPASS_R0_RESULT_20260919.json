@@ -1,0 +1,92 @@
+{
+  "artifact_sha256": {
+    "c2_c3_bandpass_joint.parquet": "0e632a2b782194f8d5d433ffd019780845de8f1d0b8a3e12124351073008e3ec"
+  },
+  "authority": {
+    "causal_state": false,
+    "live_trading": false,
+    "paper_trading": false,
+    "production": false,
+    "router": false,
+    "signal": false,
+    "trade": false
+  },
+  "checks": {
+    "all_joint_rows_finite": true,
+    "deterministic_replay_exact": true,
+    "joint_support_fraction_ge_0p90": true,
+    "nonzero_c2_variance": true,
+    "nonzero_c3_variance": true,
+    "reconstruction_within_tolerance": true
+  },
+  "date": "2026-09-19",
+  "forbidden_outcomes_used": false,
+  "future_return_used": false,
+  "issue": 452,
+  "meta": {
+    "base_resets": 164,
+    "base_waves": 2503,
+    "c2_max": 0.20832018724721024,
+    "c2_min": -0.03692905621536191,
+    "c2_std": 0.025024631036230316,
+    "c2_support": {
+      "bars": 69615,
+      "left": 266,
+      "right": 69880
+    },
+    "c3_max": 0.5763183870536359,
+    "c3_min": -0.0505215495962581,
+    "c3_std": 0.08156105035454368,
+    "c3_support": {
+      "bars": 68911,
+      "left": 523,
+      "right": 69433
+    },
+    "finite_rows": 68911,
+    "joint_support": {
+      "bars": 68911,
+      "left": 523,
+      "right": 69433
+    },
+    "joint_support_fraction": 0.9828422283709387,
+    "reconstruction_error_s1_c2_c3_s3": 0.0,
+    "reconstruction_error_s1_c2_s2": 0.0,
+    "reconstruction_error_s2_c3_s3": 0.0,
+    "s1_nodes": 673,
+    "s2_nodes": 171,
+    "s3_nodes": 40,
+    "source_rows": 70114,
+    "stage_completed_waves": [
+      672,
+      170,
+      39,
+      8
+    ],
+    "stage_pivots": [
+      1347,
+      344,
+      80,
+      20
+    ],
+    "stage_roots": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "stage_stream_nodes": [
+      2648,
+      673,
+      171,
+      40
+    ]
+  },
+  "module_sha256": "10f620fc1d08e8d82bda2e1c41b1ea546c89c27673057ad726f19d42d0c689f7",
+  "parent_issue": 450,
+  "pnl_used": false,
+  "schema": "two_wave_c2_c3_bandpass_r0_result",
+  "schema_version": "two_wave_c2_c3_bandpass_r0_result",
+  "source_rows": 70114,
+  "source_sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+  "status": "R0_BANDPASS_REPRESENTATION_FROZEN"
+}
