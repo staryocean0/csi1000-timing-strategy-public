@@ -1,0 +1,42 @@
+{
+  "schema_version": "two_wave_c1_compression_t0_interaction_prereg",
+  "issue": 571,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "authoritative_507_v2_scored_T0_signals",
+  "c1_relation": "stage1_causal_state_leg_relative_to_T0_side",
+  "bands": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "contrasts": {
+    "aligned": "mean_B5_minus_mean_B1_expected_negative",
+    "opposed": "mean_B5_minus_mean_B1_expected_positive",
+    "interaction": "opposed_delta_minus_aligned_delta_expected_positive"
+  },
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "aligned_point_negative": true,
+    "opposed_point_positive": true,
+    "interaction_point_positive": true,
+    "interaction_ci_lower_gt0": true,
+    "min_years_aligned_B5_lt_B1": 2,
+    "min_years_opposed_B5_gt_B1": 2
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
