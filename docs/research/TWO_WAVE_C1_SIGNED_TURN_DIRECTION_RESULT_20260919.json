@@ -1,0 +1,49 @@
+{
+  "schema_version": "two_wave_c1_signed_turn_direction_result_summary",
+  "issue": 609,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "C1_SIGNED_TURN_DIRECTION_PRECURSOR_COMPLETE",
+  "verdict": "C1_SIGNED_TURN_DIRECTION_PRECURSOR_NOT_SUPPORTED",
+  "support": {
+    "n": 945,
+    "no_turn": 737,
+    "turn_up": 116,
+    "turn_down": 92
+  },
+  "pooled": {
+    "direction_accuracy": 0.6105769230769231,
+    "direction_accuracy_ci95": [
+      0.5435637279978779,
+      0.6790716328814823
+    ],
+    "auc_up": 0.7293789775799675,
+    "auc_up_ci95": [
+      0.7026039878756014,
+      0.7562582824411572
+    ],
+    "auc_down": 0.35222233549110554,
+    "auc_down_ci95": [
+      0.2960717339625076,
+      0.4112240386232258
+    ],
+    "macro_auc": 0.5408006565355366
+  },
+  "asymmetry": {
+    "turn_up_ret8_negative_fraction": 0.9224137931034483,
+    "turn_down_ret8_positive_fraction": 0.21739130434782608
+  },
+  "hashes": {
+    "module": "37b58849aaac85fe86e89f1794e9b2305834eef3dfe173b8232ed84f6446e8ac",
+    "signed_turn_ledger": "1e4248cad9b5d833e13818546d5171e5376765d762fb57f6ef88ff07bc676edc",
+    "exact_result": "ce8cf9ca20a68bc788c4c10429c76774a923d7a5daddc4e2157817ab4f040c30"
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
