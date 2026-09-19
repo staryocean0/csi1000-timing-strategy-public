@@ -1,0 +1,26 @@
+{
+  "schema_version": "two_wave_high_compression_t0_early_reversal_atlas_prereg",
+  "issue": 543,
+  "parent_issue": 540,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "strict #507 B4+B5 T0 signals",
+  "label": "exit_bar <= signal_bar+9",
+  "continuous_clue_gate": {
+    "median_diff_ci_excludes_zero": true,
+    "min_years_same_sign": 2,
+    "min_abs_auc_minus_half": 0.05
+  },
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "categorical_low_support_n": 20,
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
