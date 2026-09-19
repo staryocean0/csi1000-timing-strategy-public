@@ -1,0 +1,50 @@
+{
+  "schema_version": "two_wave_t0_causal_c1_compression_interaction_prereg",
+  "issue": 615,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "authoritative_issue_507_v2_scored_T0_signals_2018_2020",
+  "causal_c1_relation": "stage1 causal_state leg relative to T0 side",
+  "groups": {
+    "LOW": [
+      "B1",
+      "B2"
+    ],
+    "MID": [
+      "B3"
+    ],
+    "HIGH": [
+      "B4",
+      "B5"
+    ]
+  },
+  "primary": {
+    "delta_aligned": "mean_HIGH_minus_LOW_within_ALIGNED",
+    "delta_opposed": "mean_HIGH_minus_LOW_within_OPPOSED",
+    "did": "delta_opposed_minus_delta_aligned"
+  },
+  "support": {
+    "min_trades_per_primary_cell": 50,
+    "min_blocks_per_primary_cell": 15,
+    "min_c1_resolved_coverage": 0.95
+  },
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "aligned_delta_upper_ci_lt0": true,
+    "opposed_delta_lower_ci_gt0": true,
+    "did_lower_ci_gt0": true,
+    "min_years_aligned_negative": 2,
+    "min_years_opposed_positive": 2
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
