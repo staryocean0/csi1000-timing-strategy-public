@@ -1,0 +1,29 @@
+{
+  "schema_version": "two_wave_c1_raw_momentum_bridge_prereg",
+  "issue": 531,
+  "parent_issue": 529,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "strict_issue_507_T0_signals_2018_2020",
+  "baseline": "future_C1_sign=sign(ret8)",
+  "candidate": "flip_sign(ret8)_if_B4_or_B5_else_persist",
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "min_coverage": 0.95,
+    "min_current_bridge_balanced_accuracy": 0.55,
+    "min_candidate_future_balanced_accuracy": 0.55,
+    "min_candidate_minus_baseline_balanced_accuracy": 0.02,
+    "paired_accuracy_ci_lower_gt0": true,
+    "min_years_candidate_accuracy_gt_baseline": 2
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
