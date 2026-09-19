@@ -1,5 +1,3 @@
-[Reading 236 lines from start (total: 236 lines, 0 remaining)]
-
 """C1 causal lead-8 compression risk ranking on T0 signal bars.
 
 Issue #507. Parent #493/#483/#450.
@@ -236,5 +234,3 @@ def analyze(bars):
         "scored":scored,
         "authority":{"signal":False,"router":False,"trade":False,"production":False},
     }
-
-[executed on device: debian (2d5dcc11-76bc-4de1-b98d-911c81cc5135)]
