@@ -1,0 +1,45 @@
+{
+  "schema_version": "two_wave_c1_causal_state_compression_prereg",
+  "issue": 594,
+  "parent_issue": 589,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "authoritative_507_v2_2018_2020_T0_signals",
+  "causal_state": "stage1 causal_state at signal_bar",
+  "relation": [
+    "ALIGNED",
+    "OPPOSED",
+    "UNRESOLVED"
+  ],
+  "bands": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "target": [
+    "NO_TURN",
+    "HARMFUL_TURN",
+    "HELPFUL_TURN"
+  ],
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gates": {
+    "coverage_min": 0.95,
+    "branch_min_n": 200,
+    "band_diff_ci_lower_gt0": true,
+    "band_spearman_min": 0.5,
+    "auc_min": 0.52,
+    "min_years_B5_gt_B1": 2
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
