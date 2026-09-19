@@ -1,0 +1,28 @@
+{
+  "schema_version": "two_wave_c1_lead8_ret8_direction_recovery_prereg",
+  "issue": 574,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": "authoritative_507_v2_turn_next8_positive_rows",
+  "predictor": "-sign(ret_8)",
+  "target": "direction_of_unique_retrospective_C1_turn_in_(k,k+8]",
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "pooled_balanced_accuracy_min": 0.6,
+    "bootstrap_lower_balanced_accuracy_gt": 0.55,
+    "recall_to_up_gt": 0.55,
+    "recall_to_down_gt": 0.55,
+    "min_years_accuracy_gt_0p55": 2
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
