@@ -1,0 +1,37 @@
+{
+  "schema_version": "two_wave_c1_lead8_direction_recovery_prereg",
+  "issue": 511,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "primary_zone": [
+    "B4",
+    "B5"
+  ],
+  "comparator_zone": [
+    "B1",
+    "B2"
+  ],
+  "prediction": {
+    "LONG": "TO_UP",
+    "SHORT": "TO_DOWN"
+  },
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "gate": {
+    "high_accuracy_gt_0p50": true,
+    "high_accuracy_ci_lower_gt_0p50": true,
+    "min_years_high_accuracy_gt_0p50": 2,
+    "long_short_point_accuracy_gt_0p50": true,
+    "high_accuracy_not_below_low": true
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
