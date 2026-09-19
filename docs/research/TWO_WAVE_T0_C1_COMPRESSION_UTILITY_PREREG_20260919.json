@@ -1,0 +1,42 @@
+{
+  "schema_version": "two_wave_t0_c1_compression_utility_prereg",
+  "issue": 582,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "universe": {
+    "source": "#507_authoritative_v2",
+    "years": [
+      2018,
+      2019,
+      2020
+    ],
+    "n": 945
+  },
+  "primary_contrast": "B5_minus_B1",
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "caution_gate": {
+    "delta_net_point_lt0": true,
+    "delta_net_ci_upper_lt0": true,
+    "delta_fastloss_point_gt0": true,
+    "delta_fastloss_ci_lower_gt0": true,
+    "min_years_B5_mean_lt_B1": 2
+  },
+  "hard_veto_gate": {
+    "requires_caution": true,
+    "pooled_B5_mean_net_lt0": true,
+    "pooled_B5_mean_net_ci_upper_lt0": true
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
