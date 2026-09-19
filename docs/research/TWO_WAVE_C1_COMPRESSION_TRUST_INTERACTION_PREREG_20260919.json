@@ -1,0 +1,47 @@
+{
+  "schema_version": "two_wave_c1_compression_trust_interaction_prereg",
+  "issue": 599,
+  "parent_issue": 507,
+  "date": "2026-09-19",
+  "status": "PREREGISTERED_BEFORE_RESULTS",
+  "risk_groups": {
+    "LOW": [
+      1,
+      2
+    ],
+    "MID": [
+      3
+    ],
+    "HIGH": [
+      4,
+      5
+    ]
+  },
+  "c1_relation": [
+    "ALIGNED",
+    "OPPOSED"
+  ],
+  "primary_estimand": "(ALIGNED-OPPOSED)_HIGH - (ALIGNED-OPPOSED)_LOW",
+  "bootstrap": {
+    "unit": "20_trading_day_calendar_block",
+    "repetitions": 5000,
+    "seed": 20260919
+  },
+  "support_gate": {
+    "min_trades_per_primary_cell": 50,
+    "min_blocks_per_primary_cell": 20
+  },
+  "acceptance": {
+    "interaction_point_lt0": true,
+    "interaction_ci_upper_lt0": true,
+    "aligned_high_minus_low_lt0": true,
+    "opposed_high_minus_low_gt0": true,
+    "min_years_interaction_lt0": 2
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
