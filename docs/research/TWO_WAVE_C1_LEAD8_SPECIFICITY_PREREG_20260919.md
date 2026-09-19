@@ -15,7 +15,6 @@ Before treating this as a precursor, test it against matched non-turn controls.
 Use the same retrospective dense C1=S0-S1 native-slope turn oracle as #483.
 
 For each turn event t:
-
 - decision clock k=t-8;
 - current retrospective C1 sign at k is the OLD direction;
 - event label = a C1 slope turn occurs exactly 8 bars later.
@@ -30,6 +29,8 @@ A control decision bar kc is eligible for an event iff:
 4. no retrospective C1 turn occurs in bars (kc, kc+8];
 5. raw-feature windows are fully available;
 6. control is at least 16 bars away from the event decision clock to avoid direct overlap.
+
+Age deciles are computed separately within each calendar-year × OLD-sign candidate population.
 
 For each event, sample up to 5 controls without replacement from eligible bars using seed 20260919.
 
