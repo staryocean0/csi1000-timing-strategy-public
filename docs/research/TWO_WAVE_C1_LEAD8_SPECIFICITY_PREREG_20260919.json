@@ -12,7 +12,8 @@
     "no_turn_next_8": true,
     "min_distance_from_event_clock": 16,
     "max_controls_per_event": 5,
-    "seed": 20260919
+    "seed": 20260919,
+    "age_deciles_within": "calendar_year_x_old_sign"
   },
   "primary": [
     "thrust_8",
