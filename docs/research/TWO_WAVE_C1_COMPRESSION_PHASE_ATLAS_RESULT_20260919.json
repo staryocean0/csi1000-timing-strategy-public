@@ -1,0 +1,55 @@
+{
+  "schema_version": "two_wave_c1_compression_phase_atlas_result_summary",
+  "issue": 509,
+  "parent_issue": 505,
+  "date": "2026-09-19",
+  "status": "C1_COMPRESSION_PHASE_ATLAS_COMPLETE",
+  "verdict": "C1_COMPRESSION_PHASE_CONDITIONING_NOT_SUPPORTED",
+  "support": {
+    "EARLY": 197,
+    "MIDDLE": 318,
+    "LATE": 434,
+    "UNRESOLVED": 0
+  },
+  "phases": {
+    "EARLY": {
+      "auroc": 0.53,
+      "top20_lift": 1.576,
+      "top20_lift_ci95": [
+        0.6887142857142857,
+        2.544011237771847
+      ],
+      "years_auc_gt_0p52": 1
+    },
+    "MIDDLE": {
+      "auroc": 0.5401709401709401,
+      "top20_lift": 1.0829326923076923,
+      "top20_lift_ci95": [
+        0.7333213975694444,
+        1.4603196655155533
+      ],
+      "years_auc_gt_0p52": 3
+    },
+    "LATE": {
+      "auroc": 0.45494282819510784,
+      "top20_lift": 1.1402298850574712,
+      "top20_lift_ci95": [
+        0.8124485570765434,
+        1.4600421284440899
+      ],
+      "years_auc_gt_0p52": 1
+    }
+  },
+  "interpretation": "phase conditioning does not rescue the failed global local-background compression score",
+  "hashes": {
+    "module": "dfc7dd07f28cf5349c6bc877fc6e6c647f0426b634ec5705a04d907f34188202",
+    "scored_ledger": "daa96a2a28798125bb126033f6defe31bc21fc8295cabe3933dfed9d281e0d0d",
+    "exact_result": "bc9c4c5c02542be2f78c950acf5c854e4de79d2ab2f7a919bc530cec4da7e85a"
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
