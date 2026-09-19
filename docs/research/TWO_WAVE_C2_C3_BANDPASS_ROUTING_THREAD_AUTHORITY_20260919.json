@@ -1,0 +1,83 @@
+{
+  "schema_id": "csi1000.two_wave_frequency_routing_thread_authority@1.0",
+  "date": "2026-09-19",
+  "thread": "TWO_WAVE_FREQUENCY_ROUTING",
+  "status": "BANDPASS_TREND_STATE_TO_EXECUTION_RHYTHM_DISCOVERY",
+  "does_not_replace_project_CLOUD_CURRENT": true,
+  "source_issue": 450,
+  "terminology": {
+    "lowpass_skeletons": {
+      "S0": "base-wave low skeleton",
+      "S1": "recursive low skeleton 1",
+      "S2": "recursive low skeleton 2",
+      "S3": "recursive low skeleton 3"
+    },
+    "bandpass_residuals": {
+      "C1": "S0-S1",
+      "C2": "S1-S2",
+      "C3": "S2-S3"
+    },
+    "state_inputs": {
+      "B2": "C2=S1-S2",
+      "B3": "C3=S2-S3"
+    },
+    "execution_actions": {
+      "E0": "T0 current/base execution rhythm",
+      "E1": "T1/C1 first-low-frequency execution rhythm"
+    }
+  },
+  "hard_facts": {
+    "source": {
+      "symbol": "000852.SH",
+      "timeframe": "5m",
+      "years": [
+        2015,
+        2020
+      ],
+      "rows": 70114,
+      "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48"
+    },
+    "period_ratios": {
+      "T1_over_T0_median": 3.71,
+      "T2_over_T1_median": 3.08,
+      "T2_over_T0_median": 13.6
+    },
+    "continuity_capacity": {
+      "stage1_stream_nodes": 2648,
+      "stage2_stream_nodes": 673,
+      "stage3_stream_nodes": 171,
+      "stage4_stream_nodes": 40
+    },
+    "retrospective_bandpass_support": {
+      "C2_bars": 69615,
+      "C3_bars": 68911,
+      "joint_bars": 68911,
+      "joint_fraction": 0.9828422283709387
+    }
+  },
+  "superseded_primary_interpretations": [
+    "C2 deadband 0/0.01 as semantic RANGE threshold",
+    "dense C2 +8 directional persistence as causal delayed-following value",
+    "base slope alone as C2 semantic phase identifier",
+    "T0/C1 themselves as trend-state variables",
+    "lowpass skeleton C2/C3 state as equivalent to explicit bandpass C2/C3 state"
+  ],
+  "active_question": "Can explicit bandpass C2/C3 trend relationship route execution between E0=T0 and E1=T1/C1?",
+  "execution_order": [
+    "R0_EXPLICIT_C2_C3_BANDPASS_REPRESENTATION_FREEZE",
+    "R1_BANDPASS_MORPHOLOGY_ATLAS",
+    "R2_CAUSAL_OBSERVABILITY_GATE",
+    "R3_E0_E1_EXECUTION_CONTRACT_FREEZE",
+    "R4_BANDPASS_TO_EXECUTION_DISCOVERY_ATLAS",
+    "R5_CANDIDATE_STATE_MACHINE_PREREGISTRATION",
+    "R6_INDEPENDENT_VALIDATION"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
