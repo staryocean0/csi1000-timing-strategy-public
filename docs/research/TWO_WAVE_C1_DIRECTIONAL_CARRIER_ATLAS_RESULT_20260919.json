@@ -1,0 +1,50 @@
+{
+  "schema_version": "two_wave_c1_directional_carrier_atlas_result_summary",
+  "issue": 535,
+  "parent_issue": 533,
+  "date": "2026-09-19",
+  "status": "C1_DIRECTIONAL_CARRIER_ATLAS_COMPLETE",
+  "universe": {
+    "source": "strict_v2_issue_507_T0_signals",
+    "n": 945,
+    "years": [
+      2018,
+      2019,
+      2020
+    ]
+  },
+  "future8_balanced_accuracy": {
+    "RETURN_32": 0.519598752989868,
+    "RETURN_42": 0.4983606116799699,
+    "RETURN_64": 0.4639824041655445,
+    "RETURN_86": 0.4702127659574468,
+    "OLS_32": 0.4074887795963342,
+    "OLS_42": 0.42435297911795533,
+    "OLS_64": 0.4137372678653014,
+    "OLS_86": 0.4285052003547529
+  },
+  "descriptive_inverse_OLS32": {
+    "pooled_future8_balanced_accuracy": 0.5925112204036658,
+    "yearly": {
+      "2018": 0.6012516046213094,
+      "2019": 0.620752331278647,
+      "2020": 0.5653718091009989
+    },
+    "post_atlas_hypothesis": true
+  },
+  "T0_relation": {
+    "OLS_32_aligned": 0.20634920634920634,
+    "OLS_32_opposed": 0.7936507936507936
+  },
+  "hashes": {
+    "module": "6a136abc9c5bd2a317ca203a3d6e60c99c655d3e57ffe572e547db20880aaf33",
+    "carrier_ledger": "1a9c3b4fa120f758eafbdda6a47372d850ff4c175918b5c19c9c43e408a51f20",
+    "exact_result": "a51c1362f5115344035082b193d99b9550baf77d3cfc19001ca767d68118cf8d"
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "production": false
+  }
+}
