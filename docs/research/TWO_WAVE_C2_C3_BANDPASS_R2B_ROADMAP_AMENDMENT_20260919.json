@@ -1,0 +1,36 @@
+{
+  "schema_version": "two_wave_c2_c3_bandpass_r2b_roadmap_amendment",
+  "date": "2026-09-19",
+  "parent_issue": 450,
+  "trigger_issue": 458,
+  "next_issue": 461,
+  "trigger_verdict": "EXACT_RETROSPECTIVE_BANDPASS_STATE_TOO_DELAYED_FOR_DIRECT_LIVE_ROUTING",
+  "revised_order": [
+    "R0_DONE",
+    "R1_DONE",
+    "R2_DONE_DIRECT_EXACT_STATE_REJECTED_FOR_LIVE_ROUTING",
+    "R2b_CAUSAL_BANDPASS_STATE_RECOGNIZER_OR_CARRIER",
+    "R3_E0_E1_EXECUTION_CONTRACT_FREEZE",
+    "R4_BANDPASS_TO_EXECUTION_DISCOVERY_ATLAS",
+    "R5_CANDIDATE_STATE_MACHINE_PREREGISTRATION",
+    "R6_INDEPENDENT_VALIDATION"
+  ],
+  "hard_evidence": {
+    "C2_median_exact_delay_bars": 369,
+    "C3_joint_median_exact_delay_bars": 1561,
+    "joint_exact_availability_8": 0,
+    "joint_exact_availability_128": 0,
+    "joint_exact_availability_256": 0.0038455957045421566,
+    "joint_exact_availability_512": 0.03664199680742998,
+    "prefix_replay_passed": true
+  },
+  "R2b_selection_may_use_execution_outcomes": false,
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
