@@ -1,4 +1,4 @@
-[Reading 235 lines from start (total: 235 lines, 0 remaining)]
+[Reading 236 lines from start (total: 236 lines, 0 remaining)]
 
 """C1 causal lead-8 compression risk ranking on T0 signal bars.
 
@@ -57,10 +57,11 @@ def build_signal_ledger(bars):
         cost_bps_per_side=2.0,
     )["trades"]
     turns,oracle_meta=_oracle_turn_bars(bars)
+    left=int(oracle_meta["left"]); right=int(oracle_meta["right"])
     rows=[]
     for tr in trades:
         k=int(tr["signal_bar"])
-        if k<32 or k+8>=len(bars):
+        if k<max(32,left) or k+8>right:
             continue
         f=_feature_row(bars,k)
         row={
