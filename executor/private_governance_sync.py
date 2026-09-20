@@ -178,6 +178,19 @@ CONTRACTS: dict[str, dict[str, object]] = {
             },
         ),
     },
+    "two-wave-strategy-evolution-history-20260920-v3": {
+        "private_base_sha": "9d9f0e2ceb8cad6cee6a44e31f9e437173d2e24a",
+        "private_branch": "sync/public-governance/two-wave-strategy-evolution-history-20260920-v3",
+        "target_status": "modified",
+        "targets": (
+            {
+                "source": "docs/research/TWO_WAVE_STRATEGY_EVOLUTION_HISTORY_20260920.md",
+                "target": "docs/research/TWO_WAVE_STRATEGY_EVOLUTION_HISTORY_20260920.md",
+                "expected_public_blob": "e6c73d5a86d15c3b7dd19352a99ff5e20f33239e",
+                "expected_private_blob": "b683b2f70758bb4f22236009f15306223c48c588",
+            },
+        ),
+    },
 }
 
 
