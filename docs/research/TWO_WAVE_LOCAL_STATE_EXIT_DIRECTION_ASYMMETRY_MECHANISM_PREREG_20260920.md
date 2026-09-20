@@ -73,6 +73,7 @@ For each state and each of the four frozen `risk_*` components:
 7. report all eight `known_index mod 8` cohort signs;
 8. use 20-trading-day block bootstrap, 5000 repetitions, seed `20260920`;
 9. define the component interaction as common-age-standardized `DOWN(Q5−Q1) − UP(Q5−Q1)` and bootstrap that exact difference.
+10. for each age-standardized state statistic, common-age statistic, component interaction, and reference age-gap reduction, retain only resamples with every required Q1/Q5 age cell present; report `n_draws` and `valid_draw_fraction`, and require `valid_draw_fraction >= 0.98` (at least 4,900 of 5,000 canonical draws) for mechanism-label eligibility.
 
 Repeat the same pooled, state-specific-age and common-age decomposition for frozen equal-weight `compression_score` as a reference only. For the age-composition diagnostic define `raw_direction_gap = DOWN pooled Q5−Q1 − UP pooled Q5−Q1`, `common_age_direction_gap` analogously, and `age_gap_reduction_fraction = 1 − abs(common_age_direction_gap)/abs(raw_direction_gap)`; it is undefined if the raw gap is zero.
 
@@ -84,13 +85,13 @@ No model selection and no feature winner is promoted.
 
 This label applies only if:
 
-- CURRENT_DOWN has at least 3/4 components whose age-standardized Q5−Q1 is positive, whose bootstrap 95% CI lower bound is >0, and whose yearly sign is positive in at least 2/3 years;
+- CURRENT_DOWN has at least 3/4 components whose age-standardized Q5−Q1 is positive, whose bootstrap 95% CI lower bound is >0, whose bootstrap valid-draw fraction is at least 0.98, and whose yearly sign is positive in at least 2/3 years;
 - CURRENT_UP has at most 1/4 component meeting all three conditions;
-- at least two component `DOWN−UP` interaction bootstrap CIs have lower bound >0.
+- at least two component `DOWN−UP` interaction bootstrap CIs have lower bound >0 and valid-draw fraction at least 0.98.
 
 ### AGE_COMPOSITION_DOMINANT
 
-Applies only if the common-age reweighting reduces the frozen reference-score DOWN−UP Q5−Q1 gap by at least 50%, while the component-coherent label is false.
+Applies only if the common-age reweighting reduces the frozen reference-score DOWN−UP Q5−Q1 gap by at least 50%, the reference age-gap-reduction bootstrap valid-draw fraction is at least 0.98, and the component-coherent label is false.
 
 ### MIXED_OR_INCONCLUSIVE
 

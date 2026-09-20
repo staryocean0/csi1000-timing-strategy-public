@@ -92,14 +92,15 @@
       "known_index mod 8 cohort sign across all 8 cohorts"
     ],
     "interaction_summary": "for each component, interaction = common-age-standardized DOWN(Q5-Q1) - common-age-standardized UP(Q5-Q1); bootstrap this exact difference with the same 20-trading-day resamples; no fitted feature selection",
-    "reference_score_summary": "apply the same fixed quintiles and both state-specific/common-age standardizations to frozen compression_score; define raw_direction_gap = DOWN pooled Q5-Q1 - UP pooled Q5-Q1 and common_age_direction_gap analogously; age_gap_reduction_fraction = 1 - abs(common_age_direction_gap)/abs(raw_direction_gap), undefined if raw gap is zero"
+    "reference_score_summary": "apply the same fixed quintiles and both state-specific/common-age standardizations to frozen compression_score; define raw_direction_gap = DOWN pooled Q5-Q1 - UP pooled Q5-Q1 and common_age_direction_gap analogously; age_gap_reduction_fraction = 1 - abs(common_age_direction_gap)/abs(raw_direction_gap), undefined if raw gap is zero",
+    "bootstrap_validity": "For each age-standardized state statistic, common-age statistic, component interaction, and reference age-gap reduction, retain only resamples with all Q1/Q5 age cells required by that statistic present. Report n_draws and valid_draw_fraction. A statistic is mechanism-label eligible only if valid_draw_fraction >= 0.98 (>=4900 of 5000 canonical draws)."
   },
   "mechanism_labels": {
     "COMPONENT_COHERENT_DIRECTION_ASYMMETRY": {
-      "rule": "CURRENT_DOWN has at least 3 of 4 components with age-standardized Q5-Q1 > 0, bootstrap CI lower > 0, and positive sign in at least 2 of 3 years; CURRENT_UP has at most 1 component meeting all three conditions; at least 2 component DOWN-minus-UP interaction CIs have lower > 0."
+      "rule": "CURRENT_DOWN has at least 3 of 4 components with age-standardized Q5-Q1 > 0, bootstrap CI lower > 0, bootstrap valid_draw_fraction >= 0.98, and positive sign in at least 2 of 3 years; CURRENT_UP has at most 1 component meeting all four conditions; at least 2 component DOWN-minus-UP interaction CIs have lower > 0 and valid_draw_fraction >= 0.98."
     },
     "AGE_COMPOSITION_DOMINANT": {
-      "rule": "common-age reweighting reduces the frozen reference-score DOWN-minus-UP Q5-Q1 gap by at least 50%, and COMPONENT_COHERENT_DIRECTION_ASYMMETRY is false."
+      "rule": "common-age reweighting reduces the frozen reference-score DOWN-minus-UP Q5-Q1 gap by at least 50%, the reference age-gap-reduction bootstrap valid_draw_fraction >= 0.98, and COMPONENT_COHERENT_DIRECTION_ASYMMETRY is false."
     },
     "MIXED_OR_INCONCLUSIVE": {
       "rule": "otherwise."
