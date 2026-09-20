@@ -75,6 +75,32 @@ class DirectionAsymmetryTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             m._quintile(np.array([0.5,1.01]))
 
+    def test_canonical_block_phase_preserves_issue624_alignment(self):
+        m=load_mod()
+        v=load_verifier()
+        days=pd.date_range("2018-01-02", periods=730, freq="D")
+        rows=[]
+        for i,day in enumerate(days):
+            row={
+                "knowledge_day":day,
+                "state":"CURRENT_UP",
+                "age_bin":"A1_1_4",
+                "structural_exit_next8":0,
+            }
+            for metric in m.METRICS:
+                row[f"q__{metric}"]=1
+            rows.append(row)
+        frame=pd.DataFrame(rows)
+        self.assertEqual(m._block_tensor(frame,pre_ledger_trading_days=0)[2],37)
+        self.assertEqual(
+            m._block_tensor(
+                frame,
+                pre_ledger_trading_days=m.CANONICAL_PRE_LEDGER_TRADING_DAYS,
+            )[2],
+            38,
+        )
+        self.assertEqual(v.build_tensors(frame)[2],38)
+
     def test_analysis_is_deterministic_and_authority_false(self):
         m=load_mod()
         df=synthetic_frame()
@@ -139,15 +165,28 @@ class DirectionAsymmetryTests(unittest.TestCase):
                 "source_evidence":{"scored_ledger_sha256":digest},
             }))
             blocks=(disk["knowledge_day"].nunique()+v.BLOCK_DAYS-1)//v.BLOCK_DAYS
-            old=(v.EXPECTED_LEDGER_SHA256,v.EXPECTED_ROWS,v.EXPECTED_BLOCKS,v.REPS)
+            old=(
+                v.EXPECTED_LEDGER_SHA256,
+                v.EXPECTED_ROWS,
+                v.EXPECTED_BLOCKS,
+                v.PRE_LEDGER_TRADING_DAYS,
+                v.REPS,
+            )
             try:
                 v.EXPECTED_LEDGER_SHA256=digest
                 v.EXPECTED_ROWS=len(disk)
                 v.EXPECTED_BLOCKS=blocks
+                v.PRE_LEDGER_TRADING_DAYS=0
                 v.REPS=20
                 checked=v.verify(ledger,result_path,prereg_path)
             finally:
-                v.EXPECTED_LEDGER_SHA256,v.EXPECTED_ROWS,v.EXPECTED_BLOCKS,v.REPS=old
+                (
+                    v.EXPECTED_LEDGER_SHA256,
+                    v.EXPECTED_ROWS,
+                    v.EXPECTED_BLOCKS,
+                    v.PRE_LEDGER_TRADING_DAYS,
+                    v.REPS,
+                )=old
             self.assertEqual(checked["status"],"passed")
             self.assertEqual(checked["mechanism_label"],result["mechanism_label"])
             self.assertFalse(checked["new_training"])

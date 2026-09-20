@@ -14,6 +14,7 @@ EXPECTED_LEDGER_SHA256 = "c1ef13cfc3b2bc5669955ff62a5200b6c56c6868b459421d7e621e
 EXPECTED_ROWS = 29_713
 EXPECTED_YEARS = (2018, 2019, 2020)
 EXPECTED_BLOCKS = 38
+PRE_LEDGER_TRADING_DAYS = 732
 EXPECTED_SCHEMA = "csi1000.two_wave_local_state_exit_direction_asymmetry_result@1.0"
 EXPECTED_PREREG_SCHEMA = "csi1000.two_wave_local_state_exit_direction_asymmetry_prereg@1.0"
 TARGET = "structural_exit_next8"
@@ -110,8 +111,14 @@ def static_metric(df: pd.DataFrame,metric: str) -> dict[str,Any]:
 
 def build_tensors(df: pd.DataFrame) -> tuple[np.ndarray,np.ndarray,int]:
     days=sorted(pd.Timestamp(x) for x in df["knowledge_day"].drop_duplicates().tolist())
-    day_block={d:i//BLOCK_DAYS for i,d in enumerate(days)}
-    n=max(day_block.values())+1
+    raw_day_block={
+        d:(PRE_LEDGER_TRADING_DAYS+i)//BLOCK_DAYS
+        for i,d in enumerate(days)
+    }
+    raw_blocks=sorted(set(raw_day_block.values()))
+    block_pos={block:i for i,block in enumerate(raw_blocks)}
+    day_block={d:block_pos[block] for d,block in raw_day_block.items()}
+    n=len(raw_blocks)
     counts=np.zeros((n,2,len(METRICS),5,5),dtype=np.int64)
     events=np.zeros_like(counts)
     sp={s:i for i,s in enumerate(STATES)}
@@ -316,7 +323,12 @@ def verify(ledger: Path,result_path: Path,prereg_path: Path) -> dict[str,Any]:
 
     boot=bootstrap_reference(df)
     actual_boot=result["bootstrap"]
-    if actual_boot["blocks"]!=EXPECTED_BLOCKS or actual_boot["repetitions"]!=REPS or actual_boot["seed"]!=SEED:
+    if (
+        actual_boot["blocks"]!=EXPECTED_BLOCKS
+        or actual_boot["repetitions"]!=REPS
+        or actual_boot["seed"]!=SEED
+        or actual_boot.get("pre_ledger_trading_days")!=PRE_LEDGER_TRADING_DAYS
+    ):
         raise AssertionError("bootstrap identity drift")
     for m in METRICS:
         for st in STATES:

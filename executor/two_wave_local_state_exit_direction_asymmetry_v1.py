@@ -15,6 +15,7 @@ EXPECTED_LEDGER_SHA256 = "c1ef13cfc3b2bc5669955ff62a5200b6c56c6868b459421d7e621e
 EXPECTED_ROWS = 29_713
 EXPECTED_YEARS = (2018, 2019, 2020)
 EXPECTED_BLOCKS = 38
+CANONICAL_PRE_LEDGER_TRADING_DAYS = 732
 TARGET = "structural_exit_next8"
 STATES = ("CURRENT_UP", "CURRENT_DOWN")
 AGE_BINS = ("A1_1_4", "A2_5_8", "A3_9_16", "A4_17_32", "A5_33_PLUS")
@@ -269,10 +270,18 @@ def _static_summary(df: pd.DataFrame) -> dict[str, Any]:
     return result
 
 
-def _block_tensor(df: pd.DataFrame) -> tuple[np.ndarray, np.ndarray, int]:
+def _block_tensor(
+    df: pd.DataFrame, *, pre_ledger_trading_days: int = 0
+) -> tuple[np.ndarray, np.ndarray, int]:
     days = sorted(pd.Timestamp(x) for x in df["knowledge_day"].drop_duplicates().tolist())
-    day_to_block = {day: i // BLOCK_TRADING_DAYS for i, day in enumerate(days)}
-    blocks = max(day_to_block.values()) + 1
+    raw_day_block = {
+        day: (pre_ledger_trading_days + i) // BLOCK_TRADING_DAYS
+        for i, day in enumerate(days)
+    }
+    raw_blocks = sorted(set(raw_day_block.values()))
+    block_pos = {block: i for i, block in enumerate(raw_blocks)}
+    day_to_block = {day: block_pos[block] for day, block in raw_day_block.items()}
+    blocks = len(raw_blocks)
     state_pos = {s: i for i, s in enumerate(STATES)}
     age_pos = {a: i for i, a in enumerate(AGE_BINS)}
     metric_pos = {m: i for i, m in enumerate(METRICS)}
@@ -359,8 +368,16 @@ def _ci(values: list[float], repetitions: int) -> dict[str, Any]:
     }
 
 
-def _bootstrap(df: pd.DataFrame, repetitions: int, seed: int) -> dict[str, Any]:
-    block_counts, block_events, blocks = _block_tensor(df)
+def _bootstrap(
+    df: pd.DataFrame,
+    repetitions: int,
+    seed: int,
+    *,
+    pre_ledger_trading_days: int = 0,
+) -> dict[str, Any]:
+    block_counts, block_events, blocks = _block_tensor(
+        df, pre_ledger_trading_days=pre_ledger_trading_days
+    )
     if repetitions <= 0:
         raise ValueError("bootstrap repetitions must be positive")
     rng = np.random.default_rng(seed)
@@ -390,6 +407,7 @@ def _bootstrap(df: pd.DataFrame, repetitions: int, seed: int) -> dict[str, Any]:
         "seed": int(seed),
         "repetitions": int(repetitions),
         "block_trading_days": BLOCK_TRADING_DAYS,
+        "pre_ledger_trading_days": int(pre_ledger_trading_days),
         "blocks": int(blocks),
         "minimum_valid_draw_fraction": 0.98,
         "metrics": {},
@@ -483,7 +501,13 @@ def analyze(df: pd.DataFrame, *, repetitions: int = BOOTSTRAP_REPETITIONS, seed:
     clean = _validate_frame(df, enforce_canonical=enforce_canonical)
     scored = _attach_quintiles(clean)
     static = _static_summary(scored)
-    boot = _bootstrap(scored, repetitions, seed)
+    pre_ledger_trading_days = CANONICAL_PRE_LEDGER_TRADING_DAYS if enforce_canonical else 0
+    boot = _bootstrap(
+        scored,
+        repetitions,
+        seed,
+        pre_ledger_trading_days=pre_ledger_trading_days,
+    )
     if enforce_canonical and int(boot["blocks"]) != EXPECTED_BLOCKS:
         raise ValueError("canonical block count drift")
     label, checks = _classify(static, boot)
