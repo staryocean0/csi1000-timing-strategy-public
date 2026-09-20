@@ -21,6 +21,8 @@ ISSUE624_PROFILE = "two-wave-local-state-exit-compression-v1"
 ISSUE624_BROKER = "executor/two_wave_local_state_exit_compression_broker_v1.py"
 ISSUE635_PROFILE = "two-wave-model-b-p128-state-exit-v1"
 ISSUE635_BROKER = "executor/two_wave_model_b_p128_state_exit_broker_v1.py"
+ISSUE647_PROFILE = "two-wave-local-state-exit-direction-asymmetry-v1"
+ISSUE647_BROKER = "executor/two_wave_local_state_exit_direction_asymmetry_broker_v1.py"
 
 
 def remove_once(text: str, part: str, label: str) -> str:
@@ -31,7 +33,23 @@ def remove_once(text: str, part: str, label: str) -> str:
 
 
 
+def strip_issue647_workflow(text: str) -> str:
+    text = remove_once(text, f"          - {ISSUE647_PROFILE}\n", "issue647 profile option")
+    condition = f" || inputs.profile == '{ISSUE647_PROFILE}'"
+    if text.count(condition) != 2:
+        raise AssertionError("issue647 allowlist count")
+    text = text.replace(condition, "")
+    for phase in ("prepare", "compute", "cleanup", "publish"):
+        branch = (
+            f"          elif [ '${{{{ inputs.profile }}}}' = '{ISSUE647_PROFILE}' ]; then\n"
+            f"            python3 {ISSUE647_BROKER} {phase} {ISSUE647_PROFILE}\n"
+        )
+        text = remove_once(text, branch, "issue647 " + phase)
+    return text
+
+
 def strip_issue635_workflow(text: str) -> str:
+    text = strip_issue647_workflow(text)
     text = remove_once(text, f"          - {ISSUE635_PROFILE}\n", "issue635 profile option")
     condition = f" || inputs.profile == '{ISSUE635_PROFILE}'"
     if text.count(condition) != 2:
