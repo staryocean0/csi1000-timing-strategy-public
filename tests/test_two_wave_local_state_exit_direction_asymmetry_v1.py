@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import hashlib
 import importlib.util
+import json
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -12,6 +15,14 @@ SCRIPT = ROOT / "executor/two_wave_local_state_exit_direction_asymmetry_v1.py"
 
 def load_mod():
     spec = importlib.util.spec_from_file_location("direction_asym", SCRIPT)
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+def load_verifier():
+    path = ROOT / "executor/two_wave_local_state_exit_direction_asymmetry_verifier_v1.py"
+    spec = importlib.util.spec_from_file_location("direction_asym_verifier", path)
     assert spec and spec.loader
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
@@ -102,6 +113,45 @@ class DirectionAsymmetryTests(unittest.TestCase):
         label,checks=m._classify(static,boot)
         self.assertEqual(label,"MIXED_OR_INCONCLUSIVE")
         self.assertEqual(checks["current_down_components_pass"],0)
+
+    def test_independent_verifier_recomputes_synthetic_result(self):
+        m=load_mod()
+        v=load_verifier()
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td)
+            ledger=root/"ledger.csv"
+            synthetic_frame().to_csv(ledger,index=False,float_format="%.10g")
+            digest=hashlib.sha256(ledger.read_bytes()).hexdigest()
+            disk=pd.read_csv(ledger)
+            result=m.analyze(disk,repetitions=20,seed=20260920,enforce_canonical=False)
+            result["input_identity"]={
+                "path_name":ledger.name,
+                "sha256":digest,
+                "expected_sha256":digest,
+                "canonical_run_identity":"35488698309-1",
+            }
+            result_path=root/"result.json"
+            result_path.write_text(json.dumps(result,sort_keys=True))
+            prereg_path=root/"prereg.json"
+            prereg_path.write_text(json.dumps({
+                "schema_id":v.EXPECTED_PREREG_SCHEMA,
+                "issue":647,
+                "source_evidence":{"scored_ledger_sha256":digest},
+            }))
+            blocks=(disk["knowledge_day"].nunique()+v.BLOCK_DAYS-1)//v.BLOCK_DAYS
+            old=(v.EXPECTED_LEDGER_SHA256,v.EXPECTED_ROWS,v.EXPECTED_BLOCKS,v.REPS)
+            try:
+                v.EXPECTED_LEDGER_SHA256=digest
+                v.EXPECTED_ROWS=len(disk)
+                v.EXPECTED_BLOCKS=blocks
+                v.REPS=20
+                checked=v.verify(ledger,result_path,prereg_path)
+            finally:
+                v.EXPECTED_LEDGER_SHA256,v.EXPECTED_ROWS,v.EXPECTED_BLOCKS,v.REPS=old
+            self.assertEqual(checked["status"],"passed")
+            self.assertEqual(checked["mechanism_label"],result["mechanism_label"])
+            self.assertFalse(checked["new_training"])
+            self.assertFalse(checked["production_authority"])
 
     def test_missing_or_illegal_identity_fails_closed(self):
         m=load_mod()
