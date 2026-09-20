@@ -21,6 +21,9 @@ GateError = rb.GateError
 
 PROFILE_NAME = "two-wave-model-b-p128-state-exit-v1"
 PRIVATE_REF = "2815f50b5a1b2925f0e0118b0af0d578605ee882"
+ISSUE635_COMMAND_TIMEOUT_SECONDS = 900
+ISSUE635_VERIFICATION_TIMEOUT_SECONDS = 900
+ISSUE635_HOST_TIMEOUT_SECONDS = 960
 SOURCE_REPO = "staryocean0/factorlab-two-wave-strategy-lab"
 SOURCE_REF = "152ae1ef11a04bb3b434da25025794db7a706c81"
 DATA_PATH = "data/development/5m_offset_0.parquet"
@@ -90,8 +93,8 @@ def profile() -> dict:
             "--results", "/results/study",
             "--prereg", "/work/two_wave_issue635/PREREG.json",
         ],
-        "command_timeout_seconds": 2400,
-        "verification_timeout_seconds": 2400,
+        "command_timeout_seconds": ISSUE635_COMMAND_TIMEOUT_SECONDS,
+        "verification_timeout_seconds": ISSUE635_VERIFICATION_TIMEOUT_SECONDS,
         "new_training": True,
         "production_authority": False,
     }
@@ -157,6 +160,14 @@ def prepare_inputs(api, root: Path, fixed_profile: dict) -> Path:
         raise GateError("issue635_staged_manifest_identity_failed")
     download_public_data(inputs / "5m_offset_0.parquet")
     return work
+def configure_host_timeouts() -> None:
+    # Keep the generic broker defaults unchanged for every other profile.
+    # The host guard must outlive the in-container timeout long enough for
+    # the wrapper to emit a bounded failure receipt.
+    rb.COMPUTE_HOST_TIMEOUT_SECONDS = ISSUE635_HOST_TIMEOUT_SECONDS
+    rb.VALIDATE_HOST_TIMEOUT_SECONDS = ISSUE635_HOST_TIMEOUT_SECONDS
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("phase", choices=["prepare", "compute", "cleanup", "publish"])
@@ -170,6 +181,7 @@ def main() -> None:
     if args.phase == "prepare":
         rb.prepare(PROFILE_NAME, fixed)
     elif args.phase == "compute":
+        configure_host_timeouts()
         rb.compute()
     elif args.phase == "cleanup":
         rb.cleanup()
