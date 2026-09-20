@@ -4,7 +4,7 @@ Issue #624.
 
 Date: 2026-09-20.
 
-Status: `DEVELOPMENT_RESULT__CONTROLLED_RUN_PENDING`
+Status: `DEVELOPMENT_RESULT__CANONICAL_CONTROLLED_REPLAY_PENDING`
 
 Formal frozen verdict:
 
@@ -143,13 +143,15 @@ Frozen study module SHA256:
 
 Scored-ledger SHA256:
 
-`4b223af767b19f4d5f43fcb001c9d44625cbe00c21a704319b595397c98b653f`
+`6fb0d646445fc8c5d7ebc0f664681144b2fd2c8fc72b85758c7bf28e1cf9015b`
 
 Exact-result SHA256:
 
-`cd09836dbc0e9a7553780f7b9c721be5cb5ddb85e9b1e0f77288eb1a7e6ba4d0`
+`d4819aa079fec652ccb7ff8e19f2241958e5f2469fd8f2a99fe71287cd3834db`
 
-The same exact result and ledger hashes were reproduced under the reviewed Python 3.11 pinned runtime. The independent verifier passed on 29,713 rows / 38 blocks.
+The canonicalized evidence artifact is reproduced byte-for-byte under both the local system runtime and the reviewed Python 3.11 pinned runtime. The independent verifier passes on 29,713 rows / 38 blocks.
+
+The first governed run `35487560301` reproduced every scientific value and the same frozen verdict, but exposed last-bit floating serialization drift in the raw-feature CSV. That run remains immutable historical evidence and is not treated as a scientific failure. The serialization-only repair is documented in `TWO_WAVE_LOCAL_STATE_EXIT_COMPRESSION_REPRODUCIBILITY_REPAIR_20260920.md`; a new governed replay is required for the canonical byte-reproducible receipt.
 
 ## Authority
 

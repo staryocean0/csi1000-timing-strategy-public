@@ -343,7 +343,7 @@
   ],
   "hashes": {
     "recognizer_module_sha256": "998e51b257540ce2e0384371d6a0b0b8226f3436e7b378a5d0aa9a3266b6e175",
-    "scored_ledger_sha256": "4b223af767b19f4d5f43fcb001c9d44625cbe00c21a704319b595397c98b653f",
+    "scored_ledger_sha256": "6fb0d646445fc8c5d7ebc0f664681144b2fd2c8fc72b85758c7bf28e1cf9015b",
     "study_module_sha256": "2dc3c316172fcd3d5e8f4f0086d05c356e5806e9d0b735fb72580bd5c2671908",
     "wrapper_module_sha256": "3ae2a9afa75dac173773d83356e115b58c248985567faa8b1ea9bd042cb6d3d9"
   },
