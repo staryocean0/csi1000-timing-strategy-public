@@ -26,6 +26,7 @@ class PrivateGovernanceSyncTests(unittest.TestCase):
         self.assertIn("layer3-ols-external-evidence-20260915-v1", mod.CONTRACTS)
         self.assertIn("two-wave-strategy-evolution-history-20260920-v1", mod.CONTRACTS)
         self.assertIn("two-wave-strategy-evolution-history-20260920-v2", mod.CONTRACTS)
+        self.assertIn("two-wave-model-b-635-acceptance-20260920-v1", mod.CONTRACTS)
         legacy = mod.CONTRACTS["two-repo-control-plane-hardening-v1"]
         self.assertEqual(
             {row["target"] for row in legacy["targets"]},
@@ -55,7 +56,7 @@ class PrivateGovernanceSyncTests(unittest.TestCase):
         # the one active fixed request may legitimately be in stage or merge phase.
         request, contract = mod._load_request()
         self.assertIn(request["phase"], {"stage", "merge"})
-        self.assertEqual(request["sync_id"], "two-wave-strategy-evolution-history-20260920-v2")
+        self.assertEqual(request["sync_id"], "two-wave-model-b-635-acceptance-20260920-v1")
         self.assertEqual(request["private_base_sha"], contract["private_base_sha"])
         self.assertEqual(request["targets"], [row["target"] for row in contract["targets"]])
 

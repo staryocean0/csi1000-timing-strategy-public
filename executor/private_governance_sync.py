@@ -161,6 +161,23 @@ CONTRACTS: dict[str, dict[str, object]] = {
             },
         ),
     },
+    "two-wave-model-b-635-acceptance-20260920-v1": {
+        "private_base_sha": "2815f50b5a1b2925f0e0118b0af0d578605ee882",
+        "private_branch": "sync/public-governance/two-wave-model-b-635-acceptance-20260920-v1",
+        "target_status": "added",
+        "targets": (
+            {
+                "source": "docs/research/TWO_WAVE_MODEL_B_P128_STATE_EXIT_EXECUTION_ACCEPTANCE_20260920.md",
+                "target": "docs/research/TWO_WAVE_MODEL_B_P128_STATE_EXIT_EXECUTION_ACCEPTANCE_20260920.md",
+                "expected_public_blob": "b0af66ad89bf3401608fbc244c39b9e9d343810b",
+            },
+            {
+                "source": "docs/research/TWO_WAVE_MODEL_B_P128_STATE_EXIT_EXECUTION_ACCEPTANCE_20260920.json",
+                "target": "docs/research/TWO_WAVE_MODEL_B_P128_STATE_EXIT_EXECUTION_ACCEPTANCE_20260920.json",
+                "expected_public_blob": "6eefb00438b7566aa5b23770472bc8f3eb56561d",
+            },
+        ),
+    },
 }
 
 
@@ -259,6 +276,12 @@ def self_test() -> None:
                 raise GateError("governance_target_scope_drift")
         if sync_id.startswith("two-wave-strategy-evolution-history-20260920-v"):
             if names != ["docs/research/TWO_WAVE_STRATEGY_EVOLUTION_HISTORY_20260920.md"]:
+                raise GateError("governance_target_scope_drift")
+        if sync_id == "two-wave-model-b-635-acceptance-20260920-v1":
+            if names != [
+                "docs/research/TWO_WAVE_MODEL_B_P128_STATE_EXIT_EXECUTION_ACCEPTANCE_20260920.md",
+                "docs/research/TWO_WAVE_MODEL_B_P128_STATE_EXIT_EXECUTION_ACCEPTANCE_20260920.json",
+            ]:
                 raise GateError("governance_target_scope_drift")
     if active_contract is not CONTRACTS[active_sync_id]:
         raise GateError("governance_request_identity_drift")
