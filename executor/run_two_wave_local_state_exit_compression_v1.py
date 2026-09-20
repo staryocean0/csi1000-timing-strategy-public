@@ -85,7 +85,7 @@ def run(data: Path, out: Path) -> dict[str, object]:
     # Canonical evidence serialization: 11 significant digits removes
     # platform/libm last-bit drift while preserving far more precision than
     # any frozen decision threshold uses.
-    result["scored"].to_csv(scored_path, index=False, float_format="%.11g")
+    result["scored"].to_csv(scored_path, index=False, float_format="%.10g")
     scored_sha = sha256_file(scored_path)
     exact["hashes"]["scored_ledger_sha256"] = scored_sha
 

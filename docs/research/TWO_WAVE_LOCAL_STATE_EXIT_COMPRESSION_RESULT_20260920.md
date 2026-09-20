@@ -4,7 +4,7 @@ Issue #624.
 
 Date: 2026-09-20.
 
-Status: `DEVELOPMENT_RESULT__CANONICAL_CONTROLLED_REPLAY_PENDING`
+Status: `DEVELOPMENT_RESULT__CANONICAL_10G_CONTROLLED_REPLAY_PENDING`
 
 Formal frozen verdict:
 
@@ -143,11 +143,11 @@ Frozen study module SHA256:
 
 Scored-ledger SHA256:
 
-`6fb0d646445fc8c5d7ebc0f664681144b2fd2c8fc72b85758c7bf28e1cf9015b`
+`c1ef13cfc3b2bc5669955ff62a5200b6c56c6868b459421d7e621e5ed189f46f`
 
 Exact-result SHA256:
 
-`d4819aa079fec652ccb7ff8e19f2241958e5f2469fd8f2a99fe71287cd3834db`
+`0760393f9a27b4a7db2ad65a931e449c68ca71c2aeba7a657867d9929743519b`
 
 The canonicalized evidence artifact is reproduced byte-for-byte under both the local system runtime and the reviewed Python 3.11 pinned runtime. The independent verifier passes on 29,713 rows / 38 blocks.
 

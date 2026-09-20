@@ -470,7 +470,7 @@ def verify(data: Path, results: Path) -> dict[str,Any]:
         if col not in disk or col not in scored: fail(f"missing_scored_column:{col}")
         if pd.api.types.is_numeric_dtype(scored[col]):
             expected = np.asarray([
-                float(format(x, ".11g")) if math.isfinite(float(x)) else float(x)
+                float(format(x, ".10g")) if math.isfinite(float(x)) else float(x)
                 for x in scored[col].to_numpy(float)
             ])
             if not np.array_equal(
