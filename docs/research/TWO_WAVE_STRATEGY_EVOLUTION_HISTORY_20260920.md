@@ -787,3 +787,194 @@ C1 compression / exhaustion：
 只有当 Local-only 不能达到预先冻结的信息门与经济门时，才逐层加入其他频段**当前已知状态**，测量真实增量。
 
 这样，无论最终是单频段胜出还是跨频段 context 必须保留，整个策略架构都能在有限层级内闭合，而不会重新进入 `T0 ← future(C1) ← future(C2) ← ...` 的循环依赖。
+
+---
+
+## 17. 2026-09-20：第三代 Local-only 第一门完成，结论是“有信息，但不足以普适替代跨频段 context”
+
+Issue #624 完成了本文件第 12 节定义的第一门：
+
+> 只使用目标频段自身的 causal compression / exhaustion 信息，能否稳定判断当前 directional state 即将退出？
+
+为避免 predictor-target 机械重叠，正式执行前 Amendment A 将 primary target 从五态 exact-label exit 修正为冻结 recognizer pre-veto direction carrier 的结构性退出：
+
+- DIR_UP 离开 UP，进入 RANGE 或 DOWN，算 state exit；
+- DIR_DOWN 离开 DOWN，进入 RANGE 或 UP，算 state exit；
+- LOW_AMPLITUDE_VETO / FINER_SCALE_OUT_OF_BAND 只作为诊断，不参与 primary gate。
+
+### 17.1 结果不是“单频段无效”
+
+Local-only compression 的 pooled 信息非常明显：
+
+- 2018–2020 scored directional rows：29,713；
+- B1 EXIT_NEXT8：29.11%；
+- B5 EXIT_NEXT8：40.52%；
+- B5−B1：+11.40pp；
+- 95% block-bootstrap CI：[+8.16pp,+14.49pp]；
+- B5/B1：1.392x；
+- band-rate Spearman：1.00；
+- B5>B1：3/3 test years；
+- positive B5−B1：8/8 overlap cohorts；
+- age-standardized B5−B1：+8.65pp；
+- +16 horizon B5−B1：+9.61pp。
+
+因此可以保留一个重要结论：
+
+> **目标频段自身确实包含关于“当前方向还能不能继续”的 causal survival / exit-hazard 信息。**
+
+这验证了第三代架构不是空想。
+
+### 17.2 但它没有通过“普适 Local-only 替代层”的硬门
+
+冻结 universal gate 仍然失败，主要有两点：
+
+1. pooled continuous-score ROC AUC = 0.5469，低于预注册 0.55；
+2. CURRENT_UP 的 B5−B1 只有 +3.96pp，95% CI [-1.27pp,+9.45pp]，不能排除零。
+
+方向不对称非常明显。
+
+CURRENT_DOWN：
+
+- B5−B1 = +17.16pp；
+- 95% CI [+13.17pp,+21.44pp]；
+- AUC = 0.5687；
+- band-rate Spearman = 1.00。
+
+CURRENT_UP：
+
+- B5−B1 = +3.96pp；
+- CI 跨零；
+- AUC = 0.5255；
+- band-rate Spearman = 0.60。
+
+因此正式 verdict：
+
+`LOCAL_COMPRESSION_STATE_EXIT_HAZARD_NOT_SUPPORTED`
+
+这里的 NOT_SUPPORTED 指：
+
+> **不支持“一套对 UP/DOWN 对称适用的 Local-only compression rule 足以替代跨频段 context”。**
+
+它不表示 compression 没有信息。
+
+### 17.3 这次结果解决了此前的第一层担忧
+
+此前最大的疑问之一是：
+
+> compression 从约 15% 到约 25% 的 turn-risk lift，究竟只是统计因子有效，还是可能成为更完整的 state-survival 信息？
+
+#624 把研究对象改成更贴近策略目标的“本频段 directional state 是否退出”，结果 pooled separation 已经达到 +11.40pp，而且经过年龄、年份、overlap cohort 和 +16 horizon 后仍保留。
+
+所以：
+
+> **compression 不只是对 retrospective C1 turn 有统计关系，它确实承载了目标频段自身 state-survival 的信息。**
+
+但这仍然只是 information layer，不是交易 exit rule。
+
+“看到 B5 就平仓”仍未被授权。
+
+### 17.4 这次结果也回答了第二层担忧：第三代没有完全跳过第二代
+
+用户此前担忧：
+
+> 如果 Local-only 真能完整解决 continuation，第二代跨频段研究就显得多余；但如果它解决不了，我们又会不会重新掉回 C1→C2→C3 的套娃？
+
+#624 给出的答案正好处在中间：
+
+- Local-only 有真实、较强的信息；
+- 但它不能在 UP/DOWN 两侧都达到冻结普适门；
+- 因此跨频段 context 仍有潜在增量价值；
+- 但跨频段必须以 **current observable context** 的形式进入，而不能以 future predictor 链进入。
+
+这意味着第二代不是被推翻，而是被重新定位：
+
+> **从“必须预测的 supervisor future”降级为“对同一个 target 的 incremental current context”。**
+
+### 17.5 下一门正式从 Model A 推进到 Model B
+
+Model A：
+
+[
+P(exitmid local target frequency)
+]
+
+已经完成。
+
+下一门只能研究：
+
+[
+P(exitmid local baseline, current nearest context)
+]
+
+要求：
+
+1. primary target 与 #624 完全相同；
+2. Local-only baseline 固定，不重新调；
+3. other-frequency feature 必须在 decision clock 当时已知；
+4. 不允许使用 future(C1)、future(C2)；
+5. 首先测 incremental information，而不是直接设计交易规则；
+6. 只有 incremental information 成立后，才允许单独预注册 economic intervention。
+
+如果 Model B 没有稳定增量，则 nearest context 不保留。
+
+如果 Model B 有增量，再决定是否有必要测试 Model C：
+
+[
+P(exitmid local, current nearest, current slower)
+]
+
+仍然不得形成 recursive future dependency。
+
+### 17.6 #624 controlled acceptance 与可复现性
+
+最终 canonical governed run：
+
+- public run：`35488698309`
+- identity：`35488698309-1`
+- public source SHA：`828a64c763ba1e4f08b126a3766e54bb73a8e4d8`
+- independent verifier：PASS
+- verified rows：29,713
+- verified blocks：38
+- canonical ledger SHA256：
+  `c1ef13cfc3b2bc5669955ff62a5200b6c56c6868b459421d7e621e5ed189f46f`
+- canonical exact-result SHA256：
+  `0760393f9a27b4a7db2ad65a931e449c68ca71c2aeba7a657867d9929743519b`
+
+前两次 governed runs 因跨运行环境浮点末位序列化不同而未作为 canonical byte receipt，但科学结果完全一致，均保留为历史证据。
+
+相关文件：
+
+- `TWO_WAVE_LOCAL_STATE_EXIT_COMPRESSION_PREREG_20260920.*`
+- `TWO_WAVE_LOCAL_STATE_EXIT_COMPRESSION_PREREG_AMENDMENT_A_20260920.*`
+- `TWO_WAVE_LOCAL_STATE_EXIT_COMPRESSION_RESULT_20260920.*`
+- `TWO_WAVE_LOCAL_STATE_EXIT_COMPRESSION_REPRODUCIBILITY_REPAIR_20260920.md`
+- `TWO_WAVE_LOCAL_STATE_EXIT_COMPRESSION_EXECUTION_ACCEPTANCE_20260920.*`
+
+### 17.7 更新后的项目级判断
+
+截至本次闭合，项目不再处于：
+
+> “Local-only 是否值得试？”
+
+而是进入：
+
+> **“Local-only 已证明有信息，但未证明足够；现在只允许测 current cross-frequency context 的真实增量。”**
+
+因此当前最重要的架构边界是：
+
+[
+	ext{Local baseline}
+ightarrow
++	ext{ current context}
+]
+
+而不是：
+
+[
+T0
+leftarrow future(C1)
+leftarrow future(C2)
+leftarrow future(C3)
+]
+
+这标志着项目已经找到一条可以继续研究、同时天然有终止边界的非套娃路径。

@@ -2,7 +2,7 @@
 
 Date: 2026-09-20.
 
-Status: `EVIDENCE_SERIALIZATION_REPAIR_ONLY__10G_REPLAY_PENDING`.
+Status: `EVIDENCE_SERIALIZATION_REPAIR_ACCEPTED__BYTE_REPRODUCIBLE`.
 
 ## Trigger
 
@@ -92,7 +92,7 @@ Both earlier governed runs remain immutable:
 
 Neither run is relabeled as a scientific failure.
 
-A new governed replay is required after the 10g repair. Only a run whose private readback exactly matches the 10g canonical ledger/result SHA may close the reproducibility issue.
+Governed replay 35488698309 satisfied this requirement. Private readback exactly matched the 10g canonical ledger and exact-result SHA, so the reproducibility issue is closed.
 
 ## Authority
 
