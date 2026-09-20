@@ -136,6 +136,18 @@ CONTRACTS: dict[str, dict[str, object]] = {
             },
         ),
     },
+    "two-wave-strategy-evolution-history-20260920-v1": {
+        "private_base_sha": "7688ba57206dd29fbef88d8e57475255718471fe",
+        "private_branch": "sync/public-governance/two-wave-strategy-evolution-history-20260920-v1",
+        "target_status": "added",
+        "targets": (
+            {
+                "source": "docs/research/TWO_WAVE_STRATEGY_EVOLUTION_HISTORY_20260920.md",
+                "target": "docs/research/TWO_WAVE_STRATEGY_EVOLUTION_HISTORY_20260920.md",
+                "expected_public_blob": "b22930c3462f3fdc479f97db7a0f44c684bdc228",
+            },
+        ),
+    },
 }
 
 
@@ -231,6 +243,9 @@ def self_test() -> None:
         if sync_id == "layer3-ols-external-evidence-20260915-v1":
             prefix = "docs/imports/layer3_ols_external_evidence_20260915/"
             if not all(name.startswith(prefix) for name in names):
+                raise GateError("governance_target_scope_drift")
+        if sync_id == "two-wave-strategy-evolution-history-20260920-v1":
+            if names != ["docs/research/TWO_WAVE_STRATEGY_EVOLUTION_HISTORY_20260920.md"]:
                 raise GateError("governance_target_scope_drift")
     if active_contract is not CONTRACTS[active_sync_id]:
         raise GateError("governance_request_identity_drift")

@@ -33,7 +33,7 @@ jobs:
           sparse-checkout: |
             executor
             governance/private_sync/v1
-            docs/research/layer3/ols_family
+            docs/research
           sparse-checkout-cone-mode: true
       - name: Verify bounded sync contract before credentials
         run: python3 executor/private_governance_sync.py --self-test
