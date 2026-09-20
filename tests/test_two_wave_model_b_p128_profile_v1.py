@@ -1,6 +1,9 @@
+import base64
 import json
+import os
 import sys
 import unittest
+from unittest import mock
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -83,7 +86,7 @@ class ModelBP128ProfileTests(unittest.TestCase):
         self.assertIn("github.event_name == 'workflow_dispatch'", workflow)
         self.assertNotIn("pull_request_target:", workflow)
 
-    def test_issue635_timeouts_fit_standard_workflow_budget(self):
+    def test_issue635_timeout_repair_stays_inside_standard_step_budget(self):
         profile = broker.profile()
         self.assertEqual(profile["command_timeout_seconds"], 900)
         self.assertEqual(profile["verification_timeout_seconds"], 900)
@@ -98,7 +101,42 @@ class ModelBP128ProfileTests(unittest.TestCase):
             broker.rb.COMPUTE_HOST_TIMEOUT_SECONDS = old_compute
             broker.rb.VALIDATE_HOST_TIMEOUT_SECONDS = old_verify
         workflow = (ROOT / ".github/workflows/public-compute.yml").read_text()
-        self.assertIn("timeout-minutes: 35", workflow)
+        self.assertIn("      - name: Compute without private credentials", workflow)
+        self.assertIn("        timeout-minutes: 35", workflow)
+
+    def test_private_receipt_training_flag_is_corrected_and_read_back(self):
+        receipt = {
+            "public_run_id": "123-1",
+            "profile": broker.PROFILE_NAME,
+            "new_training": False,
+        }
+
+        class FakeAPI:
+            def __init__(self):
+                self.content = base64.b64encode(
+                    (json.dumps(receipt, indent=2) + "\n").encode()
+                ).decode()
+                self.sha = "oldsha"
+                self.put_payload = None
+
+            def request(self, path, payload=None, method="GET"):
+                if method == "PUT":
+                    self.put_payload = payload
+                    self.content = payload["content"]
+                    self.sha = "newsha"
+                    return {}
+                return {"content": self.content, "sha": self.sha}
+
+        api = FakeAPI()
+        env = {"GITHUB_RUN_ID": "123", "GITHUB_RUN_ATTEMPT": "1"}
+        with mock.patch.dict(os.environ, env, clear=False), mock.patch.object(
+            broker.rb, "require_private_api", return_value=api
+        ):
+            broker.correct_private_receipt_new_training()
+        corrected = json.loads(base64.b64decode(api.content))
+        self.assertIs(corrected["new_training"], True)
+        self.assertEqual(api.put_payload["branch"], "runs/public-research/123-1")
+        self.assertEqual(api.put_payload["sha"], "oldsha")
 
     def test_broker_requires_standard_dispatch_context(self):
         text = (
