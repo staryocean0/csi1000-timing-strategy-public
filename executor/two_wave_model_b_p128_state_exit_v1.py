@@ -53,6 +53,13 @@ class Components:
     wrapper_rows: int
 
 
+class InsufficientSupportError(RuntimeError):
+    """A frozen population gate stopped calibration, not an optimizer failure."""
+    def __init__(self, stage: str, diagnostic: dict):
+        self.stage, self.diagnostic = stage, diagnostic
+        super().__init__("MODEL_B_P128_STATE_EXIT_INCREMENT_INSUFFICIENT_SUPPORT:" + stage)
+
+
 def _context(close: np.ndarray, k: int, state: str) -> dict[str, object]:
     if k < 127:
         return {
@@ -270,22 +277,30 @@ def prediction_stream(bars: pd.DataFrame) -> dict[str, object]:
         cutoff = _first_native_index(bars, year)
         reference = decisions[decisions["year"] < year].copy()
         if len(reference) < 10_000:
-            raise ValueError(f"insufficient label-free reference for {year}")
+            raise InsufficientSupportError("label_free_reference", {"year": int(year), "n": int(len(reference))})
         mature = reference[reference["known_index"] + 8 < cutoff].copy()
         purged = int(len(reference) - len(mature))
         if mature.empty:
-            raise ValueError(f"empty mature prior population for {year}")
-        y8 = []
-        for row in mature.itertuples(index=False):
-            k = int(row.known_index)
-            if any(k + j not in comp.carriers for j in range(1, 9)):
-                raise AssertionError("mature label missing")
-            y8.append(_label8(comp.carriers, k, str(row.carrier_state)))
-        mature["y8"] = y8
+            raise InsufficientSupportError("empty_mature_prior", {"year": int(year)})
+        coverage = float(mature["context_resolved"].mean())
+        if coverage < 0.95:
+            raise InsufficientSupportError("training_context_coverage", {
+                "year": int(year), "coverage": coverage,
+                "completed_fit_years": [int(f["year"]) for f in fits]})
         mature_scored, score_meta = _score(reference, mature)
-        coverage = float(mature_scored["context_resolved"].mean())
         fit_rows = mature_scored[mature_scored["context_resolved"]].copy()
+        y8 = []
+        for row in fit_rows.itertuples(index=False):
+            k = int(row.known_index)
+            if k + 8 >= cutoff or any(k + j not in comp.carriers for j in range(1, 9)):
+                raise AssertionError("mature label missing or beyond cutoff")
+            y8.append(_label8(comp.carriers, k, str(row.carrier_state)))
+        fit_rows["y8"] = y8
         cell_support = _training_cell_support(fit_rows)
+        if not all(c["passed"] for c in cell_support):
+            raise InsufficientSupportError("training_cells", {
+                "year": int(year), "cells": cell_support,
+                "completed_fit_years": [int(f["year"]) for f in fits]})
         fit_a = fit_logistic(fit_rows, "A")
         fit_b = fit_logistic(fit_rows, "B")
         train_pa = predict(fit_rows, fit_a, "A")
@@ -314,8 +329,11 @@ def prediction_stream(bars: pd.DataFrame) -> dict[str, object]:
                 "purged_immature_rows": int(purged),
                 "resolved_fit_rows": int(len(fit_rows)),
                 "training_context_coverage": coverage,
-                "max_training_feature_index": int(mature["known_index"].max()),
-                "max_training_label_index": int(mature["known_index"].max() + 8),
+                "max_training_feature_index": int(fit_rows["known_index"].max()),
+                "max_training_label_index": int(fit_rows["known_index"].max() + 8),
+                "reference_keys_sha256": _row_identity(reference),
+                "training_keys_sha256": _row_identity(fit_rows),
+                "training_labels_sha256": _row_identity(fit_rows, labels=True),
                 "score_meta": score_meta,
                 "training_cell_support": cell_support,
                 "A": fit_a,
@@ -607,6 +625,23 @@ def _gate(
     return {"verdict": verdict, "checks": checks}
 
 
+def _decision_snapshot(frame: pd.DataFrame) -> dict[int, dict]:
+    fields = ("target_index", "timestamp", "knowledge_day", "year", "state",
+              "carrier_state", "state_age", "exact_label_age", "age_bin",
+              "context_phase", "context_relation", "context_resolved", "context_missing_reason")
+    numeric = (*FEATURES, "context_g")
+    return {int(r.known_index): {
+        "fields": tuple(str(getattr(r, name)) for name in fields),
+        "numeric": tuple(float(getattr(r, name)) for name in numeric),
+    } for r in frame.itertuples(index=False)}
+
+
+def _row_identity(frame: pd.DataFrame, *, labels: bool = False) -> str:
+    lines = [str(int(r.known_index)) + (":" + str(int(r.y8)) if labels else "")
+             for r in frame.itertuples(index=False)]
+    return hashlib.sha256(("\n".join(lines) + "\n").encode("ascii")).hexdigest()
+
+
 def _snapshot(prediction_result: dict[str, object]) -> dict[str, object]:
     pred = prediction_result["predictions"]
     fits = prediction_result["fits"]
@@ -627,16 +662,44 @@ def _snapshot(prediction_result: dict[str, object]) -> dict[str, object]:
     fit_rows = {
         int(f["year"]): {
             "resolved_fit_rows": int(f["resolved_fit_rows"]),
+            "reference_keys_sha256": f["reference_keys_sha256"],
+            "training_keys_sha256": f["training_keys_sha256"],
+            "training_labels_sha256": f["training_labels_sha256"],
             "A": tuple(float(x) for x in f["A"]["coef"]),
             "B": tuple(float(x) for x in f["B"]["coef"]),
         }
         for f in fits
     }
-    return {"rows": rows, "fits": fit_rows}
+    comp = prediction_result["components"]
+    return {"rows": rows, "fits": fit_rows,
+            "decisions": _decision_snapshot(prediction_result["decisions"]),
+            "state_process": {"five_states": comp.five_states, "carriers": comp.carriers}}
+
+
+def _decision_prefix_equal(a: dict, b: dict, cutoff: int) -> tuple[bool, str]:
+    for channel in ("five_states", "carriers"):
+        left = {k: v for k, v in a["state_process"][channel].items() if k < cutoff}
+        right = {k: v for k, v in b["state_process"][channel].items() if k < cutoff}
+        if left != right:
+            return False, "state_process:" + channel
+    expected = sorted(k for k in a["decisions"] if k < cutoff)
+    actual = sorted(k for k in b["decisions"] if k < cutoff)
+    if expected != actual:
+        return False, "decision_row_keys"
+    for k in expected:
+        x, y = a["decisions"][k], b["decisions"][k]
+        if x["fields"] != y["fields"]:
+            return False, f"decision_fields@{k}"
+        if not np.allclose(x["numeric"], y["numeric"], rtol=0, atol=2e-12, equal_nan=True):
+            return False, f"decision_numeric@{k}"
+    return True, ""
 
 
 def _snapshot_equal(a: dict[str, object], b: dict[str, object], cutoff: int) -> tuple[bool, str]:
-    keys = sorted(k for k in a["rows"] if k < cutoff and k in b["rows"])
+    ok, reason = _decision_prefix_equal(a, b, cutoff)
+    if not ok:
+        return False, reason
+    keys = sorted(k for k in b["rows"] if k < cutoff)
     expected = sorted(k for k in a["rows"] if k < cutoff)
     if keys != expected:
         return False, "prediction_row_keys"
@@ -652,12 +715,21 @@ def _snapshot_equal(a: dict[str, object], b: dict[str, object], cutoff: int) -> 
         if not np.allclose(ra["features"], rb["features"], rtol=0, atol=2e-12):
             return False, f"features@{k}"
     relevant_years = {int(a["rows"][k]["year"]) for k in expected}
-    for year, fa in a["fits"].items():
-        if year not in relevant_years or year not in b["fits"]:
-            continue
+    a_years = relevant_years.intersection(a["fits"])
+    b_years = relevant_years.intersection(b["fits"])
+    if a_years != relevant_years or b_years != relevant_years:
+        return False, "fit_year_keys"
+    for year in sorted(relevant_years):
+        fa = a["fits"][year]
         fb = b["fits"][year]
-        if fa["resolved_fit_rows"] != fb["resolved_fit_rows"]:
-            return False, f"fit_rows@{year}"
+        for field in (
+            "resolved_fit_rows",
+            "reference_keys_sha256",
+            "training_keys_sha256",
+            "training_labels_sha256",
+        ):
+            if fa[field] != fb[field]:
+                return False, f"{field}@{year}"
         if not np.allclose(fa["A"], fb["A"], rtol=0, atol=2e-11):
             return False, f"A_coef@{year}"
         if not np.allclose(fa["B"], fb["B"], rtol=0, atol=2e-11):
@@ -696,7 +768,32 @@ def causal_audit(bars: pd.DataFrame, full_prediction: dict[str, object]) -> dict
 
 
 def analyze(bars: pd.DataFrame, *, run_causal_audit: bool = True) -> dict[str, object]:
-    pred_result = prediction_stream(bars)
+    try:
+        pred_result = prediction_stream(bars)
+    except InsufficientSupportError as exc:
+        return {
+            "status": "MODEL_B_P128_STATE_EXIT_INSUFFICIENT_SUPPORT",
+            "meta": {"stage": exc.stage, "diagnostic": exc.diagnostic},
+            "support": {
+                "passed": False,
+                "stage": exc.stage,
+                "diagnostic": exc.diagnostic,
+            },
+            "decision": {
+                "verdict": "MODEL_B_P128_STATE_EXIT_INCREMENT_INSUFFICIENT_SUPPORT",
+                "checks": {"pre_fit_support": False},
+            },
+            "scored": pd.DataFrame(),
+            "authority": {
+                "economic_intervention": False,
+                "signal": False,
+                "router": False,
+                "trade": False,
+                "paper_trading": False,
+                "live_trading": False,
+                "production": False,
+            },
+        }
     pred = pred_result["predictions"]
     eval_df = _attach_eval_labels(pred, pred_result["components"].carriers)
     if sorted(eval_df["year"].unique().tolist()) != list(TEST_YEARS):
