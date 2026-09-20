@@ -57,6 +57,17 @@ Compression remains a causal fragility / turn-risk variable:
 - not validated as a static interaction with causal C1 ALIGNED/OPPOSED relation.
 
 Negative interaction results must not be rescued by moving B1..B5 boundaries or post-hoc cell merging.
+
+## Controlled execution acceptance
+
+Issue #615 has completed the standard governed execution path and is ready for issue closure.
+
+Authoritative public workflow run: `35477767158` / identity `35477767158-1`, public source SHA `55ae1f76c22db03c2e212913bcd07bdf30b5f5f8`.
+
+The private receipt, Release archive and independent verifier were read back and hash-verified. Exact result SHA256 remains `6a7518075565cb7c027b900764e4846fa937e4ccf83a0739817420d860a7b73a`; joined ledger SHA256 remains `3d16639e49994283a9f0027a94e5dcf9c9a1d26a66280efe3adb86da9873a45a`.
+
+See `TWO_WAVE_T0_CAUSAL_C1_COMPRESSION_INTERACTION_EXECUTION_ACCEPTANCE_20260920.*`.
+
 ## Pending #612
 
 Issue #612 remains preregistered and unexecuted at this authority update.
