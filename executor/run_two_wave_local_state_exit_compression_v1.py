@@ -82,7 +82,10 @@ def run(data: Path, out: Path) -> dict[str, object]:
     out.mkdir(parents=True, exist_ok=True)
     scored_path = out / "ISSUE624_SCORED_LEDGER.csv"
     result_path = out / "ISSUE624_RESULT_EXACT.json"
-    result["scored"].to_csv(scored_path, index=False)
+    # Canonical evidence serialization: 11 significant digits removes
+    # platform/libm last-bit drift while preserving far more precision than
+    # any frozen decision threshold uses.
+    result["scored"].to_csv(scored_path, index=False, float_format="%.11g")
     scored_sha = sha256_file(scored_path)
     exact["hashes"]["scored_ledger_sha256"] = scored_sha
 

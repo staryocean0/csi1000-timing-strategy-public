@@ -128,6 +128,8 @@ class LocalStateExitCompressionTests(unittest.TestCase):
 
         self.assertIn("EXPECTED_RECOGNIZER_SHA256", runner)
         self.assertIn("EXPECTED_WRAPPER_SHA256", runner)
+        self.assertIn('float_format="%.11g"', runner)
+        self.assertIn('format(x, ".11g")', verifier)
         self.assertIn("FROZEN_BEFORE_OUTCOME_EXECUTION", amendment)
         self.assertIn("LOW/FINER", amendment)
         self.assertNotIn("import two_wave_local_state_exit_compression_v1", verifier)
