@@ -1118,3 +1118,80 @@ canonical replay 的 exact result 与 scored ledger 和第一完整 run 逐字�
 它不会因为写入公库历史文档就自动替换项目级 current authority。按照仓库治理，项目 current authority 仍由私库根 CHAT_START.md、CLOUD_CURRENT.json 及其引用合同定义；当前它们仍指向 Risk Tool 2.0 Phase-1。
 
 因此本次闭合只接受 #635 的研究证据与历史沿革，不直接修改私库根控制文件，也不把 Two-Wave 宣称成新的 current research anchor。
+
+---
+
+## 19. 2026-09-20：#647 direction asymmetry 机制审计闭合为 MIXED_OR_INCONCLUSIVE
+
+### 19.1 为什么回到本地机制，而不是继续升级 context
+
+#624 留下的核心未解问题不是“再找一个更慢频段”，而是同一套 frozen Local-only compression 为什么在 CURRENT_DOWN 强、在 CURRENT_UP 弱。#635 又已经否定 P128 作为第一个 non-recursive current-context 增量候选，因此 #647 按冻结边界只审计 #624 已接受 ledger 内四个本地 component 与 carrier age，不读取任何 P128/P256/C1/C2/C3，也不引入 future-state predictor、PnL、routing 或新 feature family。
+
+唯一输入仍是 #624 canonical scored ledger：
+
+- accepted #624 governed identity / ledger identity：35488698309-1；
+- rows：29,713；years：2018/2019/2020；
+- ledger SHA256：c1ef13cfc3b2bc5669955ff62a5200b6c56c6868b459421d7e621e5ed189f46f；
+- target：STRUCTURAL_EXIT_NEXT8；
+- components：risk_abs_ret_8 / risk_range_8 / risk_rv_8 / risk_efficiency_8；
+- reference：frozen equal-weight compression_score；
+- bootstrap：20 trading-day blocks，5000 reps，seed 20260920。
+
+### 19.2 governed execution 与 block-phase 修复
+
+第一次正式 run 35511741696-1 在 compute 阶段失败。失败不是科学负结果：#647 初版从 2018 ledger 首日重新编号 20-day blocks，因此 730 个 ledger trading days 被错误切成 37 blocks；而 #624 的 canonical block phase 来源于完整 frozen 2015-01-05..2020-12-31 Development 日历，共 1,462 个交易日，其中 ledger 窗口之前固定有 732 日，因此 ledger 首日实际位于原 block 的 phase 12，2018-2020 共跨越 38 个原始 blocks。
+
+PR #650 只修复这一历史 block phase 的实现偏差，并同步 independent verifier 与 broker source hashes；没有修改预注册、目标、特征、阈值、horizon、context 或 authority。修复后：
+
+- focused #647 suite：15/15 PASS；
+- full public regression：1408/1408 PASS；
+- synthetic Overnight BLACKBOX smoke：PASS；
+- canonical ledger 本地 5000-draw analyzer 完成；
+- independent verifier：PASS，29,713 rows / 38 blocks。
+
+PR #650 merge commit 为 d536dcb42d3e36d0b0c24acef5691adbacfada29。第二次正式 governed run 35513990293-1 完整通过 prepare → credential-free compute → cleanup → private publish。
+
+受控验收：
+
+- public run：35513990293；identity：35513990293-1；
+- public source SHA：d536dcb42d3e36d0b0c24acef5691adbacfada29；
+- private receipt：passed / archive_uploaded_and_verified；
+- private Release id：392443799；
+- archive SHA256：2c2fefa2f3834df15016b3878f903d4d738429d456c4696c8c24674e6ea0bfd9；
+- archive bytes：9,604；
+- exact governed result SHA256：0149661b57a880e60227f0144d4713799f6c7bde5cc229b60f6536786337faa2；
+- independent verifier output SHA256：1fb854e535ca7bf8613b34aca0d7cc7e4f0aa42fdb41e43499604f0ffe828e4e；
+- verifier：PASS，verified_rows=29,713，verified_blocks=38；
+- new_training=false；production_authority=false。
+
+正式 result 与本地 canonical reproduction 有 5 个纯浮点末位差异，最大绝对差 1.11e-16，无任何非数值字段差异；governed independent verifier 对正式 JSON 自行重算并通过。不能把这种数值等价写成逐字节复现。
+
+### 19.3 预注册机制门的正式结论
+
+正式 label：MIXED_OR_INCONCLUSIVE。
+
+四个 component 的 age-standardized Q5−Q1 与 interaction 呈现混合结构：
+
+- risk_abs_ret_8：UP +6.43pp，DOWN +10.52pp；两侧均通过自身正向门，但 DOWN−UP interaction CI 跨零；
+- risk_range_8：UP -2.36pp，DOWN +17.38pp；DOWN 与 interaction 通过，UP 不通过；
+- risk_rv_8：UP -13.78pp，DOWN +15.51pp；DOWN 与 interaction 通过，UP 不通过；
+- risk_efficiency_8：UP +15.19pp，DOWN +2.56pp；UP 通过，DOWN 与 interaction 不通过，且 interaction 方向为负。
+
+因此 frozen component-coherent gate 的计数为：CURRENT_DOWN 3/4、CURRENT_UP 2/4、positive DOWN−UP interactions 2/4。它没有通过 COMPONENT_COHERENT_DIRECTION_ASYMMETRY，因为该标签要求 CURRENT_UP 最多只有 1/4 component 满足完整正向条件，而实际为 2/4。
+
+age-composition 解释同样不足。frozen reference compression_score 的 raw DOWN−UP gap 为 0.20961，common-age gap 为 0.17868，age_gap_reduction_fraction 仅 0.14756，明显低于 AGE_COMPOSITION_DOMINANT 要求的至少 0.50；相关 bootstrap valid_draw_fraction 为 1.0。
+
+因此当前证据不能把方向不对称压缩成一个单一局部机制，也不能归因主要是 carrier-age composition。它更像多个 frozen component 在 UP/DOWN 两侧作用方向不同的混合结构；#647 的设计本身不允许据此挑选赢家、重配权重或扩展新 feature family。
+
+### 19.4 stop rule 与项目级含义
+
+按 #647 预注册 stop rule，本门在 MIXED_OR_INCONCLUSIVE 后直接关闭：
+
+- 不做 feature-zoo 扩展；
+- 不把 range/rv 的 DOWN-side 结果改造成 DOWN-only trading rule；
+- 不因本门混合就自动升级 P256/C2/C3；
+- 不重启 future(C1) → future(C2) 递归；
+- 不把 #624 重新分类为 supported；
+- 不授予 signal/router/trade/paper/live/production authority。
+
+当前框架级结论因此进一步收缩为：Local state-survival baseline 仍保留其已证明的信息性，但 UP/DOWN 非对称没有被一个冻结的单一 component-coherence 或 age-composition 机制解释；P128 current context 已由 #635 删除；任何后续新假设都必须有独立机制依据、重新预注册，并明确自己的负结果终止条件，而不能把 #647 当作继续搜索的许可证。
