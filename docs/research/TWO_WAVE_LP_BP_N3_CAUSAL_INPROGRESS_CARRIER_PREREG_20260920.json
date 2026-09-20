@@ -1,0 +1,169 @@
+{
+  "schema_id": "csi1000.two_wave_lp_bp_n3_causal_inprogress_carrier_prereg@1.0",
+  "date": "2026-09-20",
+  "issue": 652,
+  "parents": {
+    "routing_thread": 450,
+    "r2b": 461,
+    "n2": 470
+  },
+  "status": "FROZEN_BEFORE_NEW_N3_OUTCOME_ANALYSIS",
+  "source": {
+    "symbol": "000852.SH",
+    "frequency": "5m",
+    "start": "2015-01-05",
+    "end": "2020-12-31",
+    "rows": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "role": "CONSUMED_DEVELOPMENT_NOT_FRESH_OOS"
+  },
+  "parent_evidence": {
+    "r0_joint_ledger_sha256": "0e632a2b782194f8d5d433ffd019780845de8f1d0b8a3e12124351073008e3ec",
+    "n1_result_sha256": "27d466543962449394b52fbfd3ea96de086902de832cb919c2d66edcd5741b7c",
+    "n2_result_sha256": "db94e7b36ef4f21e2a3791390ccea348b53c67eb69e3bdb191b54b852ac47181"
+  },
+  "ordered_gates": [
+    "A_OUTCOME_BLIND_CARRIER_FIDELITY",
+    "B_FROZEN_DOMINANCE_QUALIFICATION"
+  ],
+  "gate_b_requires_gate_a_pass": true,
+  "carrier_family": {
+    "count": 1,
+    "name": "CONFIRMED_ANCHOR_IMMEDIATE_CHILD_INPROGRESS_BRIDGE",
+    "future_nodes_allowed": false,
+    "retrospective_interpolation_allowed": false,
+    "outcome_tuning_allowed": false,
+    "slow_streams": ["S1", "S2", "S3"],
+    "immediate_faster_streams": {
+      "S1": "stage1_stream",
+      "S2": "S1",
+      "S3": "S2"
+    },
+    "per_stream_rule": {
+      "anchor": "latest_visible_confirmed_Sj_node",
+      "child": "latest_visible_immediate_faster_node_with_occurrence_strictly_after_anchor",
+      "confirmed_slope": "slope_between_last_two_visible_confirmed_Sj_nodes",
+      "bridge_slope": "(log(child_price)-log(anchor_price))/(child_occurrence-anchor_occurrence)",
+      "active_slope": "bridge_slope_if_valid_child_exists_else_confirmed_slope",
+      "active_evidence_occurrence": "child_occurrence_if_bridge_else_latest_confirmed_Sj_occurrence",
+      "evidence_age": "knowledge_bar-active_evidence_occurrence"
+    }
+  },
+  "representations": {
+    "shared_raw_active_slopes": ["g_active_1", "g_active_2", "g_active_3"],
+    "LP": {
+      "fast": "g_active_1",
+      "slow": "g_active_2"
+    },
+    "BP": {
+      "fast": "g_active_1-g_active_2",
+      "slow": "g_active_2-g_active_3"
+    },
+    "symmetric_raw_information": true
+  },
+  "gate_a": {
+    "outcome_blind": true,
+    "forbidden_fields": [
+      "T0_return",
+      "T1_return",
+      "dominance_label",
+      "selected_execution_result",
+      "regret",
+      "PnL"
+    ],
+    "components": ["LP2", "LP3", "BP2", "BP3"],
+    "prefix_cuts": [10000, 30000, 50000],
+    "minimum_coverage_each_representation": 0.99,
+    "sign_fidelity_improvement_min": 0.02,
+    "components_requiring_sign_improvement": 3,
+    "max_sign_fidelity_degradation": 0.01,
+    "normalized_abs_error_improvement_fraction_min": 0.05,
+    "components_requiring_error_improvement": 3,
+    "max_normalized_error_degradation_fraction": 0.05,
+    "years_with_positive_mean_sign_improvement_min": 4,
+    "calendar_year_count": 6,
+    "turn_count_ratio_bounds_vs_retrospective": [0.5, 2.0],
+    "fail_label": "N3_OUTCOME_BLIND_CARRIER_FIDELITY_NOT_SUPPORTED"
+  },
+  "gate_b": {
+    "run_only_if_gate_a_passes": true,
+    "T0_bars": 21,
+    "T1_bars": 86,
+    "dominance_horizon_bars": 86,
+    "test_years": [2018, 2019, 2020],
+    "label_purge_bars": 86,
+    "transaction_cost_bp_per_position_unit": 2.0,
+    "model": {
+      "class": "DecisionTreeClassifier",
+      "max_depth": 3,
+      "min_samples_leaf": 100,
+      "class_weight": "balanced",
+      "criterion": "gini",
+      "random_state": 20260919,
+      "hyperparameter_search": false
+    },
+    "feature_slots": [
+      "normalized_fast_active_slope",
+      "normalized_slow_active_slope",
+      "log_relative_active_slope_strength",
+      "fast_active_sign_run_age",
+      "slow_active_sign_run_age",
+      "log_run_age_ratio",
+      "fast_active_evidence_age",
+      "slow_active_evidence_age",
+      "log_evidence_age_ratio"
+    ],
+    "additional_features_allowed": false,
+    "qualification": {
+      "pooled_balanced_accuracy_min": 0.52,
+      "year_balanced_accuracy_min": 0.52,
+      "years_passing_min": 2,
+      "mean_regret_improvement_vs_n2_fraction_min": 0.05,
+      "bootstrap_blocks_trading_days": 20,
+      "bootstrap_repetitions": 2000,
+      "bootstrap_seed": 20260920,
+      "regret_n2_minus_n3_ci95_lower_strictly_positive": true,
+      "minimum_coverage": 0.99
+    },
+    "n2_mean_regret_bp": {
+      "LP": 79.76,
+      "BP": 85.27
+    },
+    "neither_qualifies_label": "N3_NO_CAUSAL_REPRESENTATION_QUALIFIED__STOP_R2B_CARRIER_SEARCH"
+  },
+  "post_qualification": {
+    "one_qualifies": "SOLE_R3_REPRESENTATION_CANDIDATE",
+    "both_qualify": "APPLY_SYMMETRIC_N2_LP_BP_PREFERENCE_RULE",
+    "both_qualify_no_preference": "ADVANCE_BOTH_TO_SAME_R3_EXECUTION_CONTRACT",
+    "passing_n3_creates_router": false
+  },
+  "hard_prohibitions": [
+    "P128_RESCUE",
+    "P256_RESCUE",
+    "FUTURE_C1_C2_C3_FORECAST",
+    "NEW_EXECUTION_RHYTHM",
+    "ROUTE_PERFORMANCE_BASED_CARRIER_SELECTION",
+    "ALTERNATE_T0_T1_PERIODS",
+    "ALTERNATE_DOMINANCE_HORIZON",
+    "OUTCOME_SELECTED_BRIDGE_THRESHOLD",
+    "OUTCOME_SELECTED_SMOOTHING",
+    "OUTCOME_SELECTED_LOOKBACK",
+    "DEEPER_TREE",
+    "MODEL_SEARCH",
+    "AUTOMATIC_N4_FEATURE_ZOO",
+    "PAPER_LIVE_PRODUCTION_AUTHORITY"
+  ],
+  "stop_rule": {
+    "gate_a_fail": "CLOSE_652_WITHOUT_GATE_B",
+    "gate_a_pass_gate_b_neither_qualifies": "CLOSE_652_AND_STOP_AUTOMATIC_R2B_CARRIER_EXPANSION",
+    "automatic_n4_authorized": false
+  },
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
