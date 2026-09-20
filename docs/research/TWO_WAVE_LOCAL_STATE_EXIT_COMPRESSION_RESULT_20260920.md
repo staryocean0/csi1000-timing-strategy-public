@@ -155,6 +155,6 @@ The first governed run `35487560301` reproduced every scientific value and the s
 
 ## Authority
 
-Development evidence only; controlled workflow receipt still pending at this point.
+Development evidence only; the canonical post-repair controlled replay receipt is still pending at this point.
 
 No signal/router/trade/paper/live/production authority.
