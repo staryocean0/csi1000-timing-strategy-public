@@ -1,6 +1,6 @@
 {
   "schema_id": "csi1000.private_governance_sync_request@1.0",
-  "phase": "stage",
+  "phase": "merge",
   "sync_id": "two-wave-strategy-evolution-history-20260920-v3",
   "private_base_sha": "9d9f0e2ceb8cad6cee6a44e31f9e437173d2e24a",
   "targets": [
