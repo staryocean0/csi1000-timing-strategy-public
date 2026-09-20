@@ -61,8 +61,8 @@
   },
   "formal_verdict": "LOCAL_COMPRESSION_STATE_EXIT_HAZARD_NOT_SUPPORTED",
   "hashes": {
-    "exact_result_sha256": "d4819aa079fec652ccb7ff8e19f2241958e5f2469fd8f2a99fe71287cd3834db",
-    "scored_ledger_sha256": "6fb0d646445fc8c5d7ebc0f664681144b2fd2c8fc72b85758c7bf28e1cf9015b",
+    "exact_result_sha256": "0760393f9a27b4a7db2ad65a931e449c68ca71c2aeba7a657867d9929743519b",
+    "scored_ledger_sha256": "c1ef13cfc3b2bc5669955ff62a5200b6c56c6868b459421d7e621e5ed189f46f",
     "study_module_sha256": "2dc3c316172fcd3d5e8f4f0086d05c356e5806e9d0b735fb72580bd5c2671908"
   },
   "issue": 624,
@@ -86,19 +86,22 @@
     "n": 29713
   },
   "reproducibility_repair": {
-    "canonical_exact_result_sha256": "d4819aa079fec652ccb7ff8e19f2241958e5f2469fd8f2a99fe71287cd3834db",
-    "canonical_ledger_sha256": "6fb0d646445fc8c5d7ebc0f664681144b2fd2c8fc72b85758c7bf28e1cf9015b",
+    "canonical_exact_result_sha256": "0760393f9a27b4a7db2ad65a931e449c68ca71c2aeba7a657867d9929743519b",
+    "canonical_float_format": "%.10g",
+    "canonical_ledger_sha256": "c1ef13cfc3b2bc5669955ff62a5200b6c56c6868b459421d7e621e5ed189f46f",
     "first_governed_run": 35487560301,
     "first_run_noncanonical_ledger_sha256": "b62f0744984c4ee0dede41541df11b739465d49f85c5bac2c1236425ddd6472b",
     "scientific_computation_changed": false,
-    "scientific_values_identical": true
+    "scientific_values_identical": true,
+    "second_governed_run": 35488173033,
+    "second_run_11g_noncanonical_ledger_sha256": "bfc2fd59415394d7f1413c8b070fcb20a1ce3ea4b969ea0557b99b6af9d924be"
   },
   "schema_version": "two_wave_local_state_exit_compression_result_summary_v1",
   "stability": {
     "positive_overlap_phases": 8,
     "years_B5_gt_B1": 3
   },
-  "status": "DEVELOPMENT_RESULT__CANONICAL_CONTROLLED_REPLAY_PENDING",
+  "status": "DEVELOPMENT_RESULT__CANONICAL_10G_CONTROLLED_REPLAY_PENDING",
   "support": {
     "checks": {
       "age_strata_supported": true,
