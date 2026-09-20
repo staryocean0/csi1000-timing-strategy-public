@@ -1,0 +1,125 @@
+{
+  "schema_id": "csi1000.two_wave_local_state_exit_direction_asymmetry_prereg@1.0",
+  "date": "2026-09-20",
+  "issue": 647,
+  "architecture_authority": "docs/research/TWO_WAVE_STRATEGY_EVOLUTION_HISTORY_20260920.md",
+  "study_class": "mechanism_audit_only",
+  "fresh_oos": false,
+  "scientific_authority_from_this_study": false,
+  "source_evidence": {
+    "issue": 624,
+    "canonical_run_identity": "35488698309-1",
+    "public_source_sha": "828a64c763ba1e4f08b126a3766e54bb73a8e4d",
+    "scored_ledger_path": "ISSUE624_SCORED_LEDGER.csv",
+    "scored_ledger_sha256": "c1ef13cfc3b2bc5669955ff62a5200b6c56c6868b459421d7e621e5ed189f46f",
+    "exact_result_sha256": "0760393f9a27b4a7db2ad65a931e449c68ca71c2aeba7a657867d9929743519b",
+    "rows": 29713,
+    "years": [
+      2018,
+      2019,
+      2020
+    ]
+  },
+  "frozen_target": "structural_exit_next8",
+  "states": [
+    "CURRENT_UP",
+    "CURRENT_DOWN"
+  ],
+  "age_bins": [
+    "A1_1_4",
+    "A2_5_8",
+    "A3_9_16",
+    "A4_17_32",
+    "A5_33_PLUS"
+  ],
+  "components": [
+    {
+      "raw": "abs_ret_8",
+      "risk": "risk_abs_ret_8"
+    },
+    {
+      "raw": "range_8",
+      "risk": "risk_range_8"
+    },
+    {
+      "raw": "rv_8",
+      "risk": "risk_rv_8"
+    },
+    {
+      "raw": "efficiency_8",
+      "risk": "risk_efficiency_8"
+    }
+  ],
+  "reference_score": "compression_score",
+  "allowed_columns": [
+    "known_index",
+    "knowledge_day",
+    "year",
+    "state",
+    "state_age",
+    "age_bin",
+    "structural_exit_next8",
+    "abs_ret_8",
+    "range_8",
+    "rv_8",
+    "efficiency_8",
+    "risk_abs_ret_8",
+    "risk_range_8",
+    "risk_rv_8",
+    "risk_efficiency_8",
+    "compression_score",
+    "risk_band"
+  ],
+  "forbidden_inputs": [
+    "P128",
+    "P256",
+    "C1",
+    "C2",
+    "C3",
+    "other_frequency_context",
+    "future_state_predictor",
+    "PnL",
+    "trade_return",
+    "router_outcome"
+  ],
+  "analysis": {
+    "component_bins": "Q1=[0,.2], Q2=(.2,.4], Q3=(.4,.6], Q4=(.6,.8], Q5=(.8,1]; risk percentile outside [0,1] fails; no outcome-derived cuts",
+    "primary_component_effect": "Q5_minus_Q1 structural_exit_next8 risk difference",
+    "age_standardization": "state_specific: aggregate each state/component age-bin Q5-Q1 using that state/component Q1+Q5 support shares; common_age: use one shared age-bin weight vector from pooled CURRENT_UP+CURRENT_DOWN Q1+Q5 support for that component, then apply those same weights to both states",
+    "uncertainty": "20-trading-day block bootstrap, 5000 repetitions, seed 20260920",
+    "stability": [
+      "year-by-year sign for 2018,2019,2020",
+      "known_index mod 8 cohort sign across all 8 cohorts"
+    ],
+    "interaction_summary": "for each component, interaction = common-age-standardized DOWN(Q5-Q1) - common-age-standardized UP(Q5-Q1); bootstrap this exact difference with the same 20-trading-day resamples; no fitted feature selection",
+    "reference_score_summary": "apply the same fixed quintiles and both state-specific/common-age standardizations to frozen compression_score; define raw_direction_gap = DOWN pooled Q5-Q1 - UP pooled Q5-Q1 and common_age_direction_gap analogously; age_gap_reduction_fraction = 1 - abs(common_age_direction_gap)/abs(raw_direction_gap), undefined if raw gap is zero",
+    "bootstrap_validity": "For each age-standardized state statistic, common-age statistic, component interaction, and reference age-gap reduction, retain only resamples with all Q1/Q5 age cells required by that statistic present. Report n_draws and valid_draw_fraction. A statistic is mechanism-label eligible only if valid_draw_fraction >= 0.98 (>=4900 of 5000 canonical draws)."
+  },
+  "mechanism_labels": {
+    "COMPONENT_COHERENT_DIRECTION_ASYMMETRY": {
+      "rule": "CURRENT_DOWN has at least 3 of 4 components with age-standardized Q5-Q1 > 0, bootstrap CI lower > 0, bootstrap valid_draw_fraction >= 0.98, and positive sign in at least 2 of 3 years; CURRENT_UP has at most 1 component meeting all four conditions; at least 2 component DOWN-minus-UP interaction CIs have lower > 0 and valid_draw_fraction >= 0.98."
+    },
+    "AGE_COMPOSITION_DOMINANT": {
+      "rule": "common-age reweighting reduces the frozen reference-score DOWN-minus-UP Q5-Q1 gap by at least 50%, the reference age-gap-reduction bootstrap valid_draw_fraction >= 0.98, and COMPONENT_COHERENT_DIRECTION_ASYMMETRY is false."
+    },
+    "MIXED_OR_INCONCLUSIVE": {
+      "rule": "otherwise."
+    }
+  },
+  "interpretation_boundaries": [
+    "The labels above classify mechanism evidence on already-exposed development data; they are not new confirmatory scientific support.",
+    "No result can reclassify issue #624 as supported.",
+    "No result can authorize a CURRENT_DOWN-only trading rule or intervention.",
+    "No result can authorize a new cross-frequency context candidate.",
+    "A follow-up predictive model requires a separate preregistration and explicit stop rule."
+  ],
+  "stop_rule": "Do not add new features, alternate age bins, alternate horizons, new thresholds, or other-frequency context inside issue #647. If the fixed audit is mixed/inconclusive, close the issue without feature-zoo expansion.",
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
