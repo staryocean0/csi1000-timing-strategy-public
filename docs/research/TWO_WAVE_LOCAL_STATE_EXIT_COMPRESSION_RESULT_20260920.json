@@ -61,8 +61,8 @@
   },
   "formal_verdict": "LOCAL_COMPRESSION_STATE_EXIT_HAZARD_NOT_SUPPORTED",
   "hashes": {
-    "exact_result_sha256": "cd09836dbc0e9a7553780f7b9c721be5cb5ddb85e9b1e0f77288eb1a7e6ba4d0",
-    "scored_ledger_sha256": "4b223af767b19f4d5f43fcb001c9d44625cbe00c21a704319b595397c98b653f",
+    "exact_result_sha256": "d4819aa079fec652ccb7ff8e19f2241958e5f2469fd8f2a99fe71287cd3834db",
+    "scored_ledger_sha256": "6fb0d646445fc8c5d7ebc0f664681144b2fd2c8fc72b85758c7bf28e1cf9015b",
     "study_module_sha256": "2dc3c316172fcd3d5e8f4f0086d05c356e5806e9d0b735fb72580bd5c2671908"
   },
   "issue": 624,
@@ -85,12 +85,20 @@
     ],
     "n": 29713
   },
+  "reproducibility_repair": {
+    "canonical_exact_result_sha256": "d4819aa079fec652ccb7ff8e19f2241958e5f2469fd8f2a99fe71287cd3834db",
+    "canonical_ledger_sha256": "6fb0d646445fc8c5d7ebc0f664681144b2fd2c8fc72b85758c7bf28e1cf9015b",
+    "first_governed_run": 35487560301,
+    "first_run_noncanonical_ledger_sha256": "b62f0744984c4ee0dede41541df11b739465d49f85c5bac2c1236425ddd6472b",
+    "scientific_computation_changed": false,
+    "scientific_values_identical": true
+  },
   "schema_version": "two_wave_local_state_exit_compression_result_summary_v1",
   "stability": {
     "positive_overlap_phases": 8,
     "years_B5_gt_B1": 3
   },
-  "status": "DEVELOPMENT_RESULT__CONTROLLED_RUN_PENDING",
+  "status": "DEVELOPMENT_RESULT__CANONICAL_CONTROLLED_REPLAY_PENDING",
   "support": {
     "checks": {
       "age_strata_supported": true,
