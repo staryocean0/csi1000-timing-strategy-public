@@ -1,8 +1,8 @@
 {
   "schema_id": "csi1000.private_governance_sync_request@1.0",
-  "phase": "merge",
-  "sync_id": "two-wave-strategy-evolution-history-20260920-v1",
-  "private_base_sha": "7688ba57206dd29fbef88d8e57475255718471fe",
+  "phase": "stage",
+  "sync_id": "two-wave-strategy-evolution-history-20260920-v2",
+  "private_base_sha": "22ab2e181407fb1d0a9a71e61d880819fe1baec8",
   "targets": [
     "docs/research/TWO_WAVE_STRATEGY_EVOLUTION_HISTORY_20260920.md"
   ]
