@@ -978,3 +978,143 @@ leftarrow future(C3)
 ]
 
 这标志着项目已经找到一条可以继续研究、同时天然有终止边界的非套娃路径。
+
+---
+
+## 18. 第四代第一次 current-context 增量检验：P128 Model B 未获得支持
+
+### 18.1 为什么必须做这一门
+
+#624 同时证明了两件事：本频段 local compression 对 directional state-survival 有真实信息；但一套对 CURRENT_UP / CURRENT_DOWN 普适的 Local-only gate 未获得支持。
+
+因此项目没有回到“预测 C1 再预测 C2”的旧递归结构，而是冻结了一个更小的问题：
+
+> 在同一个 #624 STRUCTURAL_EXIT_NEXT8 目标上，已经控制当前方向、carrier age 和 frozen local compression score 后，一个当时可知的 nearest current context 是否还有额外概率信息？
+
+Issue #635 只允许一个候选：P128 raw-price trailing OLS normalized phase，只看当前时点可知的 ALIGNED / NEUTRAL / OPPOSED；不使用 future(C1)，不使用 stage1 causal leg，不测试 P256，也不搜索新的窗口、carrier 或阈值。
+
+这就是第四代第一次真正的 non-recursive Model B。
+
+### 18.2 Model A / Model B 的冻结比较
+
+Model A 在 #624 冻结对象上做固定概率校准：10 个 direction × age-cell intercepts + 2 个 direction-specific compression slopes，共 12 参数。
+
+Model B 在完全相同 mature/common-support prior rows 上，只增加当前 P128 context 的 4 个固定 categorical terms，总计 16 参数。
+两边使用同一 target、同一 29,713 行 2018–2020 evaluation universe、同一 prior-only annual fitting、同一 label-maturity rule、同一 ridge lambda=0.001、同一 Brier / log-loss paired evaluation、同一 20 trading-day block bootstrap（5000 reps，seed 20260920）。
+
+### 18.3 受控结果：P128 没有提供稳定增量
+
+第一份完整、独立 verifier PASS 的 governed result：
+
+- public run：35500372173
+- identity：35500372173-1
+- public source SHA：42c86adb5de9632b51d11ac1ed1ec9a0c835457b
+- verified evaluation rows：29,713
+- baseline #624 row/hash identity：PASS
+- complete causal prefix / future perturbation：PASS
+- support gate：PASS
+- independent verifier：PASS
+
+冻结 verdict：MODEL_B_P128_STATE_EXIT_INCREMENT_NOT_SUPPORTED。
+
+pooled proper-scoring result：
+
+- Model A Brier = 0.216993686942
+- Model B Brier = 0.217204110603
+- Brier gain (A−B) = -0.000210423662
+- relative Brier gain = -0.09697%
+- Model A log-loss = 0.625007587553
+- Model B log-loss = 0.625326059446
+- log-loss gain (A−B) = -0.000318471893
+
+也就是说，P128 context 并不是“有一点但不够显著”，而是在冻结 proper-scoring comparison 下 pooled 方向本身就是轻微变差。
+
+AUC 虽然从 0.61119 小幅升到 0.61369，但本门预注册的核心不是 ranking-only AUC，而是概率预测增量；Brier 与 log-loss 都没有改善。
+
+### 18.4 稳定性门为什么没有通过
+
+pooled 20-day block bootstrap：
+
+- Brier gain 95% CI = [-0.00080168, +0.00037942]
+- log-loss gain 95% CI = [-0.00163513, +0.00099600]
+
+两侧方向均没有正的 CI。
+
+CURRENT_UP：relative Brier gain = -0.01509%，Brier gain CI low = -0.00068144。
+
+CURRENT_DOWN：relative Brier gain = -0.17549%，Brier gain CI low = -0.00147275。
+
+年度也不稳定：2018 Brier gain = -0.00000532；2019 = +0.00016040；2020 = -0.00077164。
+冻结 gate 中只有 support_and_causal=true、ECE 增量门=true；其余核心 incremental-information gates 均未通过，包括 1% relative Brier minimum、pooled 两个 CI、UP/DOWN 两侧 CI、三年全正、8 cohorts 中至少 6 个为正、common-support Brier gain > 0。
+
+### 18.5 这次负结果真正排除了什么
+
+这次结果排除的是一个非常具体的假设：
+
+> #429 中曾经具有 marginal persistence conditioning 信息的 P128 raw-price current phase，在控制方向、年龄和 #624 frozen local compression score 后，并没有提供稳定的 conditional incremental probability information。
+
+这不否定 #429 的 marginal finding。两者回答的问题不同：#429 问 P128 单独作为 parent phase 是否与 post-delay persistence 有关系；#635 问已经知道 local state/compression/age 后，P128 是否还有增量。
+
+答案现在是：marginal 曾获得支持；conditional incremental 本门不支持。
+
+### 18.6 递归套娃在这里获得了真实终止边界
+
+#635 预注册明确规定：negative / insufficient result closes this candidate；不得自动升级到更慢 context。
+
+因此当前不允许因为 P128 失败就自然变成 P128 -> P256 -> C2 -> C3 -> ...，也不允许解释为“nearest context 不行，所以继续找 slower context 总会找到一个”。
+
+正确的项目级结论是：当前这个 nearest current-context 候选应被删除。
+下一步如果要研究任何新的跨频段 context，必须重新提出一个独立、可证伪的新假设，并重新说明为什么它不是 P128 的事后替代、为什么有独立机制依据、为什么不会重新形成 recursive future dependency，以及什么负结果会终止该新候选。
+
+### 18.7 当前架构状态
+
+经过 #624 和 #635，当前证据链变成：
+
+1. Local compression 对本频段 state survival 确实有信息；
+2. Local-only universal gate 未获得支持；
+3. nearest P128 current context 的 conditional incremental value 也未获得支持；
+4. 因此不能把 P128 保留为默认 supervisor；
+5. 也不能自动升级 slower context。
+
+这使项目进一步收缩为：Local state-survival baseline 是当前仍被证据保留的主体；任何新的 context 必须重新获得独立增量资格。
+
+本门仍然只是 information-layer 研究，没有获得 economic intervention、signal、router、trade、paper、live 或 production authority。
+
+### 18.8 governed execution 的工程历史
+
+首次 attempt 35499292209-1 在 scientific output 写出前被 host watchdog 截断：profile 内部原允许 producer/verifier 各 2400 秒，但 shared host watchdog 仍为 660 / 210 秒。该运行没有 exact JSON / scored ledger，因此是工程失败，不是科学负结果；其 failure receipt / Release 永久保留。
+随后 #635 专用 broker 将 producer timeout 固定为 900 秒、verifier timeout 固定为 900 秒、host watchdog 固定为 960 秒；shared broker 与其他 profile 不变。
+
+在该修复后，35500372173-1 首次形成完整 scientific result 并由独立 verifier PASS。
+
+其 private Release：
+
+- release id：392374589
+- archive SHA256：9d0b61bd9150d13a75c600dcfb24c5cc781a7966d70c2f85463a04ff52d85dbf
+- exact result SHA256：4ef2a23577ef782c5622df1906dde794c11656614dbf0735855db30f213d5531
+- scored ledger SHA256：eb9d1efca3e8327e5f8ba08b9e7d546c67da76d5e80595b6f314782a3863bbd1
+
+该 run 的 receipt 将 new_training 错记为 false；这是 generic publisher 的元数据缺陷，不影响 Release 中 scientific result bytes。#641 只修正该 receipt 元数据路径，不改变任何科学对象或结果门。
+
+最终 canonical replay：
+
+- public run：35500929714
+- identity：35500929714-1
+- public source SHA：3ada17b8cad87b98574866400bc7cbed404072a8
+- private receipt：passed / archive_uploaded_and_verified
+- receipt new_training：true
+- private Release id：392382447
+- archive SHA256：db7bd62c2720f9619bf879a4320e23808eb15709cb88000ce2cfc733957c4fc1
+- exact result SHA256：4ef2a23577ef782c5622df1906dde794c11656614dbf0735855db30f213d5531
+- scored ledger SHA256：eb9d1efca3e8327e5f8ba08b9e7d546c67da76d5e80595b6f314782a3863bbd1
+- independent verifier：PASS，29,713 rows / 38 blocks
+
+canonical replay 的 exact result 与 scored ledger 和第一完整 run 逐字节一致，因此 #635 的科学 verdict 可正式接受为受控、可复现的 NOT_SUPPORTED 结果。
+
+### 18.9 与项目级 current authority 的边界
+
+本节记录的是已经通过本双仓控制面执行、由私库 run receipt / Release 接受的 Two-Wave #635 研究结果。
+
+它不会因为写入公库历史文档就自动替换项目级 current authority。按照仓库治理，项目 current authority 仍由私库根 CHAT_START.md、CLOUD_CURRENT.json 及其引用合同定义；当前它们仍指向 Risk Tool 2.0 Phase-1。
+
+因此本次闭合只接受 #635 的研究证据与历史沿革，不直接修改私库根控制文件，也不把 Two-Wave 宣称成新的 current research anchor。

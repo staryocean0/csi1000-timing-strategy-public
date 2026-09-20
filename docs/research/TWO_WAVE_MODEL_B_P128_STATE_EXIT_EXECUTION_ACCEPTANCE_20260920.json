@@ -1,0 +1,73 @@
+{
+  "schema_id": "csi1000.two_wave_model_b_p128_state_exit_execution_acceptance@1.0",
+  "date": "2026-09-20",
+  "issue": 635,
+  "status": "CONTROLLED_EXECUTION_ACCEPTED__BYTE_REPRODUCIBLE",
+  "scientific_verdict": "MODEL_B_P128_STATE_EXIT_INCREMENT_NOT_SUPPORTED",
+  "first_complete_run": {
+    "workflow_run_id": 35500372173,
+    "run_identity": "35500372173-1",
+    "public_source_sha": "42c86adb5de9632b51d11ac1ed1ec9a0c835457b",
+    "private_source_ref": "2815f50b5a1b2925f0e0118b0af0d578605ee882",
+    "profile": "two-wave-model-b-p128-state-exit-v1",
+    "receipt_status": "passed",
+    "delivery_status": "archive_uploaded_and_verified",
+    "independent_verifier_status": "passed",
+    "verified_rows": 29713,
+    "verified_blocks": 38
+  },
+  "first_complete_private_release": {
+    "release_id": 392374589,
+    "tag": "public-research-run-35500372173-1",
+    "archive_sha256": "9d0b61bd9150d13a75c600dcfb24c5cc781a7966d70c2f85463a04ff52d85dbf",
+    "exact_result_sha256": "4ef2a23577ef782c5622df1906dde794c11656614dbf0735855db30f213d5531",
+    "scored_ledger_sha256": "eb9d1efca3e8327e5f8ba08b9e7d546c67da76d5e80595b6f314782a3863bbd1",
+    "controller_validation_sha256": "79bb0fd02110cfdf8fe7a7440e4ed6db7523fd20a82797e4d07df316e98850b5",
+    "compute_receipt_sha256": "d82039dd3169eb42d4fae774d5458f8e8a2cf419b56b6df4b22dc995c01907df"
+  },
+  "canonical_replay": {
+    "workflow_run_id": 35500929714,
+    "run_identity": "35500929714-1",
+    "public_source_sha": "3ada17b8cad87b98574866400bc7cbed404072a8",
+    "private_source_ref": "2815f50b5a1b2925f0e0118b0af0d578605ee882",
+    "profile": "two-wave-model-b-p128-state-exit-v1",
+    "receipt_status": "passed",
+    "delivery_status": "archive_uploaded_and_verified",
+    "new_training": true,
+    "production_authority": false,
+    "release_id": 392382447,
+    "tag": "public-research-run-35500929714-1",
+    "archive_bytes": 2635538,
+    "archive_sha256": "db7bd62c2720f9619bf879a4320e23808eb15709cb88000ce2cfc733957c4fc1",
+    "exact_result_sha256": "4ef2a23577ef782c5622df1906dde794c11656614dbf0735855db30f213d5531",
+    "scored_ledger_sha256": "eb9d1efca3e8327e5f8ba08b9e7d546c67da76d5e80595b6f314782a3863bbd1",
+    "controller_validation_sha256": "79bb0fd02110cfdf8fe7a7440e4ed6db7523fd20a82797e4d07df316e98850b5",
+    "compute_receipt_sha256": "d82039dd3169eb42d4fae774d5458f8e8a2cf419b56b6df4b22dc995c01907df",
+    "verified_rows": 29713,
+    "verified_blocks": 38,
+    "independent_verifier_status": "passed",
+    "bytes_identical_to_first_complete_result": true
+  },
+  "historical_runs": [
+    {
+      "workflow_run_id": 35499292209,
+      "run_identity": "35499292209-1",
+      "classification": "engineering_failure",
+      "reason": "host_watchdog_terminated_before_exact_result"
+    }
+  ],
+  "current_authority_note": "Issue #635 acceptance is authoritative controlled evidence for this research thread but does not replace private-root CHAT_START/CLOUD_CURRENT current authority, which remains Risk Tool 2.0 until a separate governed control-plane transition.",
+  "authority": {
+    "economic_intervention": false,
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  },
+  "project_current_authority": {
+    "promoted_by_this_acceptance": false,
+    "reason": "private_root_CHAT_START_and_CLOUD_CURRENT_remain_authoritative_and_are_not_modified_by_issue635_acceptance"
+  }
+}
