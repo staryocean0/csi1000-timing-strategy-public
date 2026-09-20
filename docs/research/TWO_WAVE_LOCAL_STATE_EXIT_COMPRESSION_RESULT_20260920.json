@@ -47,6 +47,14 @@
     "signal": false,
     "trade": false
   },
+  "controlled_acceptance": {
+    "canonical_float_format": "%.10g",
+    "private_receipt_status": "passed",
+    "private_release_id": 392309871,
+    "public_source_sha": "828a64c763ba1e4f08b126a3766e54bb73a8e4d8",
+    "run_identity": "35488698309-1",
+    "workflow_run_id": 35488698309
+  },
   "date": "2026-09-20",
   "exit16": {
     "B5_minus_B1": 0.0960668971082358,
@@ -101,7 +109,7 @@
     "positive_overlap_phases": 8,
     "years_B5_gt_B1": 3
   },
-  "status": "DEVELOPMENT_RESULT__CANONICAL_10G_CONTROLLED_REPLAY_PENDING",
+  "status": "CONTROLLED_EXECUTION_ACCEPTED__BYTE_REPRODUCIBLE",
   "support": {
     "checks": {
       "age_strata_supported": true,

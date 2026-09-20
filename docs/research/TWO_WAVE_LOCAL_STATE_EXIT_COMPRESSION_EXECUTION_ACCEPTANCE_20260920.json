@@ -1,0 +1,59 @@
+{
+  "schema_id": "csi1000.two_wave_local_state_exit_compression_execution_acceptance@1.0",
+  "date": "2026-09-20",
+  "issue": 624,
+  "status": "CONTROLLED_EXECUTION_ACCEPTED__BYTE_REPRODUCIBLE",
+  "scientific_verdict": "LOCAL_COMPRESSION_STATE_EXIT_HAZARD_NOT_SUPPORTED",
+  "canonical_float_format": "%.10g",
+  "governed_run": {
+    "workflow_run_id": 35488698309,
+    "run_identity": "35488698309-1",
+    "public_source_sha": "828a64c763ba1e4f08b126a3766e54bb73a8e4d8",
+    "private_source_ref": "22ab2e181407fb1d0a9a71e61d880819fe1baec8",
+    "profile": "two-wave-local-state-exit-compression-v1"
+  },
+  "private_receipt": {
+    "branch": "runs/public-research/35488698309-1",
+    "path": "research/public-runs/35488698309-1.json",
+    "status": "passed",
+    "delivery_status": "archive_uploaded_and_verified"
+  },
+  "private_release": {
+    "release_id": 392309871,
+    "tag": "public-research-run-35488698309-1",
+    "asset": "results.tar.gz",
+    "bytes": 2059472,
+    "sha256": "73141f57accfd02aa4607ebcd93843fed0b42905e5c06733671c5a010913f7c8"
+  },
+  "verified_outputs": {
+    "exact_result_sha256": "0760393f9a27b4a7db2ad65a931e449c68ca71c2aeba7a657867d9929743519b",
+    "scored_ledger_sha256": "c1ef13cfc3b2bc5669955ff62a5200b6c56c6868b459421d7e621e5ed189f46f",
+    "controller_validation_sha256": "863b5c7ded34291f995e3e96ebad6ff108c9b13164d598fff72bb71ca2fd99ec",
+    "compute_receipt_sha256": "d82039dd3169eb42d4fae774d5458f8e8a2cf419b56b6df4b22dc995c01907df",
+    "verified_rows": 29713,
+    "verified_blocks": 38,
+    "independent_verifier_status": "passed"
+  },
+  "historical_runs": [
+    {
+      "workflow_run_id": 35487560301,
+      "scientific_result_matched": true,
+      "byte_canonical": false,
+      "reason": "full_precision_cross_runtime_last_bit_drift"
+    },
+    {
+      "workflow_run_id": 35488173033,
+      "scientific_result_matched": true,
+      "byte_canonical": false,
+      "reason": "11g_one_remaining_serialized_rv8_last_bit_difference"
+    }
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
