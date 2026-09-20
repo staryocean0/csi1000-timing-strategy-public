@@ -17,6 +17,8 @@ FIXED_LAG_PROFILE = "two-wave-scale-fixed-lag-confirmation-measurement-v1"
 FIXED_LAG_BROKER = "executor/wave_scale_fixed_lag_market_broker_v1.py"
 ISSUE615_PROFILE = "two-wave-t0-causal-c1-compression-interaction-v1"
 ISSUE615_BROKER = "executor/two_wave_t0_causal_c1_compression_interaction_broker_v1.py"
+ISSUE624_PROFILE = "two-wave-local-state-exit-compression-v1"
+ISSUE624_BROKER = "executor/two_wave_local_state_exit_compression_broker_v1.py"
 
 
 def remove_once(text: str, part: str, label: str) -> str:
@@ -27,7 +29,23 @@ def remove_once(text: str, part: str, label: str) -> str:
 
 
 
+def strip_issue624_workflow(text: str) -> str:
+    text = remove_once(text, f"          - {ISSUE624_PROFILE}\n", "issue624 profile option")
+    condition = f" || inputs.profile == '{ISSUE624_PROFILE}'"
+    if text.count(condition) != 2:
+        raise AssertionError("issue624 allowlist count")
+    text = text.replace(condition, "")
+    for phase in ("prepare", "compute", "cleanup", "publish"):
+        branch = (
+            f"          elif [ '${{{{ inputs.profile }}}}' = '{ISSUE624_PROFILE}' ]; then\n"
+            f"            python3 {ISSUE624_BROKER} {phase} {ISSUE624_PROFILE}\n"
+        )
+        text = remove_once(text, branch, "issue624 " + phase)
+    return text
+
+
 def strip_issue615_workflow(text: str) -> str:
+    text = strip_issue624_workflow(text)
     text = remove_once(text, f"          - {ISSUE615_PROFILE}\n", "issue615 profile option")
     condition = f" || inputs.profile == '{ISSUE615_PROFILE}'"
     if text.count(condition) != 2:
