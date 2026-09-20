@@ -1,0 +1,37 @@
+{
+  "schema_version": "two_wave_local_state_exit_compression_prereg_amendment_a_v1",
+  "issue": 624,
+  "date": "2026-09-20",
+  "status": "FROZEN_BEFORE_OUTCOME_EXECUTION",
+  "reason": "remove predictor-target mechanical overlap from LOW/FINER gates",
+  "directional_carrier": {
+    "source": "accepted current-band recognizer V1 pre-veto direction_score",
+    "weights": "FROZEN_WEIGHTS",
+    "threshold": 0.20,
+    "states": ["DIR_UP", "DIR_RANGE", "DIR_DOWN"],
+    "amplitude_gate_used": false,
+    "finer_gate_used": false
+  },
+  "eligible_wrapper_states": ["CURRENT_UP", "CURRENT_DOWN"],
+  "primary_target": "structural_directional_carrier_exit_within_8_knowledge_bars",
+  "secondary_target": "structural_directional_carrier_exit_within_16_knowledge_bars",
+  "structural_exit_destinations": {
+    "DIR_UP": ["DIR_RANGE", "DIR_DOWN"],
+    "DIR_DOWN": ["DIR_RANGE", "DIR_UP"]
+  },
+  "five_state_gate_transitions": {
+    "role": "diagnostic_only",
+    "excluded_from_primary_gate": ["LOW_AMPLITUDE_VETO", "FINER_SCALE_OUT_OF_BAND"]
+  },
+  "age_definition": "consecutive same frozen directional-carrier state ending at knowledge bar",
+  "all_other_original_prereg_constraints": "unchanged",
+  "outcome_inspected_before_amendment": false,
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
