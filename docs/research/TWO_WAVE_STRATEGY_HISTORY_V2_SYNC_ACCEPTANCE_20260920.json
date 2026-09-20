@@ -1,0 +1,28 @@
+{
+  "private_base": "22ab2e181407fb1d0a9a71e61d880819fe1baec8",
+  "private_stage": "2815f50b5a1b2925f0e0118b0af0d578605ee882",
+  "status": "COMPLETED_AND_READ_BACK",
+  "ahead_by": 1,
+  "behind_by": 0,
+  "changed_files": [
+    {
+      "path": "docs/research/TWO_WAVE_STRATEGY_EVOLUTION_HISTORY_20260920.md",
+      "status": "modified"
+    }
+  ],
+  "blob": "b683b2f70758bb4f22236009f15306223c48c588",
+  "bytes": 29544,
+  "sha256": "932fd8625b9d046604f5b6c745ae7bdf1f58a754d703f56ad021e8498d7f1eaf",
+  "public_bytes_equal": true,
+  "stage_run": 35492996903,
+  "public_stage_merge": "471d742d25ae9ecd4609730d3c16fc9c4e6e1b8c",
+  "private_main": "2815f50b5a1b2925f0e0118b0af0d578605ee882",
+  "merge_run": 35493236442,
+  "public_merge_request_commit": "6e0ff1c9f9b05bf6b023840934f6846c14c85f1d",
+  "stage_pr": 633,
+  "merge_pr": 634,
+  "force": false,
+  "private_main_bytes_verified": true,
+  "verified_at": "2026-09-20T06:07:57.782101+00:00",
+  "main_unchanged_at_stage": true
+}

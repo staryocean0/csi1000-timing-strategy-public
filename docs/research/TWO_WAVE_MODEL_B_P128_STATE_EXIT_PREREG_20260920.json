@@ -1,0 +1,211 @@
+{
+  "audit_source_public_sha": "6e0ff1c9f9b05bf6b023840934f6846c14c85f1d",
+  "authority": {
+    "economic_intervention": false,
+    "live_trading": false,
+    "paper_trading": false,
+    "production": false,
+    "router": false,
+    "signal": false,
+    "trade": false
+  },
+  "baseline": {
+    "age_bins": [
+      "A1_1_4",
+      "A2_5_8",
+      "A3_9_16",
+      "A4_17_32",
+      "A5_33_PLUS"
+    ],
+    "amendment": "A",
+    "direction_threshold": 0.2,
+    "features": [
+      "abs_ret_8",
+      "range_8",
+      "rv_8",
+      "efficiency_8"
+    ],
+    "issue": 624,
+    "ledger_sha256": "c1ef13cfc3b2bc5669955ff62a5200b6c56c6868b459421d7e621e5ed189f46f",
+    "score_recipe": "unchanged prior-year reverse empirical percentiles, equal weights",
+    "scored_rows": 29713,
+    "verdict": "LOCAL_COMPRESSION_STATE_EXIT_HAZARD_NOT_SUPPORTED"
+  },
+  "causality": {
+    "additional_prefixes": "first native index of each test year plus 1 and plus 9 bars",
+    "compare": [
+      "state",
+      "carrier_state",
+      "state_age",
+      "local_features",
+      "context",
+      "compression_score",
+      "risk_band",
+      "annual_fit_rows",
+      "annual_coefficients",
+      "p_A",
+      "p_B"
+    ],
+    "future_perturbation_after_lengths": [
+      50000,
+      65000
+    ],
+    "independent_verifier_required": true,
+    "legacy_wrapper_only_is_not_new_chain_acceptance": true,
+    "prediction_does_not_require_future_outcomes": true,
+    "prefix_lengths": [
+      10000,
+      30000,
+      50000,
+      65000
+    ]
+  },
+  "comparison": {
+    "bootstrap_days": 20,
+    "bootstrap_replicates": 5000,
+    "calibration_edges": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1.0
+    ],
+    "cohorts_modulo": 8,
+    "log_loss_gain": "mean(logloss_A-logloss_B)",
+    "primary_metric": "mean((y-pA)^2 - (y-pB)^2)",
+    "primary_population": "full inherited #624 evaluation population with B=A fallback",
+    "refit_in_bootstrap": false,
+    "relative_brier_gain": "primary_metric / mean((y-pA)^2)",
+    "risk_separation": "use each model annual prior-training prediction quintile cutpoints; report future +8 and +16 risks, no gate promotion from +16",
+    "secondary_population": "same context-resolved common-support subset for both A and B",
+    "seed": 20260920
+  },
+  "context": {
+    "additional_candidates": [],
+    "equivalent_to_C1": false,
+    "explicit_bandpass": false,
+    "id": "P128_RAW_PRICE_CURRENT_PHASE",
+    "input": "positive finite raw close[k-127:k+1]",
+    "method": "frozen normalized_ols_drift and parent_phase",
+    "range_flat_span_epsilon": 1e-15,
+    "relations": [
+      "ALIGNED",
+      "NEUTRAL",
+      "OPPOSED"
+    ],
+    "source_issue": 429,
+    "stage1_leg": false,
+    "threshold": 0.2,
+    "unresolved": "UNRESOLVED",
+    "window_bars": 128
+  },
+  "data": {
+    "bytes": 3351411,
+    "fresh_oos": false,
+    "native_minutes": 5,
+    "path": "data/development/5m_offset_0.parquet",
+    "ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "repository": "staryocean0/factorlab-two-wave-strategy-lab",
+    "rows": 70114,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48",
+    "symbol": "000852.SH",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020
+    ]
+  },
+  "date": "2026-09-20",
+  "frozen_sources_sha256": {
+    "executor/two_wave_current_band_recognizer_v1.py": "998e51b257540ce2e0384371d6a0b0b8226f3436e7b378a5d0aa9a3266b6e175",
+    "executor/two_wave_delayed_causal_wrapper_v1.py": "3ae2a9afa75dac173773d83356e115b58c248985567faa8b1ea9bd042cb6d3d9",
+    "executor/two_wave_local_state_exit_compression_v1.py": "2dc3c316172fcd3d5e8f4f0086d05c356e5806e9d0b735fb72580bd5c2671908",
+    "executor/two_wave_postdelay_persistence_v1.py": "34fc30211db3922f6ba67b563a05b983fe5780870409fbe3cb39676448389a0f"
+  },
+  "information_gate": {
+    "all_support_and_causal_checks_required": true,
+    "common_support_brier_gain_gt": 0,
+    "each_direction_brier_gain_ci_low_gt": 0,
+    "max_pooled_ECE_increase": 0.005,
+    "pooled_brier_gain_ci_low_gt": 0,
+    "pooled_log_loss_gain_ci_low_gt": 0,
+    "pooled_relative_brier_gain_min": 0.01,
+    "positive_cohort_brier_gains_required": 6,
+    "positive_year_brier_gains_required": 3
+  },
+  "issue": 635,
+  "models": {
+    "A": "ten direction-by-age-cell intercepts plus two direction-specific centered compression-score slopes",
+    "A_parameters": 12,
+    "B": "A design plus four direction-by-context-relation coefficients (NEUTRAL/OPPOSED; ALIGNED reference)",
+    "B_parameters": 16,
+    "hyperparameter_search": false,
+    "loss": "mean(logaddexp(0,eta)-y*eta) + lambda/2 * sum(penalized_coefficients**2)",
+    "missing_context_prediction": "B = A exactly; keep row and reason",
+    "optimizer": "Newton with backtracking, gradient infinity norm <= 1e-9, maximum 200 iterations",
+    "probability_clip": 1e-06,
+    "ridge_lambda": 0.001,
+    "score_center": 0.5,
+    "unpenalized": "ten cell intercepts"
+  },
+  "schema_version": "two_wave_model_b_p128_state_exit_prereg_v1",
+  "status": "PREREGISTRATION_BEFORE_MODEL_B_OUTCOMES",
+  "stopping": {
+    "automatic_slower_context": false,
+    "fail_information": "MODEL_B_P128_STATE_EXIT_INCREMENT_NOT_SUPPORTED",
+    "fail_support": "MODEL_B_P128_STATE_EXIT_INCREMENT_INSUFFICIENT_SUPPORT",
+    "negative_candidate_retained_as_predictor": false,
+    "pass": "MODEL_B_P128_STATE_EXIT_INCREMENT_SUPPORTED"
+  },
+  "support": {
+    "minimum_bootstrap_blocks": 30,
+    "minimum_context_coverage_each_year_state": 0.95,
+    "minimum_scored_rows": 20000,
+    "minimum_state_relation_blocks": 15,
+    "minimum_state_relation_rows": 300,
+    "minimum_state_year_rows": 1000,
+    "minimum_training_cell_exits": 10,
+    "minimum_training_cell_nonexits": 10,
+    "minimum_training_cell_rows": 100,
+    "minimum_training_context_coverage_each_fold": 0.95,
+    "minimum_valid_bootstrap": 4750,
+    "minimum_year_rows": 5000
+  },
+  "target": {
+    "destination_prediction": false,
+    "eligible_wrapper_states": [
+      "CURRENT_UP",
+      "CURRENT_DOWN"
+    ],
+    "knowledge_delay": 8,
+    "low_finer_primary": false,
+    "primary": "structural_exit_next8",
+    "primary_horizon": 8,
+    "secondary_diagnostic": "structural_exit_next16",
+    "secondary_horizon": 16,
+    "terminal_evaluation_support": 16
+  },
+  "training": {
+    "calibration": "separate annual logistic fits; no within-year update",
+    "feature_reference": "all eligible decision rows with knowledge year < test year; no outcome-based purge of label-free reference",
+    "fit_population": "context-resolved, label-mature eligible prior rows",
+    "future_rows_for_fit": false,
+    "label_maturity": "known_index + 8 < first_native_index_of_test_year",
+    "new_training": true,
+    "same_AB_fit_rows": true,
+    "test_years": [
+      2018,
+      2019,
+      2020
+    ]
+  }
+}
