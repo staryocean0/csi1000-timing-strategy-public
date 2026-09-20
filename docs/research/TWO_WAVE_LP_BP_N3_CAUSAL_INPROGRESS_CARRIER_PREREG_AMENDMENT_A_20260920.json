@@ -1,0 +1,111 @@
+{
+  "schema_id": "csi1000.two_wave_lp_bp_n3_causal_inprogress_carrier_prereg_amendment_a@1.0",
+  "date": "2026-09-20",
+  "issue": 652,
+  "status": "FROZEN_BEFORE_N3_DATA_EXECUTION",
+  "parent_schema_id": "csi1000.two_wave_lp_bp_n3_causal_inprogress_carrier_prereg@1.0",
+  "changes_thresholds": false,
+  "changes_carrier_family": false,
+  "changes_model": false,
+  "gate_a": {
+    "retrospective_universe": "R0_R1_JOINT_SUPPORT",
+    "expected_joint_rows": 68911,
+    "component_common_rows": "RETROSPECTIVE_AND_N2_AND_N3_ALL_FINITE",
+    "components": ["LP2", "LP3", "BP2", "BP3"],
+    "sign": {
+      "positive": 1,
+      "negative": -1,
+      "zero": 0,
+      "fidelity": "mean(causal_sign == retrospective_sign)",
+      "improvement": "fidelity_N3 - fidelity_N2"
+    },
+    "normalized_abs_error": {
+      "scale": "median(abs(retrospective_slope))",
+      "scale_must_be_positive": true,
+      "candidate_error": "mean(abs(causal-retrospective))/scale",
+      "improvement_fraction": "(error_N2-error_N3)/error_N2",
+      "n2_error_must_be_positive": true
+    },
+    "coverage_anchors": {
+      "outcome_blind": true,
+      "first": "max(first_joint_support_bar+1,T1)",
+      "last": "min(last_joint_support_bar,source_rows-T1-2)",
+      "step": 21,
+      "T1": 86,
+      "dominance_oracle_called": false
+    },
+    "joint_relation": {
+      "identity": "(sign(fast),sign(slow))",
+      "zero_retained": true,
+      "pass_threshold": null
+    },
+    "turns": {
+      "zero_creates_turn": false,
+      "zero_replaces_previous_nonzero": false,
+      "first_nonzero_is_turn": false,
+      "turn_rule": "current_nonzero_sign != previous_nonzero_sign",
+      "turn_bar": "current_native_bar",
+      "nearest_lag": "absolute_native_bar_distance_to_nearest_N3_turn",
+      "report_quantiles": ["median", "q90"],
+      "retrospective_zero_turns": "FAIL_CLOSED"
+    },
+    "year_stability": {
+      "years": [2015, 2016, 2017, 2018, 2019, 2020],
+      "component_improvement": "yearly_fidelity_N3-yearly_fidelity_N2",
+      "year_score": "mean(four_component_improvements)",
+      "positive_year": "year_score > 0",
+      "all_four_components_required": true
+    },
+    "prefix_replay": {
+      "cuts": [10000, 30000, 50000],
+      "knowledge_bar": "cut-1",
+      "full_visible_rule": "known_from_bar < cut",
+      "compare_fields": [
+        "slow_anchor_identity",
+        "immediate_faster_child_identity",
+        "bridge_or_confirmed_mode",
+        "active_slope",
+        "active_evidence_occurrence",
+        "evidence_age"
+      ],
+      "active_slope_abs_tolerance": 1e-15,
+      "all_levels_all_cuts_required": true
+    }
+  },
+  "gate_b": {
+    "only_after_gate_a_pass": true,
+    "paired_join": "INNER_JOIN_SAME_SCORED_ANCHOR_IDENTITY",
+    "diff_bp": "regret_N2_bp-regret_N3_bp",
+    "block_definition": {
+      "trading_day_order_start": "2015-01-05",
+      "block_days": 20,
+      "block_id": "trading_day_ordinal//20",
+      "block_value": "mean(diff_bp)"
+    },
+    "bootstrap": {
+      "repetitions": 2000,
+      "seed": 20260920,
+      "draw_size": "observed_block_count",
+      "sampling": "block_means_with_replacement",
+      "ci_quantiles": [0.025, 0.975],
+      "lower_endpoint_strictly_positive": true
+    }
+  },
+  "forbidden_alternatives": [
+    "RMSE_SUBSTITUTION",
+    "MEDIAN_ERROR_SUBSTITUTION",
+    "QUANTILE_LOSS_SUBSTITUTION",
+    "TRAINING_FOLD_ERROR_SCALE",
+    "OUTCOME_BASED_GATE_A_ROW_SELECTION",
+    "OUTCOME_BASED_CARRIER_SELECTION",
+    "POST_RESULT_FORMULA_CHANGE"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
