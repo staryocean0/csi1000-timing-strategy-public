@@ -64,17 +64,17 @@ The existing equal-weight `compression_score` is retained only as a reference de
 
 For each state and each of the four frozen `risk_*` components:
 
-1. assign fixed percentile quintiles `[0,.2,.4,.6,.8,1]`; there is no outcome-derived threshold;
+1. assign fixed percentile quintiles `Q1=[0,.2]`, `Q2=(.2,.4]`, `Q3=(.4,.6]`, `Q4=(.6,.8]`, `Q5=(.8,1]`; values outside `[0,1]` fail and there is no outcome-derived threshold;
 2. report event rate in Q1…Q5 and Q5−Q1;
 3. repeat Q5−Q1 within each frozen age bin;
-4. compute state/component age-standardized Q5−Q1;
-5. report a common pooled-age reweighting diagnostic;
+4. compute state/component age-standardized Q5−Q1 using that state/component Q1+Q5 support shares;
+5. compute one common pooled-age weight vector from CURRENT_UP+CURRENT_DOWN Q1+Q5 support for that component and apply the same weights to both states;
 6. report 2018/2019/2020 signs;
 7. report all eight `known_index mod 8` cohort signs;
 8. use 20-trading-day block bootstrap, 5000 repetitions, seed `20260920`;
-9. report `DOWN(Q5−Q1) − UP(Q5−Q1)` with the same block bootstrap.
+9. define the component interaction as common-age-standardized `DOWN(Q5−Q1) − UP(Q5−Q1)` and bootstrap that exact difference.
 
-Repeat the state-specific decomposition for the frozen equal-weight `compression_score` as a reference only.
+Repeat the same pooled, state-specific-age and common-age decomposition for frozen equal-weight `compression_score` as a reference only. For the age-composition diagnostic define `raw_direction_gap = DOWN pooled Q5−Q1 − UP pooled Q5−Q1`, `common_age_direction_gap` analogously, and `age_gap_reduction_fraction = 1 − abs(common_age_direction_gap)/abs(raw_direction_gap)`; it is undefined if the raw gap is zero.
 
 No model selection and no feature winner is promoted.
 
