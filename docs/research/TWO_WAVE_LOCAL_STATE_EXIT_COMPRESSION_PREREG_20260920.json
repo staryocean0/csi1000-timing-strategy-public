@@ -1,0 +1,73 @@
+{
+  "schema_version": "two_wave_local_state_exit_compression_prereg_v1",
+  "issue": 624,
+  "date": "2026-09-20",
+  "status": "PREREGISTERED_BEFORE_OUTCOME_EXECUTION",
+  "architecture_authority": "docs/research/TWO_WAVE_STRATEGY_EVOLUTION_HISTORY_20260920.md",
+  "data": {
+    "repo": "staryocean0/factorlab-two-wave-strategy-lab",
+    "ref": "152ae1ef11a04bb3b434da25025794db7a706c81",
+    "path": "data/development/5m_offset_0.parquet",
+    "rows": 70114,
+    "bytes": 3351411,
+    "sha256": "bea21fa9dd9532e21605511e07561b33d5569f86f69f5a487507531593b14c48"
+  },
+  "frozen_state_process": {
+    "recognizer_sha256": "998e51b257540ce2e0384371d6a0b0b8226f3436e7b378a5d0aa9a3266b6e175",
+    "wrapper_sha256": "3ae2a9afa75dac173773d83356e115b58c248985567faa8b1ea9bd042cb6d3d9",
+    "directional_states": ["CURRENT_UP", "CURRENT_DOWN"],
+    "delay_bars": 8
+  },
+  "features": ["abs_ret_8", "range_8", "rv_8", "efficiency_8"],
+  "test_years": [2018, 2019, 2020],
+  "score": {
+    "method": "prior_year_reverse_empirical_percentile_equal_weight",
+    "bands": 5,
+    "label_free": true
+  },
+  "targets": {
+    "primary": "exit_exact_current_directional_state_within_8_knowledge_bars",
+    "secondary": "exit_exact_current_directional_state_within_16_knowledge_bars",
+    "destination_prediction": false
+  },
+  "age_bins": [[1,4],[5,8],[9,16],[17,32],[33,null]],
+  "bootstrap": {
+    "block_trading_days": 20,
+    "repetitions": 5000,
+    "seed": 20260920
+  },
+  "overlap_phases": 8,
+  "hard_gate": {
+    "pooled_diff_min_pp": 5.0,
+    "pooled_diff_ci_lower_gt": 0.0,
+    "pooled_ratio_ci_lower_gt": 1.0,
+    "spearman_min": 0.70,
+    "auc_min": 0.55,
+    "years_b5_gt_b1_required": 3,
+    "up_diff_min_pp": 3.0,
+    "up_diff_ci_lower_gt": 0.0,
+    "down_diff_min_pp": 3.0,
+    "down_diff_ci_lower_gt": 0.0,
+    "age_standardized_diff_min_pp": 3.0,
+    "age_standardized_ci_lower_gt": 0.0,
+    "positive_overlap_phases_min": 6,
+    "exit16_diff_ci_lower_gt": 0.0
+  },
+  "forbidden_inputs": [
+    "C1_future",
+    "C2_future",
+    "P128",
+    "P256",
+    "parent_context",
+    "PnL",
+    "trade_outcome"
+  ],
+  "authority": {
+    "signal": false,
+    "router": false,
+    "trade": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "production": false
+  }
+}
