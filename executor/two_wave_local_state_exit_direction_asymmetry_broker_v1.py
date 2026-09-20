@@ -42,9 +42,9 @@ PREREG_SHA256 = "7cbd46434e36eb9c5390f988a572475bc8e9deed42cd062f8e857f1b0b1bac8
 
 SCRIPT_SHA256 = {
     "two_wave_local_state_exit_direction_asymmetry_v1.py":
-        "f4f9afc44d649e88f682eaf1ff47f02a2143abae9668f71e906c5b573921021b",
+        "6228da6ac016cc7f99f28d48a004f0686626c1ec2e4482f753b4c23104c5be5a",
     "two_wave_local_state_exit_direction_asymmetry_verifier_v1.py":
-        "ea3fdf89b3fe7f88921699afc1104609fe313f0f8597e64be40ad4f800889611",
+        "23760dbd062884b2ec10423b76bc2175837dce6630b67b9bcfe2f0e9ec6253da",
 }
 
 COMMAND_TIMEOUT_SECONDS = 900
