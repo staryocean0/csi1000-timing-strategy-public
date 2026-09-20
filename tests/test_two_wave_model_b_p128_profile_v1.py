@@ -83,6 +83,23 @@ class ModelBP128ProfileTests(unittest.TestCase):
         self.assertIn("github.event_name == 'workflow_dispatch'", workflow)
         self.assertNotIn("pull_request_target:", workflow)
 
+    def test_issue635_timeouts_fit_standard_workflow_budget(self):
+        profile = broker.profile()
+        self.assertEqual(profile["command_timeout_seconds"], 900)
+        self.assertEqual(profile["verification_timeout_seconds"], 900)
+        self.assertEqual(broker.ISSUE635_HOST_TIMEOUT_SECONDS, 960)
+        old_compute = broker.rb.COMPUTE_HOST_TIMEOUT_SECONDS
+        old_verify = broker.rb.VALIDATE_HOST_TIMEOUT_SECONDS
+        try:
+            broker.configure_host_timeouts()
+            self.assertEqual(broker.rb.COMPUTE_HOST_TIMEOUT_SECONDS, 960)
+            self.assertEqual(broker.rb.VALIDATE_HOST_TIMEOUT_SECONDS, 960)
+        finally:
+            broker.rb.COMPUTE_HOST_TIMEOUT_SECONDS = old_compute
+            broker.rb.VALIDATE_HOST_TIMEOUT_SECONDS = old_verify
+        workflow = (ROOT / ".github/workflows/public-compute.yml").read_text()
+        self.assertIn("timeout-minutes: 35", workflow)
+
     def test_broker_requires_standard_dispatch_context(self):
         text = (
             ROOT / "executor/two_wave_model_b_p128_state_exit_broker_v1.py"
