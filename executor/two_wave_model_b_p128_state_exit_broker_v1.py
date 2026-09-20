@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import importlib.util
 import json
@@ -21,6 +22,9 @@ GateError = rb.GateError
 
 PROFILE_NAME = "two-wave-model-b-p128-state-exit-v1"
 PRIVATE_REF = "2815f50b5a1b2925f0e0118b0af0d578605ee882"
+ISSUE635_COMMAND_TIMEOUT_SECONDS = 900
+ISSUE635_VERIFICATION_TIMEOUT_SECONDS = 900
+ISSUE635_HOST_TIMEOUT_SECONDS = 960
 SOURCE_REPO = "staryocean0/factorlab-two-wave-strategy-lab"
 SOURCE_REF = "152ae1ef11a04bb3b434da25025794db7a706c81"
 DATA_PATH = "data/development/5m_offset_0.parquet"
@@ -90,8 +94,8 @@ def profile() -> dict:
             "--results", "/results/study",
             "--prereg", "/work/two_wave_issue635/PREREG.json",
         ],
-        "command_timeout_seconds": 2400,
-        "verification_timeout_seconds": 2400,
+        "command_timeout_seconds": ISSUE635_COMMAND_TIMEOUT_SECONDS,
+        "verification_timeout_seconds": ISSUE635_VERIFICATION_TIMEOUT_SECONDS,
         "new_training": True,
         "production_authority": False,
     }
@@ -157,6 +161,48 @@ def prepare_inputs(api, root: Path, fixed_profile: dict) -> Path:
         raise GateError("issue635_staged_manifest_identity_failed")
     download_public_data(inputs / "5m_offset_0.parquet")
     return work
+
+
+def configure_host_timeouts() -> None:
+    # Keep the shared broker defaults untouched for every other profile.
+    rb.COMPUTE_HOST_TIMEOUT_SECONDS = ISSUE635_HOST_TIMEOUT_SECONDS
+    rb.VALIDATE_HOST_TIMEOUT_SECONDS = ISSUE635_HOST_TIMEOUT_SECONDS
+
+
+def correct_private_receipt_new_training() -> None:
+    run_id = os.environ["GITHUB_RUN_ID"] + "-" + os.environ["GITHUB_RUN_ATTEMPT"]
+    branch = "runs/public-research/" + run_id
+    target = f"repos/{rb.PRIVATE_REPO}/contents/research/public-runs/{run_id}.json"
+    api = rb.require_private_api()
+    query = target + "?ref=" + urllib.parse.quote(branch, safe="")
+    returned = api.request(query)
+    try:
+        payload = base64.b64decode(returned["content"])
+        receipt = json.loads(payload)
+    except Exception:
+        raise GateError("issue635_private_receipt_parse_failed") from None
+    if (
+        receipt.get("public_run_id") != run_id
+        or receipt.get("profile") != PROFILE_NAME
+        or receipt.get("new_training") not in {False, True}
+    ):
+        raise GateError("issue635_private_receipt_identity_failed")
+    receipt["new_training"] = True
+    corrected = (json.dumps(receipt, indent=2) + "\n").encode()
+    if corrected != payload:
+        api.request(
+            target,
+            {
+                "message": "Correct issue 635 training metadata [skip ci]",
+                "branch": branch,
+                "content": base64.b64encode(corrected).decode(),
+                "sha": returned["sha"],
+            },
+            method="PUT",
+        )
+    readback = api.request(query)
+    if base64.b64decode(readback["content"]) != corrected:
+        raise GateError("issue635_private_receipt_correction_readback_failed")
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("phase", choices=["prepare", "compute", "cleanup", "publish"])
@@ -170,11 +216,19 @@ def main() -> None:
     if args.phase == "prepare":
         rb.prepare(PROFILE_NAME, fixed)
     elif args.phase == "compute":
+        configure_host_timeouts()
         rb.compute()
     elif args.phase == "cleanup":
         rb.cleanup()
     else:
-        rb.publish(fixed)
+        try:
+            rb.publish(fixed)
+        except GateError as error:
+            if str(error) == "compute_failed_consult_private_receipt":
+                correct_private_receipt_new_training()
+            raise
+        else:
+            correct_private_receipt_new_training()
 
 
 def run() -> None:
