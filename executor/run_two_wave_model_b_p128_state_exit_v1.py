@@ -67,11 +67,12 @@ def run(data: Path, out: Path, prereg: Path) -> dict[str, object]:
 
     result = study.analyze(bars, run_causal_audit=True)
     out.mkdir(parents=True, exist_ok=True)
-    ledger_path = out / "ISSUE635_SCORED_LEDGER.csv"
     exact_path = out / "ISSUE635_RESULT_EXACT.json"
-    result["scored"].to_csv(ledger_path, index=False, float_format="%.10g")
-    ledger_sha = sha256_file(ledger_path)
-
+    base_hashes = {
+        "prereg_sha256": EXPECTED_PREREG_SHA256,
+        "study_module_sha256": sha256_file(Path(study.__file__).resolve()),
+        "frozen_sources": frozen_checks,
+    }
     exact = {
         "schema_version": "two_wave_model_b_p128_state_exit_result_exact_v1",
         "issue": 635,
@@ -83,36 +84,56 @@ def run(data: Path, out: Path, prereg: Path) -> dict[str, object]:
             "rows": EXPECTED_DATA_ROWS,
             "fresh_oos": False,
         },
-        "hashes": {
-            "prereg_sha256": EXPECTED_PREREG_SHA256,
-            "study_module_sha256": sha256_file(Path(study.__file__).resolve()),
-            "scored_ledger_sha256": ledger_sha,
-            "frozen_sources": frozen_checks,
-        },
+        "hashes": dict(base_hashes),
         **{k: v for k, v in result.items() if k != "scored"},
     }
-    exact = canonical(exact)
-    exact_path.write_text(
-        json.dumps(exact, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-    exact_sha = sha256_file(exact_path)
-    summary = {
-        "status": exact["status"],
-        "verdict": exact["decision"]["verdict"],
-        "evaluation_rows": exact["meta"]["evaluation_rows"],
-        "baseline_identity_passed": bool(
-            exact["baseline_identity"]["rows_match"]
-            and exact["baseline_identity"]["hash_match"]
-            and exact["baseline_identity"]["row_keys_match"]
-            and exact["baseline_identity"]["frozen_fields_match"]
-        ),
-        "support_passed": exact["support"]["passed"],
-        "causal_audit_passed": exact["causal_audit"]["passed"],
-        "scored_ledger_sha256": ledger_sha,
-        "exact_result_sha256": exact_sha,
-        "authority": exact["authority"],
-    }
+
+    if result["status"] == "MODEL_B_P128_STATE_EXIT_INSUFFICIENT_SUPPORT":
+        exact = canonical(exact)
+        exact_path.write_text(
+            json.dumps(exact, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        exact_sha = sha256_file(exact_path)
+        summary = {
+            "status": exact["status"],
+            "verdict": exact["decision"]["verdict"],
+            "evaluation_rows": 0,
+            "baseline_identity_passed": False,
+            "support_passed": False,
+            "causal_audit_passed": False,
+            "scored_ledger_sha256": None,
+            "exact_result_sha256": exact_sha,
+            "authority": exact["authority"],
+        }
+    else:
+        ledger_path = out / "ISSUE635_SCORED_LEDGER.csv"
+        result["scored"].to_csv(ledger_path, index=False, float_format="%.10g")
+        ledger_sha = sha256_file(ledger_path)
+        exact["hashes"]["scored_ledger_sha256"] = ledger_sha
+        exact = canonical(exact)
+        exact_path.write_text(
+            json.dumps(exact, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        exact_sha = sha256_file(exact_path)
+        summary = {
+            "status": exact["status"],
+            "verdict": exact["decision"]["verdict"],
+            "evaluation_rows": exact["meta"]["evaluation_rows"],
+            "baseline_identity_passed": bool(
+                exact["baseline_identity"]["rows_match"]
+                and exact["baseline_identity"]["hash_match"]
+                and exact["baseline_identity"]["row_keys_match"]
+                and exact["baseline_identity"]["frozen_fields_match"]
+            ),
+            "support_passed": exact["support"]["passed"],
+            "causal_audit_passed": exact["causal_audit"]["passed"],
+            "scored_ledger_sha256": ledger_sha,
+            "exact_result_sha256": exact_sha,
+            "authority": exact["authority"],
+        }
+
     print(json.dumps(summary, indent=2, sort_keys=True))
     return summary
 

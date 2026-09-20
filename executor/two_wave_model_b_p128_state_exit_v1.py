@@ -715,12 +715,21 @@ def _snapshot_equal(a: dict[str, object], b: dict[str, object], cutoff: int) -> 
         if not np.allclose(ra["features"], rb["features"], rtol=0, atol=2e-12):
             return False, f"features@{k}"
     relevant_years = {int(a["rows"][k]["year"]) for k in expected}
-    for year, fa in a["fits"].items():
-        if year not in relevant_years or year not in b["fits"]:
-            continue
+    a_years = relevant_years.intersection(a["fits"])
+    b_years = relevant_years.intersection(b["fits"])
+    if a_years != relevant_years or b_years != relevant_years:
+        return False, "fit_year_keys"
+    for year in sorted(relevant_years):
+        fa = a["fits"][year]
         fb = b["fits"][year]
-        if fa["resolved_fit_rows"] != fb["resolved_fit_rows"]:
-            return False, f"fit_rows@{year}"
+        for field in (
+            "resolved_fit_rows",
+            "reference_keys_sha256",
+            "training_keys_sha256",
+            "training_labels_sha256",
+        ):
+            if fa[field] != fb[field]:
+                return False, f"{field}@{year}"
         if not np.allclose(fa["A"], fb["A"], rtol=0, atol=2e-11):
             return False, f"A_coef@{year}"
         if not np.allclose(fa["B"], fb["B"], rtol=0, atol=2e-11):
@@ -759,7 +768,32 @@ def causal_audit(bars: pd.DataFrame, full_prediction: dict[str, object]) -> dict
 
 
 def analyze(bars: pd.DataFrame, *, run_causal_audit: bool = True) -> dict[str, object]:
-    pred_result = prediction_stream(bars)
+    try:
+        pred_result = prediction_stream(bars)
+    except InsufficientSupportError as exc:
+        return {
+            "status": "MODEL_B_P128_STATE_EXIT_INSUFFICIENT_SUPPORT",
+            "meta": {"stage": exc.stage, "diagnostic": exc.diagnostic},
+            "support": {
+                "passed": False,
+                "stage": exc.stage,
+                "diagnostic": exc.diagnostic,
+            },
+            "decision": {
+                "verdict": "MODEL_B_P128_STATE_EXIT_INCREMENT_INSUFFICIENT_SUPPORT",
+                "checks": {"pre_fit_support": False},
+            },
+            "scored": pd.DataFrame(),
+            "authority": {
+                "economic_intervention": False,
+                "signal": False,
+                "router": False,
+                "trade": False,
+                "paper_trading": False,
+                "live_trading": False,
+                "production": False,
+            },
+        }
     pred = pred_result["predictions"]
     eval_df = _attach_eval_labels(pred, pred_result["components"].carriers)
     if sorted(eval_df["year"].unique().tolist()) != list(TEST_YEARS):

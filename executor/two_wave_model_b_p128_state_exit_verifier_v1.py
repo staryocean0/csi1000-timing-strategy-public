@@ -42,6 +42,12 @@ BLOCK_DAYS = 20
 MIN_VALID_BOOT = 4750
 
 
+class InsufficientSupportError(RuntimeError):
+    def __init__(self, stage: str, diagnostic: dict):
+        self.stage, self.diagnostic = stage, diagnostic
+        super().__init__("MODEL_B_P128_STATE_EXIT_INCREMENT_INSUFFICIENT_SUPPORT:" + stage)
+
+
 def fail(reason: str) -> None:
     raise RuntimeError(reason)
 
@@ -228,6 +234,14 @@ def cell_support(df: pd.DataFrame) -> list[dict[str, object]]:
     return out
 
 
+def row_identity(frame: pd.DataFrame, *, labels: bool = False) -> str:
+    lines = [
+        str(int(r.known_index)) + (":" + str(int(r.y8)) if labels else "")
+        for r in frame.itertuples(index=False)
+    ]
+    return hashlib.sha256(("\n".join(lines) + "\n").encode("ascii")).hexdigest()
+
+
 def prediction_stream(bars: pd.DataFrame) -> dict[str, object]:
     dec, five, carriers, wrapper_rows = components(bars)
     pieces = []
@@ -238,15 +252,31 @@ def prediction_stream(bars: pd.DataFrame) -> dict[str, object]:
         cutoff = first_index(bars, year)
         reference = dec[dec["year"] < year].copy()
         if len(reference) < 10_000:
-            fail("reference_support")
+            raise InsufficientSupportError("label_free_reference", {"year": int(year), "n": int(len(reference))})
         mature = reference[reference["known_index"] + 8 < cutoff].copy()
-        mature["y8"] = [
-            label(carriers, int(r.known_index), str(r.carrier_state), 8)
-            for r in mature.itertuples(index=False)
-        ]
+        if mature.empty:
+            raise InsufficientSupportError("empty_mature_prior", {"year": int(year)})
+        cov = float(mature["context_resolved"].mean())
+        if cov < 0.95:
+            raise InsufficientSupportError(
+                "training_context_coverage",
+                {"year": int(year), "coverage": cov, "completed_fit_years": [int(f["year"]) for f in fits]},
+            )
         mature_scored, score_meta = base624._score_with_training(reference, mature)
-        cov = float(mature_scored["context_resolved"].mean())
         fit_rows = mature_scored[mature_scored["context_resolved"]].copy()
+        y8 = []
+        for r in fit_rows.itertuples(index=False):
+            k = int(r.known_index)
+            if k + 8 >= cutoff or any(k + j not in carriers for j in range(1, 9)):
+                fail("mature_label_boundary")
+            y8.append(label(carriers, k, str(r.carrier_state), 8))
+        fit_rows["y8"] = y8
+        cells = cell_support(fit_rows)
+        if not all(x["passed"] for x in cells):
+            raise InsufficientSupportError(
+                "training_cells",
+                {"year": int(year), "cells": cells, "completed_fit_years": [int(f["year"]) for f in fits]},
+            )
         fa, fb = fit(fit_rows, "A"), fit(fit_rows, "B")
         tpa = predict(fit_rows, fa, "A")
         tpb = predict(fit_rows, fb, "B")
@@ -272,10 +302,13 @@ def prediction_stream(bars: pd.DataFrame) -> dict[str, object]:
                 "purged_immature_rows": int(len(reference) - len(mature)),
                 "resolved_fit_rows": int(len(fit_rows)),
                 "training_context_coverage": cov,
-                "max_training_feature_index": int(mature["known_index"].max()),
-                "max_training_label_index": int(mature["known_index"].max() + 8),
+                "max_training_feature_index": int(fit_rows["known_index"].max()),
+                "max_training_label_index": int(fit_rows["known_index"].max() + 8),
+                "reference_keys_sha256": row_identity(reference),
+                "training_keys_sha256": row_identity(fit_rows),
+                "training_labels_sha256": row_identity(fit_rows, labels=True),
                 "score_meta": score_meta,
-                "training_cell_support": cell_support(fit_rows),
+                "training_cell_support": cells,
                 "A": fa,
                 "B": fb,
                 "A_prediction_quintile_cutpoints": cuts_a,
@@ -283,7 +316,14 @@ def prediction_stream(bars: pd.DataFrame) -> dict[str, object]:
             }
         )
     pred = pd.concat(pieces, ignore_index=True) if pieces else pd.DataFrame()
-    return {"decisions": dec, "predictions": pred, "fits": fits, "carriers": carriers, "wrapper_rows": wrapper_rows}
+    return {
+        "decisions": dec,
+        "predictions": pred,
+        "fits": fits,
+        "five_states": five,
+        "carriers": carriers,
+        "wrapper_rows": wrapper_rows,
+    }
 
 
 def eval_frame(predres: dict[str, object]) -> pd.DataFrame:
@@ -436,6 +476,22 @@ def support(evaldf: pd.DataFrame, fits: list[dict[str, object]], bars: pd.DataFr
     return {"passed": all(x["passed"] for x in checks), "checks": checks}
 
 
+def decision_snapshot(frame: pd.DataFrame) -> dict[int, dict]:
+    fields = (
+        "target_index", "timestamp", "knowledge_day", "year", "state",
+        "carrier_state", "state_age", "exact_label_age", "age_bin",
+        "context_phase", "context_relation", "context_resolved", "context_missing_reason",
+    )
+    numeric = (*FEATURES, "context_g")
+    return {
+        int(r.known_index): {
+            "fields": tuple(str(getattr(r, name)) for name in fields),
+            "numeric": tuple(float(getattr(r, name)) for name in numeric),
+        }
+        for r in frame.itertuples(index=False)
+    }
+
+
 def snapshot(res: dict[str, object]) -> dict[str, object]:
     rows = {}
     for r in res["predictions"].itertuples(index=False):
@@ -451,11 +507,51 @@ def snapshot(res: dict[str, object]) -> dict[str, object]:
             "p_A": float(r.p_A),
             "p_B": float(r.p_B),
         }
-    fs = {int(f["year"]): {"resolved_fit_rows": int(f["resolved_fit_rows"]), "A": tuple(f["A"]["coef"]), "B": tuple(f["B"]["coef"])} for f in res["fits"]}
-    return {"rows": rows, "fits": fs}
+    fs = {
+        int(f["year"]): {
+            "resolved_fit_rows": int(f["resolved_fit_rows"]),
+            "reference_keys_sha256": f["reference_keys_sha256"],
+            "training_keys_sha256": f["training_keys_sha256"],
+            "training_labels_sha256": f["training_labels_sha256"],
+            "A": tuple(float(x) for x in f["A"]["coef"]),
+            "B": tuple(float(x) for x in f["B"]["coef"]),
+        }
+        for f in res["fits"]
+    }
+    return {
+        "rows": rows,
+        "fits": fs,
+        "decisions": decision_snapshot(res["decisions"]),
+        "state_process": {
+            "five_states": res["five_states"],
+            "carriers": res["carriers"],
+        },
+    }
 
 
-def snapshot_equal(full, alt, cutoff: int) -> tuple[bool, str]:
+def decision_prefix_equal(full: dict, alt: dict, cutoff: int) -> tuple[bool, str]:
+    for channel in ("five_states", "carriers"):
+        left = {k: v for k, v in full["state_process"][channel].items() if k < cutoff}
+        right = {k: v for k, v in alt["state_process"][channel].items() if k < cutoff}
+        if left != right:
+            return False, "state_process:" + channel
+    expected = sorted(k for k in full["decisions"] if k < cutoff)
+    actual = sorted(k for k in alt["decisions"] if k < cutoff)
+    if expected != actual:
+        return False, "decision_row_keys"
+    for k in expected:
+        a, b = full["decisions"][k], alt["decisions"][k]
+        if a["fields"] != b["fields"]:
+            return False, f"decision_fields@{k}"
+        if not np.allclose(a["numeric"], b["numeric"], rtol=0, atol=2e-12, equal_nan=True):
+            return False, f"decision_numeric@{k}"
+    return True, ""
+
+
+def snapshot_equal(full: dict[str, object], alt: dict[str, object], cutoff: int) -> tuple[bool, str]:
+    ok, why = decision_prefix_equal(full, alt, cutoff)
+    if not ok:
+        return False, why
     expected = sorted(k for k in full["rows"] if k < cutoff)
     actual = sorted(k for k in alt["rows"] if k < cutoff)
     if expected != actual:
@@ -471,12 +567,20 @@ def snapshot_equal(full, alt, cutoff: int) -> tuple[bool, str]:
         if not np.allclose(a["features"], b["features"], rtol=0, atol=2e-12):
             return False, f"features@{k}"
     relevant_years = {int(full["rows"][k]["year"]) for k in expected}
-    for year, a in full["fits"].items():
-        if year not in relevant_years or year not in alt["fits"]:
-            continue
-        b = alt["fits"][year]
-        if a["resolved_fit_rows"] != b["resolved_fit_rows"]:
-            return False, f"fit_rows@{year}"
+    if relevant_years.intersection(full["fits"]) != relevant_years:
+        return False, "full_fit_year_keys"
+    if relevant_years.intersection(alt["fits"]) != relevant_years:
+        return False, "fit_year_keys"
+    for year in sorted(relevant_years):
+        a, b = full["fits"][year], alt["fits"][year]
+        for fld in (
+            "resolved_fit_rows",
+            "reference_keys_sha256",
+            "training_keys_sha256",
+            "training_labels_sha256",
+        ):
+            if a[fld] != b[fld]:
+                return False, f"{fld}@{year}"
         if not np.allclose(a["A"], b["A"], rtol=0, atol=2e-11):
             return False, f"A_coef@{year}"
         if not np.allclose(a["B"], b["B"], rtol=0, atol=2e-11):
@@ -560,33 +664,103 @@ def verify(data: Path, results: Path, prereg: Path) -> dict[str, object]:
     bars = pd.read_parquet(data)
     if len(bars) != DATA_ROWS:
         fail("data_rows")
+
     exact_path = results / "ISSUE635_RESULT_EXACT.json"
     ledger_path = results / "ISSUE635_SCORED_LEDGER.csv"
     exact = json.loads(exact_path.read_text(encoding="utf-8"))
+    if exact.get("schema_version") != "two_wave_model_b_p128_state_exit_result_exact_v1":
+        fail("schema_version")
     if exact.get("issue") != 635:
         fail("issue")
-    if exact["input"]["data_sha256"] != DATA_SHA:
-        fail("result_data")
-    if sha(ledger_path) != exact["hashes"]["scored_ledger_sha256"]:
-        fail("ledger_hash")
+    expected_input = {
+        "data_ref": "factorlab-two-wave-strategy-lab/data/development/5m_offset_0.parquet",
+        "data_sha256": DATA_SHA,
+        "bytes": DATA_BYTES,
+        "rows": DATA_ROWS,
+        "fresh_oos": False,
+    }
+    close(exact["input"], expected_input, "input")
 
-    predres = prediction_stream(bars)
+    here = Path(__file__).resolve().parent
+    expected_frozen = {
+        "two_wave_local_state_exit_compression_v1.py": "2dc3c316172fcd3d5e8f4f0086d05c356e5806e9d0b735fb72580bd5c2671908",
+        "two_wave_current_band_recognizer_v1.py": "998e51b257540ce2e0384371d6a0b0b8226f3436e7b378a5d0aa9a3266b6e175",
+        "two_wave_delayed_causal_wrapper_v1.py": "3ae2a9afa75dac173773d83356e115b58c248985567faa8b1ea9bd042cb6d3d9",
+        "two_wave_postdelay_persistence_v1.py": "34fc30211db3922f6ba67b563a05b983fe5780870409fbe3cb39676448389a0f",
+    }
+    frozen = {}
+    for name, expected in expected_frozen.items():
+        actual = sha(here / name)
+        frozen[name] = {"actual": actual, "expected": expected, "passed": actual == expected}
+    if not all(x["passed"] for x in frozen.values()):
+        fail("frozen_source_identity")
+    base_hashes = {
+        "prereg_sha256": PREREG_SHA,
+        "study_module_sha256": sha(here / "two_wave_model_b_p128_state_exit_v1.py"),
+        "frozen_sources": frozen,
+    }
+    authority = {
+        "economic_intervention": False,
+        "signal": False,
+        "router": False,
+        "trade": False,
+        "paper_trading": False,
+        "live_trading": False,
+        "production": False,
+    }
+
+    try:
+        predres = prediction_stream(bars)
+    except InsufficientSupportError as exc:
+        if exact.get("status") != "MODEL_B_P128_STATE_EXIT_INSUFFICIENT_SUPPORT":
+            fail("support_stop_status_mismatch")
+        if ledger_path.exists():
+            fail("unexpected_ledger_on_support_stop")
+        expected_meta = {"stage": exc.stage, "diagnostic": exc.diagnostic}
+        expected_support = {"passed": False, "stage": exc.stage, "diagnostic": exc.diagnostic}
+        expected_decision = {
+            "verdict": "MODEL_B_P128_STATE_EXIT_INCREMENT_INSUFFICIENT_SUPPORT",
+            "checks": {"pre_fit_support": False},
+        }
+        close(exact["hashes"], base_hashes, "hashes")
+        close(exact["meta"], expected_meta, "meta")
+        close(exact["support"], expected_support, "support")
+        close(exact["decision"], expected_decision, "decision")
+        close(exact["authority"], authority, "authority")
+        expected_top = {
+            "schema_version", "issue", "date", "input", "hashes", "status",
+            "meta", "support", "decision", "authority",
+        }
+        if set(exact) != expected_top:
+            fail("support_stop_top_level_fields")
+        return {
+            "status": "passed",
+            "issue": 635,
+            "verified_rows": 0,
+            "verified_blocks": 0,
+            "verdict": expected_decision["verdict"],
+            "new_training": True,
+            "production_authority": False,
+            "causal_audit_passed": False,
+            "support_passed": False,
+        }
+
+    if exact.get("status") != "MODEL_B_P128_STATE_EXIT_COMPLETE":
+        fail("result_status_mismatch")
+    if not ledger_path.is_file():
+        fail("ledger_missing")
+    expected_hashes = dict(base_hashes)
+    expected_hashes["scored_ledger_sha256"] = sha(ledger_path)
+    close(exact["hashes"], expected_hashes, "hashes")
+
     evaldf = eval_frame(predres)
     disk = pd.read_csv(ledger_path)
     if len(evaldf) != BASELINE_ROWS or len(disk) != len(evaldf):
         fail("eval_rows")
-
-    compare_cols = [
-        "known_index", "target_index", "knowledge_day", "year", "state", "carrier_state",
-        "state_age", "exact_label_age", "age_bin", "context_phase", "context_relation",
-        "context_resolved", "context_missing_reason", "abs_ret_8", "range_8", "rv_8",
-        "efficiency_8", "compression_score", "risk_band", "p_A", "p_B",
-        "model_A_quintile", "model_B_quintile", "y8", "y16",
-    ]
-    for col in compare_cols:
-        if col not in disk or col not in evaldf:
-            fail(f"missing_col:{col}")
-        if pd.api.types.is_numeric_dtype(evaldf[col]) or col in {"context_resolved"}:
+    if list(disk.columns) != list(evaldf.columns):
+        fail("ledger_columns")
+    for col in evaldf.columns:
+        if pd.api.types.is_numeric_dtype(evaldf[col]) or col == "context_resolved":
             expected = []
             for x in evaldf[col].to_numpy():
                 if pd.isna(x):
@@ -595,24 +769,54 @@ def verify(data: Path, results: Path, prereg: Path) -> dict[str, object]:
                     expected.append(float(bool(x)))
                 else:
                     expected.append(float(format(float(x), ".10g")))
-            actual = disk[col].astype(float).to_numpy()
+            try:
+                actual = disk[col].astype(float).to_numpy()
+            except (TypeError, ValueError):
+                fail(f"numeric_parse:{col}")
             if not np.array_equal(actual, np.asarray(expected, float), equal_nan=True):
                 fail(f"numeric_col:{col}")
         else:
-            a = disk[col].fillna("").astype(str).tolist()
-            b = evaldf[col].fillna("").astype(str).tolist()
-            if a != b:
+            actual = disk[col].fillna("").astype(str).tolist()
+            expected = evaldf[col].fillna("").astype(str).tolist()
+            if actual != expected:
                 fail(f"value_col:{col}")
 
     baseledger, _ = base624.build_ledger(bars)
     basescored, _ = base624.walk_forward(baseledger)
-    bsha = hashlib.sha256(basescored.to_csv(index=False, float_format="%.10g").encode()).hexdigest()
-    if len(basescored) != BASELINE_ROWS or bsha != BASELINE_SHA:
+    bsha = hashlib.sha256(
+        basescored.to_csv(index=False, float_format="%.10g").encode()
+    ).hexdigest()
+    baseline = {
+        "rows": int(len(basescored)),
+        "canonical_ledger_sha256": bsha,
+        "rows_match": int(len(basescored)) == BASELINE_ROWS,
+        "hash_match": bsha == BASELINE_SHA,
+    }
+    left = evaldf.sort_values("known_index").reset_index(drop=True)
+    right = basescored.sort_values("known_index").reset_index(drop=True)
+    baseline["row_keys_match"] = left["known_index"].tolist() == right["known_index"].tolist()
+    frozen_fields = len(left) == len(right)
+    max_score_diff = 0.0
+    if frozen_fields:
+        for col in ("state", "carrier_state", "state_age", "age_bin", "risk_band"):
+            if not left[col].astype(str).equals(right[col].astype(str)):
+                frozen_fields = False
+        for ycol, rcol in (("y8", "structural_exit_next8"), ("y16", "structural_exit_next16")):
+            if not np.array_equal(left[ycol].to_numpy(int), right[rcol].to_numpy(int)):
+                frozen_fields = False
+        score_diff = np.max(
+            np.abs(left["compression_score"].to_numpy(float) - right["compression_score"].to_numpy(float))
+        )
+        max_score_diff = float(score_diff)
+        if score_diff > 1e-15:
+            frozen_fields = False
+    baseline["frozen_fields_match"] = bool(frozen_fields)
+    baseline["compression_score_max_abs_diff"] = max_score_diff
+    if not all(
+        bool(baseline[k])
+        for k in ("rows_match", "hash_match", "row_keys_match", "frozen_fields_match")
+    ):
         fail("baseline_identity")
-    if evaldf["known_index"].tolist() != basescored["known_index"].tolist():
-        fail("baseline_row_keys")
-    if not np.allclose(evaldf["compression_score"], basescored["compression_score"], rtol=0, atol=1e-15):
-        fail("baseline_score")
 
     pooled = metrics(evaldf)
     yearly = [{"year": int(y), **metrics(p)} for y, p in evaldf.groupby("year", sort=True)]
@@ -625,7 +829,37 @@ def verify(data: Path, results: Path, prereg: Path) -> dict[str, object]:
     ca = causal(bars, predres)
     dec = gate(pooled, yearly, bystate, cohorts, common, rel, boot, sup, ca["passed"], True)
 
+    coverage = []
+    for (year, state), part in evaldf.groupby(["year", "state"], sort=True):
+        coverage.append({
+            "year": int(year),
+            "state": str(state),
+            "n": int(len(part)),
+            "resolved": int(part["context_resolved"].sum()),
+            "coverage": float(part["context_resolved"].mean()),
+        })
+    relation_support = []
+    blocked = blocks(evaldf, bars)
+    for (state, relation), part in blocked.groupby(["state", "context_relation"], sort=True):
+        relation_support.append({
+            "state": str(state),
+            "relation": str(relation),
+            "n": int(len(part)),
+            "blocks": int(part["block_id"].nunique()),
+            "event_rate": float(part["y8"].mean()),
+        })
+    meta = {
+        "decision_rows": int(len(predres["decisions"])),
+        "evaluation_rows": int(len(evaldf)),
+        "test_years": list(TEST_YEARS),
+        "wrapper_rows": int(predres["wrapper_rows"]),
+    }
+
+    close(exact["meta"], meta, "meta")
+    close(exact["baseline_identity"], baseline, "baseline_identity")
     close(exact["fits"], predres["fits"], "fits")
+    close(exact["coverage"], coverage, "coverage")
+    close(exact["relation_support"], relation_support, "relation_support")
     close(exact["pooled"], pooled, "pooled")
     close(exact["yearly"], yearly, "yearly")
     close(exact["by_state"], bystate, "by_state")
@@ -637,6 +871,16 @@ def verify(data: Path, results: Path, prereg: Path) -> dict[str, object]:
     close(exact["support"], sup, "support")
     close(exact["causal_audit"], ca, "causal")
     close(exact["decision"], dec, "decision")
+    close(exact["authority"], authority, "authority")
+
+    expected_top = {
+        "schema_version", "issue", "date", "input", "hashes", "status", "meta",
+        "baseline_identity", "fits", "coverage", "relation_support", "pooled",
+        "yearly", "by_state", "cohorts_mod8", "common_support", "reliability",
+        "risk_separation", "bootstrap", "support", "causal_audit", "decision", "authority",
+    }
+    if set(exact) != expected_top:
+        fail("exact_top_level_fields")
 
     return {
         "status": "passed",

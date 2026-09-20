@@ -1,6 +1,6 @@
 # Model B / #635：执行前审阅与未闭合项
 
-日期：2026-09-20。状态：`EXECUTION_HOLD__QUALIFICATION_NOT_COMPLETE`。
+日期：2026-09-20。状态：`PREEXECUTION_QUALIFIED__GOVERNED_RUN_PENDING`。
 审阅对象：PR #638 / `89217d4811c52e69505475c2d176cd1f3d8ecc2f`。
 此前 PR #637 的校准组件已合入；其15项合成检查、1366项全仓回归和公库 CI
 均通过，但这些结果不能替代后来 #638 完整研究链的验收。
@@ -67,3 +67,34 @@ context 值/缺失原因；预测行键也要求完全相同，不再只比较�
 
 该记录和局部补丁只进入独立 draft review；不合入默认分支，不改变已合并
 profile 的源码身份，不调度市场运行，不关闭 #635。
+
+
+## 后续修复闭合
+
+在保留上述失败收据之后，继续完成了缺失的验收逻辑，没有改研究目标、P128
+表示、模型参数预算、ridge、阈值、数据或 #624 基线。最终修复包括：
+
+- producer/verifier 都核对完整 early decision/state prefix，而非只看已有预测行；
+- 已发布预测涉及的年度 fit 必须存在，reference/training/label 行身份必须一致；
+- training context coverage 与 direction×age cell 支持门在优化器之前执行；
+- 支持不足产生冻结的 `MODEL_B_P128_STATE_EXIT_INCREMENT_INSUFFICIENT_SUPPORT`
+  结果类型，并由独立 verifier 重建同一停止原因；
+- verifier 对 CSV 全列逐列核对，并覆盖 exact 的 meta、baseline_identity、coverage、
+  relation_support、authority、完整 top-level envelope 与冻结源码身份。
+
+新增验收反例最终 10/10 PASS。更新 source manifest 后，Model B prereg、
+implementation、profile 与 acceptance 专项 28/28 PASS。
+
+最终本工作树全仓 unittest：1388/1388 PASS（61.907s）；synthetic Overnight
+BLACKBOX smoke PASS；修复相关源码、manifest、broker 和测试在全仓回归前后
+SHA256 完全一致。收据保存在授权 Debian：
+`csi1000-research-receipts/model-b-635-takeover-20260920-0626/repair_final_*`。
+
+因此本文件之前记录的 5 failures / 2 errors 是真实中间失败历史，不能删除；
+但它们已由后续修复闭合。当前允许的下一步仅是合并经 CI 验收的修复后，
+从 `cloud-workspace-v1` 用固定 `two-wave-model-b-p128-state-exit-v1`
+执行一次真实 `workflow_dispatch`，再做 private receipt/archive 回读与科学裁决。
+
+截至本次资格化仍没有执行 Model B 市场 outcome。
+信息门未评价；经济干预和 signal/router/trade/paper/live/production authority
+仍全部为 false。
