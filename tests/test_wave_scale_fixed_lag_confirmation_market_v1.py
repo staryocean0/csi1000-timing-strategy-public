@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'executor'))
 import wave_scale_fixed_lag_market_broker_v1 as broker
-from tests.segmentation_carrier_registration_support import strip_issue615_workflow
+from tests.segmentation_carrier_registration_support import strip_issue615_workflow, strip_native60c1_controller
 
 PROFILE = 'two-wave-scale-fixed-lag-confirmation-measurement-v1'
 WORKFLOW_PARENT = '01f44fb699414a196a04d052f84257adaf97f0e8'
@@ -86,7 +86,7 @@ class FixedLagMarketTests(unittest.TestCase):
         self.assertEqual(blob_bytes(text.encode()), WORKFLOW_PARENT)
 
     def test_controller_route_is_exact_append(self):
-        text = (ROOT / '.github/workflows/controller-dispatch.yml').read_text()
+        text = strip_native60c1_controller((ROOT / '.github/workflows/controller-dispatch.yml').read_text())
         self.assertEqual(text.count(PROFILE), 3)
         text = text.replace(f"       github.event.issue.title == 'controller: {PROFILE}' ||\n", '')
         case = (

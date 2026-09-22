@@ -42,6 +42,7 @@ jobs:
        github.event.issue.title == 'controller: risk-v3-native15-state-machine-candidates-v1' ||
        github.event.issue.title == 'controller: risk-v3-native60-phase60a-canonical-carrier-v1' ||
        github.event.issue.title == 'controller: risk-v3-native60-phase60b-volatility-continuity-map-v1' ||
+       github.event.issue.title == 'controller: risk-v3-native60-phase60c1-state-score-selection-v1' ||
        github.event.issue.title == 'controller: risk-v3-native15-c1-gate-attribution-v1' ||
        github.event.issue.title == 'controller: risk-v2-historical-000852-2015-2019-v1' ||
        github.event.issue.title == 'controller: risk-v2-temporal-stability-2015-2025-v1' ||
@@ -146,6 +147,9 @@ jobs:
               ;;
             'controller: risk-v3-native60-phase60b-volatility-continuity-map-v1')
               profile='risk-v3-native60-phase60b-volatility-continuity-map-v1'
+              ;;
+            'controller: risk-v3-native60-phase60c1-state-score-selection-v1')
+              profile='risk-v3-native60-phase60c1-state-score-selection-v1'
               ;;
             'controller: risk-v3-native15-c1-gate-attribution-v1')
               profile='risk-v3-native15-c1-gate-attribution-v1'

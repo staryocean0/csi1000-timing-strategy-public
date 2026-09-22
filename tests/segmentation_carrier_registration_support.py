@@ -23,6 +23,9 @@ ISSUE635_PROFILE = "two-wave-model-b-p128-state-exit-v1"
 ISSUE635_BROKER = "executor/two_wave_model_b_p128_state_exit_broker_v1.py"
 ISSUE647_PROFILE = "two-wave-local-state-exit-direction-asymmetry-v1"
 ISSUE647_BROKER = "executor/two_wave_local_state_exit_direction_asymmetry_broker_v1.py"
+NATIVE60C1_PROFILE = "risk-v3-native60-phase60c1-state-score-selection-v1"
+NATIVE60C1_BROKER = "executor/risk_v3_native60_phase60c1_state_score_broker.py"
+NATIVE60C1_MIRROR = "executor/risk_v3_native60_phase60c1_state_score_private_mirror.py"
 
 
 def remove_once(text: str, part: str, label: str) -> str:
@@ -33,7 +36,39 @@ def remove_once(text: str, part: str, label: str) -> str:
 
 
 
+def strip_native60c1_workflow(text: str) -> str:
+    text = remove_once(text, f"          - {NATIVE60C1_PROFILE}\n", "native60c1 profile option")
+    condition = f" || inputs.profile == '{NATIVE60C1_PROFILE}'"
+    if text.count(condition) != 2:
+        raise AssertionError("native60c1 allowlist count")
+    text = text.replace(condition, "")
+    for phase in ("prepare", "compute", "cleanup"):
+        branch = (
+            f"          elif [ '${{{{ inputs.profile }}}}' = '{NATIVE60C1_PROFILE}' ]; then\n"
+            f"            python3 {NATIVE60C1_BROKER} {phase} {NATIVE60C1_PROFILE}\n"
+        )
+        text = remove_once(text, branch, "native60c1 " + phase)
+    publish = (
+        f"          elif [ '${{{{ inputs.profile }}}}' = '{NATIVE60C1_PROFILE}' ]; then\n"
+        f"            python3 {NATIVE60C1_BROKER} publish {NATIVE60C1_PROFILE}\n"
+        f"            python3 {NATIVE60C1_MIRROR}\n"
+    )
+    return remove_once(text, publish, "native60c1 publish")
+
+
+def strip_native60c1_controller(text: str) -> str:
+    allow = f"       github.event.issue.title == 'controller: {NATIVE60C1_PROFILE}' ||\n"
+    text = remove_once(text, allow, "native60c1 controller allowlist")
+    case = (
+        f"            'controller: {NATIVE60C1_PROFILE}')\n"
+        f"              profile='{NATIVE60C1_PROFILE}'\n"
+        "              ;;\n"
+    )
+    return remove_once(text, case, "native60c1 controller case")
+
+
 def strip_issue647_workflow(text: str) -> str:
+    text = strip_native60c1_workflow(text)
     text = remove_once(text, f"          - {ISSUE647_PROFILE}\n", "issue647 profile option")
     condition = f" || inputs.profile == '{ISSUE647_PROFILE}'"
     if text.count(condition) != 2:
@@ -110,6 +145,7 @@ def strip_fixed_lag_workflow(text: str) -> str:
     return text
 
 def strip_fixed_lag_controller(text: str) -> str:
+    text = strip_native60c1_controller(text)
     allow = f"       github.event.issue.title == 'controller: {FIXED_LAG_PROFILE}' ||\n"
     text = remove_once(text, allow, "fixed lag controller allowlist")
     case = (f"            'controller: {FIXED_LAG_PROFILE}')\n"
