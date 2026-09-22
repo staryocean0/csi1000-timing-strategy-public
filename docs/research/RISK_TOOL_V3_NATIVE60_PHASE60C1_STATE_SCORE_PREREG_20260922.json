@@ -1,0 +1,182 @@
+{
+  "schema_id": "risk_tool_v3_native60_phase60c1_state_score_prereg@1.0",
+  "task_id": "CSI1000-RISK-V3-NATIVE60-PHASE60C1-CAUSAL-STATE-SCORE-SELECTION-V1-20260922",
+  "profile_name": "risk-v3-native60-phase60c1-state-score-selection-v1",
+  "registered_at": "2026-09-22",
+  "research_question": "Can Native-60m volatility be represented by one causal, interpretable, slot-adjusted continuous state score that is stable across development years and prospectively separates next-bar intrabar risk?",
+  "parent_authority": {
+    "phase60a_run_id": "35053098772-1",
+    "phase60a_required_status": "NATIVE60_CANONICAL_CARRIER_VALID",
+    "phase60b_run_id": "35057818977-1",
+    "phase60b_required_status": "NATIVE60_DESCRIPTIVE_MAP_COMPLETE",
+    "phase60b_result_path": "research/public-runs/35057818977-1-native60-phase60b.json",
+    "phase60b_result_git_blob_sha": "287fbf999c95f34dd5b70029332d711dcc650ec2",
+    "phase60b_receipt_path": "research/public-runs/35057818977-1.json",
+    "phase60b_receipt_git_blob_sha": "c279914d7ef5ae0ce4c3031b86eafcf8438e8e39",
+    "canonical_60m": {
+      "rows": 2908,
+      "trading_days": 727,
+      "symbol": "000852.SH",
+      "bytes": 165623,
+      "sha256": "4414d08c6e256fcb7d151018b935d26363be04920990c7b1c56880c8ec7e0467"
+    }
+  },
+  "adaptive_context_from_phase60b": {
+    "allowed_use": "Phase 60-B may motivate the fixed candidate family but may not be changed or reinterpreted.",
+    "observations_used_to_form_new_question": [
+      "intrabar_rv_1m showed materially stronger lag continuity than 60m body magnitude",
+      "range_log retained intermediate continuity",
+      "q90/q95 extreme episodes were usually one native 60m bar",
+      "strong AM1/AM2/PM1/PM2 seasonality was present",
+      "small 60m bodies could coexist with high intrabar path energy"
+    ],
+    "not_claimed": [
+      "no Phase 60-B observable winner",
+      "no calibrated risk probability",
+      "no final state threshold",
+      "no production state machine"
+    ]
+  },
+  "development_window": {
+    "years": [
+      2021,
+      2022,
+      2023
+    ],
+    "symbol": "000852.SH",
+    "native_scale": "60m",
+    "slots": [
+      "AM1",
+      "AM2",
+      "PM1",
+      "PM2"
+    ],
+    "2024_2025_role": "sealed_repeat_audit_holdout",
+    "2026_role": "sealed",
+    "no_lookahead": true
+  },
+  "primitive_observables": {
+    "intrabar_rv_1m": "primary path-energy primitive",
+    "range_log": "high-low range primitive",
+    "body_abs_log": "open-close body primitive retained as a compression benchmark"
+  },
+  "causal_slot_normalization": {
+    "baseline": "median of the previous same-slot observations only",
+    "lookback_same_slot_observations": 60,
+    "minimum_prior_same_slot_observations": 40,
+    "current_observation_excluded_from_baseline": true,
+    "formula": "relative_level_t = observable_t / median(previous 60 finite observations from the same slot)",
+    "zero_current_value_policy": "relative_level may be zero; no epsilon is added",
+    "zero_or_nonfinite_baseline_policy": "candidate row is unscored",
+    "warmup_policy": "rows without 40 prior same-slot observations are unscored and may not be imputed"
+  },
+  "candidate_base_scores": {
+    "rv_rel": "relative_level(intrabar_rv_1m)",
+    "range_rel": "relative_level(range_log)",
+    "body_rel": "relative_level(body_abs_log)",
+    "rv_range_geo": "sqrt(relative_level(intrabar_rv_1m) * relative_level(range_log))"
+  },
+  "native_bar_memory_variants": {
+    "raw": {
+      "formula": "base_score_t",
+      "alpha": 1
+    },
+    "ewma50": {
+      "formula": "alpha*base_score_t + (1-alpha)*previous_score",
+      "alpha": 0.5
+    },
+    "ewma25": {
+      "formula": "alpha*base_score_t + (1-alpha)*previous_score",
+      "alpha": 0.25
+    }
+  },
+  "candidate_count": 12,
+  "candidate_enumeration": "Cartesian product of 4 base scores and 3 memory variants; no additions after preregistration.",
+  "primary_pair_semantics": {
+    "next_bar": "immediately following Native-60m bar within the same trading day only",
+    "overnight": "PM2 to next-day AM1 is reported separately and cannot affect C1 selection",
+    "lag1_pair_max_per_complete_day": 3,
+    "lag2_pair_max_per_complete_day": 2,
+    "lag3_pair_max_per_complete_day": 1,
+    "primary_target": "next_bar_intrabar_rv_1m"
+  },
+  "candidate_diagnostics": [
+    "scored row count overall/by-year/by-slot",
+    "score quantiles and slot distribution",
+    "lag1/lag2/lag3 Pearson and Spearman persistence within day",
+    "next-bar intrabar_rv_1m mean and median by current score quartile",
+    "next-bar intrabar_rv_1m q90 event probability by current score quartile",
+    "top-quartile versus bottom-quartile next-bar intrabar_rv_1m mean ratio overall and by year",
+    "quartile monotonicity of next-bar intrabar_rv_1m mean",
+    "Q4 share by AM1/AM2/PM1/PM2",
+    "capture of Phase-60B compression cases: low body with high path energy",
+    "secondary PM2 to next-day AM1 persistence and next-day path-energy separation"
+  ],
+  "mechanism_gates": {
+    "minimum_scored_rows": 2700,
+    "lag1_spearman_overall_min": 0.25,
+    "lag1_spearman_each_year_min": 0.1,
+    "top_bottom_next_rv_mean_ratio_overall_min": 1.3,
+    "top_bottom_next_rv_mean_ratio_each_year_min": 1.1,
+    "next_rv_quartile_means_nondecreasing_overall": true,
+    "q4_share_each_slot_min": 0.1,
+    "q4_share_each_slot_max": 0.4
+  },
+  "selection_rule": {
+    "eligible": "candidate must satisfy every mechanism gate",
+    "if_none": "status=NATIVE60_STATE_SCORE_SELECTION_INSUFFICIENT; no selected score; C2 not authorized",
+    "if_one_or_more": [
+      "maximize the minimum yearly top/bottom next-bar intrabar_rv mean ratio",
+      "then maximize overall top/bottom next-bar intrabar_rv mean ratio",
+      "then maximize overall lag1 Spearman persistence",
+      "then prefer lower formula complexity: single primitive before composite",
+      "then prefer less smoothing: raw before ewma50 before ewma25",
+      "then lexical candidate id"
+    ],
+    "selected_score_authority": "development score construction only; it is not a final risk state and has no threshold, probability, strategy or production authority"
+  },
+  "allowed_statuses": [
+    "NATIVE60_STATE_SCORE_SELECTION_COMPLETE",
+    "NATIVE60_STATE_SCORE_SELECTION_INSUFFICIENT",
+    "NATIVE60_STATE_SCORE_SELECTION_NOT_READY"
+  ],
+  "next_phase_contract": {
+    "on_complete": "may preregister Phase 60-C2 state thresholds / hysteresis and transition semantics using the frozen selected score; C2 must be a separate task",
+    "on_insufficient": "C2 remains blocked; no post-result family expansion or gate relaxation under this task identity"
+  },
+  "controls": {
+    "model_fit": false,
+    "calibration": false,
+    "probability_model": false,
+    "threshold_search": false,
+    "final_state_machine_installation": false,
+    "strategy_routing": false,
+    "position_sizing": false,
+    "pnl": false,
+    "production_authority": false,
+    "use_2024_2025_market_values": false,
+    "use_2026_market_values": false,
+    "direct_private_write_from_chat": false
+  },
+  "result_surface": {
+    "aggregate_only": true,
+    "forbid_row_level_timestamps_prices_returns": true,
+    "must_report_all_12_candidates": true,
+    "must_report_gate_pass_fail_per_candidate": true,
+    "must_report_selected_candidate_or_null": true,
+    "empirical_conditional_probabilities_are_descriptive_not_calibrated": true
+  },
+  "non_rescue": [
+    "do not add candidate families after C1 results are observed",
+    "do not alter 60/40 same-slot baseline semantics after reveal",
+    "do not alter smoothing variants after reveal",
+    "do not relax mechanism gates after reveal and call it the same C1",
+    "do not inspect 2024-2026 market values to choose or rescue a candidate",
+    "do not promote a selected score directly to Layer3 or production"
+  ],
+  "preregistration_lifecycle": {
+    "implementation_after_prereg_merge_only": true,
+    "execution_profile_registered_at_prereg": false,
+    "controller_route_registered_at_prereg": false
+  }
+}
