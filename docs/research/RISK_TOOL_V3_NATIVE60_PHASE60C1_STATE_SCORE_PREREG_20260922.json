@@ -173,5 +173,10 @@
     "do not relax mechanism gates after reveal and call it the same C1",
     "do not inspect 2024-2026 market values to choose or rescue a candidate",
     "do not promote a selected score directly to Layer3 or production"
-  ]
+  ],
+  "preregistration_lifecycle": {
+    "implementation_after_prereg_merge_only": true,
+    "execution_profile_registered_at_prereg": false,
+    "controller_route_registered_at_prereg": false
+  }
 }
