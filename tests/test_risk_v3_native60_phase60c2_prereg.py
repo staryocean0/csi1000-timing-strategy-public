@@ -36,7 +36,7 @@ class Native60Phase60C2PreregTests(unittest.TestCase):
         m=self.v["causal_state_machine"]
         self.assertIn("score >= U",m["normal_rule"])
         self.assertIn("RECOVERING",m["unsafe_rule"])
-        self.assertIn("carry",m["carry_policy"])
+        self.assertIn("across lunch and overnight",m["carry_policy"])
         self.assertIn("cannot determine C2 selection",m["overnight_selection_policy"])
 
     def test_mechanism_gates_and_holdouts(self):
