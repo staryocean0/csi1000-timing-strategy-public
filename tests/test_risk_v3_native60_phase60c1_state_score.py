@@ -79,6 +79,6 @@ class Native60Phase60C1ImplementationTests(unittest.TestCase):
         for phase in ("prepare","compute","cleanup","publish"):
             self.assertIn(f"risk_v3_native60_phase60c1_state_score_broker.py {phase} {PROFILE}",w)
         self.assertIn("risk_v3_native60_phase60c1_state_score_private_mirror.py",w)
-        self.assertEqual(w.count("FACTORLAB_PRIVATE_TOKEN"),2)
+        self.assertEqual(w.count("secrets.FACTORLAB_PRIVATE_TOKEN"),2)
 
 if __name__=="__main__":unittest.main()
