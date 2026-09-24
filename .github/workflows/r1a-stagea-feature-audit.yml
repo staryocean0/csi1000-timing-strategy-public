@@ -1,0 +1,91 @@
+name: R1A Stage A outcome-blind audit
+
+on:
+  pull_request:
+    paths:
+      - 'executor/r1a_stagea_feature_audit.py'
+      - 'executor/r1a_stagea_support_audit.py'
+      - 'executor/r1a_stagea_baseline_audit.py'
+      - 'executor/r1a_stagea_strict_acceptance.py'
+      - 'executor/r1a_stagea_profile_task.py'
+      - 'executor/r1a_stagea_profile_verify.py'
+      - 'executor/r1a_stagea_profile.json'
+      - 'executor/r1a_stagea_broker.py'
+      - 'executor/r1a_stagea_container.py'
+      - 'executor/r1a_stagea_requirements.txt'
+      - 'executor/r1a-stagea.Dockerfile'
+      - 'tests/test_r1a_stagea_broker.py'
+      - '.github/workflows/r1a-stagea-feature-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  stagea-audit:
+    if: github.repository == 'staryocean0/csi1000-timing-strategy-public'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout public audit code
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          path: executor-repo
+
+      - name: Checkout pinned public source and annual CSI1000 data
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: staryocean0/factorlab-trend-reversion-regime-lab
+          ref: ab4979b224d8ee97f89b75ac428ddd71887fecf1
+          persist-credentials: false
+          path: source
+          sparse-checkout: |
+            data/market/1m/000852.SH
+            research/index_price_validity
+            docs/governance/INDEX_PRICE_VALIDITY_FREEZE@1.0.json
+          sparse-checkout-cone-mode: false
+
+      - name: Build fixed R1A Stage A runtime
+        working-directory: executor-repo/executor
+        run: docker build --tag factorlab-r1a-stagea:pr --file r1a-stagea.Dockerfile .
+
+      - name: Install audit dependencies
+        run: python3 -m pip install --disable-pip-version-check --no-input numpy==2.5.3 pandas==3.0.5 pyarrow==25.0.1
+
+      - name: Run feature-only causal audit
+        run: python3 executor-repo/executor/r1a_stagea_feature_audit.py --source source > "$RUNNER_TEMP/r1a_feature.json"
+
+      - name: Run support-maturity precheck
+        run: python3 executor-repo/executor/r1a_stagea_support_audit.py --source source > "$RUNNER_TEMP/r1a_support.json"
+
+      - name: Run complete outcome-blind baseline audit
+        run: python3 executor-repo/executor/r1a_stagea_baseline_audit.py --source source > "$RUNNER_TEMP/r1a_stagea.json"
+
+      - name: Run strict Stage A acceptance verifier
+        run: python3 executor-repo/executor/r1a_stagea_strict_acceptance.py --source source
+
+      - name: Verify Stage A gate status without persisting research results
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP'])
+          feature = json.loads((root / 'r1a_feature.json').read_text())
+          support = json.loads((root / 'r1a_support.json').read_text())
+          stagea = json.loads((root / 'r1a_stagea.json').read_text())
+          assert feature['status'] == 'FEATURE_ONLY_GATES_PASS'
+          assert support['status'] == 'SUPPORT_MATURITY_PRECHECK_PASS'
+          assert stagea['status'] == 'STAGEA_BASELINE_IDENTIFIED'
+          assert all(stagea['gates'].values())
+          assert stagea['coverage']['coverage'] >= 0.99
+          assert stagea['current_validation_outcomes_constructed_or_scored'] is False
+          assert stagea['prediction_error_computed'] is False
+          assert stagea['pnl_computed'] is False
+          assert stagea['horizon_selected'] is False
+          assert stagea['data_2026_opened'] is False
+          print('R1A_STAGEA_OUTCOME_BLIND_GATES_PASS')
+          for name in ('r1a_feature.json', 'r1a_support.json', 'r1a_stagea.json'):
+              (root / name).unlink(missing_ok=True)
+          PY

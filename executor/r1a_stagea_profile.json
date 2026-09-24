@@ -1,0 +1,35 @@
+{
+  "schema_id": "csi1000.r1a_parent_continuation_stagea_profile@1.0",
+  "profile_name": "r1a-parent-continuation-stagea-v1",
+  "private_authority_branch": "research/r1a-parent-continuation-20260914",
+  "private_base_ref": "6b6505aaa2aa0d29ac340f6ebcdc4f4e68cd2426",
+  "source_repository": "staryocean0/factorlab-trend-reversion-regime-lab",
+  "source_commit": "ab4979b224d8ee97f89b75ac428ddd71887fecf1",
+  "command": [
+    "r1a_stagea/r1a_stagea_profile_task.py",
+    "--source",
+    "/work/source",
+    "--out",
+    "/results/study"
+  ],
+  "verify_command": [
+    "r1a_stagea/r1a_stagea_profile_verify.py",
+    "--source",
+    "/work/source",
+    "--results",
+    "/results/study"
+  ],
+  "command_timeout_seconds": 480,
+  "verification_timeout_seconds": 480,
+  "cpu_limit": 4,
+  "memory_gib": 12,
+  "network": "none",
+  "new_training": true,
+  "current_validation_outcomes_scored": false,
+  "horizon_selection": false,
+  "data_2026_opened": false,
+  "fresh_oos": false,
+  "accepted_trading_strategy": false,
+  "stage_b_authorized": false,
+  "production_authority": false
+}
